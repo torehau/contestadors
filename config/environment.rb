@@ -13,7 +13,7 @@ Rails::Initializer.run do |config|
 
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
-  config.load_pats += %W( #{RAILS_ROOT}/app/models/configuration
+  config.load_paths += %W( #{RAILS_ROOT}/app/models/configuration
                           #{RAILS_ROOT}/app/models/contest
                           #{RAILS_ROOT}/app/models/core
                           #{RAILS_ROOT}/app/models/predictable
