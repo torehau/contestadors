@@ -1,0 +1,6 @@
+id,description,predictable_type,created_at,updated_at
+1,Group Matches,Predictable::Championship::Match,,
+2,Group Tables,Predictable::Championship::GroupTablePosition,,
+3,Stage Teams,Predictable::Championship::StageTeam,,
+4,Specific Team,Predictable::Championship::Team,,
+5,Specific Player,Predictable::Championship::Player,,

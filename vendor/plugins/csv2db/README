@@ -1,0 +1,13 @@
+Csv2db
+======
+
+Allows loading data for you model classes from CSV files to the database.
+
+
+Example
+=======
+
+Example goes here.
+
+
+Copyright (c) 2009 Tore Hauge, released under the MIT license

@@ -5,6 +5,7 @@ RAILS_GEM_VERSION = '2.3.4' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
+require 'mods'
 
 Rails::Initializer.run do |config|
   # Settings in config/environments/* take precedence over those specified here.
@@ -17,6 +18,8 @@ Rails::Initializer.run do |config|
                           #{RAILS_ROOT}/app/models/contest
                           #{RAILS_ROOT}/app/models/core
                           #{RAILS_ROOT}/app/models/predictable
+                          #{RAILS_ROOT}/app/models/predictable/championship
+                          #{RAILS_ROOT}/app/models/predictable/league
                           #{RAILS_ROOT}/app/models/predictable/tournament )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
@@ -24,6 +27,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+  config.gem "fastercsv", :version => '1.5.0'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
   # :all can be used as a placeholder for all plugins not explicitly named
