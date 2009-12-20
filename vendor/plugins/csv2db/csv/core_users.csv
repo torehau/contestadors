@@ -1,0 +1,3 @@
+id,email,name,password,password_confirmation,created_at,updated_at
+1,torehau@hotmail.com,Tore Hauge,changeit,changeit,,
+2,ronnya@acm.org,Ronny Arild,changeit,changeit,,

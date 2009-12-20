@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  predictable_championship_team_id: 1
+  goals: 1
+
+two:
+  name: MyString
+  predictable_championship_team_id: 1
+  goals: 1

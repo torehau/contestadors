@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091205142106) do
+ActiveRecord::Schema.define(:version => 20091216204156) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -51,12 +51,39 @@ ActiveRecord::Schema.define(:version => 20091205142106) do
     t.datetime "updated_at"
   end
 
+  create_table "configuration_predictable_items", :force => true do |t|
+    t.integer  "configuration_set_id"
+    t.integer  "predictable_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "configuration_sets", :force => true do |t|
     t.string   "description"
     t.boolean  "mutex_objectives"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "core_users", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email",                            :null => false
+    t.string   "name",                             :null => false
+    t.string   "crypted_password",                 :null => false
+    t.string   "password_salt",                    :null => false
+    t.string   "persistence_token",                :null => false
+    t.integer  "login_count",       :default => 0, :null => false
+    t.datetime "last_request_at"
+    t.datetime "last_login_at"
+    t.datetime "current_login_at"
+    t.string   "last_login_ip"
+    t.string   "current_login_ip"
+  end
+
+  add_index "core_users", ["email"], :name => "index_core_users_on_email"
+  add_index "core_users", ["last_request_at"], :name => "index_core_users_on_last_request_at"
+  add_index "core_users", ["persistence_token"], :name => "index_core_users_on_persistence_token"
 
   create_table "predictable_championship_group_table_positions", :force => true do |t|
     t.integer  "pos"
@@ -84,6 +111,15 @@ ActiveRecord::Schema.define(:version => 20091205142106) do
     t.datetime "updated_at"
   end
 
+  create_table "predictable_championship_players", :force => true do |t|
+    t.string   "name"
+    t.integer  "predictable_championship_team_id"
+    t.integer  "goals",                            :default => 0
+    t.boolean  "selectable",                       :default => true
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "predictable_championship_stage_teams", :force => true do |t|
     t.integer  "predictable_championship_stage_id"
     t.integer  "predictable_championship_team_id"
@@ -104,5 +140,15 @@ ActiveRecord::Schema.define(:version => 20091205142106) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "sessions", :force => true do |t|
+    t.string   "session_id", :null => false
+    t.text     "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
+  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
 end

@@ -10,11 +10,14 @@ namespace :csv2db do
      Configuration::Contest,
      Configuration::IncludedSet,
      Predictable::Championship::Team,
+     Predictable::Championship::Player,
      Predictable::Championship::Stage,
      Predictable::Championship::Match,
      Predictable::Championship::StageTeam,
      Predictable::Championship::Group,
-     Predictable::Championship::GroupTablePosition    
+     Predictable::Championship::GroupTablePosition,
+     Configuration::PredictableItem,
+     Core::User
     ].each do |klass|
       klass.delete_all
       klass.load_from_csv(dependencies)
