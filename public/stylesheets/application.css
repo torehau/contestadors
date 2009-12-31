@@ -51,14 +51,14 @@ em {
 	text-transform: lowercase;
 	top: 0; left: 10px;
 }
-.top h1#logo span.gray  {	color: #638a8c; }
+.top h1#logo span.gray  {	color: #41686a; }
 .top h1#logo span.slogan {
 	font: normal 50% Verdana,sans-serif;
 	color: #333;
 	padding-left:100px;
 }
 .top h1#logo span.slogan-blue {
-	color:#638a8c;
+	color:#41686a;
 	padding-left: 0px;
 }
 
@@ -270,7 +270,7 @@ em {
 }
 
 .main_tabnav a:hover {
-	color: #638a8c;
+	color: #41686a;
 	background: #CCCCCC; }
 
 /*.main_tabnav a:visited {
@@ -320,7 +320,7 @@ em {
         background: #eeeeee; }
 
 .groups_tabnav a:hover {
-	color: #638a8c;
+	color: #41686a;
 	background: #CCCCCC; }
 
 /*.groups_tabnav a:visited {

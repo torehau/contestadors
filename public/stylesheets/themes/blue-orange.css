@@ -3,17 +3,17 @@ body {
   background-color: #333;
 }
 h1 {
-  color:#638a8c;
+  color:#41686a;
 }
 h2 {
-  color:#638a8c;
+  color:#41686a;
   font-weight: bolder;
 }
 h3 {
   color:#f0542b;
 }
 label {
-  color: #638a8c;
+  color: #41686a;
   font-weight: bold;
 }
 .container {
@@ -25,18 +25,18 @@ a, a:visited {
   color: #f0542b;
 }
 a:active, a:hover {
-  color: #638a8c;
+  color: #41686a;
 	background: #dff6f1;
 }
 h1 a, h1 a:visited {
-  color: #638a8c;
+  color: #41686a;
 }
 hr {
   background-color: #88c6cf;
 }
 fieldset {
   border-color:#88c6cf;
-  color:#638a8c;
+  color:#41686a;
 }
 .box {
   background:#dff6f1;
@@ -52,7 +52,7 @@ fieldset {
 
 /* Thickbox Window */
 #TB_window {
-	border: 4px solid #638a8c;
+	border: 4px solid #41686a;
 }
 #TB_title {
 	background-color:#dff6f1;
@@ -60,12 +60,12 @@ fieldset {
 
 /* Positive Buttons */
 body .positive {
-  color:#638a8c;
+  color:#41686a;
 }
 a.positive:hover, button.positive:hover {
-  color:#638a8c;
+  color:#41686a;
 }
 a.positive:active {
-  background-color:#638a8c;
-  border:1px solid #638a8c;
+  background-color:#41686a;
+  border:1px solid #41686a;
 }
