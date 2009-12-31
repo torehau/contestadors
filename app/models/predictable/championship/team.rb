@@ -8,6 +8,10 @@ module Predictable
       has_many :stages, :through => :stage_teams, :class_name => "Predictable::Championship::Stage"
       has_many :players, :class_name => "Predictable::Championship::Player", :foreign_key => "predictable_championship_team_id"
       has_one :group_table_position, :class_name => "Predictable::Championship::GroupTablePosition", :foreign_key => 'predictable_championship_team_id'
+
+      def matches
+        home_matches + away_matches
+      end
     end
   end
 end
