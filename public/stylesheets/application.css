@@ -150,6 +150,18 @@ em {
 }
 
 /* -- Predictions -- */
+#login, #registration {
+  clear: left;
+  margin-left: 10px;
+  float: left;
+  width:300px;
+}
+
+#login form, #login h2, #registration form, #registration h2 {
+    padding-left: 10px;
+}
+
+/* -- Predictions -- */
 #predictions {  
   clear: both;
   float: left;
@@ -238,7 +250,7 @@ em {
 
 .main_tabnav a, main_tabnav a.active {
 	color: #f0542b;
-	background: #eff5e1;
+	background: #eeeeee;
         font-weight: bold;
 	margin: 0;
         padding: 3px 5px 3px 6px;
@@ -253,8 +265,8 @@ em {
 .main_tabnav a.active {
         padding-bottom: 3px;
 	color: #000000;
-	background: #eff5e1;
-        border-bottom: 1px solid #eff5e1;
+	background: #eeeeee;
+        border-bottom: 1px solid #eeeeee;
 }
 
 .main_tabnav a:hover {
@@ -268,7 +280,7 @@ em {
 	color: #000000; }
 
 .main_tabnav_content {
-	background: #eff5e1;
+	background: #eeeeee;
 	padding: 0px;
 }
 
@@ -297,7 +309,7 @@ em {
 
 .groups_tabnav a, groups_tabnav a.active {
 	color: #f0542b;
-	background: #eff5e1;
+	background: #eeeeee;
 	font-weight: bold;
 	padding: 3px 5px 0px 5px;
 	margin: 5px 0px 0px 0px;
@@ -305,7 +317,7 @@ em {
 
 .groups_tabnav a.active {
 	color: #000000;
-        background: #eff5e1; }
+        background: #eeeeee; }
 
 .groups_tabnav a:hover {
 	color: #638a8c;
@@ -316,3 +328,42 @@ em {
 
 .groups_tabnav a.active:hover {
 	color: #000000; }
+
+/* Spiffy/rounded corners styling*/
+.spiffy{display:block}
+.spiffy *{
+  display:block;
+  height:1px;
+  overflow:hidden;
+  font-size:.01em;
+  background:#C3D9FF}
+.spiffy1{
+  margin-left:3px;
+  margin-right:3px;
+  padding-left:1px;
+  padding-right:1px;
+  border-left:1px solid #e5eeff;
+  border-right:1px solid #e5eeff;
+  background:#d2e2ff}
+.spiffy2{
+  margin-left:1px;
+  margin-right:1px;
+  padding-right:1px;
+  padding-left:1px;
+  border-left:1px solid #f9fbff;
+  border-right:1px solid #f9fbff;
+  background:#cee0ff}
+.spiffy3{
+  margin-left:1px;
+  margin-right:1px;
+  border-left:1px solid #cee0ff;
+  border-right:1px solid #cee0ff;}
+.spiffy4{
+  border-left:1px solid #e5eeff;
+  border-right:1px solid #e5eeff}
+.spiffy5{
+  border-left:1px solid #d2e2ff;
+  border-right:1px solid #d2e2ff}
+.spiffyfg{
+  padding: 0 5px;
+  background:#C3D9FF}

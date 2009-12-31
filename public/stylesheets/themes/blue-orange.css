@@ -17,7 +17,8 @@ label {
   font-weight: bold;
 }
 .container {
-  background-color:#eff5e1;
+  /*background-color:#eff5e1;*/
+  background-color:#eeeeee;
 }
 
 a, a:visited {

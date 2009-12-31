@@ -1,9 +1,14 @@
-<h2>Edit My Account</h2>
+<div id="registration">
+  <% spiffy_corners :generate_css => false do %>
+    <h2>Edit My Account</h2>
 
-<% form_for @user, :url => account_path do |f| %>
-  <%= f.error_messages %>
-  <%= render :partial => "form", :object => f %>
-  <%= f.submit "Update" %>
-<% end %>
+    <% form_for @user, :url => account_path do |f| %>
+      <%= f.error_messages %>
+      <%= render :partial => "form", :object => f %>
+      <br />
+      <%= f.submit "Update" %>
+    <% end %>
 
-<br /><%= link_to "&laquo; Back", account_path %>
+    <br /><%= link_to "&laquo; Back", account_path %>
+  <% end -%>
+</div>

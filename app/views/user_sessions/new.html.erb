@@ -1,14 +1,19 @@
-<h2>Login</h2>
+<div id="login">
+  <% spiffy_corners :generate_css => false do %>
 
-<% form_for @user_session, :url => user_session_path do |f| %>
-  <%= f.error_messages %>
-  <%= f.label :email %><br />
-  <%= f.text_field :email %><br />
-  <br />
-  <%= f.label :password %><br />
-  <%= f.password_field :password %><br />
-  <br />
-  <%= f.check_box :remember_me %><%= f.label :remember_me %><br />
-  <br />
-  <%= f.submit "Login" %>
-<% end -%>
+    <h2>Login</h2>
+      <% form_for @user_session, :url => user_session_path do |f| %>
+        <%= f.error_messages %>
+        <%= f.label :email %><br />
+        <%= f.text_field :email %><br />
+        <br />
+        <%= f.label :password %><br />
+        <%= f.password_field :password %><br />
+        <br />
+        <%= f.check_box :remember_me %><%= f.label :remember_me %><br />
+        <br />
+        <%= f.submit "Login" %>
+      <% end -%>
+
+  <% end -%>
+</div>
