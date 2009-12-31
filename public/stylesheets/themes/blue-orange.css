@@ -5,11 +5,19 @@ body {
 h1 {
   color:#638a8c;
 }
+h2 {
+  color:#638a8c;
+  font-weight: bolder;
+}
 h3 {
   color:#f0542b;
 }
+label {
+  color: #638a8c;
+  font-weight: bold;
+}
 .container {
-  background-color: #fff;
+  background-color:#eff5e1;
 }
 
 a, a:visited {
@@ -37,7 +45,7 @@ fieldset {
   border-bottom: 1px #88c6cf solid;
 }
 
-#footer {
+#footer, #footer-margin {
   border-top: 1px #88c6cf solid;
 }
 
