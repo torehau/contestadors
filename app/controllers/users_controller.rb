@@ -4,12 +4,12 @@ class UsersController < ApplicationController
 
   def new
     @user = Core::User.new
-    flash[:notice] = "Operation not yet supported"
+    flash.now[:notice] = "Operation not yet supported"
   end
 
   def create
     @user = Core::User.new
-    flash[:notice] = "Operation not yet supported"
+    flash.now[:notice] = "Operation not yet supported"
     render :action => :new
     # TODO comment in when new users are allowed to sign up
 #    @user = Core::User.new(params[:core_user])
