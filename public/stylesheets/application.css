@@ -37,7 +37,31 @@ em {
 }
 
 
-/* -- Header ------------------------------- */
+/* Top & Header */
+.top {
+	height: 35px;
+}
+
+.top h1#logo {
+	padding: 0px 16px 0;
+	margin: 0;
+        color: #333;
+	font: bold 3em 'Trebuchet MS', Arial, Sans-serif;
+	letter-spacing: -1px;
+	text-transform: lowercase;
+	top: 0; left: 10px;
+}
+.top h1#logo span.gray  {	color: #638a8c; }
+.top h1#logo span.slogan {
+	font: normal 50% Verdana,sans-serif;
+	color: #333;
+	padding-left:100px;
+}
+.top h1#logo span.slogan-blue {
+	color:#638a8c;
+	padding-left: 0px;
+}
+
 #header {
   float:left;
   width:910px;
@@ -59,11 +83,15 @@ em {
 	font-weight: bold;
 }
 
+#nav ul li a.active {
+	color: #000000;
+}
+
 /* -- Content ------------------------------ */
 #content {
   float:left;
   width:910px;
-  margin: 20px;
+  margin: 20px;  
 }
 #content p img {
   margin-top: 2px;
@@ -86,10 +114,21 @@ em {
 
 /* -- Footer ------------------------------- */
 #footer {
-  float:left;
-  width:910px;
-  margin: 0px 20px 0px 20px;
+  margin-top: 10px;
+  clear: both;
+  float: left;
+  width:910px;  
   padding-top:10px;
+  text-align: center;
+}
+
+#footer-margin {
+  margin-top: 10px;
+  clear: both;
+  float: left;
+  width:910px;
+  padding:10px 20px 0px 20px;
+  text-align: center;
 }
 
 /* -- Flashes ------------------------------ */
@@ -110,31 +149,170 @@ em {
 	padding: 0 0 0 25px;
 }
 
-/* -- Albums ------------------------------- */
-#albums {
-  margin: 0px;
-}
-#albums li {
-  list-style-type: none;
-  float:left;
-  margin-bottom:22px;
-  margin-left:5px;
-  margin-right:15px;
-}
-.album_cover {
-  border:1px solid #2A2A2A;
+/* -- Predictions -- */
+#predictions {  
+  clear: both;
+  float: left;
+  width:910px;
 }
 
-/* -- Photos ------------------------------- */
-#photos {
-  margin: 0px;
+/* -- Group predictions ------------------------------- */
+#matches {
+  width:510px;
 }
-#photos li {
-  list-style-type: none;
-  border:1px solid #2A2A2A;
-  float:left;
-  margin-bottom:22px;
-  margin-left:5px;
-  margin-right:10px;
-  padding:3px 3px 3px;
+.match {
+  width:500px;
+
 }
+.home_team_name {
+  width:90px;
+  font-weight:bold;
+  float: left;
+}
+.away_team_name {
+  width:90px;
+  font-weight:bold;
+  text-align:right;
+  float: left;
+}
+.team_icon {
+  width:35px;
+  height:20px;
+  max-height:20px;
+  overflow: hidden;
+  margin: 3px -7px 5px 5px;
+  float: left;
+}
+.team_score {
+  width:30px;
+  float: left;
+}
+.score-separator {
+    width:10px;
+    float:left;
+    text-align: center;
+    font-size:120%;
+}
+
+.team_score input {
+  width:20px;
+  text-align: right;
+}
+
+.space-line {
+    clear:both;
+}
+
+.match_date {
+    width:100px;
+    float:left;
+    font-weight:bold;
+    color: gray;
+}
+/* -- Navigation menus styling ------------------------------- */
+.main_tabnav {
+	color: #000;
+        background: #efe;
+        border-bottom: 1px solid #88c6cf;
+        clear: both;
+	padding: 15px 0px 0px 0px;
+}
+
+.main_tabnav ul {
+        margin: 0px;
+	padding: 2px 0px 0px 0px;
+}
+
+.main_tabnav li {
+	display: inline;
+        margin: 0px -3px 0px 0px;
+	list-style-type: none; }
+
+.main_tabnav li span.disabled {
+        color: #888888;
+        background: #FAFAFA;
+        border-bottom: none;
+        padding: 2px 5px 0px 5px;
+        margin: 0;
+        text-decoration: none;}
+
+.main_tabnav a, main_tabnav a.active {
+	color: #f0542b;
+	background: #eff5e1;
+        font-weight: bold;
+	margin: 0;
+        padding: 3px 5px 3px 6px;
+        border-top: 1px solid #88c6cf;
+        border-right: 1px solid #88c6cf;
+	text-decoration: none; }
+
+.main_tabnav a {
+    padding-bottom: 1px;
+}
+
+.main_tabnav a.active {
+        padding-bottom: 3px;
+	color: #000000;
+	background: #eff5e1;
+        border-bottom: 1px solid #eff5e1;
+}
+
+.main_tabnav a:hover {
+	color: #638a8c;
+	background: #CCCCCC; }
+
+/*.main_tabnav a:visited {
+	color: #000000; }*/
+
+.main_tabnav a.active:hover {
+	color: #000000; }
+
+.main_tabnav_content {
+	background: #eff5e1;
+	padding: 0px;
+}
+
+.groups_tabnav {
+	color: #000;
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;}
+
+.groups_tabnav ul {
+	margin: 0px;
+	padding: 2px 0px 0px 0px;
+}
+
+.groups_tabnav li {
+	display: inline;
+	overflow: hidden;
+	list-style-type: none; }
+
+.groups_tabnav li span.disabled {
+        color: #888888;
+        background: #FAFAFA;
+        border-bottom: none;
+        padding: 2px 5px 0px 5px;
+        margin: 0;
+        text-decoration: none;}
+
+.groups_tabnav a, groups_tabnav a.active {
+	color: #f0542b;
+	background: #eff5e1;
+	font-weight: bold;
+	padding: 3px 5px 0px 5px;
+	margin: 5px 0px 0px 0px;
+	text-decoration: none; }
+
+.groups_tabnav a.active {
+	color: #000000;
+        background: #eff5e1; }
+
+.groups_tabnav a:hover {
+	color: #638a8c;
+	background: #CCCCCC; }
+
+/*.groups_tabnav a:visited {
+	color: #000000; }*/
+
+.groups_tabnav a.active:hover {
+	color: #000000; }
