@@ -240,21 +240,21 @@ em {
 .group_table_promotion_position {
   width: 435px;
   margin: 1px 0px 0px 0px;
-  height: 32px;
+  height: 34px;
   background: #efe;
 }
 
 .group_table_non_promotion_position {
   width: 435px;
   margin: 1px 0px 0px 0px;
-  height: 32px;
+  height: 34px;
   background: #fcb3aa;
 }
 
 .group_table_header {
   width: 435px;
   margin: 1px 0px 0px 0px;
-  height: 32px;
+  height: 34px;
   /*border: 1px #88c6cf solid;*/
   background: #dff6f1;
   color: #333;
