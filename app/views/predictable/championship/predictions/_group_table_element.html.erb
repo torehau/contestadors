@@ -1,0 +1,18 @@
+<% team = group_table_element.team; pos = group_table_element.pos -%>
+<% if group_table_element.pos < 3 -%>
+  <div class="group_table_promotion_position">
+<% else -%>
+  <div class="group_table_non_promotion_position">
+<% end -%>
+    <div class="group_table_pos"><%= pos.to_s %></div>
+    <div class="group_table_team_name"><div class="team_icon"><%= image_tag("/images/flags/"+ team.country_flag+ ".png") %></div><%= team.name %></div>
+    <div class="pld_matches">0<%#= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>
+    <div class="won_matches">0<%#= match_form.text_field :home_team_score, :maxlength => 2 %></div>
+    <div class="draw_matches">0</div>
+    <div class="lost_matches">0<%#= match_form.text_field :away_team_score, :maxlength => 2 %></div>
+    <div class="goals_for">0<%#= image_tag("/images/flags/"+ match.away_team.country_flag+ ".png") %></div>
+    <div class="goals_against">0<%#= match.away_team.name %></div>
+    <div class="goal_diff">0<%#= match.away_team.name %></div>
+    <div class="group_table_pts">0<%#= match.away_team.name %></div>
+    <div class="group_table_element_handler"></div>
+</div>
