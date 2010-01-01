@@ -240,16 +240,18 @@ em {
 
 .group_table_promotion_position {
   width: 435px;
-  margin: 1px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   height: 34px;
   background: #efe;
+  border-top: 1px #88c6cf solid;
 }
 
 .group_table_non_promotion_position {
   width: 435px;
-  margin: 1px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
   height: 34px;
   background: #fcb3aa;
+  border-top: 1px #88c6cf solid;
 }
 
 .group_table_header {
@@ -267,7 +269,7 @@ em {
   text-align: center;
   height: 25px;
   padding-top:9px;
-  border-right: 1px #eeeeee solid;
+  /*border-right: 1px #eeeeee solid;*/
 }
 
 .group_table_team_name {
@@ -277,7 +279,7 @@ em {
   /*padding-left: 20px;*/
   height: 25px;
   padding-top:9px;
-  border-right: 1px #eeeeee solid;
+  /*border-right: 1px #eeeeee solid;*/
 }
 .group_table_team_name_header {
   width: 115px;
@@ -286,7 +288,7 @@ em {
   padding-left: 35px;
   height: 25px;
   padding-top:9px;
-  border-right: 1px #eeeeee solid;
+  /*border-right: 1px #eeeeee solid;*/
 }
 .group_table_element_handler {
     float: right;
