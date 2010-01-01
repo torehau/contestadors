@@ -265,26 +265,26 @@ em {
   float: left;
   text-align: center;
   height: 25px;
-  padding-top:7px;
+  padding-top:9px;
   border-right: 1px #eeeeee solid;
 }
 
 .group_table_team_name {
-  width: 155px;
+  width: 150px;
   text-align: left;
   float: left;
   /*padding-left: 20px;*/
   height: 25px;
-  padding-top:7px;
+  padding-top:9px;
   border-right: 1px #eeeeee solid;
 }
 .group_table_team_name_header {
-  width: 120px;
+  width: 115px;
   text-align: left;
   float: left;
   padding-left: 35px;
   height: 25px;
-  padding-top:7px;
+  padding-top:9px;
   border-right: 1px #eeeeee solid;
 }
 .group_table_element_handler {
