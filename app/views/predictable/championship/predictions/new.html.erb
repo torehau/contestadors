@@ -1,7 +1,8 @@
 <div id="predictions">
-  <% form_for predictions_url("group", @group.name) do |f| %>
-    <div id="matches">
+  <%= render :partial => 'group_table' %>
+  <div id="matches">
+    <% form_for predictions_url("group", @group.name) do |f| %>
       <%= render :partial => 'match', :collection => @group.matches %>
-    </div>
-  <% end -%>
+    <% end -%>
+  </div>  
 </div>
