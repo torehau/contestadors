@@ -163,17 +163,21 @@ em {
 
 /* -- Predictions -- */
 #predictions {  
-  clear: both;
-  float: left;
+/*  clear: both;
+  float: left;*/
+  overflow: hidden;
   width:910px;
 }
 
 /* -- Group predictions ------------------------------- */
 #matches {
-  width:510px;
+  width:480px;
+  display: block;
+  margin-top: 5px;
+  /*overflow:hidden;*/
 }
 .match {
-  width:500px;
+  width:470px;
 
 }
 .home_team_name {
@@ -184,7 +188,8 @@ em {
 .away_team_name {
   width:90px;
   font-weight:bold;
-  text-align:right;
+  padding-left:20px;
+/*  text-align:right;*/
   float: left;
 }
 .team_icon {
@@ -212,15 +217,82 @@ em {
 }
 
 .space-line {
-    clear:both;
+    clear:left;
 }
 
 .match_date {
     width:100px;
     float:left;
     font-weight:bold;
-    color: gray;
+    color: #41686a;/*gray;*/
 }
+
+/* Group table */
+#group_table {
+  width:435px;
+  float: right;
+  border: 1px #88c6cf solid;
+  /*background: #88c6cf;*/
+  display: block;
+  overflow: hidden;
+}
+
+.group_table_promotion_position {
+  width: 435px;
+  margin: 1px 0px 0px 0px;
+  height: 32px;
+  background: #efe;
+}
+
+.group_table_non_promotion_position {
+  width: 435px;
+  margin: 1px 0px 0px 0px;
+  height: 32px;
+  background: #fcb3aa;
+}
+
+.group_table_header {
+  width: 435px;
+  margin: 1px 0px 0px 0px;
+  height: 32px;
+  /*border: 1px #88c6cf solid;*/
+  background: #dff6f1;
+  color: #41686a;
+  font-weight: bold;
+}
+.group_table_pos, .pld_matches, .won_matches, .draw_matches, .lost_matches, .goals_for, .goals_against, .goal_diff, .group_table_pts {
+  width: 25px;
+  float: left;
+  text-align: center;
+  height: 25px;
+  padding-top:7px;
+  border-right: 1px #eeeeee solid;
+}
+
+.group_table_team_name {
+  width: 150px;
+  text-align: left;
+  float: left;
+  /*padding-left: 20px;*/
+  height: 25px;
+  padding-top:7px;
+  border-right: 1px #eeeeee solid;
+}
+.group_table_team_name_header {
+  width: 115px;
+  text-align: left;
+  float: left;
+  padding-left: 35px;
+  height: 25px;
+  padding-top:7px;
+  border-right: 1px #eeeeee solid;
+}
+.group_table_element_handler {
+    float: right;
+    width: 20px;
+    /*border-right: 1px #88c6cf solid;*/
+}
+
 /* -- Navigation menus styling ------------------------------- */
 .main_tabnav {
 	color: #000;
