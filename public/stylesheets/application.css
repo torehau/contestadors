@@ -173,7 +173,7 @@ em {
 #matches {
   width:480px;
   display: block;
-  margin-top: 5px;
+  margin-top: 10px;
   /*overflow:hidden;*/
 }
 .match {
@@ -257,11 +257,11 @@ em {
   height: 32px;
   /*border: 1px #88c6cf solid;*/
   background: #dff6f1;
-  color: #41686a;
+  color: #333;
   font-weight: bold;
 }
 .group_table_pos, .pld_matches, .won_matches, .draw_matches, .lost_matches, .goals_for, .goals_against, .goal_diff, .group_table_pts {
-  width: 25px;
+  width: 27px;
   float: left;
   text-align: center;
   height: 25px;
@@ -270,7 +270,7 @@ em {
 }
 
 .group_table_team_name {
-  width: 150px;
+  width: 155px;
   text-align: left;
   float: left;
   /*padding-left: 20px;*/
@@ -279,7 +279,7 @@ em {
   border-right: 1px #eeeeee solid;
 }
 .group_table_team_name_header {
-  width: 115px;
+  width: 120px;
   text-align: left;
   float: left;
   padding-left: 35px;
