@@ -9,10 +9,25 @@ module Predictable
 
       attr_accessor :home_team_score, :away_team_score
 
+      def after_initialize
+        @score ||= "0-0"
+        set_individual_team_scores(@score)
+      end
+
       def <=> (other)
         date_compare = self.play_date <=> other.play_date
         return date_compare unless date_compare == 0
         self.home_team.name <=> other.home_team.name
+      end
+
+
+      def set_individual_team_scores(score)
+        scores = score.split('-')
+        
+        if scores and scores.length == 2
+          @home_team_score = scores[0]
+          @away_team_score = scores[1]
+        end
       end
     end
   end

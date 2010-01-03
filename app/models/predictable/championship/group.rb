@@ -5,9 +5,16 @@ module Predictable
       has_many :table_positions, :class_name => "Predictable::Championship::GroupTablePosition", :foreign_key => "predictable_championship_group_id"
       has_many :teams, :through => :table_positions, :class_name => "Predictable::Championship::Team"
 
-      def matches
-        teams.collect {|t| t.matches}.flatten.uniq.sort
+      attr_accessor :matches
+
+      def after_initialize
+        @matches = teams.collect {|t| t.matches}.flatten.uniq.sort
       end
+
+      # Returns a hash with the matches keyed by the id
+      def matches_by_id
+        Hash[*matches.collect{|match| [match.id, match]}.flatten]
+      end  
     end
   end
 end
