@@ -1,0 +1,11 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  core_user_id: 1
+  configuration_predictable_item_id: 1
+  predicted_value: MyString
+
+two:
+  core_user_id: 1
+  configuration_predictable_item_id: 1
+  predicted_value: MyString
