@@ -6,13 +6,13 @@
 <% end -%>
     <div class="group_table_pos"><%= pos.to_s %></div>
     <div class="group_table_team_name"><div class="team_icon"><%= image_tag("/images/flags/"+ team.country_flag+ ".png") %></div><%= team.name %></div>
-    <div class="pld_matches">0<%#= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>
-    <div class="won_matches">0<%#= match_form.text_field :home_team_score, :maxlength => 2 %></div>
-    <div class="draw_matches">0</div>
-    <div class="lost_matches">0<%#= match_form.text_field :away_team_score, :maxlength => 2 %></div>
-    <div class="goals_for">0<%#= image_tag("/images/flags/"+ match.away_team.country_flag+ ".png") %></div>
-    <div class="goals_against">0<%#= match.away_team.name %></div>
-    <div class="goal_diff">0<%#= match.away_team.name %></div>
-    <div class="group_table_pts">0<%#= match.away_team.name %></div>
+    <div class="pld_matches"><%= group_table_element.played %></div>
+    <div class="won_matches"><%= group_table_element.won %></div>
+    <div class="draw_matches"><%= group_table_element.draw %></div>
+    <div class="lost_matches"><%= group_table_element.lost %></div>
+    <div class="goals_for"><%= group_table_element.goals_for %></div>
+    <div class="goals_against"><%= group_table_element.goals_against %></div>
+    <div class="goal_diff"><%= group_table_element.goal_diff %></div>
+    <div class="group_table_pts"><%= group_table_element.pts %></div>
     <div class="group_table_element_handler"></div>
 </div>
