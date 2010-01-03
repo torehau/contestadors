@@ -43,7 +43,7 @@ render_tabnav :groups,
       t.named 'Group ' + group_name
       t.titled 'Group ' + group_name
       t.links_to new_prediction_path("group", group_name)
-      t.highlights_on :collection_id => group_name
+      t.highlights_on :aggregate_root_id => group_name
     end
   end
   #  
