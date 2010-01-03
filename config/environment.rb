@@ -19,9 +19,9 @@ Rails::Initializer.run do |config|
                           #{RAILS_ROOT}/app/models/core
                           #{RAILS_ROOT}/app/models/predictable
                           #{RAILS_ROOT}/app/models/predictable/championship
-                          #{RAILS_ROOT}/app/models/predictable/league
-                          #{RAILS_ROOT}/app/models/predictable/tournament
-                          #{RAILS_ROOT}/app/controllers/predictable/championship )
+                          #{RAILS_ROOT}/app/controllers/predictable/championship
+                          #{RAILS_ROOT}/app/repositories
+                          #{RAILS_ROOT}/app/rules )
 
   # Specify gems that this application depends on and have them installed with rake gems:install
   # config.gem "bj"
@@ -29,7 +29,8 @@ Rails::Initializer.run do |config|
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "fastercsv", :version => '1.5.0'
-  config.gem "authlogic"
+  config.gem "authlogic", :version => '2.1.3'
+  config.gem "ruleby", :version => '0.6'
 #  config.gem "inherited_resources", :version => '0.9.5'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
