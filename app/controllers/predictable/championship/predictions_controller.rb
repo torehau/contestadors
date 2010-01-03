@@ -3,6 +3,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
   
   def new
     @group = @repository.get
+    @group_table = @group.table_positions.sort{|a,b| a.pos <=> b.pos}
   end
 
   def create
@@ -14,7 +15,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
     else
       flash.now[:alert] = "An error occured when saving the predictions."
     end
-#    @group = @repository.get
+    @group_table = @group.table_positions.sort{|a,b| a.pos <=> b.pos}
     render :action => :new
   end
 
