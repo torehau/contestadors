@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20091216204156) do
+ActiveRecord::Schema.define(:version => 20100102125956) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -64,6 +64,17 @@ ActiveRecord::Schema.define(:version => 20091216204156) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "core_predictions", :force => true do |t|
+    t.integer  "core_user_id"
+    t.integer  "configuration_predictable_item_id"
+    t.string   "predicted_value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "core_predictions", ["configuration_predictable_item_id"], :name => "index_core_predictions_on_configuration_predictable_item_id"
+  add_index "core_predictions", ["core_user_id"], :name => "index_core_predictions_on_core_user_id"
 
   create_table "core_users", :force => true do |t|
     t.datetime "created_at"
