@@ -1,23 +1,31 @@
 class Predictable::Championship::PredictionsController < ApplicationController
-  #defaults :route_prefix => nil, :resource_class => Group, :collection_name => 'groups', :instance_name => 'group'
+  before_filter :extract_aggregate_info
   
   def new
-    collection_type = params[:collection_type]
-    collection_type ||= "group"
-    collection_id = params[:collection_id]
-    collection_id ||= "A"
-    if collection_type.eql?("group")
-      @group = Predictable::Championship::Group.find_by_name collection_id
-    end
+    @group = @repository.get
   end
 
   def create
+    result = @repository.save params[@aggregate_root_type]
+    @group, saved_ok = result[0], result[1]
+    
+    if saved_ok
+      flash.now[:notice] = "Predictions succesfully saved."
+    else
+      flash.now[:alert] = "An error occured when saving the predictions."
+    end
+#    @group = @repository.get
+    render :action => :new
   end
 
-  def edit
-  end
+  protected
 
-  def update
+  def extract_aggregate_info
+    @aggregate_root_type = params[:aggregate_root_type].to_sym
+    @aggregate_root_id = params[:aggregate_root_id]
+    
+    if @aggregate_root_type.eql?(:group)
+      @repository = GroupRepository.new(current_user, @aggregate_root_id)
+    end
   end
-
 end
