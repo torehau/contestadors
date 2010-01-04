@@ -26,7 +26,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
     @aggregate_root_id = params[:aggregate_root_id]
     
     if @aggregate_root_type.eql?(:group)
-      @repository = GroupRepository.new(current_user, @aggregate_root_id)
+      @repository = Predictable::Championship::GroupRepository.new(current_user, @aggregate_root_id)
     end
   end
 end
