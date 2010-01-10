@@ -236,6 +236,30 @@ em {
   /*background: #88c6cf;*/
   display: block;
   overflow: hidden;
+    height: 175px;
+    max-height: 175px;
+}
+
+#not_predicted {
+    background-color: #efefef;
+    width:435px;
+    opacity: .5;
+    position: absolute;
+    margin: 0px inherit;
+    padding-top: 60px;
+    height: 35px;
+    max-height: 35px;
+    text-align: center;
+    padding-bottom: 80px;
+    color: #52797b;
+    font-size:3.3em;
+    font-weight:bold;
+    z-index: 2;
+}
+
+#group_table_rows {
+    position: absolute;
+    z-index: 1;
 }
 
 .group_table_promotion_position {
