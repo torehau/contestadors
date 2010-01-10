@@ -31,6 +31,7 @@ Rails::Initializer.run do |config|
   config.gem "fastercsv", :version => '1.5.0'
   config.gem "authlogic", :version => '2.1.3'
   config.gem "ruleby", :version => '0.6'
+  config.gem "state_machine", :version => '0.8.0'
 #  config.gem "inherited_resources", :version => '0.9.5'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
