@@ -2,7 +2,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
   before_filter :extract_aggregate_info
   
   def new
-    @group = @repository.get
+    @group, @predictions_exists = @repository.get
     @group_table = @group.table_positions.sort{|a,b| a.pos <=> b.pos}
   end
 
