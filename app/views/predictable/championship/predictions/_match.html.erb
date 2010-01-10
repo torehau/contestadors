@@ -8,7 +8,12 @@
     <div class="score-separator">-</div>
     <div class="team_score"><%= match_form.text_field :away_team_score, :maxlength => 2 %></div>
     <div class="team_icon"><%= image_tag("/images/flags/"+ match.away_team.country_flag+ ".png") %></div>
-    <div class="away_team_name"><%= match.away_team.name %></div>
+    <div class="away_team_name">
+      <%= match.away_team.name %> 
+        <% if false and match.tied? -%>
+          (t)
+        <% end -%>
+    </div>
     <div class="space-line"/>
   </div>
 <% end %>
