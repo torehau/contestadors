@@ -19,9 +19,9 @@ module Predictable
       # guest user)
       def get
         if @user
-          @group = build_group_results_from_existing_predictions
+          return build_group_results_from_existing_predictions
         end
-        @group
+        [@group, false]
       end
 
       # saves the predictions in the provided input hash if the user is signed in
@@ -44,14 +44,15 @@ module Predictable
       # retreive predictions from db
       def build_group_results_from_existing_predictions
         predictions_by_item_id = @user.predictions.by_predictable_item(@group_matches_set)
+        predictions_exists_for_user = (predictions_by_item_id and not predictions_by_item_id.empty?)
 
-        if predictions_by_item_id and !predictions_by_item_id.empty?
+        if predictions_exists_for_user
           return build_group_results_from_predictions do |item|
             prediction = predictions_by_item_id[item.id].first
             predicted_score = prediction.predicted_value
           end
         end
-        @group
+        return @group, predictions_exists_for_user
       end
 
       # retreive predictions from request parameter hash
