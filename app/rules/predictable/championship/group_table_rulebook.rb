@@ -1,6 +1,10 @@
 module Predictable
   module Championship
-      class GroupTableRulebook < Ruleby::Rulebook
+    # Rulebook for setteling the scores for group matches, identifying tied teams
+    # (i.e., teams with equal number of points, goal diff and goals scored), and
+    # ranking such teams according to the given championship tie-break critera
+    # (http://en.wikipedia.org/wiki/FIFA_2010#Tie-breaking_criteria)
+    class GroupTableRulebook < Ruleby::Rulebook
 
       def settle_matches
         rule :settle_matches, #{:priority => 2},
@@ -37,14 +41,13 @@ module Predictable
                m.tied==true, m.predictable_championship_team_id == b(:home_team_id)],
              [Predictable::Championship::GroupTablePosition, :away_team,
                m.tied==true, m.predictable_championship_team_id == b(:away_team_id)] do |v|
-
-            v[:group_match].mark_as_tied!
-            retract v[:group_match]
-            
-            if v[:home_team].has_same_score?(v[:away_team])
-              v[:home_team].rank += (v[:group_match].home_team_score.to_i - v[:group_match].away_team_score.to_i)
-              v[:away_team].rank += (v[:group_match].away_team_score.to_i - v[:group_match].home_team_score.to_i)
+                        
+            if v[:home_team].is_tied_with?(v[:away_team])
+              v[:home_team].update_rank(v[:group_match].home_team_score.to_i, v[:group_match].away_team_score.to_i)
+              v[:away_team].update_rank(v[:group_match].away_team_score.to_i, v[:group_match].home_team_score.to_i)
             end
+
+            retract v[:group_match]
         end
       end
     end
