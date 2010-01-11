@@ -6,37 +6,32 @@ module Predictable
       belongs_to :group, :class_name => "Predictable::Championship::Group", :foreign_key => "predictable_championship_group_id"
       belongs_to :team, :class_name => "Predictable::Championship::Team", :foreign_key => 'predictable_championship_team_id'
 
-      attr_accessor :played, :won, :draw, :lost, :goals_for, :goals_against, :goal_diff, :pts, :tied, :rank
+      # Accessors for accumulated match results, goal score and points
+      attr_accessor :played, :won, :draw, :lost, :goals_for, :goals_against, :goal_diff, :pts
+      # Boolean identicator whether the team has the same values for :pts, :goal_diff and :goals_for as at least one other team in the group
+      attr_accessor :tied
+      # Rank value of the tied team. For tied teams the one with the highest rank value has precedence
+      attr_accessor :rank
+      # The order in which the team will be displayed in the group table. If no criteria can distinguish two teams, they will be sorted alphabetically
+      attr_accessor :display_order
       
       def after_initialize
         self.played, self.won, self.draw, self.lost, self.goals_for, self.goals_against, self.goal_diff, self.pts = 0, 0, 0, 0, 0, 0, 0, 0
         self.tied = false
         self.rank = 0
+        self.display_order = self.pos
       end
-#
-#      WIN, DRAW, LOST = 1, 0, -1
 
-      # The group table shall be set up after the following criteria:
-      #
-      # 1. greatest number of points in all group matches;
-      # 2. goal difference in all group matches;
-      # 3. greatest number of goals scored in all group matches.
-      # 4. greatest number of points in matches between tied teams;
-      # 5. goal difference in matches between tied teams;
-      # 6. greatest number of goals scored in matches between tied teams;
-      # 7. drawing of lots by the FIFA Organising Committee or play-off depending on time schedule.
       def <=> (other)
-
-        if self.pts != other.pts # 1
+        if self.pts != other.pts
           return self.pts <=> other.pts
-        elsif self.goal_diff != other.goal_diff # 2
+        elsif self.goal_diff != other.goal_diff
           return self.goal_diff <=> other.goal_diff
-        elsif self.goals_for != other.goals_for # 3
+        elsif self.goals_for != other.goals_for
           return self.goals_for <=> other.goals_for
         elsif self.tied==true and other.tied==true and self.rank != other.rank
           return self.rank <=> other.rank
-        else
-          # TODO implementere regel 4-7 vha ruleby
+        else          
           return -(self.team.name <=> other.team.name)
         end
       end
@@ -59,8 +54,14 @@ module Predictable
         self.goal_diff += (gf - ga)
       end
 
-      def has_same_score?(other)
+      # checks if the team is tied with another team, i.e., whether the points, goal diff and goals scored are identically
+      def is_tied_with?(other)
         (self.pts == other.pts) and (self.goal_diff == other.goal_diff) and (self.goals_for == other.goals_for)
+      end
+
+      # adds the rank by adding the goals scored and subtract the goals conceeded
+      def update_rank(goals_for, goals_against)
+        self.rank += (goals_for - goals_against)
       end
     end
   end
