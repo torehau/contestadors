@@ -3,19 +3,16 @@ class Predictable::Championship::PredictionsController < ApplicationController
   
   def new
     @group, @predictions_exists = @repository.get
-    @group_table = @group.table_positions.sort{|a,b| a.pos <=> b.pos}
   end
 
   def create
-    result = @repository.save params[@aggregate_root_type]
-    @group, saved_ok = result[0], result[1]
+    @group, saved_ok = @repository.save(params[@aggregate_root_type])
     
     if saved_ok
       flash.now[:notice] = "Predictions succesfully saved."
     else
       flash.now[:alert] = "An error occured when saving the predictions."
     end
-    @group_table = @group.table_positions.sort{|a,b| a.pos <=> b.pos}
     render :action => :new
   end
 
