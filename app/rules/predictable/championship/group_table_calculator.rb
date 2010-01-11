@@ -1,7 +1,16 @@
-# To change this template, choose Tools | Templates
-# and open the template in the editor.
 module Predictable
   module Championship
+    # Calculates the group table according to the following rules:
+    #
+    #  1. greatest number of points in all group matches;
+    #  2. goal difference in all group matches;
+    #  3. greatest number of goals scored in all group matches.
+    #  4. greatest number of points in matches between tied teams;
+    #  5. goal difference in matches between tied teams;
+    #  6. greatest number of goals scored in matches between tied teams;
+    #  7. drawing of lots by the FIFA Organising Committee or play-off depending on time schedule.
+    #
+    # (from http://en.wikipedia.org/wiki/FIFA_2010#Tie-breaking_criteria)
     class GroupTableCalculator
       include Ruleby
 
@@ -9,6 +18,8 @@ module Predictable
         @group = group
       end
 
+      # Settles group match scores, idendifies tied teams and attempts to rank these temas
+      # using the Ruleby rules
       def calculate
         engine :group_table do |e|
           rulebook = GroupTableRulebook.new(e)
@@ -30,25 +41,25 @@ module Predictable
 
       private
 
+      # Assigns position and display order accoring to the sorted group table positions
       def set_sorted_positions
-        sorted_positions = @group.table_positions.sort{|a, b| b <=> a}
-        pos, increment = 0, 1
-        pos_by_team_id = {}
+        pos, increment, display_order = 0, 1, 1
         previous, current = nil, nil
 
-        sorted_positions.each do |table_position|
+        @group.table_positions.sort!{|a, b| b <=> a}.each do |table_position|
           current = table_position
 
-          unless previous and previous.has_same_score?(current) and previous.rank == current.rank
+          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
             pos += increment
             increment = 1
           else
             increment += 1
           end
-          pos_by_team_id[table_position.predictable_championship_team_id] = pos
+          table_position.pos = pos
+          table_position.display_order = display_order
+          display_order += 1
           previous = current
         end
-        @group.table_positions.each { |tp| tp.pos = pos_by_team_id[tp.predictable_championship_team_id]}
         @group
       end
     end
