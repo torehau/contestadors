@@ -1,5 +1,5 @@
 <% team = group_table_element.team; tied_team = group_table_element.tied == true ? 'Yes' : 'No' -%>
-<% if group_table_element.pos < 3 -%>
+<% if group_table_element.display_order < 3 -%>
   <div class="group_table_promotion_position">
 <% else -%>
   <div class="group_table_non_promotion_position">
