@@ -22,18 +22,11 @@ module Predictable
       # using the Ruleby rules
       def calculate
         engine :group_table do |e|
-          rulebook = GroupTableRulebook.new(e)
-          rulebook.settle_matches
+          GroupTableRulebook.new(e).rules
 
           @group.matches.each{|group_match| e.assert group_match}
           @group.table_positions.each{|table_position| e.assert table_position}
 
-          e.match
-
-          rulebook.identify_tied_teams
-          e.match
-
-          rulebook.rank_tied_teams
           e.match
         end
         set_sorted_positions
