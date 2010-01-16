@@ -29,14 +29,13 @@ module Predictable
       # predicted values, and these will not be saved in the db
       def save(predicted_group)
         @group = build_group_results_from_new_predictions(predicted_group)
-        
-        if @user
-          save_predictions_for_group_matches
-        end
-        
-        return [@group, true]
+        @validation_errors = GroupMatchesValidator.new.validate(@group)
+
+        save_predictions_for_group_matches if @user and @validation_errors.empty?
+
+        return [@group, @validation_errors]
         rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
-          [@group, false]
+          [@group, @validation_errors]
       end
 
       private
