@@ -1,5 +1,7 @@
 module Predictable
   module Championship
+    # For validating predicted group match results, which must be on the form
+    # n-m, where n and m must be an integer in the range 0..99
     class GroupMatchesValidator
       include Ruleby
 
@@ -19,8 +21,6 @@ module Predictable
             group.matches.each{|group_match| e.assert group_match}
 
             e.match
-
-#            @errors = rulebook.errors
           end
         end
         @errors
