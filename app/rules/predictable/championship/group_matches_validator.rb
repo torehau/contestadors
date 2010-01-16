@@ -1,0 +1,66 @@
+module Predictable
+  module Championship
+    class GroupMatchesValidator
+      include Ruleby
+
+      def initialize
+        @errors = {}
+      end
+
+      def validate(group)
+        
+        if group
+
+          engine :group_matches do |e|
+            rulebook = GroupMatchesValidationRulebook.new(e)
+            rulebook.rules
+            rulebook.errors = @errors
+
+            group.matches.each{|group_match| e.assert group_match}
+
+            e.match
+
+#            @errors = rulebook.errors
+          end
+        end
+        @errors
+      end
+
+      private
+
+      class GroupMatchesValidationRulebook < Ruleby::Rulebook
+
+        attr_accessor :errors
+
+        def rules
+          rule :invalid_score,
+             OR ([Predictable::Championship::Match, :gm, m.home_team_score(&c{|hts| !is_valid_score?(hts)})],
+                 [Predictable::Championship::Match, :gm, m.away_team_score(&c{|ats| !is_valid_score?(ats)})]) do |v|
+             
+               @errors[v[:gm].id] = v[:gm].home_team_score + '-' + v[:gm].away_team_score
+               retract v[:gm]
+             end
+        end
+
+        private
+
+        # Checks that the input str is in the valid numeric format and within the range 0..99
+        def is_valid_score?(score_str)
+          return false if score_str.nil? or not (1..2).include?(score_str.length)
+          return false if score_str.length == 2 and score_str[0,1].eql?("0")
+          is_integer?(score_str)
+        end
+
+        def is_integer?(str_value)
+          begin
+            Integer(str_value)
+          rescue ArgumentError => e
+            return false
+          else
+            return true
+          end
+        end
+      end
+    end
+  end
+end
