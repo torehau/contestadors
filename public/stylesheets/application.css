@@ -178,7 +178,11 @@ em {
 }
 .match {
   width:470px;
-
+  color:black;
+}
+.match_validation_error {
+   width:470px;
+   color:red;
 }
 .home_team_name {
   width:90px;
@@ -218,7 +222,7 @@ em {
 }
 
 .space-line {
-    clear:left;
+    clear:left;    
 }
 
 .match_date {
