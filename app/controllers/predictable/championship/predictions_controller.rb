@@ -6,13 +6,8 @@ class Predictable::Championship::PredictionsController < ApplicationController
   end
 
   def create
-    @group, saved_ok = @repository.save(params[@aggregate_root_type])
-    
-    if saved_ok
-      flash.now[:notice] = "Predictions succesfully saved."
-    else
-      flash.now[:alert] = "An error occured when saving the predictions."
-    end
+    @group, @validation_errors = @repository.save(params[@aggregate_root_type])
+    set_flash_message
     render :action => :new
   end
 
@@ -24,6 +19,18 @@ class Predictable::Championship::PredictionsController < ApplicationController
     
     if @aggregate_root_type.eql?(:group)
       @repository = Predictable::Championship::GroupRepository.new(current_user, @aggregate_root_id)
+    end
+  end
+
+  def set_flash_message
+    
+    if @validation_errors.empty?
+
+      if current_user
+        flash.now[:notice] = "Predictions succesfully saved."
+      end
+    else
+      flash.now[:alert] = "Invalid match results given."
     end
   end
 end
