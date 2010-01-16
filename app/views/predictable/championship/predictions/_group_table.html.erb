@@ -1,6 +1,8 @@
 <div id="group_table">
   <% if @predictions_exists == false -%>
     <div id="not_predicted">Not Predicted</div>
+  <% elsif @validation_errors and @validation_errors.size > 0 -%>
+    <div id="not_predicted">Invalid Predictions</div>
   <% end -%>
   <div id="group_table_rows">
       <%= render :partial => 'group_table_header'-%>

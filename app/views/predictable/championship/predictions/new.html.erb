@@ -3,9 +3,7 @@
   <div id="matches">
     <% form_for :group, @group, :url => predictions_url("group", @group.name) do |f| %>
       <%= render :partial => 'match', :collection => @group.matches %>
-      <% if current_user -%>
-        <%= f.submit "Save Match Predictions" %>
-      <% end -%>
+      <%= f.submit "Predict Results" %>
     <% end -%>
   </div>
 </div>
