@@ -14,7 +14,13 @@ module Predictable
       # Returns a hash with the matches keyed by the id
       def matches_by_id
         Hash[*matches.collect{|match| [match.id, match]}.flatten]
-      end  
+      end
+
+      # Returnes true if the group table contains tied teams with the same rank
+      def is_rearrangable?
+        table_positions.each {|position| return true if position.can_move_up or position.can_move_down}
+        return false
+      end
     end
   end
 end

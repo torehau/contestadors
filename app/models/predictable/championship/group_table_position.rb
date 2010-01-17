@@ -14,12 +14,15 @@ module Predictable
       attr_accessor :rank
       # The order in which the team will be displayed in the group table. If no criteria can distinguish two teams, they will be sorted alphabetically
       attr_accessor :display_order
+      # Indicating whether the match score for this team is identical with the team at the display order above and below
+      attr_accessor :can_move_down, :can_move_up
       
       def after_initialize
         self.played, self.won, self.draw, self.lost, self.goals_for, self.goals_against, self.goal_diff, self.pts = 0, 0, 0, 0, 0, 0, 0, 0
         self.tied = false
         self.rank = 0
         self.display_order = self.pos
+        self.can_move_down, self.can_move_up = false, false
       end
 
       def <=> (other)
