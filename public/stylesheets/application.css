@@ -291,23 +291,52 @@ em {
   color: #333;
   font-weight: bold;
 }
-.group_table_pos, .pld_matches, .won_matches, .draw_matches, .lost_matches, .goals_for, .goals_against, .goal_diff, .group_table_pts {
+.group_table_pos, .pld_matches, .won_matches, .draw_matches, .lost_matches, .goals_for, .goals_against, .goal_diff, .group_table_pts, .group_table_element_handler {
   width: 27px;
   float: left;
   text-align: center;
   height: 25px;
   padding-top:9px;
-  /*border-right: 1px #eeeeee solid;*/
+}
+
+.group_table_edit_header {
+  width: 27px;
+  float: left;
+  text-align: center;
+  height: 25px;
+  padding-top:9px;
+  padding-left:3px;
+  color: #41686a;
+}
+
+.group_table_edit {
+  width: 27px;
+  float: left;
+  text-align: center;
+  height: 25px;
+  padding-left:3px;
+}
+
+.group_table_edit_move_down {
+   padding-top:10px;
+   width: 10px;
+   float:left;
+   position:relative;
+}
+
+.group_table_edit_move_up {
+   padding-top:10px;
+   width: 10px;
+   float:right;
+   position:relative;
 }
 
 .group_table_team_name {
   width: 150px;
   text-align: left;
   float: left;
-  /*padding-left: 20px;*/
   height: 25px;
   padding-top:9px;
-  /*border-right: 1px #eeeeee solid;*/
 }
 .group_table_team_name_header {
   width: 115px;
@@ -316,13 +345,8 @@ em {
   padding-left: 35px;
   height: 25px;
   padding-top:9px;
-  /*border-right: 1px #eeeeee solid;*/
 }
-.group_table_element_handler {
-    float: right;
-    width: 20px;
-    /*border-right: 1px #88c6cf solid;*/
-}
+
 
 /* -- Navigation menus styling ------------------------------- */
 .main_tabnav {
