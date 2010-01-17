@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free World Cup Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller
+  helper_method :current_user_session, :current_user, :current_controller, :current_action
   filter_parameter_logging :password, :password_confirmation
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -21,6 +21,10 @@ class ApplicationController < ActionController::Base
 
     def current_controller
       request.path_parameters['controller']
+    end
+
+    def current_action
+      request.path_parameters['action']
     end
 
     def require_user
