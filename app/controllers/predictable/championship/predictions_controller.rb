@@ -11,6 +11,17 @@ class Predictable::Championship::PredictionsController < ApplicationController
     render :action => :new
   end
 
+  def update
+
+    if current_user and @aggregate_root_type.eql?(:group)
+      @move_operation = params[:move].to_sym
+      @position_id = params[:id].to_i
+      @repository.update(@position_id, @move_operation)
+    end
+    @group, @predictions_exists = @repository.get
+    render :action => :new
+  end
+
   protected
 
   def extract_aggregate_info
