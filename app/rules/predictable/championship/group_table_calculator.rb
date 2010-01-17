@@ -20,7 +20,7 @@ module Predictable
 
       # Settles group match scores, idendifies tied teams and attempts to rank these temas
       # using the Ruleby rules
-      def calculate
+      def calculate(calculate_display_order)
         engine :group_table do |e|
           GroupTableRulebook.new(e).rules
 
@@ -29,17 +29,17 @@ module Predictable
 
           e.match
         end
-        set_sorted_positions
+        set_sorted_positions(calculate_display_order)
       end
 
       private
 
       # Assigns position and display order accoring to the sorted group table positions
-      def set_sorted_positions
+      def set_sorted_positions(calculate_display_order)
         pos, increment, display_order = 0, 1, 1
         previous, current = nil, nil
 
-        @group.table_positions.sort!{|a, b| b <=> a}.each do |table_position|
+        @group.table_positions.sort!{|a, b| calculate_display_order ? (b <=> a) : (a.display_order <=> b.display_order)}.each do |table_position|
           current = table_position
 
           unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
@@ -47,10 +47,15 @@ module Predictable
             increment = 1
           else
             increment += 1
+            previous.can_move_down = true
+            current.can_move_up = true
           end
           table_position.pos = pos
-          table_position.display_order = display_order
-          display_order += 1
+
+          if calculate_display_order
+            table_position.display_order = display_order
+            display_order += 1
+          end
           previous = current
         end
         @group
