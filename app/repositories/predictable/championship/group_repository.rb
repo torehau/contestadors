@@ -11,7 +11,6 @@ module Predictable
         @group = Group.find_by_name group_name
         @group_matches_set = Configuration::Set.find_by_description "Group #{@group.name} Matches"
         @group_table_set = Configuration::Set.find_by_description "Group #{@group.name} Table"
-        @sort_table = false
       end
 
       # retreives the group with the predicted values, or default values if not
@@ -19,7 +18,7 @@ module Predictable
       # guest user)
       def get
         if @user
-          return build_group_results_from_existing_predictions
+          return group_from_existing_predictions
         end
         [@group, false]
       end
@@ -28,7 +27,7 @@ module Predictable
       # If not signed in, the group instance variable will only be updated with the
       # predicted values, and these will not be saved in the db
       def save(predicted_group)
-        @group = build_group_results_from_new_predictions(predicted_group)
+        @group = group_from_new_predictions(predicted_group)
         @validation_errors = GroupMatchesValidator.new.validate(@group)
 
         save_predictions_for_group if @user and @validation_errors.empty?
@@ -38,67 +37,60 @@ module Predictable
           [@group, @validation_errors]
       end
 
+      # updates predictions for two group table positions by moving the prediction for
+      # the given position according to the specified move operation (:up or :down).
+      # The current prediction for the new position is swapped accordingly.
       def update(position_id, move_operation)
-        # TODO validate input using validator, i.e., position id is valid for the group, and op = :up or :down
-        table_position_predictions_by_item_id = @user.predictions.by_predictable_item(@group_table_set)
-        predictable_items_by_predictable_id = @group_table_set.predictable_items.by_predictable_id
-        item = predictable_items_by_predictable_id[position_id].first
-
-        prediction = table_position_predictions_by_item_id[item.id].first
+        predictable_item = @group_table_set.predictable_item(position_id)
+        prediction = @user.prediction_for(predictable_item)
         current_value = prediction.predicted_value.to_i
         updated_value = move_operation.eql?(:up) ? (current_value - 1) : (current_value + 1)
-        prediction_to_swap_with = prediction_with_value(table_position_predictions_by_item_id.values, updated_value.to_s)
+        prediction_to_swap_value_with = @user.prediction_with_value(updated_value.to_s, @group_table_set)
 
         Core::Prediction.transaction do
           prediction.predicted_value = updated_value.to_s
-          prediction_to_swap_with.predicted_value = current_value.to_s
+          prediction_to_swap_value_with.predicted_value = current_value.to_s
           prediction.save!
-          prediction_to_swap_with.save!
+          prediction_to_swap_value_with.save!
         end
       end
 
       private
 
-      def prediction_with_value(predictions, predicted_value)
-        predictions.each do |prediction|
-          
-          if prediction.first.predicted_value.eql?(predicted_value)
-            return prediction.first
-          end
-        end
-        nil
-      end
-
-      # retreive predictions from db
-      def build_group_results_from_existing_predictions
-        predicted_matches_by_item_id = @user.predictions.by_predictable_item(@group_matches_set)
-        predictions_exists_for_user = (predicted_matches_by_item_id and not predicted_matches_by_item_id.empty?)
+      # builds the group results using the predictions stored in the db for the given user
+      def group_from_existing_predictions
+        match_predictions_by_item_id = @user.predictions.by_predictable_item(@group_matches_set)
+        predictions_exists_for_user = (match_predictions_by_item_id and not match_predictions_by_item_id.empty?)
 
         if predictions_exists_for_user
-          predicted_table_positions_by_item_id = @user.predictions.by_predictable_item(@group_table_set)
-          return build_group_results_from_predictions(predicted_table_positions_by_item_id) do |item|
-            prediction = predicted_matches_by_item_id[item.id].first
-            predicted_score = prediction.predicted_value
+
+          set_predicted_match_results do |item|
+            prediction = match_predictions_by_item_id[item.id].first
+            prediction.predicted_value
           end
+          set_predicted_table_positions(@user.predictions.by_predictable_item(@group_table_set))
+          GroupTableCalculator.new(@group).calculate(false)
         end
-        return @group, false
+        [@group, predictions_exists_for_user]
       end
 
-      # retreive predictions from request parameter hash
-      def build_group_results_from_new_predictions(params)
+      # builds the group results using the provided request parameter hash
+      def group_from_new_predictions(params)
         predicted_scores_by_match_id = params[:predicted_matches]
 
         if predicted_scores_by_match_id and predicted_scores_by_match_id.length > 0
-          return build_group_results_from_predictions do |item|
+          set_predicted_match_results do |item|
             prediction = predicted_scores_by_match_id[item.predictable_id.to_s]
-            predicted_score = prediction[:home_team_score] + '-' + prediction[:away_team_score]
+            prediction[:home_team_score] + '-' + prediction[:away_team_score]
           end
+          GroupTableCalculator.new(@group).calculate(true)
         end
         @group
       end
 
-      def build_group_results_from_predictions(predicted_table_positions_by_item_id=nil)
-        @sort_table = true
+      # sets the predicted results for the group matches. The invoker must pass in a block
+      # returning the predicted result of the match proxied by the yielded item.
+      def set_predicted_match_results
         matches_by_id = @group.matches_by_id
         predicted_matches = []
 
@@ -109,19 +101,19 @@ module Predictable
           predicted_matches << match
         end
         @group.matches = predicted_matches
-
-
-        if predicted_table_positions_by_item_id
-          predictable_items_by_predictable_id = @group_table_set.predictable_items.by_predictable_id
-          
-          @group.table_positions.each do |table_position|
-            item = predictable_items_by_predictable_id[table_position.id].first
-            table_position.display_order = predicted_table_positions_by_item_id[item.id].first.predicted_value.to_i
-          end
-        end
-        GroupTableCalculator.new(@group).calculate(predicted_table_positions_by_item_id.nil?)
       end
 
+      # sets the predicted display order for the group table positions.
+      def set_predicted_table_positions(table_position_predictions_by_item_id)
+        predictable_items_by_predictable_id = @group_table_set.predictable_items.by_predictable_id
+
+        @group.table_positions.each do |table_position|
+          item = predictable_items_by_predictable_id[table_position.id].first
+          table_position.display_order = table_position_predictions_by_item_id[item.id].first.predicted_value.to_i
+        end
+      end
+
+      # saves the predicted group matches and table position for the current user.
       def save_predictions_for_group
         Core::Prediction.transaction do
           
@@ -135,6 +127,9 @@ module Predictable
         end
       end
 
+      # saves predictions for the given set. second parameter must be a map to the actual
+      # predictable instances (e.g., match or table position) keyed by the corresponding ids.
+      # The invoker must pass in a block returning the value to be predicted on the predictable instance.
       def save_predictions(predictable_set, predictables_by_id)
         existing_predictions_by_item_id = @user.predictions.by_predictable_item(predictable_set)
         new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
@@ -146,6 +141,8 @@ module Predictable
         end
       end
 
+      # creates a new or updates an existing prediction for the given item. The invoker must pass in a
+      # block returning the predicted value using the yielded predictable (e.g., match or table position instance)
       def save_prediction(item, new_prediction, existing_predictions_by_item_id, predictable_by_id)
         prediction = new_prediction ? Core::Prediction.new : existing_predictions_by_item_id[item.id].first
         prediction.core_user_id = @user.id if new_prediction
@@ -154,6 +151,7 @@ module Predictable
         prediction.save!
       end
 
+      # returns a hash for the group table positions keyed by the corresponding ids
       def table_positions_by_id
         Hash[*(@group.table_positions).collect{|table_position| [table_position.id, table_position]}.flatten]
       end
