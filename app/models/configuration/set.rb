@@ -15,5 +15,9 @@ module Configuration
     def predictable_type
       objectives.first.category.predictable_type
     end
+
+    def predictable_item(predictable_id)
+      predictable_items.for_predictable(predictable_id)
+    end
   end
 end
