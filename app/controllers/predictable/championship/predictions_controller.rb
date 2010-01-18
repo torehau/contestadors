@@ -18,8 +18,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
       @position_id = params[:id].to_i
       @repository.update(@position_id, @move_operation)
     end
-    @group, @predictions_exists = @repository.get
-    render :action => :new
+    redirect_to :action => :new
   end
 
   protected
