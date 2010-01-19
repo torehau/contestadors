@@ -18,7 +18,7 @@ module Predictable
 
       # Returnes true if the group table contains tied teams with the same rank
       def is_rearrangable?
-        table_positions.each {|position| return true if position.can_move_up or position.can_move_down}
+        table_positions.each {|position| return true if (position.can_move_up == true) or (position.can_move_down == true)}
         return false
       end
     end
