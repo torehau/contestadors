@@ -233,15 +233,26 @@ em {
 }
 
 /* Group table */
+#group_table_container {
+  width:440px;
+  float: right;
+  display: block;
+  height: 200px;
+}
+
 #group_table {
   width:435px;
-  float: right;
   border: 1px #88c6cf solid;
-  /*background: #88c6cf;*/
-  display: block;
   overflow: hidden;
-    height: 175px;
-    max-height: 175px;
+  height: 175px;
+  max-height: 175px;
+}
+
+.group_table_rearrangable {
+  width:430px;
+  margin-top: 5px;
+  color: #41686a;
+  font-style: italic;
 }
 
 #not_predicted {
