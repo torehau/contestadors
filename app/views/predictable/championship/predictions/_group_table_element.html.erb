@@ -15,7 +15,7 @@
     <div class="goal_diff"><%= group_table_element.goal_diff %></div>
     <div class="group_table_pts"><%= group_table_element.pts %></div>
     <div class="group_table_edit">
-      <% if current_user -%>
+      <% if @group_table_rearrangable -%>
         <% if group_table_element.can_move_up -%>
           <div class="group_table_edit_move_up">
             <%= link_to image_tag("arrow_top.png"),

@@ -1,12 +1,18 @@
-<div id="group_table">
-  <% if @predictions_exists == false -%>
-    <div id="not_predicted">Not Predicted</div>
-  <% elsif @validation_errors and @validation_errors.size > 0 -%>
-    <div id="not_predicted">Invalid Predictions</div>
-  <% end -%>
-  <div id="group_table_rows">
-      <%= render :partial => 'group_table_header'-%>
-      <%= render :partial => 'group_table_element', :collection => @group.table_positions -%>
+<div id="group_table_container">
+  <div id="group_table">
+    <% if @predictions_exists == false -%>
+      <div id="not_predicted">Not Predicted</div>
+    <% elsif @validation_errors and @validation_errors.size > 0 -%>
+      <div id="not_predicted">Invalid Predictions</div>
+    <% end -%>
+    <div id="group_table_rows">
+        <%= render :partial => 'group_table_header'-%>
+        <%= render :partial => 'group_table_element', :collection => @group.table_positions -%>
+    </div>
   </div>
+  <% if @group_table_rearrangable -%>
+    <div class="group_table_rearrangable">
+      The teams with the same score can be rearranged using the arrows to the right.
+    </div>
+  <% end -%>
 </div>
-
