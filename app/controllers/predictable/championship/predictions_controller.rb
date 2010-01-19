@@ -3,17 +3,19 @@ class Predictable::Championship::PredictionsController < ApplicationController
   
   def new
     @group, @predictions_exists = @repository.get
+    @group_table_rearrangable = current_user and @group.is_rearrangable?
   end
 
   def create
     @group, @validation_errors = @repository.save(params[@aggregate_root_type])
+    @group_table_rearrangable = @group.is_rearrangable?
     set_flash_message
     render :action => :new
   end
 
   def update
 
-    if current_user and @aggregate_root_type.eql?(:group)
+    if @aggregate_root_type.eql?(:group)
       @move_operation = params[:move].to_sym
       @position_id = params[:id].to_i
       @repository.update(@position_id, @move_operation)
