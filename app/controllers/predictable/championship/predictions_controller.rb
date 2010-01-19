@@ -3,7 +3,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
   
   def new
     @group, @predictions_exists = @repository.get
-    @group_table_rearrangable = current_user and @group.is_rearrangable?
+    @group_table_rearrangable = (current_user and @group.is_rearrangable?)
   end
 
   def create
