@@ -6,7 +6,7 @@ module Predictable
         "WB - RA" => 5, "WD - RC" => 6, "WF - RE" => 7, "WH - RG" => 8}
 
       def round_of_16_rules
-        puts "rules for round of 16"
+#        puts "rules for round of 16"
 
         rule :resolve_group_winner, {:priority => 3},
              [Predictable::Championship::Group, :group, m.winner == nil,
@@ -22,7 +22,7 @@ module Predictable
              [Predictable::Championship::Prediction, :prediction, m.predicted_value == "1",
                m.item_id == b(:item_id)] do |v|
 
-          puts "Winner group " + v[:group].name + ": " + v[:team].name
+#          puts "Winner group " + v[:group].name + ": " + v[:team].name
           v[:group].winner = v[:team]
           retract v[:team]
         end
@@ -41,7 +41,7 @@ module Predictable
              [Predictable::Championship::Prediction, :prediction, m.predicted_value == "2",
                m.item_id == b(:item_id)] do |v|
 
-          puts "Runner up group " + v[:group].name + ": " + v[:team].name
+#          puts "Runner up group " + v[:group].name + ": " + v[:team].name
           v[:group].runner_up = v[:team]
           modify v[:group]
           retract v[:team]
@@ -67,20 +67,6 @@ module Predictable
             end
           end
         end
-#        rule :resolve_match_teams, {:priority => 1},
-#             [Predictable::Championship::Group, :group,
-#               {m.id => :group_id, m.name => :group_name}],
-#             [Predictable::Championship::Group, :other_group, m.id.not == b(:group_id),
-#               {m.name => :other_group_name}],
-#             [Predictable::Championship::Match, :match,
-#                m.description(:group_name, :other_group_name, &c{|d,gn,ogn| is_match_for_groups?(d,gn,ogn)})] do |v|
-#
-#          v[:match].home_team = (v[:match].description.eql?("W%{v[:group_name]} - R%{v[:other_group_name]}")) ? v[:group].winner : v[:other_group].winner
-#          v[:match].away_team = (v[:match].description.eql?("W%{v[:other_group_name]} - R%{v[:group_name]}")) ? v[:group].runner_up : v[:other_group].runner_up
-#
-#          puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team
-#          retract v[:match]
-#        end
       end
 
       private
