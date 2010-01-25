@@ -19,14 +19,14 @@
         <% if group_table_element.can_move_up -%>
           <div class="group_table_edit_move_up">
             <%= link_to image_tag("arrow_top.png"),
-              prediction_path(:aggregate_root_type => "group", :aggregate_root_id => @group.name,
+              prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
               :id => group_table_element.id,:move => "up"), {:method => :put, :title => "Move Up"} %>
           </div>
         <% end -%>
         <% if group_table_element.can_move_down -%>
           <div class="group_table_edit_move_down">
             <%= link_to image_tag("arrow_down.png"),
-               prediction_path(:aggregate_root_type => "group", :aggregate_root_id => @group.name,
+               prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
               :id => group_table_element.id,:move => "down"), {:method => :put, :title => "Move Down"} %>
           </div>
         <% end -%>
