@@ -6,6 +6,9 @@ module Core
       def for_set(set)
         find(:all, :conditions => {:configuration_predictable_item_id => set.predictable_items.collect{|pi| pi.id}})
       end
+      def for_category(category)
+        find(:all, :conditions => {:configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id}})
+      end
       def for_item(item)
         find(:first, :conditions => {:configuration_predictable_item_id => item.id})
       end
@@ -16,10 +19,22 @@ module Core
         find(:first, :conditions => {:predicted_value => predicted_value,
                                      :configuration_predictable_item_id => set.predictable_items.collect{|pi| pi.id}})
       end
+      def with_values_of_category(predicted_values, category)
+        find(:all, :conditions => {:predicted_value => predicted_values,
+                                   :configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id}})
+      end
     end
 
     def predictions_for(set)
       predictions.for_set(set)
+    end
+
+    def predictions_of(category)
+      predictions.for_category(category)
+    end
+
+    def predictions_completed_for?(category)
+      category.predictable_items.size == predictions_of(category).size
     end
 
     def prediction_for(item)
@@ -28,6 +43,10 @@ module Core
 
     def prediction_with_value(value, in_set)
       predictions.with_value_in_set(value, in_set)
+    end
+
+    def predictions_with_values(values, category)
+      predictions.with_values_of_category(values, category)
     end
 
     def predictions_by_item_id(set)

@@ -6,9 +6,11 @@ module Predictable
       has_many :teams, :through => :table_positions, :class_name => "Predictable::Championship::Team"
 
       attr_accessor :matches
+      attr_accessor :winner, :runner_up
 
       def after_initialize
         @matches = teams.collect {|t| t.matches}.flatten.uniq.sort
+        @winner, @runner_up = nil, nil
       end
 
       # Returns a hash with the matches keyed by the id

@@ -8,11 +8,13 @@ module Predictable
       belongs_to :away_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'away_team_id'
 
       attr_accessor :home_team_score, :away_team_score, :state
+      attr_accessor :rank
 
       def after_initialize
         @score ||= "0-0"
         set_individual_team_scores(@score)
         self.state = "unsettled"
+        self.rank = 0
       end
 
       def <=> (other)
