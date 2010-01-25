@@ -46,6 +46,18 @@ render_tabnav :groups,
       t.highlights_on :aggregate_root_id => group_name
     end
   end
+  
+  if @all_groups_completed==true
+
+    menu_title = 'Knockout Stages'
+    stage_permalink = @aggregate_root_type.eql?(:stage) ? @aggregate_root_id : "round-of-16"
+    add_tab do |t|
+      t.named menu_title
+      t.titled menu_title
+      t.links_to new_prediction_path("stage", stage_permalink)
+      t.highlights_on :aggregate_root_id => stage_permalink
+    end
+  end
   #  
   # # A tab can be initialized with a Hash like this:
   # 
