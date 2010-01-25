@@ -1,9 +1,11 @@
 <div id="predictions">
-  <%= render :partial => 'group_table' %>
-  <div id="matches">
-    <% form_for :group, @group, :url => predictions_url("group", @group.name) do |f| %>
-      <%= render :partial => 'match', :collection => @group.matches %>
-      <%= f.submit "Predict Results" %>
+  
+  <% if @aggregate_root_type.eql?(:group) -%>
+    <%= render :partial => 'group_table', :locals => {:group => @aggregate_root} %>
+    <%= render :partial => 'group_matches', :locals => {:group => @aggregate_root} %>
+  <% elsif @aggregate_root_type.eql?(:stage) -%>
+    <% @stages.each do |stage| -%>
+      <%= render :partial => 'knockout_stage_matches', :locals => {:stage => stage} %>
     <% end -%>
-  </div>
+  <% end -%>
 </div>
