@@ -1,0 +1,22 @@
+<%#
+# Displays the matches of the given stage in a column
+%>
+<div class="knockout_stage_container">
+  <% selected = @aggregate_root.description.eql?(stage.description) -%>
+  <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label"><%= stage.description  %></div>
+  <%= render :partial => 'next_stage_qualification', :locals => {:stage => stage} %>
+  <%= render :partial => 'stage_matches_top_spacing', :locals => {:stage => stage} %>
+  <% matches = selected ? @aggregate_root.matches : stage.matches; total = matches.size; counter = 1 -%>
+  <% matches.sort{|a, b| a.rank <=> b.rank}.each do |match| -%>
+    <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => selected} %>
+    <% if counter < total -%>
+      <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
+    <% end -%>
+    <% counter += 1 -%>
+  <% end -%>
+  <% if stage.description.eql?("Final") -%>
+    <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
+    <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label">Third Place</div>
+    <%= render :partial => 'stage_match', :locals => {:match => @third_place, :predicted => selected} %>
+  <% end -%>
+</div>
