@@ -229,7 +229,7 @@ em {
     width:100px;
     float:left;
     font-weight:bold;
-    color: #41686a;/*gray;*/
+    color: #41686a;
 }
 
 /* Group table */
@@ -297,7 +297,6 @@ em {
   width: 435px;
   margin: 1px 0px 0px 0px;
   height: 34px;
-  /*border: 1px #88c6cf solid;*/
   background: #dff6f1;
   color: #333;
   font-weight: bold;
@@ -506,3 +505,124 @@ em {
 .spiffyfg{
   padding: 0 5px;
   background:#C3D9FF}
+
+/*--- Knockout stage styling. ---*/
+.knockout_stage_container {
+  width: 227px;
+  float: left;
+}
+
+.selected_knockout_stage_label {
+  width: 200px;
+  margin: 0px 0px 10px 0px;
+  height: 17px;
+  border: 1px #88c6cf solid;
+  background: #dff6f1;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  float: left;
+}
+
+.knockout_stage_label {
+  width: 200px;
+  margin: 0px 0px 10px 0px;
+  height: 17px;
+  border: 1px #ccc solid;
+  background: #ddd;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+  float: left;
+}
+
+.knockout_stage_match_container {
+  width: 202px;
+  display:block;  
+}
+
+.predicted_knockout_stage_match {
+   width: 200px;
+   height: 48px;
+   max-height: 48px;
+   border-top: 1px #88c6cf solid;
+   border-left: 1px #88c6cf solid;
+   border-right: 1px #88c6cf solid;
+   overflow: hidden;
+   float:right;
+   margin: 0px 0px 5px 0px;
+}
+
+.predicted_knockout_stage_team {
+  width: 200px;
+  float: left;
+  height: 23px;
+  border-bottom: 1px #88c6cf solid;
+  background: #efe;
+  color: black;
+  text-align: left;
+}
+
+.knockout_stage_match {
+   width: 200px;
+   height: 48px;
+   max-height: 48px;
+   border-top: 1px #ccc solid;
+   border-left: 1px #ccc solid;
+   border-right: 1px #ccc solid;
+   overflow: hidden;
+   float:right;
+   margin: 0px 0px 5px 0px;
+}
+
+.knockout_stage_team {
+  width: 200px;
+  float: left;
+  height: 23px;
+  border-bottom: 1px #ccc solid;
+  background: #ddd;
+  color: black;
+  text-align: center;
+  padding-top: 2px;
+}
+
+.knockout_stage_matches_spacer_1 {
+   width: 200px;
+   height: 71px;
+   min-width: 71px;
+   overflow: hidden;
+   float: right;
+   display: block;
+}
+
+.knockout_stage_matches_spacer_2 {
+   width: 200px;
+   height: 45px;
+   min-height: 45px;
+   overflow: hidden;
+   float: right;
+   display: block;
+}
+
+.knockout_stage_matches_spacer_3 {
+   width: 200px;
+   height: 34px;
+   min-height: 34px;
+   overflow: hidden;
+   float: right;
+   display: block;
+}
+
+.next_stage_qualification_container {width: 25px;float: right;}
+.to_stage_column {float: right;width: 12px;}
+.from_stage_column {float: left;width: 13px;}
+.qualification_spacer_1 {height: 71px; min-height:  71px;display: block;}
+.qualification_spacer_2 {height: 106px;min-height: 106px;display: block;}
+.qualification_spacer_3 {height: 142px;min-height: 142px;display: block;}
+.qualification_spacer_4 {height: 177px;min-height: 177px;display: block;}
+.qualification_spacer_5 {height: 320px;min-height: 320px;display: block;border-bottom: 1px #88c6cf solid;}
+.to_quarter_final {height: 142px;min-height: 142px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;}
+.to_semi_final {height: 284px;min-height: 284px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;}
+.from_round_of_16 {height: 71px;min-height:71px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
+.from_quarter_final {height: 142px;min-height:142px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
+.from_semi_final {height: 284px;min-height: 284px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
