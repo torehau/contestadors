@@ -61,7 +61,7 @@ module Predictable
               v[:match].home_team = v[:group].winner#(v[:match].description.eql?("W%{v[:group_name]} - R%{v[:other_group_name]}")) ? v[:group].winner : v[:other_group].winner
               v[:match].away_team = v[:other_group].runner_up#(v[:match].description.eql?("W%{v[:other_group_name]} - R%{v[:group_name]}")) ? v[:group].runner_up : v[:other_group].runner_up
 
-              puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team.name
+#              puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team.name
               v[:match].rank = ROUND_OF_16_RANKS[v[:match].description]
               retract v[:match]
             end
