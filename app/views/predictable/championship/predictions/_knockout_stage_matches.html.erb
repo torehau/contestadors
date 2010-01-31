@@ -6,13 +6,10 @@
   <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label"><%= stage.description  %></div>
   <%= render :partial => 'next_stage_qualification', :locals => {:stage => stage} %>
   <%= render :partial => 'stage_matches_top_spacing', :locals => {:stage => stage} %>
-  <% matches = selected ? @aggregate_root.matches : stage.matches; total = matches.size; counter = 1 -%>
-  <% matches.sort{|a, b| a.rank <=> b.rank}.each do |match| -%>
+  <% matches = selected ? @aggregate_root.matches : stage.matches; max_index = matches.size - 1 -%>
+  <% matches.sort{|a, b| a.rank <=> b.rank}.each_with_index do |match, i| -%>
     <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => selected} %>
-    <% if counter < total -%>
-      <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
-    <% end -%>
-    <% counter += 1 -%>
+    <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} if i < max_index %>
   <% end -%>
   <% if stage.description.eql?("Final") -%>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
