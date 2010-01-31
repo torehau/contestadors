@@ -20,21 +20,12 @@ module Predictable
           Predictable::Championship::Group.find(:all).each{|group| e.assert group}
           Predictable::Championship::GroupTablePosition.find(:all).each{|pos| e.assert pos}
           Predictable::Championship::Team.find(:all).each{|team| e.assert team}
-          @predictions.each{|prediction| e.assert Predictable::Championship::Prediction.new(prediction)}
+          @predictions.each{|prediction| e.assert prediction}
           @predictable_items.each{|item| e.assert item}
           
           e.match
         end
         @stage
-      end
-    end
-
-    class Prediction
-      attr_accessor :predicted_value, :item_id
-
-      def initialize(core_prediction)
-        @predicted_value = core_prediction.predicted_value
-        @item_id = core_prediction.configuration_predictable_item_id
       end
     end
   end

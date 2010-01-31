@@ -19,8 +19,8 @@ module Predictable
               {m.id => :pos_id}],
              [Configuration::PredictableItem, :item, m.predictable_id == b(:pos_id),
                {m.id => :item_id}],
-             [Predictable::Championship::Prediction, :prediction, m.predicted_value == "1",
-               m.item_id == b(:item_id)] do |v|
+             [Prediction::Base, :prediction, m.predicted_value == "1",
+               m.configuration_predictable_item_id == b(:item_id)] do |v|
 
 #          puts "Winner group " + v[:group].name + ": " + v[:team].name
           v[:group].winner = v[:team]
@@ -38,8 +38,8 @@ module Predictable
               {m.id => :pos_id}],
              [Configuration::PredictableItem, :item, m.predictable_id == b(:pos_id),
                {m.id => :item_id}],
-             [Predictable::Championship::Prediction, :prediction, m.predicted_value == "2",
-               m.item_id == b(:item_id)] do |v|
+             [Prediction::Base, :prediction, m.predicted_value == "2",
+               m.configuration_predictable_item_id == b(:item_id)] do |v|
 
 #          puts "Runner up group " + v[:group].name + ": " + v[:team].name
           v[:group].runner_up = v[:team]
