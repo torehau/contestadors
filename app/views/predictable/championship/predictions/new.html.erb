@@ -1,11 +1,6 @@
 <div id="predictions">
-  
-  <% if @aggregate_root_type.eql?(:group) -%>
-    <%= render :partial => 'group_table', :locals => {:group => @aggregate_root} %>
-    <%= render :partial => 'group_matches', :locals => {:group => @aggregate_root} %>
-  <% elsif @aggregate_root_type.eql?(:stage) -%>
-    <% @stages.each do |stage| -%>
-      <%= render :partial => 'knockout_stage_matches', :locals => {:stage => stage} %>
-    <% end -%>
+  <% form_for @aggregate_root_type, @aggregate_root,
+     :url => predictions_url(@aggregate_root_type.to_s, @aggregate_root_id) do |f| %>
+    <%= render :partial => prediction_template(@aggregate_root_type), :locals => {:form => f} %>
   <% end -%>
 </div>

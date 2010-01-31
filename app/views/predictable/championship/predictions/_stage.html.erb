@@ -1,0 +1,3 @@
+    <% @stages.each do |stage| -%>
+      <%= render :partial => 'knockout_stage_matches', :locals => {:stage => stage} %>
+    <% end -%>
