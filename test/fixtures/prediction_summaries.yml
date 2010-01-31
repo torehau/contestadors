@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  state: MyString
+  map: 1
+  core_user_id: 1
+  total_score: 1
+  previous_score: 1
+  previous_map: 1
+
+two:
+  state: MyString
+  map: 1
+  core_user_id: 1
+  total_score: 1
+  previous_score: 1
+  previous_map: 1
