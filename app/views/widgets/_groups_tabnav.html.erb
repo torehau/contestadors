@@ -38,16 +38,17 @@ render_tabnav :groups,
   #  t.links_to hash_for_users_path
   #end
   #
-  ["A", "B", "C","D","E","F","G","H"].each do |group_name|
+  @wizard.all_available_steps[:group].each do |group_name|
+    group = group_name.upcase
     add_tab do |t|
-      t.named 'Group ' + group_name
-      t.titled 'Group ' + group_name
-      t.links_to new_prediction_path("group", group_name)
-      t.highlights_on :aggregate_root_id => group_name
+      t.named 'Group ' + group
+      t.titled 'Group ' + group
+      t.links_to new_prediction_path("group", group)
+      t.highlights_on :aggregate_root_id => group
     end
   end
   
-  if @all_groups_completed==true
+  unless @wizard.all_available_steps[:stage].empty?
 
     menu_title = 'Knockout Stages'
     stage_permalink = @aggregate_root_type.eql?(:stage) ? @aggregate_root_id : "round-of-16"
