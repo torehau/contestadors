@@ -2,7 +2,8 @@ module Core
   class User < ActiveRecord::Base
     set_table_name("core_users")
     acts_as_authentic
-    has_many :predictions, :class_name => "Core::Prediction", :foreign_key => "core_user_id" do
+    has_one :prediction_summary, :class_name => "Prediction::Summary", :foreign_key => "core_user_id", :dependent => :destroy
+    has_many :predictions, :class_name => "Prediction::Base", :foreign_key => "core_user_id" do
       def for_set(set)
         find(:all, :conditions => {:configuration_predictable_item_id => set.predictable_items.collect{|pi| pi.id}})
       end
@@ -51,6 +52,13 @@ module Core
 
     def predictions_by_item_id(set)
       predictions.by_predictable_item(set)
+    end
+
+    protected
+
+    def after_create
+      self.build_prediction_summary
+      self.prediction_summary.save!
     end
   end
 end
