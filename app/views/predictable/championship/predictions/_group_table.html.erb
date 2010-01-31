@@ -7,7 +7,7 @@
     <% end -%>
     <div id="group_table_rows">
         <%= render :partial => 'group_table_header'-%>
-        <%= render :partial => 'group_table_element', :collection => group.table_positions, :locals => {:group => @aggregate_root} -%>
+        <%= render :partial => 'group_table_element', :collection => @aggregate_root.table_positions, :locals => {:group => @aggregate_root} -%>
     </div>
   </div>
   <% if @group_table_rearrangable -%>
