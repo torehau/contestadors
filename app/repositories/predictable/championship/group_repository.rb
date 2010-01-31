@@ -30,11 +30,14 @@ module Predictable
         @group = group_from_new_predictions(predicted_group)
         @validation_errors = GroupMatchesValidator.new.validate(@group)
 
-        save_predictions_for_group if @user and @validation_errors.empty?
+        if @user and @validation_errors.empty?
+          save_predictions_for_group
+          @user.prediction_summary.predict_group(@group.name)
+        end
 
-        return [@group, @validation_errors]
+        return [@group, @validation_errors, @new_predictions]
         rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
-          [@group, @validation_errors]
+          [@group, @validation_errors, @new_predictions]
       end
 
       # updates predictions for two group table positions by moving the prediction for
@@ -47,7 +50,7 @@ module Predictable
         updated_value = move_operation.eql?(:up) ? (current_value - 1) : (current_value + 1)
         prediction_to_swap_value_with = @user.prediction_with_value(updated_value.to_s, @group_table_set)
 
-        Core::Prediction.transaction do
+        Prediction::Base.transaction do
           prediction.predicted_value = updated_value.to_s
           prediction_to_swap_value_with.predicted_value = current_value.to_s
           prediction.save!
@@ -115,7 +118,7 @@ module Predictable
 
       # saves the predicted group matches and table position for the current user.
       def save_predictions_for_group
-        Core::Prediction.transaction do
+        Prediction::Base.transaction do
           
           save_predictions(@group_matches_set, @group.matches_by_id) do |match|
             match.home_team_score + '-' + match.away_team_score
@@ -131,11 +134,13 @@ module Predictable
       # predictable instances (e.g., match or table position) keyed by the corresponding ids.
       # The invoker must pass in a block returning the value to be predicted on the predictable instance.
       def save_predictions(predictable_set, predictables_by_id)
-        existing_predictions_by_item_id = @user.predictions.by_predictable_item(predictable_set)
-        new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
+        unless @new_predictions
+          existing_predictions_by_item_id = @user.predictions.by_predictable_item(predictable_set)
+          @new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
+        end
 
         predictable_set.predictable_items.each do |item|
-          save_prediction(item, new_predictions, existing_predictions_by_item_id, predictables_by_id) do |predictable|
+          save_prediction(item, existing_predictions_by_item_id, predictables_by_id) do |predictable|
             yield(predictable)
           end
         end
@@ -143,10 +148,10 @@ module Predictable
 
       # creates a new or updates an existing prediction for the given item. The invoker must pass in a
       # block returning the predicted value using the yielded predictable (e.g., match or table position instance)
-      def save_prediction(item, new_prediction, existing_predictions_by_item_id, predictable_by_id)
-        prediction = new_prediction ? Core::Prediction.new : existing_predictions_by_item_id[item.id].first
-        prediction.core_user_id = @user.id if new_prediction
-        prediction.configuration_predictable_item_id = item.id if new_prediction
+      def save_prediction(item, existing_predictions_by_item_id, predictable_by_id)
+        prediction = @new_predictions ? Prediction::Base.new : existing_predictions_by_item_id[item.id].first
+        prediction.core_user_id = @user.id if @new_predictions
+        prediction.configuration_predictable_item_id = item.id if @new_predictions
         prediction.predicted_value = yield(predictable_by_id[item.predictable_id])
         prediction.save!
       end
