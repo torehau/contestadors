@@ -3,12 +3,12 @@ class Predictable::Championship::PredictionsController < ApplicationController
   
   def new
     @aggregate_root, @predictions_exists = @repository.get
-    set_view_conditionals
+    set_view_variables
   end
 
   def create
-    @aggregate_root, @validation_errors = @repository.save(params[@aggregate_root_type])
-    set_view_conditionals(true)
+    @aggregate_root, @validation_errors, @new_predictions = @repository.save(params[@aggregate_root_type])
+    set_view_variables
     set_flash_message
     render :action => :new
   end
@@ -36,19 +36,12 @@ class Predictable::Championship::PredictionsController < ApplicationController
     end
   end
 
-  def set_view_conditionals(reload=false)
+  def set_view_variables
+    @wizard = current_user.prediction_summary
     
     if @aggregate_root_type.eql?(:group)
       @group_table_rearrangable = (current_user and @aggregate_root.is_rearrangable?)
-
-      if (current_user and (session[:all_groups_completed].nil? or (reload==true)))
-        category = Configuration::Category.find_by_description("Group Tables")
-        session[:all_groups_completed] = current_user.predictions_completed_for?(category)
-      end
-      @all_groups_completed = session[:all_groups_completed] ? session[:all_groups_completed] : false
     elsif @aggregate_root_type.eql?(:stage)
-      session[:all_groups_completed] = true
-      @all_groups_completed = session[:all_groups_completed]
       @stages = Predictable::Championship::Stage.find(:all, :conditions => {:description => ["Round of 16", "Quarter-finals", "Semi-finals", "Final"]})
       @third_place = Predictable::Championship::Match.find_by_description("Third Place")
     end
@@ -59,7 +52,8 @@ class Predictable::Championship::PredictionsController < ApplicationController
     if @validation_errors.empty?
 
       if current_user
-        flash.now[:notice] = "Predictions succesfully saved."
+        flash.now[:notice] = render_to_string(:partial => 'successful_predictions_message',
+                                              :locals => {:state => current_user.prediction_summary.state})
       end
     else
       flash.now[:alert] = "Invalid match results given."
