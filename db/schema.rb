@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100102125956) do
+ActiveRecord::Schema.define(:version => 20100125202550) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -151,6 +151,20 @@ ActiveRecord::Schema.define(:version => 20100102125956) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "prediction_summaries", :force => true do |t|
+    t.string   "state"
+    t.integer  "map",                  :default => 650
+    t.integer  "core_user_id",                          :null => false
+    t.integer  "total_score",          :default => 0
+    t.integer  "previous_score",       :default => 0
+    t.integer  "previous_map",         :default => 0
+    t.integer  "percentage_completed", :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "prediction_summaries", ["core_user_id"], :name => "index_prediction_summaries_on_core_user_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
