@@ -6,15 +6,18 @@ module Predictable
       belongs_to :stage, :class_name => "Predictable::Championship::Stage", :foreign_key => "predictable_championship_stage_id"
       belongs_to :home_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'home_team_id'
       belongs_to :away_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'away_team_id'
+      has_many :group_qualifications, :class_name => "Predictable::Championship::GroupQualification", :foreign_key => "predictable_championship_match_id"
+      has_one :stage_qualifications, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_match_id"
 
       attr_accessor :home_team_score, :away_team_score, :state
       attr_accessor :rank
+      attr_accessor :winner
 
       def after_initialize
         @score ||= "0-0"
         set_individual_team_scores(@score)
         self.state = "unsettled"
-        self.rank = 0
+        self.rank = self.id
       end
 
       def <=> (other)
@@ -31,6 +34,10 @@ module Predictable
           @home_team_score = scores[0]
           @away_team_score = scores[1]
         end
+      end
+
+      def winner_team_id
+        @winner.nil? ? @home_team.id : @winner.id
       end
 
       state_machine :initial => :unsettled do

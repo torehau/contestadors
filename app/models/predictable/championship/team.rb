@@ -9,8 +9,18 @@ module Predictable
       has_many :players, :class_name => "Predictable::Championship::Player", :foreign_key => "predictable_championship_team_id"
       has_one :group_table_position, :class_name => "Predictable::Championship::GroupTablePosition", :foreign_key => 'predictable_championship_team_id'
 
+      attr_accessor :through_to_stage
+      
+      def after_initialize
+        self.through_to_stage = []
+      end
+
       def matches
         home_matches + away_matches
+      end
+
+      def through_to_next_stage(current_stage)
+        self.through_to_stage.include?(current_stage.next.id)
       end
     end
   end
