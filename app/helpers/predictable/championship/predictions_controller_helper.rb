@@ -21,6 +21,7 @@ module Predictable::Championship::PredictionsControllerHelper
         end
       end
     elsif aggr_type.eql?(:stage)
+      message += "Stage #{aggr_id.gsub('-',' ').capitalize}. "
     end
     message
   end
