@@ -54,6 +54,8 @@ module Predictable
 
           if calculate_display_order
             table_position.display_order = display_order
+            @group.winner = table_position.team if display_order == 1
+            @group.runner_up = table_position.team if display_order == 2
             display_order += 1
           end
           previous = current
