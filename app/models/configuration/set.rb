@@ -8,6 +8,9 @@ module Configuration
       def for_predictable(predictable_id)
         find(:first, :conditions => {:predictable_id => predictable_id})
       end
+      def for_predictables(predictable_ids)
+        find(:all, :conditions => {:predictable_id => predictable_ids})
+      end
     end
     has_many :included_objectives, :class_name => "Configuration::IncludedObjective", :foreign_key => "configuration_set_id"
     has_many :objectives, :through => :included_objectives, :class_name => "Configuration::Objective"
@@ -18,6 +21,10 @@ module Configuration
 
     def predictable_item(predictable_id)
       predictable_items.for_predictable(predictable_id)
+    end
+
+    def subset(predictable_ids)
+      predictable_items.for_predictables(predictable_ids)
     end
   end
 end
