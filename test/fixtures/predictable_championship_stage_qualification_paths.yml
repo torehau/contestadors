@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  predictable_championship_group_id: 1
+  group_pos: 1
+  predictable_championship_stage_id: 1
+  predictable_championship_match_id: 1
+
+two:
+  predictable_championship_group_id: 1
+  group_pos: 1
+  predictable_championship_stage_id: 1
+  predictable_championship_match_id: 1
