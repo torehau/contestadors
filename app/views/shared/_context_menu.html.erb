@@ -1,3 +1,6 @@
 <% if current_controller.eql?('predictable/championship/predictions') -%>
+  <div class="progress">
+    <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
+  </div>
   <%= tabnav :groups %>
 <% end -%>
