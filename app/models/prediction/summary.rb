@@ -55,9 +55,18 @@ module Prediction
       update_wizard_accessors
     end
 
-    def predict_stage(name)
-      send(('predict_' + name.gsub(/ /, '_').downcase).to_sym)
+    def predict_stage(description)
+      send(('predict_' + description.gsub(/ /, '_').downcase).to_sym)
       update_wizard_accessors
+    end
+
+    def url_params
+      aggregate_root_type, aggregate_root_id = "group", "A"
+
+      if ('a'..'h') === current_step
+        aggregate_root_id = current_step.upcase
+      end
+      {:aggregate_root_type => aggregate_root_type, :aggregate_root_id => aggregate_root_id}
     end
 
     private
@@ -103,9 +112,15 @@ module Prediction
       steps
     end
 
+    # TODO must also be performed when group tables are rearranged
     def delete_knockout_stage_predictions
-      # TODO delete any predictions for the knockout stages for the user
-      #      using appropriate repository
+      items = []
+      Predictable::Championship::Stage.stages_to_delete_predictions_for_on_group_prediction_updates.each do |stage|
+        set = Configuration::Set.find_by_description "Teams through to #{stage.description}"
+        set.predictable_items.each {|item| items << item.id}
+      end
+
+      Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
     end
   end
 end
