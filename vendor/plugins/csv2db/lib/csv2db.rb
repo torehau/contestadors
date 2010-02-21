@@ -41,7 +41,7 @@ module Csv2Db
                                :headers => true, :header_converters => :symbol,
                                :col_sep => ',')
         convert_date_fields(parser)
-        csv_id_to_db_id_map = {}
+        @csv_id_to_db_id_map = {}
         substitute_values = substitute_field_values
 
         parser.each do |row|
@@ -49,11 +49,11 @@ module Csv2Db
             csv_id = row.field(:id)
             instance = create_new_instance_from_row(dependencies, row, substitute_values)
             instance.save!
-            csv_id_to_db_id_map[csv_id] = instance.id
+            @csv_id_to_db_id_map[csv_id] = instance.id
           end
         end
-        puts csv_id_to_db_id_map.length.to_s + " new entries stored in table: " + self.table_name
-        dependencies[self.table_name.to_sym] = csv_id_to_db_id_map
+        puts @csv_id_to_db_id_map.length.to_s + " new entries stored in table: " + self.table_name
+        dependencies[self.table_name.to_sym] = @csv_id_to_db_id_map
       end
 
       def filename
@@ -120,6 +120,8 @@ module Csv2Db
              puts "Predictable id of " + instance.predictable_table
              return dependencies[instance.predictable_table.to_sym][id_value]
            end
+        elsif column_name.eql?(:next_stage_id) # self referential, TODO include in separate hash constant
+          return @csv_id_to_db_id_map[id_value]
         else
           return dependencies[FOREIGN_ID_KEY_MAP[column_name.to_sym]][id_value]
         end
