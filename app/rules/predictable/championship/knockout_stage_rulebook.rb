@@ -2,81 +2,69 @@ module Predictable
   module Championship
     class KnockoutStageRulebook < Ruleby::Rulebook
 
-      ROUND_OF_16_RANKS = {"WA - RB" => 1, "WC - RD" => 2, "WE - RF" => 3, "WG - RH" => 4,
-        "WB - RA" => 5, "WD - RC" => 6, "WF - RE" => 7, "WH - RG" => 8}
+      def rules(predicted_stages)
+        rule :resolve_match_home_teams, {:priority => 2},
+           [Predictable::Championship::Stage, :stage,
+             {m.id => :stage_id}],
+           [Predictable::Championship::Match, :match,
+              m.predictable_championship_stage_id == b(:stage_id),
+              m.home_team == nil,
+             {m.id => :match_id}],
+           [Predictable::Championship::StageTeam, :stage_team,
+              m.predictable_championship_stage_id == b(:stage_id),
+              m.predictable_championship_match_id == b(:match_id),
+              m.is_home_team == true,
+             {m.id => :stage_team_id}],
+           [Configuration::PredictableItem, :stage_team_item,
+              m.predictable_id == b(:stage_team_id),
+             {m.id => :stage_team_item_id}],
+           [Prediction::Base, :stage_team_prediction,
+              m.configuration_predictable_item_id == b(:stage_team_item_id),
+             {m.predicted_value => :team_id}],
+           [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
-      def round_of_16_rules
-#        puts "rules for round of 16"
+          v[:team].through_to_stage << v[:stage].id
+          v[:match].home_team = v[:team]
+          puts "Match: " + v[:match].description + ": " + v[:match].home_team.name
 
-        rule :resolve_group_winner, {:priority => 3},
-             [Predictable::Championship::Group, :group, m.winner == nil,
-               {m.id => :group_id}],
-             [Predictable::Championship::Team, :team,
-               {m.id => :team_id}],
-             [Predictable::Championship::GroupTablePosition, :pos,
-               m.predictable_championship_team_id == b(:team_id),
-               m.predictable_championship_group_id == b(:group_id),
-              {m.id => :pos_id}],
-             [Configuration::PredictableItem, :item, m.predictable_id == b(:pos_id),
-               {m.id => :item_id}],
-             [Prediction::Base, :prediction, m.predicted_value == "1",
-               m.configuration_predictable_item_id == b(:item_id)] do |v|
-
-#          puts "Winner group " + v[:group].name + ": " + v[:team].name
-          v[:group].winner = v[:team]
-          retract v[:team]
+          retract v[:stage_team]
+          retract v[:stage_team_item]
+          retract v[:stage_team_prediction]
+          modify v[:match]
         end
 
-        rule :resolve_group_runnerup, {:priority => 2},
-             [Predictable::Championship::Group, :group, m.runner_up == nil,
-               {m.id => :group_id}],
-             [Predictable::Championship::Team, :team,
-               {m.id => :team_id}],
-             [Predictable::Championship::GroupTablePosition, :pos,
-               m.predictable_championship_team_id == b(:team_id),
-               m.predictable_championship_group_id == b(:group_id),
-              {m.id => :pos_id}],
-             [Configuration::PredictableItem, :item, m.predictable_id == b(:pos_id),
-               {m.id => :item_id}],
-             [Prediction::Base, :prediction, m.predicted_value == "2",
-               m.configuration_predictable_item_id == b(:item_id)] do |v|
+        rule :resolve_match_away_teams, {:priority => 1},
+           [Predictable::Championship::Stage, :stage,
+             {m.id => :stage_id}],
+           [Predictable::Championship::Match, :match,
+              m.predictable_championship_stage_id == b(:stage_id),
+              m.home_team.not == nil,
+              m.away_team == nil,
+             {m.id => :match_id}],
+           [Predictable::Championship::StageTeam, :stage_team,
+              m.predictable_championship_stage_id == b(:stage_id),
+              m.predictable_championship_match_id == b(:match_id),
+              m.is_home_team == false,
+             {m.id => :stage_team_id}],
+           [Configuration::PredictableItem, :stage_team_item,
+              m.predictable_id == b(:stage_team_id),
+             {m.id => :stage_team_item_id}],
+           [Prediction::Base, :stage_team_prediction,
+              m.configuration_predictable_item_id == b(:stage_team_item_id),
+             {m.predicted_value => :team_id}],
+           [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
-#          puts "Runner up group " + v[:group].name + ": " + v[:team].name
-          v[:group].runner_up = v[:team]
-          modify v[:group]
-          retract v[:team]
+          v[:team].through_to_stage << v[:stage].id
+          v[:match].away_team = v[:team]
+
+          puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team.name
+          retract v[:stage_team]
+          retract v[:stage_team_item]
+          retract v[:stage_team_prediction]
+          retract v[:match]
+
+          predicted_stages[v[:stage].id] = v[:stage] unless predicted_stages.include?(v[:stage])
         end
-
-        [["A","B"], ["C","D"], ["E","F"], ["G","H"]].each do |paired_groups|
-          first_group, second_group = paired_groups[0], paired_groups[1]
-
-          [[first_group, second_group], [second_group, first_group]].each do |pair|
-            first, second = pair[0], pair[1]
-
-            rule :resolve_match_teams, {:priority => 1},
-                 [Predictable::Championship::Group, :group, m.name == first, m.winner.not == nil, m.runner_up.not == nil],
-                 [Predictable::Championship::Group, :other_group, m.name == second, m.winner.not == nil, m.runner_up.not == nil],
-                 [Predictable::Championship::Match, :match, m.description == match_description(first, second)] do |v|
-
-              v[:match].home_team = v[:group].winner#(v[:match].description.eql?("W%{v[:group_name]} - R%{v[:other_group_name]}")) ? v[:group].winner : v[:other_group].winner
-              v[:match].away_team = v[:other_group].runner_up#(v[:match].description.eql?("W%{v[:other_group_name]} - R%{v[:group_name]}")) ? v[:group].runner_up : v[:other_group].runner_up
-
-#              puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team.name
-              v[:match].rank = ROUND_OF_16_RANKS[v[:match].description]
-              retract v[:match]
-            end
-          end
-        end
-      end
-
-      private
-
-      def match_description(first_group, second_group)
-        "W"+first_group+" - "+"R"+second_group
-      end
-
-      def is_match_for_groups?(desc, group_name, other_group_name)
-        desc.eql?("W%{group_name} - R%{other_group_name}") or desc.eql?("W%{other_group_name} - R%{group_name}")
       end
     end
   end
