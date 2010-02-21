@@ -38,11 +38,15 @@ class Predictable::Championship::PredictionsController < ApplicationController
 
   def set_view_variables
     @wizard = current_user.prediction_summary
+    @progress = current_user.prediction_summary.percentage_completed
     
     if @aggregate_root_type.eql?(:group)
       @group_table_rearrangable = (current_user and @aggregate_root.is_rearrangable?)
     elsif @aggregate_root_type.eql?(:stage)
-      @stages = Predictable::Championship::Stage.find(:all, :conditions => {:description => ["Round of 16", "Quarter-finals", "Semi-finals", "Final"]})
+#      @aggregate_root_id = @aggregate_root.permalink
+      @stages = Predictable::Championship::Stage.knockout_stages       
+      @predicted_stages = @aggregate_root[1]
+      @aggregate_root = @aggregate_root[0]
       @third_place = Predictable::Championship::Match.find_by_description("Third Place")
     end
   end
