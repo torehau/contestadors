@@ -68,6 +68,37 @@ em {
   padding: 10px 20px 0px 20px;
 }
 
+/* -- Progress ----------------------------- */
+div.progress {
+  float:right;
+  width: 259px;
+  font-weight:bold;
+  color: #41686a;
+  padding-right: 19px;
+  /*padding-top: 2px;*/
+}
+
+div.progresslabel {
+    margin-top: 2px;
+    float:left;
+}
+
+div.progressbar {
+ border: 1px solid #ccc;
+ width: 165px;
+ margin: 2px 5px 2px 0;
+ padding: 1px;
+ float: right;
+ background: white;
+}
+
+div.progressbar > div {
+ height: 12px;
+ float: left;
+}
+
+div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
+
 /* -- Navigation --------------------------- */
 #nav {
   float: right;
@@ -91,7 +122,7 @@ em {
 #content {
   float:left;
   width:910px;
-  margin: 20px;  
+  margin: 10px 20px 20px 20px;
 }
 #content p img {
   margin-top: 2px;
@@ -507,6 +538,11 @@ em {
   background:#C3D9FF}
 
 /*--- Knockout stage styling. ---*/
+.knockout_stages {
+  width: 940px;
+  clear: both;
+}
+
 .knockout_stage_container {
   width: 227px;
   float: left;
@@ -541,7 +577,7 @@ em {
   display:block;  
 }
 
-.predicted_knockout_stage_match {
+.knockout_stage_match {
    width: 200px;
    height: 48px;
    max-height: 48px;
@@ -553,7 +589,24 @@ em {
    margin: 0px 0px 5px 0px;
 }
 
-.predicted_knockout_stage_team {
+#predicted_knockout_stage_match {
+    background-color: #efefef;
+    width: 200px;
+    height: 48px;
+    max-height: 48px;
+    opacity: .5;
+    position: absolute;
+    margin: 0px inherit;/*
+    padding-top: 60px;
+    text-align: center;
+    padding-bottom: 80px;
+    color: #52797b;
+    font-size:3.3em;
+    font-weight:bold;*/
+    z-index: 2;
+}
+
+.knockout_stage_team {
   width: 200px;
   float: left;
   height: 23px;
@@ -563,7 +616,25 @@ em {
   text-align: left;
 }
 
-.knockout_stage_match {
+.losing_knockout_stage_team {
+  width: 200px;
+  float: left;
+  height: 23px;
+  border-bottom: 1px #88c6cf solid;
+  background: #fee;
+  color: black;
+  text-align: left;
+}
+
+.knockout_stage_team_selection {
+    float: right;
+    border-left: 1px #88c6cf solid;
+    height: 23px;
+    width: 23px;
+    padding: 6px 0px 0px 10px;
+}
+
+.undecided_knockout_stage_match {
    width: 200px;
    height: 48px;
    max-height: 48px;
@@ -575,7 +646,7 @@ em {
    margin: 0px 0px 5px 0px;
 }
 
-.knockout_stage_team {
+.undecided_knockout_stage_team {
   width: 200px;
   float: left;
   height: 23px;
