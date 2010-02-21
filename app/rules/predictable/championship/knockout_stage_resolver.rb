@@ -4,28 +4,48 @@ module Predictable
     class KnockoutStageResolver
       include Ruleby
 
-      def initialize(predictions, predictable_items)
-        @predictions = predictions
-        @predictable_items = predictable_items
+      def initialize(user)
+        @user = user
       end
 
-      # resolves the predicted teams to the matches in the Round of 16 stage
-      def round_of_16_matches
-        @stage = Predictable::Championship::Stage.find_by_description("Round of 16")
+      def predicted_stages
+        @@category ||= Configuration::Category.find_by_description("Stage Teams")
+        @predictable_items = @@category.predictable_items
+        @predictions = @user.predictions_of(@@category).compact        
+        @stages = Predictable::Championship::Stage.knockout_stages
+        @teams = Predictable::Championship::Team.find(:all)
+        @predicted_stages = {}
 
-        engine :group_table do |e|
-          KnockoutStageRulebook.new(e).round_of_16_rules
+        engine :predicted_stage_matches do |e|
+          KnockoutStageRulebook.new(e).rules(@predicted_stages)
 
-          @stage.matches.each{|stage_match| e.assert stage_match}
-          Predictable::Championship::Group.find(:all).each{|group| e.assert group}
-          Predictable::Championship::GroupTablePosition.find(:all).each{|pos| e.assert pos}
-          Predictable::Championship::Team.find(:all).each{|team| e.assert team}
+          @teams.each {|team| e.assert team}
+          @stages.each do |stage|
+            stage.matches.each {|stage_match| e.assert stage_match}
+            stage.stage_teams.each {|stage_team| e.assert stage_team}
+            e.assert stage
+          end
+          
           @predictions.each{|prediction| e.assert prediction}
           @predictable_items.each{|item| e.assert item}
-          
+
           e.match
         end
-        @stage
+        [last_predicted_stage, @predicted_stages]
+      end
+
+      private
+
+      def last_predicted_stage
+
+        for stage in @predicted_stages.values
+          unless @predicted_stages.values.include?(stage.next)
+            # FIXED
+            puts "**** returning stage: " + stage.description
+            return stage
+          end
+        end
+        @predicted_stages.values.first
       end
     end
   end
