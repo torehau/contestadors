@@ -1,22 +1,21 @@
 <div class="knockout_stage_match_container">
   <div class="match_date"><%= match.play_date.to_s(:short) %></div>
   <% if predicted == true -%>
-    <div class="predicted_knockout_stage_match">
-      <div class="predicted_knockout_stage_team">
-        <div class="team_icon">
-          <%= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %>
-        </div><%= match.home_team.name %>
-      </div>
-      <div class="predicted_knockout_stage_team">
-        <div class="team_icon">
-          <%= image_tag("/images/flags/"+ match.away_team.country_flag+ ".png") %>
-        </div><%= match.away_team.name %>
-      </div>
-    </div>
-  <% else -%>
+
     <div class="knockout_stage_match">
-      <div class="knockout_stage_team">Not Predicted</div>
-      <div class="knockout_stage_team">Not Predicted</div>
+      <% prefix = "stage[predicted_matches][]" %>
+      <% fields_for prefix, match do |match_form| %>
+        <%= render :partial => 'predicted_stage_team', :locals => {:team => match.home_team, :selected => selected, :match_form => match_form, :current_stage => stage} %>
+        <%= render :partial => 'predicted_stage_team', :locals => {:team => match.away_team, :selected => selected, :match_form => match_form, :current_stage => stage} %>
+      <% end -%>
+    </div>
+    <% if false -%>
+      <div id="predicted_knockout_stage_match"></div>
+    <% end -%>
+  <% else -%>
+    <div class="undecided_knockout_stage_match">
+      <div class="undecided_knockout_stage_team">Not Predicted</div>
+      <div class="undecided_knockout_stage_team">Not Predicted</div>
     </div>
   <% end -%>
 </div>

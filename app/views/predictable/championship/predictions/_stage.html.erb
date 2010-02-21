@@ -1,3 +1,8 @@
-    <% @stages.each do |stage| -%>
-      <%= render :partial => 'knockout_stage_matches', :locals => {:stage => stage} %>
-    <% end -%>
+<div class="knockout_stages">
+  <% @stages.each do |stage| -%>
+    <%= render :partial => 'knockout_stage_matches', :locals => {:stage => stage, :form => form} %>
+  <% end -%>
+</div>
+<div>
+<%= form.submit "Predict Results" %>
+</div>
