@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100125202550) do
+ActiveRecord::Schema.define(:version => 20100215214028) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -96,6 +96,14 @@ ActiveRecord::Schema.define(:version => 20100125202550) do
   add_index "core_users", ["last_request_at"], :name => "index_core_users_on_last_request_at"
   add_index "core_users", ["persistence_token"], :name => "index_core_users_on_persistence_token"
 
+  create_table "predictable_championship_group_qualifications", :force => true do |t|
+    t.integer  "predictable_championship_group_id"
+    t.integer  "group_pos"
+    t.integer  "predictable_championship_match_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "predictable_championship_group_table_positions", :force => true do |t|
     t.integer  "pos"
     t.integer  "predictable_championship_group_id"
@@ -131,17 +139,28 @@ ActiveRecord::Schema.define(:version => 20100125202550) do
     t.datetime "updated_at"
   end
 
+  create_table "predictable_championship_stage_qualifications", :force => true do |t|
+    t.integer  "predictable_championship_match_id"
+    t.integer  "predictable_championship_stage_team_id"
+    t.boolean  "is_winner"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "predictable_championship_stage_teams", :force => true do |t|
     t.integer  "predictable_championship_stage_id"
     t.integer  "predictable_championship_team_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "predictable_championship_match_id"
+    t.boolean  "is_home_team"
   end
 
   create_table "predictable_championship_stages", :force => true do |t|
     t.string   "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "next_stage_id"
   end
 
   create_table "predictable_championship_teams", :force => true do |t|
