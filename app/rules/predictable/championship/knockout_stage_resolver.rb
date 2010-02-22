@@ -40,8 +40,6 @@ module Predictable
 
         for stage in @predicted_stages.values
           unless @predicted_stages.values.include?(stage.next)
-            # FIXED
-            puts "**** returning stage: " + stage.description
             return stage
           end
         end

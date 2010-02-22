@@ -25,7 +25,6 @@ module Predictable
 
           v[:team].through_to_stage << v[:stage].id
           v[:match].home_team = v[:team]
-          puts "Match: " + v[:match].description + ": " + v[:match].home_team.name
 
           retract v[:stage_team]
           retract v[:stage_team_item]
@@ -57,7 +56,6 @@ module Predictable
           v[:team].through_to_stage << v[:stage].id
           v[:match].away_team = v[:team]
 
-          puts "Match: " + v[:match].description + ": " + v[:match].home_team.name + " - " + v[:match].away_team.name
           retract v[:stage_team]
           retract v[:stage_team_item]
           retract v[:stage_team_prediction]
