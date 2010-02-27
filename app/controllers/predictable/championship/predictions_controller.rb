@@ -1,60 +1,49 @@
 class Predictable::Championship::PredictionsController < ApplicationController
-  before_filter :extract_aggregate_info
+  before_filter :init_aggregate, :set_repository
   
   def new
-    @aggregate_root, @predictions_exists = @repository.get
-    set_view_variables
+    @aggregate = @repository.get
+    set_wizard_and_progress_for_current_user
   end
 
   def create
-    @aggregate_root, @validation_errors, @new_predictions = @repository.save(params[@aggregate_root_type])
-    set_view_variables
+    @aggregate = @repository.save    
+    set_wizard_and_progress_for_current_user
     set_flash_message
     render :action => :new
   end
 
   def update
-
-    if @aggregate_root_type.eql?(:group)
-      @move_operation = params[:move].to_sym
-      @position_id = params[:id].to_i
-      @repository.update(@position_id, @move_operation)
-    end
+    @repository.update
     redirect_to :action => :new
   end
 
   protected
 
-  def extract_aggregate_info
-    @aggregate_root_type = params[:aggregate_root_type].to_sym
-    @aggregate_root_id = params[:aggregate_root_id]
-    
-    if @aggregate_root_type.eql?(:group)
-      @repository = Predictable::Championship::GroupRepository.new(current_user, @aggregate_root_id)
-    elsif @aggregate_root_type.eql?(:stage)
-      @repository = Predictable::Championship::StageRepository.new(current_user, @aggregate_root_id)
+  def init_aggregate
+    @aggregate = Predictable::Championship::Aggregate.new(current_user, params)
+  end
+
+  def set_repository    
+    if @aggregate.type.eql?(:group)
+      @repository = Predictable::Championship::GroupRepository.new(@aggregate)
+    elsif @aggregate.type.eql?(:stage)
+      @repository = Predictable::Championship::StageRepository.new(@aggregate)
     end
   end
 
-  def set_view_variables
-    @wizard = current_user.prediction_summary
-    @progress = current_user.prediction_summary.percentage_completed
-    
-    if @aggregate_root_type.eql?(:group)
-      @group_table_rearrangable = (current_user and @aggregate_root.is_rearrangable?)
-    elsif @aggregate_root_type.eql?(:stage)
-#      @aggregate_root_id = @aggregate_root.permalink
-      @stages = Predictable::Championship::Stage.knockout_stages       
-      @predicted_stages = @aggregate_root[1]
-      @aggregate_root = @aggregate_root[0]
-      @third_place = Predictable::Championship::Match.find_by_description("Third Place")
+  def set_wizard_and_progress_for_current_user
+    if current_user
+      @wizard = current_user.prediction_summary
+      @progress = @wizard.percentage_completed
     end
   end
 
   def set_flash_message
     
-    if @validation_errors.empty?
+    if not @aggregate.has_validation_errors?
 
+      # TODO refactor - send in current_user as local variable to template, giving message also for guest users (not logged in)
       if current_user
         flash.now[:notice] = render_to_string(:partial => 'successful_predictions_message',
                                               :locals => {:state => current_user.prediction_summary.state})
