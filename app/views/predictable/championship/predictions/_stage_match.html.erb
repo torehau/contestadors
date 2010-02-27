@@ -3,7 +3,7 @@
   <% if predicted == true -%>
 
     <div class="knockout_stage_match">
-      <% prefix = "stage[predicted_matches][]" %>
+      <% prefix = "stage[new_predictions][]" %>
       <% fields_for prefix, match do |match_form| %>
         <%= render :partial => 'predicted_stage_team', :locals => {:team => match.home_team, :selected => selected, :match_form => match_form, :current_stage => stage} %>
         <%= render :partial => 'predicted_stage_team', :locals => {:team => match.away_team, :selected => selected, :match_form => match_form, :current_stage => stage} %>

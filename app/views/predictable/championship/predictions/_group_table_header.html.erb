@@ -10,6 +10,6 @@
   <div class="goal_diff">GD</div>
   <div class="group_table_pts">Pts</div>
   <div class="group_table_edit_header">
-    <%= "Edit" if @group_table_rearrangable == true %>
+    <%= "Edit" if @aggregate.is_rearrangable? %>
   </div>
 </div>

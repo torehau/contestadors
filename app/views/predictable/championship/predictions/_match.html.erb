@@ -1,6 +1,6 @@
-<% prefix = "group[predicted_matches][]" %>
+<% prefix = "group[new_predictions][]" %>
 <% fields_for prefix, match do |match_form| %>
-  <div class=<%= (@validation_errors and @validation_errors.has_key?(match.id)) ? "match_validation_error" : "match"%>>
+  <div class=<%= (@aggregate.has_validation_error_for?(match.id)) ? "match_validation_error" : "match"%>>
     <div class="match_date"><%= match.play_date.to_s(:short) %></div>
     <div class="home_team_name"><%= match.home_team.name %></div>
     <div class="team_icon"><%= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>

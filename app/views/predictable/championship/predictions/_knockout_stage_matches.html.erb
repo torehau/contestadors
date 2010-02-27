@@ -2,11 +2,11 @@
 # Displays the matches of the given stage in a column
 %>
 <div class="knockout_stage_container">
-  <% selected = @aggregate_root.description.eql?(stage.description) -%>
+  <% selected = @aggregate.root.description.eql?(stage.description) -%>
   <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label"><%= stage.description  %></div>
   <%= render :partial => 'next_stage_qualification', :locals => {:stage => stage} %>
   <%= render :partial => 'stage_matches_top_spacing', :locals => {:stage => stage} %>
-  <% predicted_stage = @predicted_stages[stage.id]; predicted = !predicted_stage.nil? %>
+  <% predicted_stage = @aggregate.all_predicted_roots[stage.id]; predicted = !predicted_stage.nil? %>
   <% matches = predicted ? predicted_stage.matches : stage.matches; max_index = matches.size - 1 -%>
   <% matches.sort{|a, b| a.rank <=> b.rank}.each_with_index do |match, i| -%>
     <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => predicted, :selected => selected, :stage => stage} %>
@@ -15,6 +15,6 @@
   <% if stage.description.eql?("Final") -%>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
     <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label">Third Place</div>
-    <%= render :partial => 'stage_match', :locals => {:match => @third_place, :predicted => predicted} %>
+    <%= render :partial => 'stage_match', :locals => {:match => @aggregate.associated, :predicted => predicted} %>
   <% end -%>
 </div>

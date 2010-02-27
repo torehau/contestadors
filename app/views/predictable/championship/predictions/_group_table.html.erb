@@ -1,16 +1,16 @@
 <div id="group_table_container">
   <div id="group_table">
-    <% if @predictions_exists == false -%>
+    <% if not @aggregate.is_predicted? -%>
       <div id="not_predicted">Not Predicted</div>
-    <% elsif @validation_errors and @validation_errors.size > 0 -%>
+    <% elsif @aggregate.has_validation_errors? -%>
       <div id="not_predicted">Invalid Predictions</div>
     <% end -%>
     <div id="group_table_rows">
         <%= render :partial => 'group_table_header'-%>
-        <%= render :partial => 'group_table_element', :collection => @aggregate_root.table_positions, :locals => {:group => @aggregate_root} -%>
+        <%= render :partial => 'group_table_element', :collection => @aggregate.root.table_positions, :locals => {:group => @aggregate.root} -%>
     </div>
   </div>
-  <% if @group_table_rearrangable -%>
+  <% if @aggregate.is_rearrangable? -%>
     <div class="group_table_rearrangable">
       Teams with the same score can be rearranged using the arrows to the right.
     </div>
