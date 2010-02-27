@@ -9,7 +9,7 @@ module Predictable
       belongs_to :next, :class_name => "Predictable::Championship::Stage", :foreign_key => "next_stage_id"
 
       named_scope :knockout_stages, :conditions => {:description => ["Round of 16", "Quarter-finals", "Semi-finals", "Final"]}, :order => "id DESC"
-      named_scope :stages_to_delete_predictions_for_on_group_prediction_updates, :conditions => {:description => ["Quarter-finals", "Semi-finals", "Final"]}, :order => "id DESC"
+      named_scope :explicit_predicted_knockout_stages, :conditions => {:description => ["Quarter-finals", "Semi-finals", "Final"]}, :order => "id DESC"
 
       def self.from_permalink(permalink)
         description = ""
