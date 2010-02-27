@@ -112,15 +112,26 @@ module Prediction
       steps
     end
 
-    # TODO must also be performed when group tables are rearranged
+    GROUPS_AND_ROUND_OF_16_COMPLETED = 77
+
+    # any prediction for knockout stages should be invalidated if changing predictions
+    # for groups after having started predicting the knockout stages
     def delete_knockout_stage_predictions
+      items = get_predictable_items_for_explicit_predicted_knockout_stages
+      ActiveRecord::Base.transaction do
+        Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
+        self.percentage_completed = GROUPS_AND_ROUND_OF_16_COMPLETED
+        self.save!
+      end
+    end
+
+    def get_predictable_items_for_explicit_predicted_knockout_stages
       items = []
-      Predictable::Championship::Stage.stages_to_delete_predictions_for_on_group_prediction_updates.each do |stage|
+      Predictable::Championship::Stage.explicit_predicted_knockout_stages.each do |stage|
         set = Configuration::Set.find_by_description "Teams through to #{stage.description}"
         set.predictable_items.each {|item| items << item.id}
       end
-
-      Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
+      items
     end
   end
 end
