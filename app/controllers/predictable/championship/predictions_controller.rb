@@ -10,7 +10,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
     @aggregate = @repository.save    
     set_wizard_and_progress_for_current_user
     set_flash_message
-    render :action => :new
+    render :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
   end
 
   def update
@@ -39,15 +39,9 @@ class Predictable::Championship::PredictionsController < ApplicationController
     end
   end
 
-  def set_flash_message
-    
+  def set_flash_message    
     if not @aggregate.has_validation_errors?
-
-      # TODO refactor - send in current_user as local variable to template, giving message also for guest users (not logged in)
-      if current_user
-        flash.now[:notice] = render_to_string(:partial => 'successful_predictions_message',
-                                              :locals => {:state => current_user.prediction_summary.state})
-      end
+      flash.now[:notice] = render_to_string(:partial => 'successful_predictions_message')
     else
       flash.now[:alert] = "Invalid match results given."
     end
