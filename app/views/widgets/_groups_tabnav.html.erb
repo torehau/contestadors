@@ -39,7 +39,7 @@ render_tabnav :groups,
   #end
   #
   if @wizard
-    @wizard.all_available_steps[:group].each do |group_name|
+    @wizard.groups_available_for_prediction.each do |group_name|
       group = group_name.upcase
       add_tab do |t|
         t.named 'Group ' + group
@@ -49,10 +49,10 @@ render_tabnav :groups,
       end
     end
 
-    unless @wizard.all_available_steps[:stage].empty?
+    if @wizard.is_knockout_stages_available_for_prediction?
 
       menu_title = 'Knockout Stages'
-      stage_permalink = @aggregate.type.eql?(:stage) ? @aggregate.id : "round-of-16"
+      stage_permalink = @wizard.next_step
       add_tab do |t|
         t.named menu_title
         t.titled menu_title
