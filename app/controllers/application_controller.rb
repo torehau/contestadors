@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free World Cup Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller, :current_action
+  helper_method :current_user_session, :current_user, :current_controller, :current_action#, :url_for_current_user
   filter_parameter_logging :password, :password_confirmation
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -26,6 +26,13 @@ class ApplicationController < ActionController::Base
     def current_action
       request.path_parameters['action']
     end
+
+#    def url_for_current_user
+##      if current_user
+#        url_params = current_user.prediction_summary.url_params
+#        return predictions_url(url_params[:aggregate_root_type], url_params[:aggregate_root_type])
+##      end
+#    end
 
     def require_user
       unless current_user
