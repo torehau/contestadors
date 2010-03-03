@@ -81,6 +81,8 @@ module Predictable
         result = KnockoutStageResolver.new(@user).predicted_stages        
         @aggregate.all_predicted_roots = result[1]
         @root = result[0]
+        @aggregate.id = @root.permalink
+        @root
       end
     end
   end
