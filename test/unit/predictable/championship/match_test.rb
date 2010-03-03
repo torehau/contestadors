@@ -40,8 +40,8 @@ class Predictable::Championship::MatchTest < ActiveSupport::TestCase
     stage_to_matches = map_by_stage(matches)
     assert_equal 48, stage_to_matches["Group".to_sym].length
     assert_equal 8, stage_to_matches["Round of 16".to_sym].length
-    assert_equal 4, stage_to_matches["Quarter-finals".to_sym].length
-    assert_equal 2, stage_to_matches["Semi-finals".to_sym].length
+    assert_equal 4, stage_to_matches["Quarter finals".to_sym].length
+    assert_equal 2, stage_to_matches["Semi finals".to_sym].length
     assert_equal 1, stage_to_matches["Third place play-off".to_sym].length
     assert_equal 1, stage_to_matches["Final".to_sym].length
   end
