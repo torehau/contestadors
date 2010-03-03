@@ -1,8 +1,8 @@
 id,description,next_stage_id,created_at,updated_at
 5,Third place play-off,,,
 6,Final,5,,
-4,Semi-finals,6,,
-3,Quarter-finals,4,,
+4,Semi finals,6,,
+3,Quarter finals,4,,
 2,Round of 16,3,,
 1,Group,2,,
 

@@ -3,8 +3,8 @@ id,configuration_category_id,description,predictable_field,predictable_field_typ
 2,1,Scores,score,String,3
 3,2,Positions,team_id,Predictable::Championship::Team,3,,
 4,3,Team in Round of 16,team_id,Predictable::Championship::Team,4,,
-5,3,Team in Quarter-finals,team_id,Predictable::Championship::Team,6,,
-6,3,Team in Semi-finals,team_id,Predictable::Championship::Team,10,,
+5,3,Team in Quarter finals,team_id,Predictable::Championship::Team,6,,
+6,3,Team in Semi finals,team_id,Predictable::Championship::Team,10,,
 7,3,Team in Final,team_id,Predictable::Championship::Team,16,,
 8,4,Third Place,id,Predictable::Championship::Team,18,,
 9,4,Winner,id,Predictable::Championship::Team,32,,
