@@ -12,9 +12,9 @@
     <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => predicted, :selected => selected, :stage => stage} %>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} if i < max_index %>
   <% end -%>
-  <% if stage.description.eql?("Final") -%>
+  <% if stage.description.eql?("Third place play-off") -%>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
     <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label">Third Place</div>
-    <%= render :partial => 'stage_match', :locals => {:match => @aggregate.associated, :predicted => predicted} %>
+    <%= render :partial => 'stage_match', :locals => {:match => @aggregate.associated, :predicted => predicted, :selected => selected, :stage => stage} %>
   <% end -%>
 </div>
