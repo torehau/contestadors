@@ -4,17 +4,29 @@ module Prediction
     belongs_to :user, :class_name => "Core::User", :foreign_key => 'core_user_id'
     has_many :predictions, :through => :user
 
-    # wizard support accessors:
-    attr_accessor :current_step, :next_step, :all_available_steps
+    # wizard helpers
+    attr_accessor :current_step, :next_step
+    attr_accessor :groups_available_for_prediction, :is_knockout_stages_available_for_prediction
+    alias_method :is_knockout_stages_available_for_prediction?, :is_knockout_stages_available_for_prediction
+
 
     def after_initialize
-      update_wizard_accessors
+      update_wizard
     end
+
+    PROGRESS_WHEN_GROUPS_AND_ROUND_OF_16_PREDICTED  = 77
+    KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
+    KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
+                                                       'q'  => 'quarter-finals',
+                                                       's'  => 'semi-finals',
+                                                       'fi' => 'final',
+                                                       't'  => 'third-place'}
 
     state_machine :initial => :i do
 
-      after_transition [:r, :q, :s, :fi, :t] => :h, :do => :delete_knockout_stage_predictions
-
+      after_transition any => any, :do => :update_wizard
+      after_transition KNOCKOUT_STAGES => :h, :do => :delete_knockout_stage_predictions
+      
       from_state = :i
 
       ('a'..'h').each do |group_name|
@@ -22,97 +34,57 @@ module Prediction
         to_state = group_name.to_sym
 
         event event_name do
-          transition from_state => to_state, [:r, :q, :s, :fi, :t] => :h
+          transition from_state => to_state, KNOCKOUT_STAGES => :h
         end
         from_state = to_state
       end
 
-      event :predict_round_of_16 do
-        transition :h => :r
+      KNOCKOUT_STAGES.each do |to_state|
+        event_name = ('predict_' + KNOCKOUT_STAGE_ID_BY_STATE_NAME[to_state.to_s].gsub('-','_')).to_sym
+        
+        event event_name do
+          transition from_state => to_state
+        end
+        from_state = to_state
       end
-
-      event :predict_quarter_finals do
-        transition :r => :q
-      end
-
-      event :predict_semi_finals do
-        transition :q => :s
-      end
-
-      event :predict_final do
-        transition :s => :fi
-      end
-
-      event :predict_third_place do
-        transition :fi => :t
-      end
-
+      
     end
 
     def predict_group(name)
-      puts "predict group " + name
       send(('predict_group_' + name.downcase).to_sym)
-      update_wizard_accessors
     end
 
     def predict_stage(description)
       send(('predict_' + description.gsub(/ /, '_').downcase).to_sym)
-      update_wizard_accessors
     end
 
-    def url_params
-      aggregate_root_type, aggregate_root_id = "group", "A"
+  private
 
-      if ('a'..'h') === current_step
-        aggregate_root_id = current_step.upcase
+    def update_wizard
+      self.current_step = convert_to_wizard_step_id(state)
+      self.next_step = convert_to_wizard_step_id(get_next_possible_advanced_state)
+      self.groups_available_for_prediction = []
+      last_available_group = ('a'..'h') === self.next_step ? self.next_step : 'h'
+      ('a'..last_available_group).each{|group_name| self.groups_available_for_prediction << group_name}
+      self.is_knockout_stages_available_for_prediction = (not (('a'..'h') === self.next_step))
+    end
+
+    def get_next_possible_advanced_state
+      next_possible_state = nil
+      possible_transitions = state_transitions
+
+      if possible_transitions.size == 1
+        next_possible_state = possible_transitions.first.to
+      elsif possible_transitions.size > 1
+        next_possible_state = possible_transitions.select{|pt| not pt.event.to_s.include?("predict_group")}.first.to
       end
-      {:aggregate_root_type => aggregate_root_type, :aggregate_root_id => aggregate_root_id}
+      next_possible_state
     end
 
-    private
-
-    CURRENT_TO_NET_KNOCKOUT_STATE = {'h' => 'r',
-                                     'r' => 'q',
-                                     'q' => 's',
-                                     's' => 'f',
-                                     'f' => 't'}
-
-    def update_wizard_accessors
-      self.current_step = state
-      self.next_step = get_next_step
-      self.all_available_steps = get_all_available_steps
-    end
-
-    def get_next_step
-      return 'a' if state.eql?('i')
-      return state.succ if ('a'..'g') === state
-      CURRENT_TO_NET_KNOCKOUT_STATE[state]
-    end
-
-    def get_all_available_steps
-      steps = {:group => [], :stage => []}
-
-      if 'i'.eql?(state)
-        steps[:group] << 'a'
-      elsif ('a'..'g') === state
-        ('a'..state.succ).each{|step| steps[:group] << step}
-      else
-        ('a'..'h').each{|step| steps[:group] << step}
-
-        if 'h'.eql?(state)
-          steps[:stage] << 'r'
-        elsif 'r'.eql?(state)
-          steps[:stage].concat(['r', 'q'])
-        elsif 'q'.eql?(state)
-          steps[:stage].concat(['r', 'q', 's'])
-        else
-          steps[:stage].concat(['r', 'q', 's', 'f', 't'])
-        end
-      end
-      steps
-    end
-
-    GROUPS_AND_ROUND_OF_16_COMPLETED = 77
+    def convert_to_wizard_step_id(state_name)
+      return state_name unless KNOCKOUT_STAGE_ID_BY_STATE_NAME.has_key?(state_name)
+      KNOCKOUT_STAGE_ID_BY_STATE_NAME[state_name]
+    end        
 
     # any prediction for knockout stages should be invalidated if changing predictions
     # for groups after having started predicting the knockout stages
@@ -120,7 +92,7 @@ module Prediction
       items = get_predictable_items_for_explicit_predicted_knockout_stages
       ActiveRecord::Base.transaction do
         Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
-        self.percentage_completed = GROUPS_AND_ROUND_OF_16_COMPLETED
+        self.percentage_completed = PROGRESS_WHEN_GROUPS_AND_ROUND_OF_16_PREDICTED
         self.save!
       end
     end
