@@ -23,9 +23,9 @@ module Prediction
                                                        't'  => 'third-place'}
 
     state_machine :initial => :i do
-
-      after_transition any => any, :do => :update_wizard
+      
       after_transition KNOCKOUT_STAGES => :h, :do => :delete_knockout_stage_predictions
+      after_transition any => any, :do => :update_wizard
       
       from_state = :i
 
@@ -64,9 +64,9 @@ module Prediction
       self.current_step = convert_to_wizard_step_id(state)
       self.next_step = convert_to_wizard_step_id(get_next_possible_advanced_state)
       self.groups_available_for_prediction = []
-      last_available_group = ('a'..'h') === self.next_step ? self.next_step : 'h'
+      last_available_group = KNOCKOUT_STAGE_ID_BY_STATE_NAME.has_value?(self.next_step) ? 'h' : self.next_step
       ('a'..last_available_group).each{|group_name| self.groups_available_for_prediction << group_name}
-      self.is_knockout_stages_available_for_prediction = (not (('a'..'h') === self.next_step))
+      self.is_knockout_stages_available_for_prediction = KNOCKOUT_STAGE_ID_BY_STATE_NAME.has_value?(self.next_step)
     end
 
     def get_next_possible_advanced_state
