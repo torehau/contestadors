@@ -2,7 +2,11 @@ module Core
   class User < ActiveRecord::Base
     set_table_name("core_users")
     acts_as_authentic
-    has_one :prediction_summary, :class_name => "Prediction::Summary", :foreign_key => "core_user_id", :dependent => :destroy
+    has_many :prediction_summaries, :class_name => "Prediction::Summary", :foreign_key => "core_user_id", :dependent => :destroy do
+      def for_contest(contest)
+        find(:first, :conditions => {:configuration_contest_id => contest.id})
+      end
+    end
     has_many :predictions, :class_name => "Prediction::Base", :foreign_key => "core_user_id" do
       def for_item(item)
         find(:first, :conditions => {:configuration_predictable_item_id => item.id})
@@ -30,6 +34,10 @@ module Core
         find(:all, :conditions => {:predicted_value => predicted_values,
                                    :configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id}})
       end
+    end
+
+    def summary_of(contest)
+      prediction_summaries.for_contest(contest)
     end
 
     def predictions_for(set)
@@ -64,11 +72,19 @@ module Core
       predictions.by_predictable_item(set)
     end
 
-    protected
+  protected
 
     def after_create
-      self.build_prediction_summary
-      self.prediction_summary.save!
+      add_prediction_summary_for_available_contests
+    end
+
+    def add_prediction_summary_for_available_contests
+      Configuration::Contest.all_available.each do |contest|
+        summary = Prediction::Summary.new
+        summary.user = self
+        summary.contest = contest
+        summary.save!
+      end
     end
   end
 end
