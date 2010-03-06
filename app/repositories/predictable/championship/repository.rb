@@ -11,6 +11,8 @@ module Predictable
         @root = get_aggregate_root(@aggregate.id)
         @aggregate.root = @root
         @predictable_set = get_predictable_set
+        @contest = Configuration::Contest.find_by_permalink('championship')
+        @summary = @user.summary_of(@contest)
       end
 
       # retreives the aggregate with the predicted values, or default values if not
@@ -92,16 +94,20 @@ module Predictable
       # block returning the predicted value using the yielded predictable (e.g., match or table position instance)
       def save_prediction(item, existing_predictions_by_item_id, predictable_by_id)
         prediction = @new_predictions ? Prediction::Base.new : existing_predictions_by_item_id[item.id].first
-        prediction.core_user_id = @user.id if @new_predictions
-        prediction.configuration_predictable_item_id = item.id if @new_predictions
-        prediction.predicted_value = yield(predictable_by_id[item.predictable_id])
+        save_predicted_value(prediction, @new_predictions, item, yield(predictable_by_id[item.predictable_id]))
+      end
+
+      def save_predicted_value(prediction, is_new, item, value)
+        prediction.core_user_id = @user.id if is_new
+        prediction.configuration_predictable_item_id = item.id if is_new
+        prediction.predicted_value = value
         prediction.save!
       end
 
       def update_prediction_progress(percentage_delta)
         if @new_predictions
-          @user.prediction_summary.percentage_completed += percentage_delta
-          @user.prediction_summary.save!
+          @summary.percentage_completed += percentage_delta
+          @summary.save!
         end
       end
 
