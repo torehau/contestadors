@@ -1,1 +1,1 @@
-id,state,map,core_user_id,total_score,previous_score,previous_map,percentage_completed,created_at,updated_at
+id,state,map,core_user_id,configuration_contest_id,total_score,previous_score,previous_map,percentage_completed,created_at,updated_at
