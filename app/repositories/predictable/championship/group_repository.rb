@@ -27,10 +27,10 @@ module Predictable
 
           if [current_value, updated_value].include?(1)
             swap_stage_team_predictions_for_winner_and_runner_up
-            @user.prediction_summary.predict_group(@root.name)
+            @summary.predict_group(@root.name)
           elsif [current_value, updated_value].include?(2) and [current_value, updated_value].include?(3)
             set_current_third_place_group_position_as_runner_up_stage_team
-            @user.prediction_summary.predict_group(@root.name)
+            @summary.predict_group(@root.name)
           end
 
           prediction.predicted_value = updated_value.to_s
@@ -71,7 +71,7 @@ module Predictable
 
       def save_predictions_for_aggregate
         save_predictions_for_group
-        @user.prediction_summary.predict_group(@root.name)
+        @summary.predict_group(@root.name)
       end
 
       private
