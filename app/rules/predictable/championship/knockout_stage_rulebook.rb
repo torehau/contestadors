@@ -61,7 +61,7 @@ module Predictable
           retract v[:stage_team_prediction]
           retract v[:match]
 
-          predicted_stages[v[:stage].id] = v[:stage] unless predicted_stages.include?(v[:stage])
+          predicted_stages[v[:stage].id] = v[:stage] unless predicted_stages.has_key?(v[:stage].id)
         end
       end
     end
