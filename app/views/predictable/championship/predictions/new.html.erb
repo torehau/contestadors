@@ -1,6 +1,6 @@
 <div id="predictions">  
   <% form_for @aggregate.type, @aggregate.root,
-     :url => predictions_url(@aggregate.type.to_s, @aggregate.id) do |f| %>
+     :url => predictions_url(@contest.permalink, @aggregate.type.to_s, @aggregate.id) do |f| %>
     <%= render :partial => prediction_template(@aggregate.type), :locals => {:form => f} %>
   <% end -%>  
 </div>
