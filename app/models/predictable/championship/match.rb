@@ -40,6 +40,11 @@ module Predictable
         @winner.nil? ? @home_team.id : @winner.id
       end
 
+      def team_not_through_to_next_stage
+        return self.home_team unless self.home_team.is_through_to_next_stage?(self.stage)
+        self.away_team
+      end
+
       state_machine :initial => :unsettled do
 
         event :settle do
