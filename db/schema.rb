@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100215214028) do
+ActiveRecord::Schema.define(:version => 20100306075008) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -25,6 +25,8 @@ ActiveRecord::Schema.define(:version => 20100215214028) do
     t.datetime "participation_ends_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "wizard_type"
+    t.string   "permalink"
   end
 
   create_table "configuration_included_objectives", :force => true do |t|
@@ -173,14 +175,15 @@ ActiveRecord::Schema.define(:version => 20100215214028) do
 
   create_table "prediction_summaries", :force => true do |t|
     t.string   "state"
-    t.integer  "map",                  :default => 650
-    t.integer  "core_user_id",                          :null => false
-    t.integer  "total_score",          :default => 0
-    t.integer  "previous_score",       :default => 0
-    t.integer  "previous_map",         :default => 0
-    t.integer  "percentage_completed", :default => 0
+    t.integer  "map",                      :default => 650
+    t.integer  "core_user_id",                              :null => false
+    t.integer  "total_score",              :default => 0
+    t.integer  "previous_score",           :default => 0
+    t.integer  "previous_map",             :default => 0
+    t.integer  "percentage_completed",     :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "configuration_contest_id"
   end
 
   add_index "prediction_summaries", ["core_user_id"], :name => "index_prediction_summaries_on_core_user_id"
