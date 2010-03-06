@@ -1,5 +1,7 @@
 class Predictable::Championship::PredictionsController < ApplicationController
-  before_filter :init_aggregate, :set_repository
+  before_filter :set_contest
+  before_filter :init_aggregate
+  before_filter :set_repository
   
   def new
     @aggregate = @repository.get
@@ -20,6 +22,10 @@ class Predictable::Championship::PredictionsController < ApplicationController
 
   protected
 
+  def set_contest
+    @contest = Configuration::Contest.find_by_permalink(params[:contest])
+  end
+
   def init_aggregate
     @aggregate = Predictable::Championship::Aggregate.new(current_user, params)
   end
@@ -34,7 +40,7 @@ class Predictable::Championship::PredictionsController < ApplicationController
 
   def set_wizard_and_progress_for_current_user
     if current_user
-      @wizard = current_user.prediction_summary
+      @wizard = current_user.summary_of(@contest)
       @progress = @wizard.percentage_completed
     end
   end
