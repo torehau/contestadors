@@ -36,9 +36,9 @@ module Predictable::Championship::PredictionsControllerHelper
 
     if ('a'...'h') === wizard.current_step
       next_group = wizard.next_step.upcase
-      message += "#{link_to('Group ' + next_group, new_prediction_path('group', next_group))}."
+      message += "#{link_to('Group ' + next_group, new_prediction_path('championship','group', next_group))}."
     elsif 'h'.eql?(wizard.current_step)
-      message += "#{link_to('Round of 16', new_prediction_path('stage', 'round-of-16'))}."
+      message += "#{link_to('Round of 16', new_prediction_path('championship', 'stage', 'round-of-16'))}."
     end
     message
   end
