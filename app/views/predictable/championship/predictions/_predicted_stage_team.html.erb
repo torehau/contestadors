@@ -1,4 +1,4 @@
-<div class="<%= (selected == false and team.through_to_next_stage(current_stage) == false) ? "losing_" : ""%>knockout_stage_team">
+<div class="<%= (selected == false and team.is_through_to_next_stage?(current_stage) == false) ? "losing_" : ""%>knockout_stage_team">
   <div class="team_icon">
     <%= image_tag("/images/flags/"+ team.country_flag+ ".png") %>
   </div><%= team.name %>
