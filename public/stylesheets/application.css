@@ -453,22 +453,22 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	padding: 0px;
 }
 
-.groups_tabnav {
+.predictions_tabnav {
 	color: #000;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;}
 
-.groups_tabnav ul {
+.predictions_tabnav ul {
 	margin: 0px;
 	padding: 2px 0px 0px 0px;
 }
 
-.groups_tabnav li {
+.predictions_tabnav li {
 	display: inline;
 	overflow: hidden;
 	list-style-type: none; }
 
-.groups_tabnav li span.disabled {
+.predictions_tabnav li span.disabled {
         color: #888888;
         background: #FAFAFA;
         border-bottom: none;
@@ -476,7 +476,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
         margin: 0;
         text-decoration: none;}
 
-.groups_tabnav a, groups_tabnav a.active {
+.predictions_tabnav a, predictions_tabnav a.active {
 	color: #f0542b;
 	background: #eeeeee;
 	font-weight: bold;
@@ -484,18 +484,18 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	margin: 5px 0px 0px 0px;
 	text-decoration: none; }
 
-.groups_tabnav a.active {
+.predictions_tabnav a.active {
 	color: #000000;
         background: #eeeeee; }
 
-.groups_tabnav a:hover {
+.predictions_tabnav a:hover {
 	color: #41686a;
 	background: #CCCCCC; }
 
 /*.groups_tabnav a:visited {
 	color: #000000; }*/
 
-.groups_tabnav a.active:hover {
+.predictions_tabnav a.active:hover {
 	color: #000000; }
 
 /* Spiffy/rounded corners styling*/
