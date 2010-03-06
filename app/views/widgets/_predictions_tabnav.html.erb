@@ -1,0 +1,14 @@
+<% render_tabnav :predictions, :generate_css => false do
+  
+    if @wizard
+      @wizard.all_available_steps.each do |step|
+        add_tab do |t|
+          t.named step.label
+          t.titled step.label
+          t.links_to new_prediction_path(@contest.permalink, step.type, step.id)
+          t.highlights_on :aggregate_root_id => step.id
+        end
+      end
+    end
+  end
+%>
