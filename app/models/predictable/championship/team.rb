@@ -19,7 +19,7 @@ module Predictable
         home_matches + away_matches
       end
 
-      def through_to_next_stage(current_stage)
+      def is_through_to_next_stage?(current_stage)
         self.through_to_stage.include?(current_stage.next.id)
       end
     end
