@@ -28,7 +28,10 @@ render_tabnav :main,
   add_tab do |t|
     t.named 'Predictions'
     t.titled 'Predictions'
-    t.links_to new_prediction_path("group", "A")
+    t.links_to new_prediction_path("championship", "group", "A")
+    # TODO helper method to build path if @contest and @wizard are set:
+    #t.links_to new_prediction_path(@contest.permalink, @wizard.current_step.type, @wizard.current_step.id)
+    #t.links_to new_prediction_path("group", "A")
     t.highlights_on :controller => "predictable/championship/predictions"
   end
 
