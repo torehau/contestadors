@@ -9,10 +9,16 @@ class Predictable::Championship::PredictionsController < ApplicationController
   end
 
   def create
-    @aggregate = @repository.save    
+    @aggregate = @repository.save
     set_wizard_and_progress_for_current_user
-    set_flash_message
-    render :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
+
+    if @aggregate.type.eql?(:group)      
+      set_flash_message(true)
+      render :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
+    else
+      set_flash_message
+      redirect_to :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
+    end
   end
 
   def update
@@ -45,11 +51,14 @@ class Predictable::Championship::PredictionsController < ApplicationController
     end
   end
 
-  def set_flash_message    
-    if not @aggregate.has_validation_errors?
-      flash.now[:notice] = render_to_string(:partial => 'successful_predictions_message')
+  def set_flash_message(flash_now=false)
+    message_type = @aggregate.has_validation_errors? ? :alert : :notice
+    message = message_type.eql?(:alert) ? "Invalid match results given." : render_to_string(:partial => 'successful_predictions_message')
+
+    if flash_now
+      flash.now[message_type] = message
     else
-      flash.now[:alert] = "Invalid match results given."
+      flash[message_type] = message
     end
   end
 end
