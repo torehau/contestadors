@@ -4,6 +4,8 @@ module Configuration
     belongs_to :set, :class_name => "Configuration::Set", :foreign_key => 'configuration_set_id'
     has_many :predictions, :class_name => "Core::Prediction", :foreign_key => "configuration_predictable_item_id"
 
+    delegate :description, :to => :set
+
     # returns the proxied object instance if the predictable_id is different from 0,
     # otherwise all instances of the predictable type is returned
     def predictable
