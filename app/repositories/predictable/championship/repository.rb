@@ -12,7 +12,7 @@ module Predictable
         @aggregate.root = @root
         @predictable_set = get_predictable_set
         @contest = Configuration::Contest.find_by_permalink('championship')
-        @summary = @user.summary_of(@contest)
+        @summary = @user.summary_of(@contest) if @user
       end
 
       # retreives the aggregate with the predicted values, or default values if not
