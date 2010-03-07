@@ -8,8 +8,8 @@ module Predictable
       attr_accessor :user
       # the type of the aggregate root, curently supported :group and :stage
       attr_accessor :type
-      # the aggregate root identifier and object
-      attr_accessor :id, :root
+      # the aggregate root object
+      attr_accessor :root
       # hash of new or updated predicted values keyed by the predictable id (e.g., match id)
       attr_accessor :new_predictions, :has_existing_predictions
       # group aggregate specific accessors
@@ -29,6 +29,20 @@ module Predictable
         @has_existing_predictions = false
       end
 
+      def id
+        id = @id
+
+        if @root
+
+          if @type.eql?(:stage)
+            id = @root.permalink
+          elsif @type.eql?(:group)
+            id = @root.name
+          end
+        end
+        id
+      end
+
       def set_root_from_existing_predictions(root)
         if root
           @root = root
@@ -41,7 +55,6 @@ module Predictable
       end
 
       # to check whether there are no prior predictions for this aggregate
-      # FIXME has no information about existing predictions for the user
       def is_new_predictions?
         (@has_existing_predictions == false and @has_new_predictions == true)
       end
