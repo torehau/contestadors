@@ -3,7 +3,7 @@ module Predictable
     class KnockoutStageRulebook < Ruleby::Rulebook
 
       def rules(predicted_stages)
-        rule :resolve_match_home_teams, {:priority => 2},
+        rule :resolve_match_home_teams, {:priority => 3},
            [Predictable::Championship::Stage, :stage,
              {m.id => :stage_id}],
            [Predictable::Championship::Match, :match,
@@ -32,7 +32,7 @@ module Predictable
           modify v[:match]
         end
 
-        rule :resolve_match_away_teams, {:priority => 1},
+        rule :resolve_match_away_teams, {:priority => 2},
            [Predictable::Championship::Stage, :stage,
              {m.id => :stage_id}],
            [Predictable::Championship::Match, :match,
@@ -59,9 +59,28 @@ module Predictable
           retract v[:stage_team]
           retract v[:stage_team_item]
           retract v[:stage_team_prediction]
-          retract v[:match]
+          modify v[:match]
 
           predicted_stages[v[:stage].id] = v[:stage] unless predicted_stages.has_key?(v[:stage].id)
+        end
+
+        {"Final" => "Winner Team", "Third Place" => "Third Place Team"}.each do |match_descr, set_descr|
+
+          rule :resolve_match_winner, {:priority => 1},
+             [Predictable::Championship::Match, :match,
+                m.description == match_descr],
+             [Configuration::PredictableItem, :stage_team_item,
+                m.description == set_descr,
+                m.predictable_id == nil,
+               {m.id => :winner_item_id}],
+             [Prediction::Base, :winner_prediction,
+                m.configuration_predictable_item_id == b(:winner_item_id),
+               {m.predicted_value => :team_id}],
+           [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
+
+            v[:match].winner = v[:team]
+            puts "Winner of " + v[:match].description + ": " + v[:match].winner.name
+          end
         end
       end
     end
