@@ -33,6 +33,7 @@ module Predictable
       def save
         @root = build_aggregate_root_from_new_predictions
         @validation_errors = validate(@root)
+        @aggregate.root = @root
 
         if @user and @validation_errors.empty?
           begin
@@ -43,8 +44,7 @@ module Predictable
         else
           @aggregate.validation_errors = @validation_errors
         end
-        @aggregate.has_existing_predictions = !@new_predictions
-        @aggregate.root = @root
+        @aggregate.has_existing_predictions = !@new_predictions        
         @aggregate
       end
 
@@ -78,10 +78,8 @@ module Predictable
       # predictable instances (e.g., match or table position) keyed by the corresponding ids.
       # The invoker must pass in a block returning the value to be predicted on the predictable instance.
       def save_predictions(predictable_items, predictables_by_id)
-        unless @new_predictions
-          existing_predictions_by_item_id = @user.predictions.for_items_by_item_id(predictable_items)
-          @new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
-        end
+        existing_predictions_by_item_id = @user.predictions.for_items_by_item_id(predictable_items)
+        @new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
 
         predictable_items.each do |item|
           save_prediction(item, existing_predictions_by_item_id, predictables_by_id) do |predictable|
