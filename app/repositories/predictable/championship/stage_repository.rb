@@ -31,8 +31,9 @@ module Predictable
         stage_from_new_predictions(@aggregate.new_predictions)
       end
 
+      # no validation should be necessary, since matches in the knockout stages is predicted
+      # using radion buttons, which by default checks the home team if no predictions already exists
       def validate(predicted_aggregate_root)
-        # TODO should validation be performed in this case? Can input from radio buttons be manipulated?
         {}
       end
 
@@ -42,10 +43,11 @@ module Predictable
           @stage_teams_set = Configuration::Set.find_by_description "Teams through to #{@root.next.description}"
           save_predictions_for_stage(stage_teams_by_id)
           @summary.predict_stage(@root.description)
+          @aggregate.root = @root.next
         else
           save_final_and_third_place_play_off_winners
         end
-        stage_from_existing_predictions
+        @aggregate
       end
 
       private
@@ -54,8 +56,7 @@ module Predictable
         @winners = {}
         predicted_winners_by_match_id.each do |match_id, match|
           @winners[match_id.to_i] = Predictable::Championship::Team.find(match[:winner].to_i)
-        end
-        
+        end        
         @root.matches.each{|match| match.winner = @winners[match.id]}
         @root
       end
@@ -72,13 +73,10 @@ module Predictable
 
       # saves the predicted stage teams for the current user.
       def save_predictions_for_stage(stage_teams_by_id)
-        # TODO is this needed here?
         Prediction::Base.transaction do
-
           save_predictions(@stage_teams_set.predictable_items, stage_teams_by_id) do |stage_team|
             stage_team.team.id.to_s
           end
-
           update_prediction_progress(PERCENTAGE_COMPLETED_FOR_STAGE)
         end
       end
@@ -94,7 +92,6 @@ module Predictable
         winner = @winners[match.id]
         winner_set = Configuration::Set.find_by_description set_descr
         predictable_items = winner_set.predictable_items
-        # TODO duplication from save_predictions
         existing_predictions_by_item_id = @user.predictions.for_items_by_item_id(predictable_items)
         @new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
         item = predictable_items.first
@@ -105,28 +102,8 @@ module Predictable
       end
 
       def stage_from_existing_predictions        
-        result = KnockoutStageResolver.new(@user).predicted_stages        
-        @aggregate.all_predicted_roots = result[1]        
-        @root = result[0]                
-        @aggregate.id = @root.permalink
-        resolve_third_place_play_off if is_semi_finals_predicted?
-        @root
-      end
-
-      def is_semi_finals_predicted?
-        @aggregate.all_predicted_roots.size > 2
-      end
-
-      def resolve_third_place_play_off
-        semi_final_defeated_teams = []
-
-        semi_finals_stage = Predictable::Championship::Stage.find_by_description("Semi finals")
-        @aggregate.all_predicted_roots[semi_finals_stage.id].matches.each {|match| semi_final_defeated_teams << match.team_not_through_to_next_stage}
-
-        if semi_final_defeated_teams.size == 2
-          @aggregate.associated.home_team = semi_final_defeated_teams[0]
-          @aggregate.associated.away_team = semi_final_defeated_teams[1]
-        end
+        @aggregate = KnockoutStageResolver.new(@aggregate).predicted_stages
+        @aggregate.root
       end
     end
   end
