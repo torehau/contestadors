@@ -6,10 +6,10 @@ module Predictable
 
       def initialize(aggregate)
         @aggregate = aggregate
-        @@stages ||= Predictable::Championship::Stage.knockout_stages
-        @@teams ||= Predictable::Championship::Team.find(:all)        
-        @@predictable_items ||= stage_predictable_items
-        @predictions = @aggregate.user.predictions.for_items(@@predictable_items)
+        @stages = Predictable::Championship::Stage.knockout_stages
+        @teams = Predictable::Championship::Team.find(:all)        
+        @predictable_items = stage_predictable_items
+        @predictions = @aggregate.user.predictions.for_items(@predictable_items)
         @third_place_play_off = @aggregate.associated
       end
 
@@ -19,15 +19,15 @@ module Predictable
         engine :predicted_stage_matches do |e|
           KnockoutStageRulebook.new(e).rules(@predicted_stages)
 
-          @@teams.each {|team| e.assert team}
-          @@stages.each do |stage|
+          @teams.each {|team| e.assert team}
+          @stages.each do |stage|
             stage.matches.each {|stage_match| e.assert stage_match}
             stage.stage_teams.each {|stage_team| e.assert stage_team}
             e.assert stage
           end
           
           @predictions.each{|prediction| e.assert prediction}
-          @@predictable_items.each{|item| e.assert item}
+          @predictable_items.each{|item| e.assert item}
           e.assert @third_place_play_off
           
           e.match
