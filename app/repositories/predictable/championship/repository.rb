@@ -19,8 +19,6 @@ module Predictable
       # been predicted by the user (or if no user is specified, i.e., not signed in
       # guest user)
       def get
-        @existing_predicted_root = nil
-
         if @user and has_existing_predictions?
           @aggregate.set_root_from_existing_predictions(build_aggregate_root_from_existing_predictions)
         end
