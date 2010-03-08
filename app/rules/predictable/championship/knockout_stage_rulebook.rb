@@ -79,7 +79,6 @@ module Predictable
            [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
             v[:match].winner = v[:team]
-            puts "Winner of " + v[:match].description + ": " + v[:match].winner.name
           end
         end
       end
