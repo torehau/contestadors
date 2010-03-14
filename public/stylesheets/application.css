@@ -549,7 +549,8 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 }
 
 .selected_knockout_stage_label {
-  width: 200px;
+  width: 197px;
+  padding-right: 3px;
   margin: 0px 0px 10px 0px;
   height: 17px;
   border: 1px #88c6cf solid;
@@ -561,8 +562,9 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 }
 
 .knockout_stage_label {
-  width: 200px;
+  width: 197px;
   margin: 0px 0px 10px 0px;
+  padding-right: 3px;
   height: 17px;
   border: 1px #ccc solid;
   background: #ddd;
@@ -570,6 +572,23 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   font-weight: bold;
   text-align: center;
   float: left;
+}
+
+.knockout_stage_edit_options {
+   /*margin-right: 5px;*/
+   float: right;
+}
+
+.knockout_stage_operations {
+  width: 200px;
+  margin: 0px 0px 2px 0px;
+  height: 18px;
+  min-height: 25px;
+  float: left;
+}
+
+.knockout_stage_operations input {
+  float: right;
 }
 
 .knockout_stage_match_container {
@@ -626,6 +645,16 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   text-align: left;
 }
 
+.invalidated_knockout_stage_team {
+  width: 200px;
+  float: left;
+  height: 23px;
+  border-bottom: 1px #88c6cf solid;
+  background: #ddd;
+  color: black;
+  text-align: left;
+}
+
 .knockout_stage_team_selection {
     float: right;
     border-left: 1px #88c6cf solid;
@@ -677,8 +706,8 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .knockout_stage_matches_spacer_3 {
    width: 200px;
-   height: 34px;
-   min-height: 34px;
+   height: 35px;
+   min-height: 35px;
    overflow: hidden;
    float: right;
    display: block;
