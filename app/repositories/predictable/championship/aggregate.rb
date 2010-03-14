@@ -15,7 +15,7 @@ module Predictable
       # group aggregate specific accessors
       attr_accessor :operation, :command, :member_id 
       # stage aggregate specific
-      attr_accessor :all_roots, :all_predicted_roots, :associated
+      attr_accessor :all_roots, :all_predicted_roots, :all_invalidated_roots, :associated
 
       def initialize(user, params)
         @user = user        
@@ -27,6 +27,7 @@ module Predictable
         @new_predictions = params[@type] ? params[@type][:new_predictions] : nil
         @has_new_predictions = (@new_predictions and not @new_predictions.empty?)
         @has_existing_predictions = false
+        @all_invalidated_roots = []
       end
 
       def id
@@ -73,6 +74,11 @@ module Predictable
 
       def has_validation_error_for?(predictable_id)
         (has_validation_errors? and @validation_errors.has_key?(predictable_id))
+      end
+
+      def is_editing_existing_predictions?
+        return false unless @operation
+        'edit'.eql?(@operation)
       end
     end
   end
