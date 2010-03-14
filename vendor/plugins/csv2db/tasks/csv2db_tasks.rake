@@ -28,4 +28,8 @@ namespace :csv2db do
     end
   end
 
+  desc "Load new users from the corresponding CSV file to the database"
+  task(:add_users => :environment) do
+    Core::User.load_from_csv
+  end
 end
