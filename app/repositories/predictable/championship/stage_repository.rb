@@ -2,7 +2,7 @@ module Predictable
   module Championship
     class StageRepository < Repository
       # TODO configure this on the set or somehthing
-      PERCENTAGE_COMPLETED_FOR_STAGE = 5 
+      PERCENTAGE_COMPLETED_FOR_STAGE = 7
 
       def initialize(aggregate=nil)
         super(aggregate)
