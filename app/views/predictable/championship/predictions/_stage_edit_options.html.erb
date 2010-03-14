@@ -1,0 +1,7 @@
+<div class="knockout_stage_edit_options">
+  <% if selected == true -%>
+    <%= link_to_function "Save","javascript:document.getElementById(\"stage_form\").submit();return false" %>
+  <% elsif predicted == true -%>
+    <%= link_to "Edit", edit_prediction_path(:aggregate_root_type => "stage", :aggregate_root_id => stage.permalink, :id => stage.id) %>
+  <% end -%>
+</div>

@@ -2,19 +2,23 @@
 # Displays the matches of the given stage in a column
 %>
 <div class="knockout_stage_container">
-  <% selected = @aggregate.root.description.eql?(stage.description) -%>
-  <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label"><%= stage.description  %></div>
+  <% selected = is_stage_selected?(stage, @aggregate, @wizard) -%>
+  <% predicted_stage = @aggregate.all_predicted_roots[stage.id]; predicted = !predicted_stage.nil? -%>
+  <% invalidated = @aggregate.all_invalidated_roots.include?(stage.id) -%>
+  <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label">
+    <%= stage.description  %>
+    <%= render :partial => 'stage_edit_options', :locals => {:stage => stage, :selected => selected, :predicted => predicted} %>
+  </div>
   <%= render :partial => 'next_stage_qualification', :locals => {:stage => stage} %>
-  <%= render :partial => 'stage_matches_top_spacing', :locals => {:stage => stage} %>
-  <% predicted_stage = @aggregate.all_predicted_roots[stage.id]; predicted = !predicted_stage.nil? %>
+  <%= render :partial => 'stage_matches_top_spacing', :locals => {:stage => stage} %>  
   <% matches = predicted ? predicted_stage.matches : stage.matches; max_index = matches.size - 1 -%>
   <% matches.sort{|a, b| a.rank <=> b.rank}.each_with_index do |match, i| -%>
-    <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => predicted, :selected => selected, :stage => stage} %>
+    <%= render :partial => 'stage_match', :locals => {:match => match, :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} if i < max_index %>
   <% end -%>
   <% if stage.description.eql?("Final") -%>
     <%= render :partial => 'stage_matches_spacing', :locals => {:stage => stage} %>
     <div class="<%= selected == true ? "selected_" : ""%>knockout_stage_label">Third Place</div>
-    <%= render :partial => 'stage_match', :locals => {:match => @aggregate.associated, :predicted => predicted, :selected => selected, :stage => stage} %>
+    <%= render :partial => 'stage_match', :locals => {:match => @aggregate.associated, :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
   <% end -%>
 </div>
