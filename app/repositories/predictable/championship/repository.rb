@@ -103,6 +103,7 @@ module Predictable
       def update_prediction_progress(percentage_delta)
         if @new_predictions
           @summary.percentage_completed += percentage_delta
+          @summary.percentage_completed = 100 if @summary.percentage_completed > 100
           @summary.save!
         end
       end
