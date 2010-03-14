@@ -34,7 +34,10 @@ module Predictable
         end
 
         @aggregate.all_predicted_roots = @predicted_stages
-        @root = last_predicted_stage
+        
+        if @aggregate.is_editing_existing_predictions?
+          @aggregate.all_invalidated_roots = get_stages_invalidated_by_edit
+        end
         resolve_third_place_play_off if is_semi_finals_predicted?
         @aggregate
       end
@@ -43,6 +46,17 @@ module Predictable
 
       def stage_predictable_items
         ["Stage Teams", "Specific Team"].collect{|category_descr| Configuration::Category.find_by_description(category_descr)}.collect{|category| category.predictable_items}.flatten
+      end
+
+      def get_stages_invalidated_by_edit
+        invalidated_stage = []
+        current_stage = @aggregate.root
+
+        while current_stage.next do
+          invalidated_stage << current_stage.next.id
+          current_stage = current_stage.next
+        end
+        invalidated_stage
       end
 
       def last_predicted_stage
