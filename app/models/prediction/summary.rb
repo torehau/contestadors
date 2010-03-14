@@ -12,7 +12,6 @@ module Prediction
       update_wizard
     end
 
-    PROGRESS_WHEN_GROUPS_AND_ROUND_OF_16_PREDICTED  = 77
     LAST_GROUP_ID                                   = 'h'
     KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
     KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
@@ -20,11 +19,20 @@ module Prediction
                                                        's'  => 'semi-finals',
                                                        'fi' => 'final',
                                                        't'  => 'third-place'}
+    PERCENTAGE_COMPLETED_BY_STATE_NAME              = {'h'  => 77,
+                                                       'r'  => 82,
+                                                       'q'  => 88,
+                                                       's'  => 92,
+                                                       'fi' => 97,
+                                                       't'  => 100}
 
     state_machine :initial => :i do
       
-      after_transition KNOCKOUT_STAGES => :h, :do => :delete_knockout_stage_predictions
-      after_transition any => any, :do => :update_wizard
+      after_transition KNOCKOUT_STAGES => :h,
+                       [:q, :s, :fi, :t] => :r,
+                       [:s, :fi, :t] => [:r, :q],
+                       [:t] => [:r, :q, :s], :do => :delete_knockout_stage_predictions
+      after_transition any => any - :fi, :do => :update_wizard
       
       from_state = :i
 
@@ -42,7 +50,7 @@ module Prediction
         event_name = ('predict_' + KNOCKOUT_STAGE_ID_BY_STATE_NAME[to_state.to_s].gsub('-','_')).to_sym
         
         event event_name do
-          transition from_state => to_state
+          transition from_state => to_state, KNOCKOUT_STAGES => to_state
         end
         from_state = to_state
       end
@@ -57,11 +65,21 @@ module Prediction
       send(('predict_' + description.gsub(/ /, '_').downcase).to_sym)
     end
 
+    def is_completed?
+      'completed'.eql?(self.current_step)
+    end
+
   private
 
     def update_wizard
       self.current_step = convert_to_wizard_step_id(state)
-      self.next_step = convert_to_wizard_step_id(get_next_possible_advanced_state)
+
+      if 'third-place'.eql?(self.current_step)
+        self.current_step = 'completed'
+        self.next_step = nil
+      else
+        self.next_step = get_next_possible_advanced_state
+      end
       self.all_available_steps = collect_available_steps
     end
 
@@ -72,13 +90,16 @@ module Prediction
 
     def get_next_possible_advanced_state
       next_possible_state = nil
-      possible_transitions = state_transitions
 
-      if possible_transitions.size == 1
-        next_possible_state = possible_transitions.first.to
-      elsif possible_transitions.size > 1
-        knockout_stage_transitions = possible_transitions.select{|pt| not pt.event.to_s.include?("predict_group")}
-        next_possible_state = knockout_stage_transitions.empty? ? nil : knockout_stage_transitions.first.to
+      if 'i'.eql?(self.current_step)
+        next_possible_state = 'a'
+      elsif %w{a b c d e f g}.include?(self.current_step)
+        next_possible_state = self.current_step.succ
+      elsif 'h'.eql?(self.current_step)
+        next_possible_state = 'round-of-16'
+      else
+        next_stage = Predictable::Championship::Stage.from_permalink(self.current_step).next
+        next_possible_state = next_stage ? next_stage.permalink : nil
       end
       next_possible_state
     end
@@ -103,25 +124,43 @@ module Prediction
     # for groups after having started predicting the knockout stages
     def delete_knockout_stage_predictions
       items = get_predictable_items_for_predictions_to_delete
-      
-      ActiveRecord::Base.transaction do
-        Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
-        self.percentage_completed = PROGRESS_WHEN_GROUPS_AND_ROUND_OF_16_PREDICTED
-        self.save!
+
+      unless items.empty?
+        ActiveRecord::Base.transaction do
+          Prediction::Base.delete_all(["core_user_id = ? and configuration_predictable_item_id in (?)", user.id, items])
+          self.percentage_completed = PERCENTAGE_COMPLETED_BY_STATE_NAME[state]
+          self.save!
+        end
       end
     end
 
     def get_predictable_items_for_predictions_to_delete
       items = []
-      Predictable::Championship::Stage.explicit_predicted_knockout_stages.each do |stage|
+      stages = get_stages_to_delete_predictions_for
+      return items if stages.empty?
+
+      stages.each do |stage|
         set = Configuration::Set.find_by_description "Teams through to #{stage.description}"
-        set.predictable_items.each {|item| items << item.id}
+        set.predictable_items.each {|item| items << item.id} if set
       end
       set = Configuration::Set.find_by_description "Third Place Team"
       items << set.predictable_items.first.id
       set = Configuration::Set.find_by_description "Winner Team"
       items << set.predictable_items.first.id
       items
+    end
+
+    def get_stages_to_delete_predictions_for
+      stages_predicted_explicitly = Predictable::Championship::Stage.explicit_predicted_knockout_stages
+      return stages_predicted_explicitly unless KNOCKOUT_STAGE_ID_BY_STATE_NAME.has_key?(state)
+      current_stage = Predictable::Championship::Stage.from_permalink(KNOCKOUT_STAGE_ID_BY_STATE_NAME[state])
+      next_stage = current_stage.next
+      stages = []
+      while next_stage.next do
+        stages << next_stage.next
+        next_stage = next_stage.next
+      end
+      stages
     end
   end
 end
