@@ -15,6 +15,25 @@ module Predictable::Championship::PredictionsControllerHelper
     message
   end
 
+  def is_stage_selected?(stage, aggregate, wizard)
+    return false unless (aggregate.root.description.eql?(stage.description))
+    if wizard.is_completed?
+      return false unless aggregate.is_editing_existing_predictions?
+    end
+    true
+  end
+
+  def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
+    div_class_prefix = ""
+
+    if invalidated == true
+      div_class_prefix += "invalidated_"
+    elsif selected == false and not is_match_winner
+      div_class_prefix += "losing_"
+    end
+    div_class_prefix + "knockout_stage_team"
+  end
+
   private
 
   def successful_prediction_message_for_guest_user
@@ -38,12 +57,13 @@ module Predictable::Championship::PredictionsControllerHelper
       next_group = wizard.next_step.upcase
       message += "#{link_to('Group ' + next_group, new_prediction_path('championship','group', next_group))}."
     elsif 'h'.eql?(wizard.current_step)
-      message += "#{link_to('Round of 16', new_prediction_path('championship', 'stage', 'round-of-16'))}."
+      message += "the #{link_to('Knockout Stages', new_prediction_path('championship', 'stage', 'round-of-16'))}."
     end
     message
   end
 
   def successful_stage_prediction_message(aggr_id, new_predictions, wizard)
-    "Stage #{wizard.current_step.gsub('-',' ').capitalize}. "
+    return "the Final and the Third Place Play-off match. Your championship predictions are now completed, but can be edited." if wizard.is_completed?
+    "the #{wizard.current_step.gsub('-',' ').capitalize}. "
   end
 end
