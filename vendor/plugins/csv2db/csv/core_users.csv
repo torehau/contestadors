@@ -1,3 +1,6 @@
 id,email,name,password,password_confirmation,created_at,updated_at
 1,torehau@hotmail.com,Tore Hauge,changeit,changeit,,
 2,ronnya@acm.org,Ronny Arild,changeit,changeit,,
+3,torkell_dobbe@hotmail.com,Torkell Dobbe,changeit,changeit,,
+4,havardskan@yahoo.no,Håvard Skånlund,changeit,changeit,,
+5,geirhauge@hotmail.com,Geir Hauge,changeit,changeit,,
