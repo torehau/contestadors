@@ -17,8 +17,13 @@ class Predictable::Championship::PredictionsController < ApplicationController
       render :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
     else
       set_flash_message
-      redirect_to :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
+      aggregate_root_id = @wizard.is_completed? ? 'completed' : @aggregate.id
+      redirect_to :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => aggregate_root_id
     end
+  end
+
+  def edit
+    redirect_to :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id, :operation => 'edit'
   end
 
   def update
