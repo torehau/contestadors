@@ -48,8 +48,7 @@ module Csv2Db
           if row and row.length > 0 and row.include?(:id)
             csv_id = row.field(:id)
             instance = create_new_instance_from_row(dependencies, row, substitute_values)
-            instance.save!
-            @csv_id_to_db_id_map[csv_id] = instance.id
+            save_if_valid(instance, csv_id)
           end
         end
         puts @csv_id_to_db_id_map.length.to_s + " new entries stored in table: " + self.table_name
@@ -107,6 +106,13 @@ module Csv2Db
           end
         end
         return instance
+      end
+
+      def save_if_valid(instance, csv_id)
+        if instance.valid?
+          instance.save!
+          @csv_id_to_db_id_map[csv_id] = instance.id
+        end
       end
 
       # Contestadors specific method assuming the class with a predictable_id column to have a predictable_table
