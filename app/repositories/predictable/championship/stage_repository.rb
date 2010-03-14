@@ -15,8 +15,8 @@ module Predictable
 
       def get_aggregate_root(aggregate_root_id)
         aggregate_root_id ||="round-of-16"
-        aggregate_root_id = "final" if aggregate_root_id.eql?("third-place")
-        Stage.from_permalink(aggregate_root_id)
+        aggregate_root_id = "final" if aggregate_root_id.eql?("completed")
+        Stage.from_permalink(aggregate_root_id)        
       end
 
       def get_predictable_set
@@ -28,7 +28,7 @@ module Predictable
       end
 
       def build_aggregate_root_from_new_predictions
-        stage_from_new_predictions(@aggregate.new_predictions)
+        stage_from_new_predictions(@aggregate.new_predictions)        
       end
 
       # no validation should be necessary, since matches in the knockout stages is predicted
