@@ -1,7 +1,6 @@
 module Predictable
   module Championship
     class GroupRepository < Repository
-      PERCENTAGE_COMPLETED_FOR_GROUP = 9
 
       # sets the user for which the predictions belongs, the group and the prediction sets
       # defining this aggregate of predictions
@@ -23,7 +22,7 @@ module Predictable
         updated_value = @aggregate.command.eql?(:up) ? (current_value - 1) : (current_value + 1)
         prediction_to_swap_value_with = @user.prediction_with_value(updated_value.to_s, @group_table_set)
 
-        Prediction::Base.transaction do
+        Prediction.transaction do
 
           if [current_value, updated_value].include?(1)
             swap_stage_team_predictions_for_winner_and_runner_up
@@ -116,7 +115,7 @@ module Predictable
 
       # saves the predicted group matches and table position for the current user.
       def save_predictions_for_group
-        Prediction::Base.transaction do
+        Prediction.transaction do
           
           save_predictions(@predictable_set.predictable_items, @root.matches_by_id) do |match|
             match.home_team_score + '-' + match.away_team_score
@@ -131,8 +130,6 @@ module Predictable
           save_predictions(items, stage_teams_by_id) do |stage_team|
             stage_team.team.id.to_s
           end
-
-          update_prediction_progress(PERCENTAGE_COMPLETED_FOR_GROUP)
         end
       end
 
