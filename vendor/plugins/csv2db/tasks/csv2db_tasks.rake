@@ -9,6 +9,7 @@ namespace :csv2db do
      Configuration::IncludedObjective,
      Configuration::Contest,
      Configuration::IncludedSet,
+     Configuration::PredictionState,
      Predictable::Championship::Team,
      Predictable::Championship::Player,
      Predictable::Championship::Stage,
@@ -19,9 +20,9 @@ namespace :csv2db do
      Predictable::Championship::GroupQualification,
      Predictable::Championship::StageQualification,
      Configuration::PredictableItem,
-     Prediction::Base,
-     Prediction::Summary,
-     Core::User,
+     Prediction,
+     PredictionSummary,
+     User,
     ].each do |klass|
       klass.delete_all
       klass.load_from_csv(dependencies)
@@ -30,6 +31,6 @@ namespace :csv2db do
 
   desc "Load new users from the corresponding CSV file to the database"
   task(:add_users => :environment) do
-    Core::User.load_from_csv
+    User.load_from_csv
   end
 end
