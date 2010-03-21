@@ -5,14 +5,16 @@ module Predictable
     # Subclasses must implement all empty protected methods defined in this class.
     class Repository
 
-      def initialize(aggregate)
-        @aggregate = aggregate
-        @user = @aggregate.user
-        @root = get_aggregate_root(@aggregate.id)
-        @aggregate.root = @root
-        @predictable_set = get_predictable_set
-        @contest = Configuration::Contest.find_by_permalink('championship')
-        @summary = @user.summary_of(@contest) if @user
+      def initialize(aggregate=nil)
+        if aggregate
+          @aggregate = aggregate
+          @user = @aggregate.user
+          @root = get_aggregate_root(@aggregate.id)
+          @aggregate.root = @root
+          @predictable_set = get_predictable_set
+          @contest = Configuration::Contest.find_by_permalink('championship')
+          @summary = @user.summary_of(@contest) if @user
+        end
       end
 
       # retreives the aggregate with the predicted values, or default values if not
@@ -44,6 +46,15 @@ module Predictable
         end
         @aggregate.has_existing_predictions = !@new_predictions        
         @aggregate
+      end
+
+      # deletes all predictions for the given items placed by the user
+      def delete(predictable_items, user)
+        if user and not predictable_items.empty?
+          Prediction.transaction do
+            Prediction.delete_all(["user_id = ? and configuration_predictable_item_id in (?)", user.id, predictable_items])
+          end
+        end
       end
 
       protected
@@ -89,23 +100,15 @@ module Predictable
       # creates a new or updates an existing prediction for the given item. The invoker must pass in a
       # block returning the predicted value using the yielded predictable (e.g., match or table position instance)
       def save_prediction(item, existing_predictions_by_item_id, predictable_by_id)
-        prediction = @new_predictions ? Prediction::Base.new : existing_predictions_by_item_id[item.id].first
+        prediction = @new_predictions ? Prediction.new : existing_predictions_by_item_id[item.id].first
         save_predicted_value(prediction, @new_predictions, item, yield(predictable_by_id[item.predictable_id]))
       end
 
       def save_predicted_value(prediction, is_new, item, value)
-        prediction.core_user_id = @user.id if is_new
+        prediction.user_id = @user.id if is_new
         prediction.configuration_predictable_item_id = item.id if is_new
         prediction.predicted_value = value
         prediction.save!
-      end
-
-      def update_prediction_progress(percentage_delta)
-        if @new_predictions
-          @summary.percentage_completed += percentage_delta
-          @summary.percentage_completed = 100 if @summary.percentage_completed > 100
-          @summary.save!
-        end
       end
 
       # returns a hash for the predictables keyed by the corresponding ids
