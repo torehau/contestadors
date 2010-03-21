@@ -3,16 +3,16 @@ class UsersController < ApplicationController
   before_filter :require_user, :only => [:show, :edit, :update]
 
   def new
-    @user = Core::User.new
+    @user = User.new
     flash.now[:notice] = "Operation not yet supported"
   end
 
   def create
-    @user = Core::User.new
+    @user = User.new
     flash.now[:notice] = "Operation not yet supported"
     render :action => :new
     # TODO comment in when new users are allowed to sign up
-#    @user = Core::User.new(params[:core_user])
+#    @user = User.new(params[:core_user])
 #    if @user.save
 #      flash[:notice] = "Account registered!"
 #      redirect_back_or_default account_url
