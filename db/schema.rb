@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100306075008) do
+ActiveRecord::Schema.define(:version => 20100321084859) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -25,7 +25,7 @@ ActiveRecord::Schema.define(:version => 20100306075008) do
     t.datetime "participation_ends_at"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "wizard_type"
+    t.string   "predictable_module"
     t.string   "permalink"
   end
 
@@ -60,43 +60,23 @@ ActiveRecord::Schema.define(:version => 20100306075008) do
     t.datetime "updated_at"
   end
 
+  create_table "configuration_prediction_states", :force => true do |t|
+    t.integer  "configuration_contest_id"
+    t.string   "state_name"
+    t.string   "permalink"
+    t.string   "next_state_name"
+    t.integer  "progress_delta"
+    t.integer  "progress_accumulated"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "configuration_sets", :force => true do |t|
     t.string   "description"
     t.boolean  "mutex_objectives"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  create_table "core_predictions", :force => true do |t|
-    t.integer  "core_user_id"
-    t.integer  "configuration_predictable_item_id"
-    t.string   "predicted_value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "core_predictions", ["configuration_predictable_item_id"], :name => "index_core_predictions_on_configuration_predictable_item_id"
-  add_index "core_predictions", ["core_user_id"], :name => "index_core_predictions_on_core_user_id"
-
-  create_table "core_users", :force => true do |t|
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "email",                            :null => false
-    t.string   "name",                             :null => false
-    t.string   "crypted_password",                 :null => false
-    t.string   "password_salt",                    :null => false
-    t.string   "persistence_token",                :null => false
-    t.integer  "login_count",       :default => 0, :null => false
-    t.datetime "last_request_at"
-    t.datetime "last_login_at"
-    t.datetime "current_login_at"
-    t.string   "last_login_ip"
-    t.string   "current_login_ip"
-  end
-
-  add_index "core_users", ["email"], :name => "index_core_users_on_email"
-  add_index "core_users", ["last_request_at"], :name => "index_core_users_on_last_request_at"
-  add_index "core_users", ["persistence_token"], :name => "index_core_users_on_persistence_token"
 
   create_table "predictable_championship_group_qualifications", :force => true do |t|
     t.integer  "predictable_championship_group_id"
@@ -175,18 +155,28 @@ ActiveRecord::Schema.define(:version => 20100306075008) do
 
   create_table "prediction_summaries", :force => true do |t|
     t.string   "state"
-    t.integer  "map",                      :default => 650
-    t.integer  "core_user_id",                              :null => false
+    t.integer  "map",                      :default => 500
+    t.integer  "user_id",                                   :null => false
     t.integer  "total_score",              :default => 0
     t.integer  "previous_score",           :default => 0
     t.integer  "previous_map",             :default => 0
-    t.integer  "percentage_completed",     :default => 0
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "configuration_contest_id"
   end
 
-  add_index "prediction_summaries", ["core_user_id"], :name => "index_prediction_summaries_on_core_user_id"
+  add_index "prediction_summaries", ["user_id"], :name => "index_prediction_summaries_on_user_id"
+
+  create_table "predictions", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "configuration_predictable_item_id"
+    t.string   "predicted_value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "predictions", ["configuration_predictable_item_id"], :name => "index_predictions_on_configuration_predictable_item_id"
+  add_index "predictions", ["user_id"], :name => "index_predictions_on_user_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -197,5 +187,25 @@ ActiveRecord::Schema.define(:version => 20100306075008) do
 
   add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
   add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
+
+  create_table "users", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "email",                            :null => false
+    t.string   "name",                             :null => false
+    t.string   "crypted_password",                 :null => false
+    t.string   "password_salt",                    :null => false
+    t.string   "persistence_token",                :null => false
+    t.integer  "login_count",       :default => 0, :null => false
+    t.datetime "last_request_at"
+    t.datetime "last_login_at"
+    t.datetime "current_login_at"
+    t.string   "last_login_ip"
+    t.string   "current_login_ip"
+  end
+
+  add_index "users", ["email"], :name => "index_users_on_email"
+  add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
+  add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
 end
