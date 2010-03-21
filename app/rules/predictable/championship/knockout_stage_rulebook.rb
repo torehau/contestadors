@@ -18,7 +18,7 @@ module Predictable
            [Configuration::PredictableItem, :stage_team_item,
               m.predictable_id == b(:stage_team_id),
              {m.id => :stage_team_item_id}],
-           [Prediction::Base, :stage_team_prediction,
+           [Prediction, :stage_team_prediction,
               m.configuration_predictable_item_id == b(:stage_team_item_id),
              {m.predicted_value => :team_id}],
            [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
@@ -48,7 +48,7 @@ module Predictable
            [Configuration::PredictableItem, :stage_team_item,
               m.predictable_id == b(:stage_team_id),
              {m.id => :stage_team_item_id}],
-           [Prediction::Base, :stage_team_prediction,
+           [Prediction, :stage_team_prediction,
               m.configuration_predictable_item_id == b(:stage_team_item_id),
              {m.predicted_value => :team_id}],
            [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
@@ -73,7 +73,7 @@ module Predictable
                 m.description == set_descr,
                 m.predictable_id == nil,
                {m.id => :winner_item_id}],
-             [Prediction::Base, :winner_prediction,
+             [Prediction, :winner_prediction,
                 m.configuration_predictable_item_id == b(:winner_item_id),
                {m.predicted_value => :team_id}],
            [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
