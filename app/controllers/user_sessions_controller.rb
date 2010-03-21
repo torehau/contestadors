@@ -3,11 +3,11 @@ class UserSessionsController < ApplicationController
   before_filter :require_user, :only => :destroy
 
   def new
-    @user_session = Core::UserSession.new
+    @user_session = UserSession.new
   end
 
   def create
-    @user_session = Core::UserSession.new(params[:core_user_session])
+    @user_session = UserSession.new(params[:user_session])
     if @user_session.save
       # TODO instead of hard-coding the url here, use a helper that fetches the appropriate url
       # based on time, available contests etc.
