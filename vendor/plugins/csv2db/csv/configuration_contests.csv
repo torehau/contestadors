@@ -1,2 +1,2 @@
-id,name,available_from,available_to,participation_ends_at,wizard_type,permalink
-1,FIFA World Cup 2010,2010-03-01 20:00:00,2010-07-30 00:00:00,2010-06-11 16:45:00,Predictable::Championship::Wizard,championship
+id,name,available_from,available_to,participation_ends_at,predictable_module,permalink
+1,FIFA World Cup 2010,2010-03-01 20:00:00,2010-07-30 00:00:00,2010-06-11 16:45:00,Championship,championship

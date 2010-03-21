@@ -1,11 +1,11 @@
 id,configuration_category_id,description,predictable_field,predictable_field_type,possible_points,created_at,updated_at
-1,1,Results,result,String,3,,
-2,1,Scores,score,String,3
-3,2,Positions,team_id,Predictable::Championship::Team,3,,
-4,3,Team in Round of 16,team_id,Predictable::Championship::Team,4,,
+1,1,Results,result,String,2,,
+2,1,Scores,score,String,3,,
+3,2,Positions,team_id,Predictable::Championship::Team,2,,
+4,3,Team in Round of 16,team_id,Predictable::Championship::Team,2,,
 5,3,Team in Quarter finals,team_id,Predictable::Championship::Team,6,,
-6,3,Team in Semi finals,team_id,Predictable::Championship::Team,10,,
+6,3,Team in Semi finals,team_id,Predictable::Championship::Team,9,,
 7,3,Team in Final,team_id,Predictable::Championship::Team,16,,
-8,4,Third Place,id,Predictable::Championship::Team,18,,
+8,4,Third Place,id,Predictable::Championship::Team,16,,
 9,4,Winner,id,Predictable::Championship::Team,32,,
-10,5,Topscorer,id,Predictable::Championship::Player,32,,
+10,5,Topscorer,id,Predictable::Championship::Player,0,,
