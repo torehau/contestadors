@@ -15,12 +15,9 @@ Rails::Initializer.run do |config|
   # Add additional load paths for your own custom dirs
   # config.load_paths += %W( #{RAILS_ROOT}/extras )
   config.load_paths += %W( #{RAILS_ROOT}/app/models/configuration
-                          #{RAILS_ROOT}/app/models/prediction
                           #{RAILS_ROOT}/app/models/contest
-                          #{RAILS_ROOT}/app/models/core
                           #{RAILS_ROOT}/app/models/predictable
                           #{RAILS_ROOT}/app/models/predictable/championship
-                          #{RAILS_ROOT}/app/controllers/predictable/championship
                           #{RAILS_ROOT}/app/repositories
                           #{RAILS_ROOT}/app/rules )
 
@@ -32,7 +29,7 @@ Rails::Initializer.run do |config|
   config.gem "fastercsv", :version => '1.5.0'
   config.gem "authlogic", :version => '2.1.3'
   config.gem "ruleby", :version => '0.6'
-  config.gem "state_machine", :version => '0.8.0'
+  config.gem "state_machine", :version => '0.8.1'
 #  config.gem "inherited_resources", :version => '0.9.5'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
