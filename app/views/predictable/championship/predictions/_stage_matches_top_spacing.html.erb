@@ -2,10 +2,10 @@
 # Partial for spaceing the matches of different stages under the corresponding labels
 %>
 <% unless stage.description.eql?("Round of 16") -%>
-  <%= render :partial => 'match_spacer', :locals => {:type => "3", :spaces => 1} %>
+  <%= render :partial => p_pref('match_spacer'), :locals => {:type => "3", :spaces => 1} %>
 <% end -%>
 <% if stage.description.eql?("Semi finals") -%>
-  <%= render :partial => 'match_spacer' %>
+  <%= render :partial => p_pref('match_spacer') %>
 <% elsif stage.description.eql?("Final") -%>
-  <%= render :partial => 'match_spacer', :locals => {:type => "1", :spaces => 3} %>
+  <%= render :partial => p_pref('match_spacer'), :locals => {:type => "1", :spaces => 3} %>
 <% end -%>

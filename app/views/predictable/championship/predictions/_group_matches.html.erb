@@ -1,5 +1,5 @@
 <div id="matches">
-  <%= render :partial => 'match', :collection => @aggregate.root.matches %>
+  <%= render :partial => p_pref('match'), :collection => @aggregate.root.matches %>
   <%= form.submit "Predict Results" %>
 </div>
 

@@ -6,8 +6,8 @@
       <div id="not_predicted">Invalid Predictions</div>
     <% end -%>
     <div id="group_table_rows">
-        <%= render :partial => 'group_table_header'-%>
-        <%= render :partial => 'group_table_element', :collection => @aggregate.root.table_positions, :locals => {:group => @aggregate.root} -%>
+        <%= render :partial => p_pref('group_table_header')-%>
+        <%= render :partial => p_pref('group_table_element'), :collection => @aggregate.root.table_positions, :locals => {:group => @aggregate.root} -%>
     </div>
   </div>
   <% if @aggregate.is_rearrangable? -%>
