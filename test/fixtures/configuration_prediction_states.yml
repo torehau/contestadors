@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  configuration_contest_id: 1
+  state_name: MyString
+  permalink: MyString
+  progress_delta: 1
+  progress_accumulated: 1
+
+two:
+  configuration_contest_id: 1
+  state_name: MyString
+  permalink: MyString
+  progress_delta: 1
+  progress_accumulated: 1
