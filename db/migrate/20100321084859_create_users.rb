@@ -1,6 +1,6 @@
-class CreateCoreUsers < ActiveRecord::Migration
+class CreateUsers < ActiveRecord::Migration
   def self.up
-    create_table :core_users do |t|
+    create_table :users do |t|
       t.timestamps
       t.string :email, :null => false
       t.string :name, :null => false
@@ -15,12 +15,12 @@ class CreateCoreUsers < ActiveRecord::Migration
       t.string :current_login_ip
     end
 
-    add_index :core_users, :email
-    add_index :core_users, :persistence_token
-    add_index :core_users, :last_request_at
+    add_index :users, :email
+    add_index :users, :persistence_token
+    add_index :users, :last_request_at
   end
 
   def self.down
-    drop_table :core_users
+    drop_table :users
   end
 end
