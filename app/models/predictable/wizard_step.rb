@@ -1,4 +1,4 @@
-module Prediction
+module Predictable
   class WizardStep
 
     attr_accessor :label, :type, :id
