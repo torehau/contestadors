@@ -1,11 +1,8 @@
-module Predictable::Championship::PredictionsControllerHelper
-  def prediction_template(type)
-    "predictable/championship/predictions/#{type}"
-  end
+module Predictable::Championship::PredictionsHelper
 
   def successful_prediction_message(aggr_type, aggr_id, new_predictions, wizard)#prediction_state)
     message = ""
-    
+
     unless wizard
       message = successful_prediction_message_for_guest_user
     else
