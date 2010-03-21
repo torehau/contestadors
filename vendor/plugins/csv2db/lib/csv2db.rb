@@ -24,10 +24,10 @@ module Csv2Db
       DATE_FIELD_LIST = [:available_from, :available_to, :participation_ends_at, :play_date, :last_request_at, :last_login_at, :current_login_at]
 
       # Nested hash allowing all entries of the corresponding field to be substituted with value of another field
-      SUBSTITUTE_FIELDS = {:core_users => {:password_salt => :password, :crypted_password => :password_confirmation}}
+      SUBSTITUTE_FIELDS = {:users => {:password_salt => :password, :crypted_password => :password_confirmation}}
 
       # Nested hash allowing all entries of the corresponding field to be substituted with the given value
-      SUBSTITUTE_FIELD_VALUES = {:users => {:ignore_password_salt => "hERt50Pd", :ignore_password_hash => "8a335fca75392a2f5d0e850a313c62ac8ce6753f6d78070bc34a6c61279874a0"}}
+      SUBSTITUTE_FIELD_VALUES = {:old_users => {:ignore_password_salt => "hERt50Pd", :ignore_password_hash => "8a335fca75392a2f5d0e850a313c62ac8ce6753f6d78070bc34a6c61279874a0"}}
 
       # Map of foreign id keys not complying with the conventional rails naming, i.e., when the id column is not on the form <table_name>_id 
       FOREIGN_ID_KEY_MAP = {:home_team_id => :predictable_championship_teams, :away_team_id => :predictable_championship_teams}
