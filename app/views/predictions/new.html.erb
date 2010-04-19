@@ -1,7 +1,7 @@
 <div id="predictions">
-  <% form_for @aggregate.type, @aggregate.root,
-     :url => predictions_url(@contest.permalink, @aggregate.type.to_s, @aggregate.id),
-     :html => {:id => @aggregate.type.to_s+"_form"} do |f| %>
-    <%= render :partial => prediction_template(@contest.permalink, @aggregate.type), :locals => {:form => f} %>
+  <% form_for @aggregate_root_type, @aggregate.root,
+     :url => predictions_url(@contest.permalink, @aggregate_root_type, @aggregate_root_id),
+     :html => {:id => @aggregate_root_type + "_form"} do |f| %>
+    <%= render :partial => prediction_template(@contest.permalink, @aggregate_root_type), :locals => {:form => f} %>
   <% end -%>
 </div>
