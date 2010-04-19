@@ -63,16 +63,6 @@ module Predictable
         invalidated_stages
       end
 
-#      def last_predicted_stage
-#
-#        for stage in @predicted_stages.values
-#          unless @predicted_stages.values.include?(stage.next)
-#            return stage
-#          end
-#        end
-#        @predicted_stages.values.first
-#      end
-
       # TODO ruleify
       def is_semi_finals_predicted?
         @predicted_stages.size > 2
