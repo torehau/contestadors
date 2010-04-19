@@ -44,10 +44,10 @@ module Csv2Db
         @csv_id_to_db_id_map = {}
         substitute_values = substitute_field_values
 
-        parser.each do |row|
-          if row and row.length > 0 and row.include?(:id)
-            csv_id = row.field(:id)
-            instance = create_new_instance_from_row(dependencies, row, substitute_values)
+        parser.each do |@row|
+          if @row and @row.length > 0 and @row.include?(:id)
+            csv_id = @row.field(:id)
+            instance = create_new_instance_from_row(dependencies, substitute_values)
             save_if_valid(instance, csv_id)
           end
         end
@@ -75,7 +75,7 @@ module Csv2Db
       end
 
       # Creates a new instance of the class represented by the CSV row, populating it with the provided attribute values.
-      def create_new_instance_from_row(dependencies, row, substitute_values)
+      def create_new_instance_from_row(dependencies, substitute_values)
         instance = new
         
         substitute_fields = SUBSTITUTE_FIELDS[instance.class.table_name.to_sym]
@@ -85,7 +85,7 @@ module Csv2Db
           unless IGNORE_FIELD_LIST.include?(attr_name.to_sym)
             field_name = attr_name
             field_name =  substitute_fields[attr_name.to_sym].to_s if substitute_fields and substitute_fields.has_key?(attr_name.to_sym)
-            value = row.field(field_name.to_sym)
+            value = @row.field(field_name.to_sym)
 
             if value
 
@@ -128,6 +128,12 @@ module Csv2Db
            end
         elsif column_name.eql?(:next_stage_id) # self referential, TODO include in separate hash constant
           return @csv_id_to_db_id_map[id_value]
+        elsif column_name.eql?(:aggregate_root_id)
+          if (@row.field(:aggregate_root_type).eql?('group'))
+            return dependencies[:predictable_championship_groups][id_value]
+          else
+            return dependencies[:predictable_championship_stages][id_value]
+          end
         else
           return dependencies[FOREIGN_ID_KEY_MAP[column_name.to_sym]][id_value]
         end
