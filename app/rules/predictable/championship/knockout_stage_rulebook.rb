@@ -68,15 +68,16 @@ module Predictable
 
           rule :resolve_match_winner, {:priority => 1},
              [Predictable::Championship::Match, :match,
-                m.description == match_descr],
+                m.description == match_descr,
+               {m.id => :match_id}],
              [Configuration::PredictableItem, :stage_team_item,
                 m.description == set_descr,
-                m.predictable_id == nil,
+                m.predictable_id == b(:match_id),
                {m.id => :winner_item_id}],
              [Prediction, :winner_prediction,
                 m.configuration_predictable_item_id == b(:winner_item_id),
                {m.predicted_value => :team_id}],
-           [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
+             [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
             v[:match].winner = v[:team]
           end
