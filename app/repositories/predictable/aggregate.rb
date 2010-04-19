@@ -1,7 +1,6 @@
 module Predictable
   class Aggregate
     attr_accessor :root, :validation_errors, :default_error_msg, :state
-    #, :new_predictions, :existing_predictions, :next, :predictables
 
     def initialize(aggregate_root_id=nil, contest=nil)
       if aggregate_root_id
@@ -11,7 +10,6 @@ module Predictable
       @validation_errors = {}
       @contest = contest
       @state = "unpredicted"
-#      @editing_existing_predictions = false
     end
 
     def set_existing_predictions(user)
@@ -49,7 +47,6 @@ module Predictable
       set_update_mode_if_existing_predictions
 
       begin
-#        puts "*** Aggregate state: " + self.state.to_s
         Prediction.transaction do
           save_new_aggregate_predictions
           self.saved!
@@ -61,16 +58,11 @@ module Predictable
 
     def is_new_predictions?
       @new_predictions and not has_existing_predictions?
-#      !@editing_existing_predictions
     end
 
     def has_existing_predictions?
       (@existing_predictions and not @existing_predictions.empty?) == true
     end
-
-#    def is_editing_existing_predictions?
-#      @new_predictions and has_existing_predictions?
-#    end
 
     def redirect_on_save?
       false
@@ -79,11 +71,6 @@ module Predictable
     def root_id
       raise 'Abstract method. Must be defined in concrete subclass.'
     end
-
-#    def mark_as_editing
-#      @editing_existing_predictions = true
-#    end
-
 
   protected
 
@@ -99,17 +86,8 @@ module Predictable
       @builder.build_from_new(new_predictions)
     end
 
-#    def enrich_aggregate_root_with_new_predictions
-#      @root = @new_predictions
-#    end
-
     def validate_new_predictions
       {}
-    end
-
-    # TODO is this needed?
-    def invalidated_aggregates
-      raise 'Abstract method. Must be defined in concrete subclass.'
     end
     
     def get_existing_predictions
@@ -150,7 +128,6 @@ module Predictable
     end
 
     state_machine :initial => :unpredicted do
-#      after_transition :predicted => :update, :do => :mark_as_editing
       after_transition [:predicted, :update_with_invalidations] => :saved_ok, :do => :notify
 
       event :predict do
