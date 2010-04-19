@@ -19,6 +19,12 @@ module Predictable
       def permalink
         description.downcase.gsub(' ', '-')
       end
+
+      # Returns a hash with the matches keyed by the id
+      # TODO both in group and stage class, should be refactored out in separate module/plugin
+      def matches_by_id
+        Hash[*matches.collect{|match| [match.id, match]}.flatten]
+      end
     end
   end
 end
