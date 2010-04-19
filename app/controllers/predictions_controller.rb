@@ -1,46 +1,34 @@
 class PredictionsController < ApplicationController
-  before_filter :set_contest, :set_repository, :set_predictions_view_path, :except => :edit
+  before_filter :set_context_from_request_params
 
   def new
-    @aggregate = @repository.get
+    @result = @repository.get(@aggregate_root_id)
+    @aggregate = @result.current
     set_wizard_and_progress_for_current_user
   end
 
   def create
-    @aggregate = @repository.save
+    @result = @repository.save(@aggregate_root_id, params[@aggregate_root_type.to_sym][:new_predictions])
+    @aggregate = @result.current
     set_wizard_and_progress_for_current_user
-
-    if @aggregate.type.eql?(:group)
-      set_flash_message(true)
-      render :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => @aggregate.id
-    else
-      set_flash_message
-      aggregate_root_id = @wizard.is_completed? ? 'completed' : @aggregate.id
-      redirect_to :action => :new, :aggregate_root_type => @aggregate.type, :aggregate_root_id  => aggregate_root_id
-    end
-  end
-
-  def edit
-    redirect_to :action => :new, :contest => params[:contest], :aggregate_root_type => params[:aggregate_root_type], :aggregate_root_id  => params[:aggregate_root_id], :operation => 'edit'
+    redirect = @aggregate.redirect_on_save?
+    set_flash_message(!redirect)
+    self.send((redirect ? :redirect_to : :render), :action => :new, :aggregate_root_type => @aggregate_root_type, :aggregate_root_id  => get_aggregate_root_id)
   end
 
   def update
-    @repository.update
+    @repository.update(@aggregate_root_id, params)
     redirect_to :action => :new
   end
 
-  protected
+protected
 
-  def set_contest
+  def set_context_from_request_params
     @contest = Configuration::Contest.find_by_permalink(params[:contest])
-  end
-
-  def set_repository
-    @repository = @contest.repository(current_user, params)
-  end
-
-  def set_predictions_view_path
     @predictions_view_path = "predictable/#{@contest.permalink}/predictions/"
+    @aggregate_root_type = params[:aggregate_root_type]
+    @aggregate_root_id = params[:aggregate_root_id]
+    @repository = @contest.repository(@aggregate_root_type, current_user)
   end
 
   def set_wizard_and_progress_for_current_user
@@ -53,12 +41,17 @@ class PredictionsController < ApplicationController
 
   def set_flash_message(flash_now=false)
     message_type = @aggregate.has_validation_errors? ? :alert : :notice
-    message = message_type.eql?(:alert) ? "Invalid match results given." : render_to_string(:partial => 'successful_predictions_message')
+    message = message_type.eql?(:alert) ? @aggregate.default_error_msg : render_to_string(:partial => 'successful_predictions_message')
 
     if flash_now
       flash.now[message_type] = message
     else
       flash[message_type] = message
     end
+  end
+
+  def get_aggregate_root_id
+    return 'completed' if @wizard.is_completed? and not @aggregate.has_validation_errors?
+    @aggregate.root_id
   end
 end
