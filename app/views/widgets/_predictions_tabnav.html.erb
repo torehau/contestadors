@@ -6,7 +6,7 @@
           t.named step.label
           t.titled step.label
           t.links_to new_prediction_path(@contest.permalink, step.type, step.id)
-          t.highlights_on :aggregate_root_id => step.id
+          t.highlights_on step.highlight_conditions
         end
       end
     end
