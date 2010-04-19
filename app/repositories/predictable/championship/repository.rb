@@ -2,50 +2,38 @@ module Predictable
   module Championship
 
     # Base class for retreiving, saving and updating prediction aggregates.
-    # Subclasses must implement all empty protected methods defined in this class.
+    # Subclasses must implement all abstract methods.
     class Repository
 
-      def initialize(aggregate=nil)
-        if aggregate
-          @aggregate = aggregate
-          @user = @aggregate.user
-          @root = get_aggregate_root(@aggregate.id)
-          @aggregate.root = @root
-          @predictable_set = get_predictable_set
-          @contest = Configuration::Contest.find_by_permalink('championship')
-          @summary = @user.summary_of(@contest) if @user
-        end
+      # sets the contest and user for which the predictions belongs.
+      def initialize(contest=nil, user=nil)
+        @contest = contest
+        @user = user
       end
 
       # retreives the aggregate with the predicted values, or default values if not
       # been predicted by the user (or if no user is specified, i.e., not signed in
       # guest user)
-      def get
-        if @user and has_existing_predictions?
-          @aggregate.set_root_from_existing_predictions(build_aggregate_root_from_existing_predictions)
-        end
-        @aggregate
+      def get(aggregate_root_id)
+        @aggregate = new_aggregate(aggregate_root_id)
+        @aggregate.set_existing_predictions(@user) if @user
+        Predictable::Result.new(@aggregate)
       end
 
       # saves the predictions in the provided input hash if the user is signed in
       # If not signed in, the aggregate root instance variable will only be updated
-      # with the predicted values, and these will not be saved in the db
-      def save
-        @root = build_aggregate_root_from_new_predictions
-        @validation_errors = validate(@root)
-        @aggregate.root = @root
+      # with the predicted values, and these will not be saved to the db
+      def save(aggregate_root_id, new_predictions)
+        @aggregate = new_aggregate(aggregate_root_id)
+        @aggregate.set_new_predictions(new_predictions, @user)
+        @aggregate.validate
+        @aggregate.save unless @aggregate.invalid? or @aggregate.no_user?
+        Predictable::Result.new(@aggregate)
+      end
 
-        if @user and @validation_errors.empty?
-          begin
-            save_predictions_for_aggregate
-          rescue ActiveRecord::RecordNotSaved, ActiveRecord::RecordInvalid
-            # NOP
-          end
-        else
-          @aggregate.validation_errors = @validation_errors
-        end
-        @aggregate.has_existing_predictions = !@new_predictions        
-        @aggregate
+      # updates a given aggregate based on the provided data in the input params hash.
+      def update(aggregate_root_id, params)
+        raise "Abstract method. Must be implemented in a concrete subclass."
       end
 
       # deletes all predictions for the given items placed by the user
@@ -57,63 +45,11 @@ module Predictable
         end
       end
 
-      protected
-      
+    protected
 
-      def get_aggregate_root(aggregate_root_id)
-      end
-
-      def get_predictable_set
-      end
-
-      def has_existing_predictions?
-        @predictions_by_item_id = @user.predictions.by_predictable_item(@predictable_set)
-        (@predictions_by_item_id and not @predictions_by_item_id.empty?)
-      end
-
-      def build_aggregate_root_from_existing_predictions
-      end
-
-      def build_aggregate_root_from_new_predictions
-      end
-
-      def validate(predicted_aggregate_root)
-      end
-
-      def save_predictions_for_aggregate
-      end
-
-      # saves predictions for the given set. second parameter must be a hash to the actual
-      # predictable instances (e.g., match or table position) keyed by the corresponding ids.
-      # The invoker must pass in a block returning the value to be predicted on the predictable instance.
-      def save_predictions(predictable_items, predictables_by_id)
-        existing_predictions_by_item_id = @user.predictions.for_items_by_item_id(predictable_items)
-        @new_predictions = (existing_predictions_by_item_id.nil? or existing_predictions_by_item_id.empty?)
-
-        predictable_items.each do |item|
-          save_prediction(item, existing_predictions_by_item_id, predictables_by_id) do |predictable|
-            yield(predictable)
-          end
-        end
-      end
-
-      # creates a new or updates an existing prediction for the given item. The invoker must pass in a
-      # block returning the predicted value using the yielded predictable (e.g., match or table position instance)
-      def save_prediction(item, existing_predictions_by_item_id, predictable_by_id)
-        prediction = @new_predictions ? Prediction.new : existing_predictions_by_item_id[item.id].first
-        save_predicted_value(prediction, @new_predictions, item, yield(predictable_by_id[item.predictable_id]))
-      end
-
-      def save_predicted_value(prediction, is_new, item, value)
-        prediction.user_id = @user.id if is_new
-        prediction.configuration_predictable_item_id = item.id if is_new
-        prediction.predicted_value = value
-        prediction.save!
-      end
-
-      # returns a hash for the predictables keyed by the corresponding ids
-      def predictables_by_id(predictables)
-        Hash[*(predictables).collect{|predictable| [predictable.id, predictable]}.flatten]
+      # Constructs a new aggregate with the appropriate type for the given root id.
+      def new_aggregate(aggregate_root_id)
+        raise 'Abstract method! Must be implemented in subclass.'
       end
     end
   end

@@ -3,14 +3,14 @@ module Predictable
 
     class RepositoryFactory
 
-      def self.create(aggregate=nil)
-        return Repository.new unless aggregate
+      def self.create(aggregate_root_type=nil, contest=nil, user=nil)
+        return Repository.new unless aggregate_root_type
         repository = nil
 
-        if aggregate.type.eql?(:group)
-          repository = GroupRepository.new(aggregate)
-        elsif aggregate.type.eql?(:stage)
-          repository = StageRepository.new(aggregate)
+        if aggregate_root_type.to_sym.eql?(:group)
+          repository = GroupRepository.new(contest, user)
+        elsif aggregate_root_type.to_sym.eql?(:stage)
+          repository = StageRepository.new(contest, user)
         end
         repository
       end

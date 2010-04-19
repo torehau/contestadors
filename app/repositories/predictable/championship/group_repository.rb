@@ -2,12 +2,8 @@ module Predictable
   module Championship
     class GroupRepository < Repository
 
-      # sets the user for which the predictions belongs, the group and the prediction sets
-      # defining this aggregate of predictions
-      def initialize(aggregate=nil)
-        super(aggregate)
-        @group_table_set = Configuration::Set.find_by_description "Group #{@root.name} Table"
-        @round_of_16_qualified_teams_set = Configuration::Set.find_by_description "Teams through to Round of 16"
+      def initialize(contest=nil, user=nil)
+        super(contest, user)
       end
 
       # updates predictions for two group table positions by moving the prediction for
@@ -15,21 +11,26 @@ module Predictable
       # The current prediction for the new position is swapped accordingly.
       # If this affects the predicted group winner and runner up teams, this will
       # be updated as well.
-      def update
-        predictable_item = @group_table_set.predictable_item(@aggregate.member_id)
+      def update(aggregate_root_id, params)
+        @group = Group.find_by_name(aggregate_root_id)
+        @group_table_set = Configuration::Set.find_by_description "Group #{@group.name} Table"
+        @round_of_16_qualified_teams_set = Configuration::Set.find_by_description "Teams through to Round of 16"
+        predictable_item = @group_table_set.predictable_item(params[:id])
         prediction = @user.prediction_for(predictable_item)
         current_value = prediction.predicted_value.to_i
-        updated_value = @aggregate.command.eql?(:up) ? (current_value - 1) : (current_value + 1)
+        updated_value = params[:command].eql?("up") ? (current_value - 1) : (current_value + 1)
         prediction_to_swap_value_with = @user.prediction_with_value(updated_value.to_s, @group_table_set)
 
         Prediction.transaction do
 
+          @summary ||= @user.summary_of(@contest)
+          
           if [current_value, updated_value].include?(1)
             swap_stage_team_predictions_for_winner_and_runner_up
-            @summary.predict_group(@root.name)
+            @summary.predict_group(@group.name)
           elsif [current_value, updated_value].include?(2) and [current_value, updated_value].include?(3)
             set_current_third_place_group_position_as_runner_up_stage_team
-            @summary.predict_group(@root.name)
+            @summary.predict_group(@group.name)
           end
 
           prediction.predicted_value = updated_value.to_s
@@ -39,104 +40,18 @@ module Predictable
         end
       end
 
-      protected
+    protected
 
-      def get_aggregate_root(aggregate_root_id)
-        aggregate_root_id ||="A"
-        Group.find_by_name(aggregate_root_id)
+      def new_aggregate(aggregate_root_id)
+        GroupAggregate.new(aggregate_root_id, @contest)
       end
 
-      def get_predictable_set
-        Configuration::Set.find_by_description "Group #{@root.name} Matches"
-      end
-
-      # builds the group results using the predictions stored in the db for the given user
-      def build_aggregate_root_from_existing_predictions
-        set_predicted_match_results do |item|
-          prediction = @predictions_by_item_id[item.id].first
-          prediction.predicted_value
-        end
-        set_predicted_table_positions(@user.predictions.by_predictable_item(@group_table_set))
-        GroupTableCalculator.new(@root).calculate(false)
-      end
-
-      def build_aggregate_root_from_new_predictions
-        group_from_new_predictions(@aggregate.new_predictions)
-      end
-
-      def validate(predicted_aggregate_root)
-        GroupMatchesValidator.new.validate(predicted_aggregate_root)
-      end
-
-      def save_predictions_for_aggregate
-        save_predictions_for_group
-        @summary.predict_group(@root.name)
-      end
-
-      private
-
-      # builds the group results using the provided request parameter hash
-      def group_from_new_predictions(predicted_scores_by_match_id)
-
-        if predicted_scores_by_match_id and predicted_scores_by_match_id.length > 0
-          set_predicted_match_results do |item|
-            prediction = predicted_scores_by_match_id[item.predictable_id.to_s]
-            prediction[:home_team_score] + '-' + prediction[:away_team_score]
-          end
-          GroupTableCalculator.new(@root).calculate(true)
-        end
-        @root
-      end
-
-      # sets the predicted results for the group matches. The invoker must pass in a block
-      # returning the predicted result of the match proxied by the yielded item.
-      def set_predicted_match_results
-        matches_by_id = @root.matches_by_id
-        predicted_matches = []
-
-        @predictable_set.predictable_items.each do |item|
-          match = matches_by_id[item.predictable_id]
-          predicted_score = yield(item)
-          match.set_individual_team_scores(predicted_score)
-          predicted_matches << match
-        end
-        @root.matches = predicted_matches
-      end
-
-      # sets the predicted display order for the group table positions.
-      def set_predicted_table_positions(table_position_predictions_by_item_id)
-        predictable_items_by_predictable_id = @group_table_set.predictable_items.by_predictable_id
-
-        @root.table_positions.each do |table_position|
-          item = predictable_items_by_predictable_id[table_position.id].first
-          table_position.display_order = table_position_predictions_by_item_id[item.id].first.predicted_value.to_i
-        end
-      end
-
-      # saves the predicted group matches and table position for the current user.
-      def save_predictions_for_group
-        Prediction.transaction do
-          
-          save_predictions(@predictable_set.predictable_items, @root.matches_by_id) do |match|
-            match.home_team_score + '-' + match.away_team_score
-          end
-
-          save_predictions(@group_table_set.predictable_items, predictables_by_id(@root.table_positions)) do |table_position|
-            table_position.display_order.to_s
-          end
-
-          stage_teams_by_id = @root.stage_teams_by_id
-          items = @round_of_16_qualified_teams_set.subset(stage_teams_by_id.keys)
-          save_predictions(items, stage_teams_by_id) do |stage_team|
-            stage_team.team.id.to_s
-          end
-        end
-      end
+    private
 
       # swaps the predictions for group winner and runner up stage teams
       # qualified for the Round of 16 stage
       def swap_stage_team_predictions_for_winner_and_runner_up
-        stage_teams_by_id = @root.stage_teams_by_id
+        stage_teams_by_id = @group.stage_teams_by_id
         items = @round_of_16_qualified_teams_set.subset(stage_teams_by_id.keys)
         predictions = @user.predictions_for_subset(items)
         first_val = predictions[0].predicted_value
@@ -150,7 +65,7 @@ module Predictable
       # replaces the current runner up stage team predictions, with the team
       # currently predicted at the 3rd place group table position
       def set_current_third_place_group_position_as_runner_up_stage_team
-        runner_up_stage_team = @root.runner_up_stage_team
+        runner_up_stage_team = @group.runner_up_stage_team
         runner_up_stage_team_item = @round_of_16_qualified_teams_set.predictable_item(runner_up_stage_team.id)
         runner_up_prediction = @user.prediction_for(runner_up_stage_team_item)
 
