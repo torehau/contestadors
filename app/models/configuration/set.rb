@@ -1,6 +1,7 @@
 module Configuration
   class Set < ActiveRecord::Base
     set_table_name "configuration_sets"
+    belongs_to :prediction_state, :class_name => "Configuration::PredictionState", :foreign_key => 'configuration_prediction_state_id'
     has_many :predictable_items, :class_name => "Configuration::PredictableItem", :foreign_key => "configuration_set_id" do
       def by_predictable_id
         find(:all).group_by(&:predictable_id)
