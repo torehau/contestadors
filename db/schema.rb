@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100321084859) do
+ActiveRecord::Schema.define(:version => 20100324191017) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -69,6 +69,8 @@ ActiveRecord::Schema.define(:version => 20100321084859) do
     t.integer  "progress_accumulated"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "aggregate_root_type"
+    t.integer  "aggregate_root_id"
   end
 
   create_table "configuration_sets", :force => true do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema.define(:version => 20100321084859) do
     t.boolean  "mutex_objectives"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "configuration_prediction_state_id"
   end
 
   create_table "predictable_championship_group_qualifications", :force => true do |t|
