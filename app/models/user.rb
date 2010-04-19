@@ -15,6 +15,9 @@ class User < ActiveRecord::Base
     def for_items_by_item_id(items)
       for_items(items).group_by(&:configuration_predictable_item_id)
     end
+    def for_items_by_value(items)
+      for_items(items).group_by(&:predicted_value)
+    end
     def for_set(set)
       for_items(set.predictable_items.collect{|pi| pi.id})
     end
