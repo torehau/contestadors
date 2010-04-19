@@ -1,5 +1,5 @@
 <div class="knockout_stages">
-  <% @aggregate.all_roots.each do |stage| -%>
+  <% @result.all_roots.each do |stage| -%>
     <%= render :partial => p_pref('knockout_stage_matches'), :locals => {:stage => stage, :form => form} %>
   <% end -%>
 </div>

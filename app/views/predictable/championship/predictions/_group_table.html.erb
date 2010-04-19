@@ -1,8 +1,8 @@
 <div id="group_table_container">
   <div id="group_table">
-    <% if not @aggregate.is_predicted? -%>
+    <% if @aggregate.unpredicted? -%>
       <div id="not_predicted">Not Predicted</div>
-    <% elsif @aggregate.has_validation_errors? -%>
+    <% elsif @aggregate.invalid? -%>
       <div id="not_predicted">Invalid Predictions</div>
     <% end -%>
     <div id="group_table_rows">
