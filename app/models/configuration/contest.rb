@@ -23,11 +23,9 @@ module Configuration
       @wizard_module ||= get_wizard_module
     end
 
-    def repository(user, params)
-      @aggregate_type ||= get_aggregate_type
-      aggregate = @aggregate_type.new(user, params)
+    def repository(aggregate_root_type, user)
       @repository_factory ||= get_repository_factory
-      @repository_factory.create(aggregate)
+      @repository_factory.create(aggregate_root_type, self, user)
     end
 
     def delete_invalidated_predictions(user)
@@ -40,24 +38,24 @@ module Configuration
 
   private
 
+    # TODO the following methods handles a separate concern and should be moved to a dedicated module
+    #      e.g., PredictableContextTypeDeterminator
+
     def get_wizard_module
-      wizard_type = "Predictable::" + self.predictable_module + "::Wizard"
-      wizard_type.split("::").inject(Module) {|x, y| x.const_get(y)}
+      get_type_in_predictable_module("Wizard", Module)
     end
 
     def get_repository_factory
-      repository_factory_type = "Predictable::" + self.predictable_module + "::RepositoryFactory"
-      repository_factory_type.split("::").inject(Object) {|x, y| x.const_get(y)}
-    end
-
-    def get_aggregate_type
-      aggregate_type = "Predictable::" + self.predictable_module + "::Aggregate"
-      aggregate_type.split("::").inject(Object) {|x, y| x.const_get(y)}
+      get_type_in_predictable_module("RepositoryFactory", Object)
     end
 
     def get_invalidated_predictions_resolver
-      resolver_type = "Predictable::" + self.predictable_module + "::InvalidatedPredictionsResolver"
-      resolver_type.split("::").inject(Object) {|x, y| x.const_get(y)}
+      get_type_in_predictable_module("InvalidatedPredictionsResolver", Object)
+    end
+
+    def get_type_in_predictable_module(type_name, type_entity)
+      complete_type_name = "Predictable::" + self.predictable_module + "::" + type_name
+      complete_type_name.split("::").inject(type_entity) {|x, y| x.const_get(y)}
     end
   end
 end
