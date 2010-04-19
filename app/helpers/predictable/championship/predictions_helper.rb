@@ -13,11 +13,7 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def is_stage_selected?(stage, aggregate, wizard)
-    return false unless (aggregate.root.description.eql?(stage.description))
-    if wizard.is_completed?
-      return false unless aggregate.is_editing_existing_predictions?
-    end
-    true
+    (stage and @aggregate_root_id.eql?(stage.permalink)) == true
   end
 
   def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
@@ -60,7 +56,7 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def successful_stage_prediction_message(aggr_id, new_predictions, wizard)
-    return "the Final and the Third Place Play-off match. Your championship predictions are now completed, but can be edited." if wizard.is_completed?
+    return "the Final and Third Place matches. Your predictions are now completed, but can be edited." if wizard.is_completed?
     "the #{wizard.current_step.gsub('-',' ').capitalize}. "
   end
 end
