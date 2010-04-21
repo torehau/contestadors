@@ -46,10 +46,6 @@ fieldset {
   border-bottom: 1px #88c6cf solid;
 }
 
-#footer, #footer-margin {
-  border-top: 1px #88c6cf solid;
-}
-
 /* Thickbox Window */
 #TB_window {
 	border: 4px solid #41686a;
