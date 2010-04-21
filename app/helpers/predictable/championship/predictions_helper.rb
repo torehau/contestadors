@@ -23,8 +23,14 @@ module Predictable::Championship::PredictionsHelper
       div_class_prefix += "invalidated_"
     elsif selected == false and not is_match_winner
       div_class_prefix += "losing_"
+    elsif is_match_winner.eql?(true)
+      div_class_prefix += "winning_"
     end
     div_class_prefix + "knockout_stage_team"
+  end
+
+  def group_match_div_class(match)
+    @aggregate.has_validation_error_for?(match.id) ? "match_validation_error" : "match"
   end
 
   private
@@ -37,7 +43,7 @@ module Predictable::Championship::PredictionsHelper
     message = "Group #{aggr_id}. "
 
     if new_predictions == true
-      message += "You can edit these prediction, or continue to predict "
+      message += "You can edit these predictions, or continue to predict "
       message += link_to_next_wizard_step(wizard)
     end
     message
