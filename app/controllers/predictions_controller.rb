@@ -36,6 +36,7 @@ protected
       @wizard = current_user.summary_of(@contest)
       @wizard.setup_wizard
       @progress = @wizard.prediction_progress
+      flash.now[:notice] = @wizard.start_hint if @progress == 0
     end
   end
 
@@ -51,7 +52,7 @@ protected
   end
 
   def get_aggregate_root_id
-    return 'completed' if @wizard.is_completed? and not @aggregate.has_validation_errors?
+    return 'completed' if @wizard and @wizard.is_completed? and not @aggregate.has_validation_errors?
     @aggregate.root_id
   end
 end
