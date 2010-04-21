@@ -9,7 +9,7 @@
     <%= stage.description  %>
     <%= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted} %>
   </div>
-  <%= render :partial => p_pref('next_stage_qualification'), :locals => {:stage => stage} %>
+  
   <%= render :partial => p_pref('stage_matches_top_spacing'), :locals => {:stage => stage} %>
   <% matches = predicted ? predicted_stage.matches : stage.matches; max_index = matches.size - 1 -%>
   <% matches.sort{|a, b| a.rank <=> b.rank}.each_with_index do |match, i| -%>
@@ -22,3 +22,4 @@
     <%= render :partial => p_pref('stage_match'), :locals => {:match => @result.aggregates[:third_place], :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
   <% end -%>
 </div>
+<%= render :partial => p_pref('next_stage_qualification'), :locals => {:stage => stage} %>

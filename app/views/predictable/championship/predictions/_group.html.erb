@@ -1,2 +1,5 @@
-<%= render :partial => p_pref('group_table') %>
-<%= render :partial => p_pref('group_matches'), :locals => {:form => form} %>
+<div id="group">
+  <%= render :partial => p_pref('group_table') %>
+  <%= render :partial => p_pref('group_matches') %>
+</div>
+<%= form.submit "Predict Results" %>
