@@ -1,4 +1,4 @@
 fastercsv --version 1.5.0
 authlogic --version 2.1.3
 ruleby --version 0.6
-state_machine --version 0.8.1
+state_machine --version 0.9.0
