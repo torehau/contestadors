@@ -5,6 +5,10 @@ module Predictable
 
         attr_accessor :current_step, :next_step, :all_available_steps, :prediction_progress
 
+        def start_hint
+          "Start to predict the match results for Group A"
+        end
+
         def is_completed?
           'completed'.eql?(self.current_step)
         end
