@@ -1,6 +1,10 @@
-<% if current_user and current_controller.eql?('predictions') -%>
-  <div class="progress">
-    <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
-  </div>
-  <%= tabnav :predictions %>
+<% if current_user -%>
+  <% if current_controller.eql?('home') %>
+    <%= tabnav :home %>
+  <% elsif current_controller.eql?('predictions') -%>
+    <div class="progress">
+      <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
+    </div>
+    <%= tabnav :predictions %>
+  <% end -%>
 <% end -%>

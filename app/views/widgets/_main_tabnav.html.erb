@@ -24,7 +24,14 @@ render_tabnav :main,
       #t.links_to :controller => name
     #end
   #end
-# link_to "Predictions", new_prediction_path("group", "A")
+  #
+  add_tab do |t|
+    t.named 'Home'
+    t.titled 'Home'
+    t.links_to home_path("about")
+    t.highlights_on :controller => "home"
+  end
+
   add_tab do |t|
     t.named 'Predictions'
     t.titled 'Predictions'

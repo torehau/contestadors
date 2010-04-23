@@ -1,21 +1,22 @@
 <!-- footer -->
 <div id="<%= footer_div_class %>">
-  <div style="float:left;">
+  <div id="footer-contents-left">
     <p>
-      About<!--<#%= link_to 'Home', '/' %>-->
+      <%= link_to 'About', home_path('about') %>
       |
-      Rules<!--<#%= link_to 'About', about_path %>-->
+      <%= link_to 'Rules', home_path('rules') %>
       |
-      Terms<!--<#%=link_to 'Terms', terms_path %>-->
+      <%= link_to 'Terms', home_path('terms') %>
       |
-      Privacy<!--<#%= link_to 'Privacy', privacy_path %>-->
+      <%= link_to 'Privacy', home_path('privacy') %>
       |
-      Feedback<!--<#%= link_to 'Feedback', 'http://getsatisfaction.com/albumdy' %>-->
+      <%= link_to 'Contact', home_path('contact') %>
     </p>
   </div>
-  <div style="float:right;">
-    <p>
-      Copyright &copy; 2010 <%= mail_to "contestadors@gmail.com", "Contestadors" %>
-    </p>
+  <div id="footer-contents-center">
+    &copy; 2010 Tore Hauge.
+  </div>
+  <div id="footer-contents-right">
+    Powered by <%= link_to "Ruby on Rails", "http://rubyonrails.org/" %> and <%= link_to "Heroku", "http://heroku.com/" %>.
   </div>
 </div>
