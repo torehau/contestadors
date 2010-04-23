@@ -1,0 +1,12 @@
+<%  render_tabnav :home, :generate_css => false do 
+
+  %w{about rules terms privacy contact}.each do |name|
+    add_tab do |t|
+      t.named name.capitalize
+      t.titled name.capitalize
+      t.links_to home_path(name)
+      t.highlights_on :action => name
+    end
+  end 
+end 
+%>
