@@ -10,7 +10,7 @@ h2 {
   font-weight: bolder;
 }
 h3 {
-  color:#f0542b;
+  color:#41686a;
 }
 label {
   color: #41686a;
@@ -18,7 +18,11 @@ label {
 }
 .container {
   /*background-color:#eff5e1;*/
-  background-color:#eeeeee;
+  background-color:#eee;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px; /* future proofing */
+  -khtml-border-radius: 10px; /* for old Konqueror browsers */
 }
 
 a, a:visited {
@@ -41,10 +45,10 @@ fieldset {
 .box {
   background:#dff6f1;
 }
-#header {
+/*#header {
   background: #dff6f1;
   border-bottom: 1px #88c6cf solid;
-}
+}*/
 
 /* Thickbox Window */
 #TB_window {
