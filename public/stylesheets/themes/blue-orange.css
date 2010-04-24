@@ -19,10 +19,10 @@ label {
 .container {
   /*background-color:#eff5e1;*/
   background-color:#eee;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px; /* future proofing */
-  -khtml-border-radius: 10px; /* for old Konqueror browsers */
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px; /* future proofing */
+  -khtml-border-radius: 7px; /* for old Konqueror browsers */
 }
 
 a, a:visited {

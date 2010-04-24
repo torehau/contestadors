@@ -39,8 +39,10 @@ em {
 
 /* Top & Header */
 #top {
+  z-index: 2;
+  display: block;
   height: 30px;
-  width:350px;
+  width:290px;
   float:left;
   padding: 5px 0px 0px 10px;
 }
@@ -55,37 +57,65 @@ em {
 	top: 0; left: 10px;
 }
 #top h1#logo span.gray  {	color: #41686a; }
-#top h1#logo span.slogan {
+
+#top_center {
+    z-index: 1;
+    display: block;
+    background: #fff;
+    height: 20px;
+    width:280px;
+    float:left;
+    margin: 0px 0px 0px 20px;
+    padding: 0px 0px 0px 0px;
+/*    padding: 5px 0px 0px 10px;
+    margin: 40px 0px 0px 350px;*/
+    font: bold 3em 'Trebuchet MS', Arial, Sans-serif;
+    letter-spacing: -1px;
+    text-transform: lowercase;
+}
+#top_center h3#slogan {
 	font: normal 50% Verdana,sans-serif;
 	color: #333;
-	padding-left:100px;
+	/*padding-left:100px;*/
 }
-#top h1#logo span.slogan-blue {
+#top_center h3#slogan span.slogan-blue {
 	color:#41686a;
-	padding-left: 0px;
+	/*padding-left: 0px;*/
 }
 
 #header {
 /*  background: #dff6f1;
   border-bottom: 1px #88c6cf solid;*/
-  background: #ccc;
+  background: #fff;
   float:left;
   width:910px;
-  padding: 0px 20px 20px 20px;
-  -moz-border-radius-topleft: 10px;
-  -moz-border-radius-topright: 10px;
-  -webkit-border-top-left-radius: 10px;
-  -webkit-border-top-right-radius: 10px;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
+  /*clear: both;*/
+  display: box;
+  padding: 0px 20px 10px 20px;
+  -moz-border-radius-topleft: 7px;
+  -moz-border-radius-topright: 7px;
+  -webkit-border-top-left-radius: 7px;
+  -webkit-border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 
 /* -- Navigation --------------------------- */
-#nav {
+#top_right {
   float: right;
   text-align: right;
   width:500px;
+  display: block;
   padding-top: 10px;
+  z-index: 3;
+}
+
+#nav{
+/*  width: auto;
+  background: #eee;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;*/
 }
 #nav ul {
   display: inline;
@@ -103,7 +133,7 @@ em {
 }
 
 #nav ul li a:hover {
-  background: #ccc;
+  background: #fff;
 }
 
 /* -- Progress ----------------------------- */
@@ -124,7 +154,7 @@ div.progresslabel {
 div.progressbar {
  border: 1px solid #ccc;
  width: 203px;
- margin: 2px 5px 2px 0;
+ margin: 3px 5px 1px 0;
  padding: 1px;
  float: right;
  background: white;
@@ -141,7 +171,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 #content {
   float:left;
   width:910px;
-  margin: 2px 20px 20px 20px;
+  margin: 1px 20px 20px 20px;
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   border-radius: 10px; /* future proofing */
@@ -466,7 +496,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 /* -- Navigation menus styling ------------------------------- */
 .main_tabnav {
 	color: #000;
-        background: #ccc;
+        background: #fff;
         /*border-bottom: 1px solid #88c6cf;*/
         clear: both;
 	padding: 2px 0px 0px 0px;
@@ -492,7 +522,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .main_tabnav a, main_tabnav a.active {
 	color: #f0542b;
-	background: #ccc;
+	background: #fff;
         font-weight: bold;
 	margin: 0;
         -moz-border-radius-topleft: 5px;
@@ -520,7 +550,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .main_tabnav a:hover {
 	color: #41686a;
-	background: #CCCCCC; }
+	background: #fff; }
 
 /*.main_tabnav a:visited {
 	color: #000000; }*/
