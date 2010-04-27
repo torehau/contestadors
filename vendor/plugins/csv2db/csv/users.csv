@@ -4,3 +4,4 @@ id,email,name,password,password_confirmation,created_at,updated_at
 3,torkell_dobbe@hotmail.com,Torkell Dobbe,changeit,changeit,,
 4,havardskan@yahoo.no,Håvard Skånlund,changeit,changeit,,
 5,geirhauge@hotmail.com,Geir Hauge,changeit,changeit,,
+6,kim@integrate.no,Kim Mjellekås,changeit,changeit,,
