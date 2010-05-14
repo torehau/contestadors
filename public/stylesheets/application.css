@@ -41,10 +41,11 @@ em {
 #top {
   z-index: 2;
   display: block;
-  height: 30px;
+  height: 60px;
   width:290px;
   float:left;
-  padding: 5px 0px 0px 10px;
+  margin: -5px 0px 0px -10px;
+  padding: 0px 0px 0px 0px;
 }
 
 #top h1#logo {
@@ -66,20 +67,20 @@ em {
     width:280px;
     float:left;
     margin: 0px 0px 0px 20px;
-    padding: 0px 0px 0px 0px;
+    padding: 0px 0px 0px 20px;
 /*    padding: 5px 0px 0px 10px;
     margin: 40px 0px 0px 350px;*/
-    font: bold 3em 'Trebuchet MS', Arial, Sans-serif;
+    font: bold italic 3em 'Trebuchet MS', Arial, Sans-serif;
     letter-spacing: -1px;
     text-transform: lowercase;
 }
 #top_center h3#slogan {
-	font: normal 50% Verdana,sans-serif;
+	font: italic 50% Verdana,sans-serif;
 	color: #333;
 	/*padding-left:100px;*/
 }
 #top_center h3#slogan span.slogan-blue {
-	color:#41686a;
+	color:#008aa4;/*#41686a;*/
 	/*padding-left: 0px;*/
 }
 
@@ -239,12 +240,12 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
     background: #eee;
     margin-top: 2px;
 }
-.flash_alert {
+.flash_alert, .flash_recaptch_error {
   color: #333;
 	background: #fee;
 	border: solid 1px #db7;
 }
-.flash_alert .message {
+.flash_alert .message, .flash_recaptch_error .message {
 	padding: 0 0 0 25px;
 }
 .flash_notice {
@@ -564,22 +565,30 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	padding: 0px;
 }
 
-.predictions_tabnav, .home_tabnav {
+.predictions_tabnav, .invitations_tabnav, .home_tabnav, .contests_tabnav, .contest_tabnav {
 	color: #000;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 0px;}
 
-.predictions_tabnav ul, .home_tabnav ul {
+.predictions_tabnav ul, .invitations_tabnav ul, .home_tabnav ul, .contests_tabnav ul, .contest_tabnav ul {
 	margin: 0px;
 	padding: 2px 0px 0px 0px;
 }
 
-.predictions_tabnav li, .home_tabnav li {
+.predictions_tabnav li,
+.invitations_tabnav li,
+.home_tabnav li,
+.contests_tabnav li,
+.contest_tabnav li {
 	display: inline;
 	overflow: hidden;
 	list-style-type: none; }
 
-.predictions_tabnav li span.disabled, .home_tabnav li span.disabled {
+.predictions_tabnav li span.disabled,
+.invitations_tabnav li span.disabled,
+.home_tabnav li span.disabled,
+.contests_tabnav li span.disabled,
+.contest_tabnav li span.disabled{
         color: #888888;
         /*background: #FAFAFA;*/
         border-bottom: none;
@@ -587,8 +596,11 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
         margin: 0;
         text-decoration: none;}
 
-.predictions_tabnav a, predictions_tabnav a.active,
-.home_tabnav a, home_tabnav a.active {
+.predictions_tabnav a, .predictions_tabnav a.active,
+.invitations_tabnav a, .invitations_tabnav a.active,
+.home_tabnav a, .home_tabnav a.active,
+.contests_tabnav a, .contests_tabnav a.active,
+.contest_tabnav a, .contest_tabnav a.active {
 	color: #f0542b;
 	background: #c3d9ff;
 	font-weight: bold;
@@ -596,19 +608,278 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	margin: 5px 0px 0px 0px;
 	text-decoration: none; }
 
-.predictions_tabnav a.active, .home_tabnav a.active {
+.predictions_tabnav a.active, .invitations_tabnav a.active, .home_tabnav a.active, .contests_tabnav a.active, .contest_tabnav a.active {
 	color: #000000;
         background: #c3d9ff; }
 
-.predictions_tabnav a:hover, .home_tabnav a:hover {
+.predictions_tabnav a:hover, .invitations_tabnav a:hover, .home_tabnav a:hover, .contests_tabnav a:hover, .contest_tabnav a:hover {
 	color: #41686a;
 	background: #c3d9ff; }
 
 /*.groups_tabnav a:visited {
 	color: #000000; }*/
 
-.predictions_tabnav a.active:hover, .home_tabnav a.active:hover {
+.predictions_tabnav a.active:hover, .invitations_tabnav a.active:hover, .home_tabnav a.active:hover, .contests_tabnav a.active:hover, .contest_tabnav a.active:hover {
 	color: #000000; }
+
+/***/
+
+#contests {
+    overflow:hidden;
+    clear: both;
+   width: 910px;
+   z-index: 1;
+   min-height: 35px;
+/*   height: 100px;
+   min-height: 100px;*/
+   /*margin: 0px 10px 0px 10px;*/
+}
+
+#no_contests {
+    background-color: #efefef;
+    width: 910px;
+    opacity: .5;
+    position: absolute;
+    margin: 0px 20px 0px 0px;
+    /*padding-top: 60px;*/
+/*    height: 35px;
+    max-height: 35px;*/
+    text-align: center;
+    /*padding-bottom: 80px;*/
+    border: 1px #52797b solid;
+    color: #52797b;
+    font-size:1.8em;
+    font-weight:bold;
+    z-index: 2;
+}
+
+#contests p {
+  margin-top: 5px;
+  color: #41686a;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+}
+
+#contest_details {
+   float: right;
+   width: 610px;
+   /*height: 100px;*/
+   min-height: 45px;
+   background: #fff;
+   border: 1px #88c6cf solid;
+/*   height: inherit;*/
+   display: block;
+   /*margin: 0px 10px 0px 10px;*/
+}
+
+#contest_details p {
+  color:#41686a;
+  font-weight: bold;
+}
+
+#contest_invitations_form_container {
+   padding: 10px 0px 10px 50px;
+   background: #fff;/*#c3d9ff;*/
+   border: 1px #88c6cf solid;
+/*   height: inherit;*/
+   display: block;
+}
+
+#contest_invitations {
+   margin-bottom: 20px;
+}
+
+/*#contest_invitations_form_container h3 {
+    text-align:center;
+}*/
+
+.contest_invitation, .invalid_contest_invitation {
+   margin-bottom: 10px;
+}
+
+.contest_invitation input, .invalid_contest_invitation input {
+    margin-right: 30px;
+}
+
+.invalid_contest_invitation label {
+    color:red;
+}
+
+#create_contest_form_container {
+   padding: 10px 0px 10px 50px;
+   background: #fff;/*#c3d9ff;*/
+   border: 1px #88c6cf solid;
+/*   height: inherit;*/
+   display: block;
+}
+
+#create_contest_form_container td {
+    vertical-align: top;
+}
+
+#create_contest_form_container form label {
+   text-decoration: none;
+   font-style: normal;
+   /*padding-right: 10px;*/
+   font-size: 110%;
+}
+
+#create_contest_form_container form table textarea {
+   width: 600px;
+   height: 60px;
+   border: solid 1px #DFDFDF !important;
+}
+
+#create_contest_form_container form table #char_counter_monitor {
+    /*padding-bottom: px;*/
+}
+
+#create_contest_form_container form table tbody tr td table#recaptcha_table {
+   width: 612px;
+}
+
+#create_contest_form_container form table tbody tr td.invalid label {
+    color:red;
+}
+
+#create_contest_form_container form table tbody tr td.recaptcha_label {
+   color: #41686a;
+   font-weight: bold;
+   font-size: 110%;
+}
+
+#create_contest_form_container form table tbody tr td.invalid_recaptcha_label {
+   color: red;
+   font-weight: bold;
+   font-size: 110%;
+}
+
+#create_new_contest_link_container {
+  float:right;
+  width: 290px;
+  -moz-border-radius: 7px;
+  -webkit-border-radius: 7px;
+  border-radius: 7px; /* future proofing */
+  -khtml-border-radius: 7px; /* for old Konqueror browsers */
+   margin: 2px 20px 0px 0px;
+   background: #fff;
+   font-weight: bold;
+}
+
+#create_new_contest_link_container div.icon_link,
+#add_invitation_link_container div.add_image {
+   float: left; 
+   margin-top: 1px;
+   padding-left: 5px;
+   width: 25px;
+   display:block;
+}
+
+#create_new_contest_link_container div.text_link {
+   float: left;   
+}
+
+#create_new_contest_link_container div.text_link a {
+   display:block;
+}
+
+#create_new_contest_link_container div.text_link a:hover {
+  color: #41686a;
+  background: #fff;
+}
+
+#create_new_contest_link_container div.text_link a.active {
+  color: #000;
+  background: #fff;
+}
+
+form.contest_create {
+    display: inline;
+    /*margin: 3px 0px 5px 5px;*/
+}
+
+#add_invitation_link_container {
+  margin: -10px 20px 20px 10px;
+  background: #fff;
+  font-weight: bold;
+  clear:both;
+  display: block;
+}
+
+#add_invitation_link_container div.text_link {
+    padding: 0px 0px 5px 5px;
+}
+
+#add_invitation_link_container div.text_link a {
+   /*padding: 10px 0px 10px 2px;*/
+}
+
+#add_invitation_link_container div.text_link a:hover {
+  color: #41686a;
+  background: #fff;
+}
+
+
+
+
+.contests_navigation {
+  display: block;
+}
+
+.contests_navigation ul {
+  padding: 0;
+  margin: 0;
+  background: #efe;
+  text-align: left;
+  list-style: none;
+  border-top: 1px #88c6cf solid;
+}
+
+.contests_navigation li {  
+  border-left: 1px #88c6cf solid;
+  border-right: 1px #88c6cf solid;
+  border-bottom: 1px #88c6cf solid;
+}
+
+.contests_navigation a, .contests_navigation a:visited, .contests_navigation a:hover {
+  border: none;
+  min-height: 25px;
+  padding: 7px 0px 3px 10px;
+  /*margin: 5px 0px -5px 5px;*/
+  font-weight: normal;
+  color: #CB4415;
+  display:block;
+  font-size: 110%;
+}
+
+.contests_navigation a:hover {
+/*  font-weight: normal;*/
+  color: #41686a;
+  background: #fff;
+}
+
+.contests_navigation a.active, .contests_navigation a.active:hover {
+  /*font-weight: bold;*/
+  /*font-size: 110%;*/
+  font-weight: bold;
+  background: #dff6f1;
+  color: #000;
+}
+
+.contests_navigation ul li .contest_details {
+    /*min-width: 300px;*/
+    /*padding-left: 300px;*/
+    color: #41686a;
+    opacity: .8;
+    text-align: right;
+    /*z-index: 2;*/
+    margin: 0px 0px -18px 0px;
+    padding: 0px 20px 0px 0px;
+    float:right;
+    /*padding-bottom: 5px;*/
+    /*display: inline;*/
+}
 
 /* Spiffy/rounded corners styling*/
 .spiffy{display:block}
@@ -849,3 +1120,48 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 .from_round_of_16 {height: 71px;min-height:71px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
 .from_quarter_final {height: 142px;min-height:142px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
 .from_semi_final {height: 284px;min-height: 284px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}
+
+.sortableTable {
+  border: 1px solid #88c6cf;
+/*  background-image:url(../images/logo_opaque.png);*/
+  background-position: center;
+  background-repeat:no-repeat;
+  background-color: #fff;
+}
+
+.sortableTable td {
+  font-size: .95em;
+  padding: 3px 6px;
+  color: #101010;
+/*	border-bottom: 1px solid #999;*/
+}
+
+.sortableTable tr.tableHeaderRow td {
+  color: #f0542b;
+  background: #ddd;
+	/*border-top: 1px solid #ccc;*/
+  border-bottom: 1px solid #ccc;
+  font-weight: bold;
+}
+
+.sortableTable tr.tableHeaderRow td.sortup {
+	background-color: #dff6f1;
+  background-image:url(/images/arrow_down.png);
+	background-position: right center;
+	background-repeat:no-repeat;
+
+}
+
+.sortableTable tr.tableHeaderRow td.sortdown {
+	background-color: #dff6f1;
+        background-image:url(/images/arrow_top.png);
+	background-position: right center;
+	background-repeat:no-repeat;
+}
+
+#invitations_count {
+    float:right;
+    margin-top: -20px;
+    font-weight: bold;
+    color: #41686a;
+}
