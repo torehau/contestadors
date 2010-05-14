@@ -1,0 +1,10 @@
+<% if @no_contests_message -%>
+  <div id="no_contests">
+    <%= @no_contests_message %>
+  </div>
+  <div id="contests"></div>
+<% else -%>
+  <div id="contests">
+    <%= navigation :contests unless @contest_instances.empty? %>
+  </div>
+<% end -%>

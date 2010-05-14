@@ -1,0 +1,45 @@
+<div id="contests">
+  <div id="create_contest_form_container">
+    <h3><%= @contest_instance.new_record? ? "Create a new Contest" : "Edit Contest" %></h3>
+    <% url = @contest_instance.new_record? ? contests_path(@contest.permalink) : contest_path(:contest => @contest.permalink, :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid) -%>
+    <% form_for :contest_instance, @contest_instance, :url => url, :html => (@contest_instance.new_record? ? {} : {:method => :put}) do |form| -%>
+    <table>
+      <tbody>
+        <tr>
+          <td class="<%= @contest_instance.errors.invalid?(:name) ? "invalid" : "" %>">
+            <%= form.label :name, "Name: " %>
+          </td>
+          <td><%= form.text_field :name, :size => 50, :maxlength => 50 %></td>
+        </tr>
+        <tr>
+          <td class="<%= @contest_instance.errors.invalid?(:description) ? "invalid" : "" %>">
+            <%= form.label :description, "Invitation Message: " %><br/>
+            (Optional, max 255 letters)
+          </td>
+          <td>
+             <%= form.text_area :description %><br/>
+             <div id="char_counter_monitor">
+                You have <b><span id="counter">...</span></b> letters remaining for your invitation message.
+             </div>
+             <br/>
+          </td>
+        </tr>
+        <% if @contest_instance.new_record? -%>
+          <tr>
+            <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
+              Type the words in the image:
+            </td>
+            <td><%= recaptcha_tags :display => {:theme => 'clean'} %></td>
+          </tr>
+        <% end -%>
+        <tr>
+          <td></td>
+          <td><%= submit_tag @contest_instance.new_record? ? "Create Contest" : "Edit Contest" %></td>
+        </tr>
+      </tbody>
+    </table>
+    <% end -%>
+  </div>
+</div>
+<%= countdown_field('contest_instance_description','counter', 255) %>
+<%= set_focus_to_id @focused_field_id ||= 'contest_instance_name' %>

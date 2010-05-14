@@ -1,0 +1,9 @@
+<div id="create_new_contest_link_container">
+  <div class="icon_link">
+    <%= link_to(image_tag("add.png"), new_contest_path(@contest.permalink, "admin")) %>
+  </div>
+  <div class="text_link">
+    <%= link_to("Create a new Contest", new_contest_path(@contest.permalink, "admin"),
+      (current_controller.eql?('contests') and ["new", "create"].include?(current_action)) ? {:class => "active"} : {}) %>
+  </div>
+</div>

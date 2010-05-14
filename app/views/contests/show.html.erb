@@ -1,0 +1,19 @@
+<%= grid(@participants_grid, :show_filters => :no) do |g|
+  g.column :column_name => 'Name', :attribute_name => 'name', :model_class => User do |participation|
+    participation.user.name
+  end
+
+  g.column :column_name => 'Role', :attribute_name => 'invitation_id' do |participation|
+    participation.invitation ? "Member" : "Administrator"
+  end
+
+  g.column :column_name => 'Participant since', :attribute_name => 'created_at' do |participation|
+    participation.created_at.to_s(:short)
+  end
+
+  g.column :column_name => 'Prediction Status' do |participation| # joined table
+    state = participation.user.summary_of(@contest).state
+    # TODO to avoid this lookup, a progress attribute should be included for the PredictionSummary
+    "Completed: " + Configuration::PredictionState.find_by_state_name(state).progress_accumulated.to_s + " %"
+  end
+end -%>
