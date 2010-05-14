@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  email: MyString
+  contest_instance_id: 1
+  existing_user_id: 1
+
+two:
+  name: MyString
+  email: MyString
+  contest_instance_id: 1
+  existing_user_id: 1
