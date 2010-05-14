@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100324191017) do
+ActiveRecord::Schema.define(:version => 20100511190522) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -80,6 +80,47 @@ ActiveRecord::Schema.define(:version => 20100324191017) do
     t.datetime "updated_at"
     t.integer  "configuration_prediction_state_id"
   end
+
+  create_table "contest_instances", :force => true do |t|
+    t.string   "name",                     :limit => 50, :null => false
+    t.string   "permalink",                              :null => false
+    t.integer  "configuration_contest_id",               :null => false
+    t.integer  "admin_user_id",                          :null => false
+    t.string   "uuid",                                   :null => false
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "contest_instances", ["admin_user_id"], :name => "index_contest_instances_on_admin_user_id"
+  add_index "contest_instances", ["permalink"], :name => "index_contest_instances_on_permalink"
+  add_index "contest_instances", ["uuid"], :name => "index_contest_instances_on_uuid"
+
+  create_table "invitations", :force => true do |t|
+    t.string   "name",                :null => false
+    t.string   "email",               :null => false
+    t.integer  "contest_instance_id", :null => false
+    t.integer  "sender_id",           :null => false
+    t.integer  "existing_user_id"
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "invitations", ["contest_instance_id"], :name => "index_invitations_on_contest_instance_id"
+  add_index "invitations", ["email"], :name => "index_invitations_on_email"
+  add_index "invitations", ["existing_user_id"], :name => "index_invitations_on_existing_user_id"
+
+  create_table "participations", :force => true do |t|
+    t.integer  "contest_instance_id", :null => false
+    t.integer  "user_id",             :null => false
+    t.integer  "invitation_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "participations", ["contest_instance_id"], :name => "index_participations_on_contest_instance_id"
+  add_index "participations", ["user_id"], :name => "index_participations_on_user_id"
 
   create_table "predictable_championship_group_qualifications", :force => true do |t|
     t.integer  "predictable_championship_group_id"
