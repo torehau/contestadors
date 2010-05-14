@@ -7,6 +7,11 @@ ActionController::Routing::Routes.draw do |map|
   map.championship_predictions "championship/group/A",
     :controller => "predictions", :action => "new",
     :contest => "championship", :aggregate_root_type => "group", :aggregate_root_id => "A"
+  map.resources :contests, :path_prefix => '/:contest/:role' do |contests|
+    contests.resources :invitations
+  end
+  map.resources :invitations, :path_prefix => '/:contest',
+    :collection => {:pending => :get, :accepted => :get}
   map.home ':action', :controller => 'home', :action => /about|rules|terms|privacy|contact/
   map.root :controller => "user_sessions", :action => "new"
 end
