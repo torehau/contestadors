@@ -1,0 +1,50 @@
+<%  
+# this partial renders a navigation bar, you can call it in your views with:
+#   <% navigation :contests % > 
+#
+# you can pass render_navigation a few options:
+#   :generate_css => true|false #=> generates a default inline css for the tabnav, defaults to false
+#   :html => aHash #=> sets html options for the tabnav's div (es :html => {:class=> 'myCssClass', :id=>'myCssId'}) 
+#  
+render_navigation :contests, :separator => "", :generate_css => false do
+  @contest_instances.each do |instance|
+    add_item do |i|
+      i.named instance.name
+      i.titled "Click to view contest details"
+      i.links_to contest_path(:contest => @contest.permalink, :id => instance.permalink, :uuid => instance.uuid)
+      i.highlights_on(:action => "index") if @contest_instance and instance.eql?(@contest_instance)
+      i.detailed_info instance.summary_for(current_user)
+      #content_tag :div, :class => "creation_information" do
+        #"Created at: " + instance.created_at.to_s
+      #end
+      #content_tag(:div, "Created at: " + instance.created_at.to_s, :class => "creation_information")
+    end
+    
+  end
+    #add_item do |i|
+      #i.named 'welcome to the rails-widgets'
+      #i.disable!
+    #end
+    
+    #add_item do |i|
+      ## i.html = {:id => 'logout_link'}
+      #i.named 'github'
+      #i.links_to "http://github.com/paolodona/rails-widgets"
+    #end
+
+    #add_item do |i|
+      #i.named 'wiki'
+      #i.titled 'contribute to the wiki!'
+      #i.links_to "http://github.com/paolodona/rails-widgets/wiki"
+    #end
+    
+    # you can pass add_item a block to just like the tabnav!
+    #  
+    # add_item do |i|
+    #   i.html = {:id => 'logout_link'}
+    #   i.named 'logout', 
+    #   i.links_to :action => 'logout'
+    # end
+    #
+end 
+%>
