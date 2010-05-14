@@ -9,6 +9,7 @@ module Configuration
       end
     end
     has_many :prediction_summaries
+    has_many :contest_instances, :foreign_key => "configuration_contest_id"
 
     def self.all_available
       now = Time.now
