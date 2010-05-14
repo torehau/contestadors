@@ -36,6 +36,35 @@ class User < ActiveRecord::Base
                                  :configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id}})
     end
   end
+  has_many :administered_contest_instances, :class_name => "ContestInstance", :foreign_key => "admin_user_id" do
+    def for_contest(contest)
+      find(:all, :conditions => {:configuration_contest_id => contest.id}, :order => "name")
+    end
+    def for_contest_instance(contest_instance)
+      find(:first, :conditions => {:id => contest_instance.id})
+    end
+  end
+  has_many :invitations, :class_name => "Invitation", :foreign_key => "existing_user_id" do
+    def not_accepted
+      find(:all, :conditions => {:state => ['New', 'Sent']})
+    end
+  end
+  has_many :sent_invitations, :class_name => "Invitation", :foreign_key => "sender_id"
+  has_many :participations do
+    def as_participant(contest)
+      find(:all, :joins => [:contest_instance],
+           :conditions => ["contest_instances.configuration_contest_id = :contest_id", {:contest_id => contest.id}],
+           :order => "contest_instances.name")
+    end
+    def as_member(contest)
+      find(:all, :joins => [:invitation, :contest_instance],
+           :conditions => ["contest_instances.configuration_contest_id = :contest_id", {:contest_id => contest.id}],
+           :order => "contest_instances.name")
+    end
+    def of(contest_instance)
+      find(:first, :joins => :invitation, :conditions => {:contest_instance_id => contest_instance.id}, :group => :id)
+    end
+  end
 
   def summary_of(contest)
     prediction_summaries.for_contest(contest)
@@ -71,6 +100,49 @@ class User < ActiveRecord::Base
 
   def predictions_by_item_id(set)
     predictions.by_predictable_item(set)
+  end
+
+  def instances_of(contest, role)
+    contest ||= Configuration::Contest.find(:first)
+    role ||= :all
+    case role
+    when :admin then admin_contests_instances(contest)
+    when :member then member_contests_instances(contest)
+    when :all then participant_contests_instances(contest)
+    end
+  end
+
+
+  def default_contest
+    administered_contest = self.administered_contest_instances.first
+    return administered_contest if administered_contest
+    participation = self.participations.first
+    participation ? participation.contest_instance : nil
+  end
+
+  def is_participant_of?(contest_instance)
+    return false unless contest_instance
+    (is_admin_of?(contest_instance) or is_member_in?(contest_instance))
+  end
+
+  def is_admin_of?(contest_instance)
+    self.administered_contest_instances.for_contest_instance(contest_instance)
+  end
+
+  def is_member_in?(contest_instance)
+    self.participations.of(contest_instance)
+  end
+
+  def admin_contests_instances(contest)
+    self.administered_contest_instances.for_contest(contest)
+  end
+
+  def member_contests_instances(contest)
+    self.participations.as_member(contest).collect{|participation| participation.contest_instance}
+  end
+
+  def participant_contests_instances(contest)
+    self.participations.as_participant(contest).collect{|participation| participation.contest_instance}
   end
 
 protected
