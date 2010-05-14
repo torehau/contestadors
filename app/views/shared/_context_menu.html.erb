@@ -6,5 +6,18 @@
       <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
     </div>
     <%= tabnav :predictions %>
+  <% elsif current_controller.eql?('contests') -%>
+    <% if ['index', 'new', 'create'].include?(current_action) -%>
+      <%= render :partial => 'contests/create_new_contest_link'-%>
+      <%= tabnav :contests %>
+     <% else -%>
+       <%= tabnav :contest %>
+     <% end -%>
+  <% elsif current_controller.eql?('invitations') -%>
+    <% if ['pending', 'accepted'].include?(current_action) -%>
+      <%= tabnav :invitations %>
+     <% else -%>
+       <%= tabnav :contest %>
+     <% end -%>
   <% end -%>
 <% end -%>
