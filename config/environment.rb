@@ -30,6 +30,9 @@ Rails::Initializer.run do |config|
   config.gem "authlogic", :version => '2.1.3'
   config.gem "ruleby", :version => '0.6'
   config.gem "state_machine", :version => '0.9.0'
+  config.gem "uuidtools", :version => '2.1.1'
+  config.gem 'will_paginate', :version => '~> 2.3.12', :source => 'http://gemcutter.org'
+  config.gem 'statistics', :version => '0.1.1', :source => 'http://github.com/acatighera/statistics.git'
 #  config.gem "inherited_resources", :version => '0.9.5'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
@@ -45,9 +48,14 @@ Rails::Initializer.run do |config|
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
   # Run "rake -D time" for a list of tasks for finding time zone names.
-  config.time_zone = 'UTC'
+  config.time_zone = 'Berlin'
 
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   # config.i18n.default_locale = :de
+
+  config.action_view.field_error_proc = Proc.new{ |html_tag, instance| "<span class=&quot;fieldWithErrors&quot;>#{html_tag}</span>" }
+
+  ENV['RECAPTCHA_PUBLIC_KEY']  = '6LeLJroSAAAAAAWSeDsS17hDu484NPGwXCc92eEO'
+  ENV['RECAPTCHA_PRIVATE_KEY'] = '6LeLJroSAAAAAP3YdLKNsxLJEBNhNi7rU0rG45fT'
 end
