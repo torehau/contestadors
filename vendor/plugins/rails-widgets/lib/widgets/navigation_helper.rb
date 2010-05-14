@@ -39,9 +39,11 @@ module Widgets
         end
 
         concat '<li>'
+
         if item.disabled?
           concat content_tag('span', item.name, item.html)
         else
+          concat content_tag(:div, item.details.join("<br/>\n"), :class => "contest_details")
           if !item.function.blank?
             concat link_to_function(item.name, item.function, item.html)
           else
