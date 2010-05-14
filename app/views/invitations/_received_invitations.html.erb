@@ -1,0 +1,25 @@
+<% total_entries = @contest_invitations_grid.resultset.size -%>
+<% if total_entries > 0 -%>
+  <%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
+    g.column :column_name => 'Contest', :attribute_name => 'name', :model_class => ContestInstance do |invitation| # joined table
+      invitation.contest_instance.name
+    end
+
+    g.column :column_name => 'Received on', :attribute_name => 'created_at' do |invitation| # joined table
+      invitation.created_at.to_s(:short)
+    end
+
+    g.column :column_name => 'Invited by', :attribute_name => 'name', :model_class => User do |invitation| # joined table
+      invitation.sender.name
+    end
+
+    g.column do |invitation|
+      link_to('Accept Invitation', :path => invitation_path(@contest.permalink, invitation.id), :method => 'put')
+    end
+  end -%>
+<% else -%>
+  <div id="no_contests">
+    You have no new contest invitations
+  </div>
+  <div id="contests"></div>
+<% end -%>

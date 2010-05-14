@@ -1,0 +1,14 @@
+<% total_entries = @sorted_objects.total_entries -%>
+<% if total_entries > 0 -%>
+  <%= sortable_table :search => false, :partial => 'invitations' %>
+  <% if total_entries > 10 -%>
+    <div id="invitations_count">
+      <%= invitations_counter(total_entries, @sorted_objects.current_page) %>
+    </div>
+  <% end -%>
+<% else -%>
+  <div id="no_contests">
+    You have not invited anyone to join the contest yet.
+  </div>
+  <div id="contests"></div>
+<% end -%>

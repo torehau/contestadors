@@ -1,0 +1,21 @@
+<div id="contests">
+  <div id="contest_invitations_form_container">
+    <h3>Invite People To Join</h3>
+    <% form_for :contest_instance, @contest_instance,
+      :url => contest_invitations_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) do |form| -%>
+      <%#= negative_captcha(@captcha) %>
+      <div id="contest_invitations">
+        <%= render :partial => 'contest_invitation', :collection => @invitations %>
+      </div>
+      <div id="add_invitation_link_container">
+        <div class="add_image">
+          <%= image_tag("add.png") %>
+        </div>
+        <div class="text_link">
+          <%= add_invitation_link "Add an Invitation" %>
+        </div>
+      </div>
+      <%= form.submit "Send Invitations" %>
+    <% end -%>
+  </div>
+</div>

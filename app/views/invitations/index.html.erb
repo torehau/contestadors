@@ -1,0 +1,21 @@
+<%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
+  g.column :column_name => 'Name', :attribute_name => 'name', :model_class => User do |invitation| # joined table
+    invitation.existing_user ? invitation.existing_user.name : invitation.name
+  end
+
+  g.column :column_name => 'Email', :attribute_name => 'email' do |invitation| # joined table
+    invitation.email
+  end
+
+  g.column :column_name => 'State', :attribute_name => 'state' do |invitation| # joined table
+    invitation.state_display_name
+  end
+
+  g.column :column_name => 'Invited on', :attribute_name => 'created_at' do |invitation| # joined table
+    invitation.created_at.to_s(:short)
+  end
+
+  g.column :column_name => 'Accepted on', :attribute_name => 'created_at', :model_class => Participation do |invitation| # joined table
+    invitation.participation ? invitation.participation.created_at.to_s(:short) : "Not accepted yet"
+  end
+end -%>

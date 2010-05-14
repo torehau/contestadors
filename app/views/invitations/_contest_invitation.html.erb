@@ -1,0 +1,7 @@
+<div class="<%=  contest_invitation_div_class(contest_invitation) %>">
+  <% prefix = "invitations[]" %>
+  <% fields_for prefix, contest_invitation do |invitation_form| %>
+    <%= label_tag "Name: " %> <%= invitation_form.text_field :name, :size => 40, :maxlength => 50 %>
+    <%= label_tag "Email: " %> <%= invitation_form.text_field :email, :size => 40, :maxlength => 50 %>
+  <% end -%>
+</div>

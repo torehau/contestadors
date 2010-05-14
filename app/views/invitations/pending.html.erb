@@ -1,0 +1,17 @@
+<%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
+  g.column :column_name => 'Contest', :attribute_name => 'name', :model_class => ContestInstance do |invitation| # joined table
+    invitation.contest_instance.name
+  end
+
+  g.column :column_name => 'Invited by', :attribute_name => 'name', :model_class => User do |invitation| # joined table
+    invitation.sender.name
+  end
+
+  g.column :column_name => 'Received on', :attribute_name => 'created_at' do |invitation| # joined table
+    invitation.created_at.to_s(:short)
+  end
+
+  g.column :column_name => 'Accept Invitation' do |invitation|
+    link_to('Join Contest', invitation_path(@contest.permalink, invitation.id), {:method => :put})
+  end
+end -%>
