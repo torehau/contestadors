@@ -75,11 +75,6 @@
    border-top: 1px dotted #000;
 }
 
-/*.wice_grid td {
-  border-bottom: 1px dotted #9999CC;
-  height: 2.5em;
-  padding: 0 1em;
-}*/
 .wice_grid td {
   /*font-size: .95em;*/
   height: 2.0em;
@@ -88,8 +83,13 @@
 /*	border-bottom: 1px solid #999;*/
 }
 
-.wice_grid td a {
+.wice_grid td a, .wice_grid td a:visited {
     font-weight: bold;
+    color: #f0542b;
+}
+
+.wice_grid td a:hover {
+    color: #41686a;
 }
 
 .wice_grid .desc,  .wice_grid .asc{ 
