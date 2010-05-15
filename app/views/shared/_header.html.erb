@@ -1,8 +1,14 @@
 <!-- header -->
 <div id="header">
   <div id="top">
-    <h1 id="logo">Contest<span class="gray">adors.com</span>
-      <!--<span class="slogan">Free <span class="slogan-blue">World Cup</span> Prediction Contests</span>--></h1>
+    <% if current_user -%>
+      <%= image_tag("contestadors-logo-blueblack-2.gif") %>
+    <% else -%>
+      <img src="http://www.logomaker.com/logo-images/cb39b8bd08e849a5.gif"/>
+      <a href="http://www.logoworks.com"><img src="http://www.logomaker.com/images/logos.gif" alt="logo design" border="0"/></a>
+    <% end -%>
+    <!--<h1 id="logo">Contest<span class="gray">adors.com</span>-->
+    <!--<span class="slogan">Free <span class="slogan-blue">World Cup</span> Prediction Contests</span>--></h1>
   </div>
   <div id="top_right">
     <div id="nav">
