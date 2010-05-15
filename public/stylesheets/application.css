@@ -1,4 +1,4 @@
-/* -- Blueprint Overrides ------------------------------- */
+/* -- Blueprint Overrides ------------------------------- 008aa3, ff7800 */
 hr {
   margin-bottom:0.8em;
 }
@@ -76,11 +76,11 @@ em {
 }
 #top_center h3#slogan {
 	font: italic 50% Verdana,sans-serif;
-	color: #333;
+	color: #3b3b3b;
 	/*padding-left:100px;*/
 }
 #top_center h3#slogan span.slogan-blue {
-	color:#008aa4;/*#41686a;*/
+	color:/*#9cbcda;*/#41686a;
 	/*padding-left: 0px;*/
 }
 
