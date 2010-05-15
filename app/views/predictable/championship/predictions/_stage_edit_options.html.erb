@@ -1,7 +1,7 @@
-<div class="knockout_stage_edit_options">
-  <% if selected == true -%>
-    <%= link_to_function "Save","javascript:document.getElementById(\"stage_form\").submit();return false" %>
-  <% elsif predicted == true -%>
-    <%= link_to "Edit", new_prediction_path(:contest => @contest.permalink, :aggregate_root_type => "stage", :aggregate_root_id => stage.permalink) %>
-  <% end -%>
-</div>
+<% if selected == true -%>
+  <%= link_to_function label, "javascript:document.getElementById(\"stage_form\").submit();return false" %>
+<% elsif predicted == true -%>
+  <%= link_to label, new_prediction_path(:contest => @contest.permalink, :aggregate_root_type => "stage", :aggregate_root_id => stage.permalink) %>
+<% else -%>
+  <%= label %>
+<% end -%>
