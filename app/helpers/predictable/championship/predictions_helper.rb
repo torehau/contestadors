@@ -16,6 +16,16 @@ module Predictable::Championship::PredictionsHelper
     (stage and @aggregate_root_id.eql?(stage.permalink)) == true
   end
 
+  def knockout_stage_label_div_class(selected, predicted)
+    if selected == true
+      "selected_knockout_stage_label"
+    elsif predicted == true
+      "knockout_stage_label"
+    else
+      "undeceided_knockout_stage_label"
+    end
+  end
+
   def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
     div_class_prefix = ""
 
