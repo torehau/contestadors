@@ -1,4 +1,13 @@
-/* -- Blueprint Overrides ------------------------------- 008aa3, ff7800 */
+/* -- Blueprint Overrides ------------------------------- */
+#static_content a, #static_content a:visited {
+    color: #f0542b;
+}
+
+#static_content a, #static_content a:hover {
+    color: #41686a;
+    background: #eee;
+}
+
 hr {
   margin-bottom:0.8em;
 }
@@ -85,7 +94,7 @@ em {
 }
 
 #header {
-/*  background: #dff6f1;
+/*  background: #9cbcda;
   border-bottom: 1px #88c6cf solid;*/
   background: #fff;
   float:left;
@@ -231,6 +240,15 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   float: right;
   width:300px;
   text-align: right;
+}
+
+#footer-1 a, #footer-1 a:visited, #footer-2 a, #footer-2 a:visited {
+    color: #f0542b;
+}
+
+#footer-1 a:hover, #footer-2 a:hover {
+    color: #41686a;
+    background: #eee;
 }
 
 /* -- Flashes ------------------------------ */
@@ -501,6 +519,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
         /*border-bottom: 1px solid #88c6cf;*/
         clear: both;
 	padding: 2px 0px 0px 0px;
+        font-size: 110%;
 }
 
 .main_tabnav ul {
@@ -933,36 +952,69 @@ form.contest_create {
 
 .selected_knockout_stage_label {
   width: 203px;
-  padding-right: 3px;
-  margin: 0px 0px 10px 0px;
-  height: 17px;
+/*  padding-right: 3px;*/
+  margin: 0px 0px 7px 0px;
+  height: 20px;
   border: 1px #88c6cf solid;
   background: #dff6f1;
+  background-image: url(/images/disk.png);
+  background-position: 180px 2px;
+  background-repeat:no-repeat;
   color: #333;
   font-weight: bold;
   text-align: center;
   float: right;
+  display:block;
 }
 
 .knockout_stage_label {
   width: 203px;
-  margin: 0px 0px 10px 0px;
-  padding-right: 3px;
-  height: 17px;
+  margin: 0px 0px 7px 0px;
+/*  padding-right: 3px;*/
+  height: 20px;
   border: 1px #ccc solid;
   background: #ddd;
+  background-image: url(/images/page_white_edit.png);
+  background-position: 180px 2px;
+  background-repeat:no-repeat;
   color: #333;
   font-weight: bold;
   text-align: center;
   float: right;
 }
 
-.knockout_stage_edit_options {
-   /*margin-right: 5px;*/
-   float: right;
+.undeceided_knockout_stage_label {
+  width: 203px;
+  margin: 0px 0px 7px 0px;
+/*  padding-right: 3px;*/
+  height: 20px;
+  border: 1px #ccc solid;
+  background: #ddd;
+  color: #41686a;
+  font-weight: bold;
+  text-align: center;
+  float: right;
 }
 
-.knockout_stage_operations {
+.selected_knockout_stage_label a, .selected_knockout_stage_label a:visited,
+.knockout_stage_label a, .knockout_stage_label a:visited {
+   color: #f0542b;
+   display:block;
+}
+
+.knockout_stage_label a:hover {
+   background: #ddd;
+   color: #41686a;
+   height: 20px;
+}
+
+.selected_knockout_stage_label a:hover {
+   background: #dff6f1;
+   color: #41686a;
+   height: 20px;
+}
+
+/*.knockout_stage_operations {
   width: 200px;
   margin: 0px 0px 2px 0px;
   height: 18px;
@@ -972,7 +1024,7 @@ form.contest_create {
 
 .knockout_stage_operations input {
   float: right;
-}
+}*/
 
 .knockout_stage_match_container {
   width: 208px;
@@ -1145,7 +1197,7 @@ form.contest_create {
 }
 
 .sortableTable tr.tableHeaderRow td.sortup {
-	background-color: #dff6f1;
+	background-color: #9cbcda;
   background-image:url(/images/arrow_down.png);
 	background-position: right center;
 	background-repeat:no-repeat;
@@ -1153,7 +1205,7 @@ form.contest_create {
 }
 
 .sortableTable tr.tableHeaderRow td.sortdown {
-	background-color: #dff6f1;
+	background-color: #9cbcda;
         background-image:url(/images/arrow_top.png);
 	background-position: right center;
 	background-repeat:no-repeat;
@@ -1165,3 +1217,4 @@ form.contest_create {
     font-weight: bold;
     color: #41686a;
 }
+
