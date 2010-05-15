@@ -545,7 +545,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 .main_tabnav a.active {
         padding: 3px 5px 3px 6px;
 	color: #000000;
-	background: #c3d9ff;/*88c6cf*/
+	background: #9cbcda;/*88c6cf*/
         /*border-bottom: 1px solid #eeeeee;*/
 }
 
@@ -558,10 +558,10 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .main_tabnav a.active:hover {
 	color: #000000;
-        background: #c3d9ff;}
+        background: #9cbcda;}
 
 .main_tabnav_content {
-	background: #c3d9ff;
+	background: #9cbcda;
 	padding: 0px;
 }
 
@@ -602,7 +602,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 .contests_tabnav a, .contests_tabnav a.active,
 .contest_tabnav a, .contest_tabnav a.active {
 	color: #f0542b;
-	background: #c3d9ff;
+	background: #9cbcda;
 	font-weight: bold;
 	padding: 3px 5px 0px 5px;
 	margin: 5px 0px 0px 0px;
@@ -610,11 +610,11 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .predictions_tabnav a.active, .invitations_tabnav a.active, .home_tabnav a.active, .contests_tabnav a.active, .contest_tabnav a.active {
 	color: #000000;
-        background: #c3d9ff; }
+        background: #9cbcda; }
 
 .predictions_tabnav a:hover, .invitations_tabnav a:hover, .home_tabnav a:hover, .contests_tabnav a:hover, .contest_tabnav a:hover {
 	color: #41686a;
-	background: #c3d9ff; }
+	background: #9cbcda; }
 
 /*.groups_tabnav a:visited {
 	color: #000000; }*/
@@ -680,7 +680,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 #contest_invitations_form_container {
    padding: 10px 0px 10px 50px;
-   background: #fff;/*#c3d9ff;*/
+   background: #fff;/*#9cbcda;*/
    border: 1px #88c6cf solid;
 /*   height: inherit;*/
    display: block;
@@ -708,7 +708,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 #create_contest_form_container {
    padding: 10px 0px 10px 50px;
-   background: #fff;/*#c3d9ff;*/
+   background: #fff;/*#9cbcda;*/
    border: 1px #88c6cf solid;
 /*   height: inherit;*/
    display: block;
@@ -888,7 +888,7 @@ form.contest_create {
   height:1px;
   overflow:hidden;
   font-size:.01em;
-  background:#C3D9FF}
+  background:#9cbcda}
 .spiffy1{
   margin-left:3px;
   margin-right:3px;
@@ -918,7 +918,7 @@ form.contest_create {
   border-right:1px solid #d2e2ff}
 .spiffyfg{
   padding: 0 5px;
-  background:#C3D9FF}
+  background:#9cbcda}
 
 /*--- Knockout stage styling. ---*/
 .knockout_stages {
