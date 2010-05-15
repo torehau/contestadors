@@ -522,7 +522,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
         text-decoration: none;}
 
 .main_tabnav a, main_tabnav a.active {
-	color: #f0542b;
+	color: #3b3b3b;
 	background: #fff;
         font-weight: bold;
 	margin: 0;
@@ -544,7 +544,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 .main_tabnav a.active {
         padding: 3px 5px 3px 6px;
-	color: #000000;
+	color: #ffffff;
 	background: #9cbcda;/*88c6cf*/
         /*border-bottom: 1px solid #eeeeee;*/
 }
@@ -557,7 +557,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	color: #000000; }*/
 
 .main_tabnav a.active:hover {
-	color: #000000;
+	color: #ffffff;
         background: #9cbcda;}
 
 .main_tabnav_content {
@@ -601,7 +601,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 .home_tabnav a, .home_tabnav a.active,
 .contests_tabnav a, .contests_tabnav a.active,
 .contest_tabnav a, .contest_tabnav a.active {
-	color: #f0542b;
+	color: #3b3b3b;
 	background: #9cbcda;
 	font-weight: bold;
 	padding: 3px 5px 0px 5px;
@@ -609,7 +609,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	text-decoration: none; }
 
 .predictions_tabnav a.active, .invitations_tabnav a.active, .home_tabnav a.active, .contests_tabnav a.active, .contest_tabnav a.active {
-	color: #000000;
+	color: #ffffff;
         background: #9cbcda; }
 
 .predictions_tabnav a:hover, .invitations_tabnav a:hover, .home_tabnav a:hover, .contests_tabnav a:hover, .contest_tabnav a:hover {
@@ -620,7 +620,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	color: #000000; }*/
 
 .predictions_tabnav a.active:hover, .invitations_tabnav a.active:hover, .home_tabnav a.active:hover, .contests_tabnav a.active:hover, .contest_tabnav a.active:hover {
-	color: #000000; }
+	color: #ffffff; }
 
 /***/
 
@@ -1137,7 +1137,7 @@ form.contest_create {
 }
 
 .sortableTable tr.tableHeaderRow td {
-  color: #f0542b;
+  color: #3b3b3b;
   background: #ddd;
 	/*border-top: 1px solid #ccc;*/
   border-bottom: 1px solid #ccc;
