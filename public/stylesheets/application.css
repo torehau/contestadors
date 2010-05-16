@@ -120,6 +120,15 @@ em {
   z-index: 3;
 }
 
+#top_right a, #top_right a:visited {
+    color: #f0542b;
+}
+
+#top_right a:hover, #top_right a:hover {
+    color: #41686a;
+    /*background: #eee;*/
+}
+
 #nav{
 /*  width: auto;
   background: #eee;
@@ -953,46 +962,52 @@ form.contest_create {
 .selected_knockout_stage_label {
   width: 203px;
 /*  padding-right: 3px;*/
-  margin: 0px 0px 7px 0px;
-  height: 20px;
+  margin: 0px 0px 5px 0px;
+  height: 22px;
   border: 1px #88c6cf solid;
   background: #dff6f1;
   background-image: url(/images/disk.png);
-  background-position: 180px 2px;
+  background-position: 180px 3px;
   background-repeat:no-repeat;
   color: #333;
   font-weight: bold;
+  font-size: 110%;
   text-align: center;
+  vertical-align: middle;
   float: right;
   display:block;
 }
 
 .knockout_stage_label {
   width: 203px;
-  margin: 0px 0px 7px 0px;
+  margin: 0px 0px 5px 0px;
 /*  padding-right: 3px;*/
-  height: 20px;
+  height: 22px;
   border: 1px #ccc solid;
   background: #ddd;
   background-image: url(/images/page_white_edit.png);
-  background-position: 180px 2px;
+  background-position: 180px 3px;
   background-repeat:no-repeat;
   color: #333;
   font-weight: bold;
+  font-size: 110%;
   text-align: center;
+  vertical-align: middle;
   float: right;
 }
 
 .undeceided_knockout_stage_label {
   width: 203px;
-  margin: 0px 0px 7px 0px;
+  margin: 0px 0px 5px 0px;
 /*  padding-right: 3px;*/
-  height: 20px;
+  height: 22px;
   border: 1px #ccc solid;
   background: #ddd;
   color: #41686a;
   font-weight: bold;
+  font-size: 110%;
   text-align: center;
+  vertical-align: middle;
   float: right;
 }
 
@@ -1005,13 +1020,13 @@ form.contest_create {
 .knockout_stage_label a:hover {
    background: #ddd;
    color: #41686a;
-   height: 20px;
+   height: 22px;
 }
 
 .selected_knockout_stage_label a:hover {
    background: #dff6f1;
    color: #41686a;
-   height: 20px;
+   height: 22px;
 }
 
 /*.knockout_stage_operations {
