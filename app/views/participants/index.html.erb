@@ -1,0 +1,27 @@
+<% grid(@participants_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+  <%  g.column :column_name => 'Name', :attribute_name => 'name', :model_class => User do |participation| -%>
+    <%=  participation.user.name -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Role', :attribute_name => 'invitation_id' do |participation| -%>
+    <%= participation.invitation ? "Member" : "Administrator" -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Participant since', :attribute_name => 'created_at' do |participation| -%>
+    <%=  participation.created_at.to_s(:short) -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Prediction Status' do |participation| -%>
+    <%  state = participation.user.summary_of(@contest).state -%>
+    <%#*# TODO to avoid this lookup, a progress attribute should be included for the PredictionSummary%>
+    <%=  "Completed: " + Configuration::PredictionState.find_by_state_name(state).progress_accumulated.to_s + " %" -%>
+  <%  end -%>
+
+  <%  if after_contest_participation_ends -%>
+    <%  g.column :column_name => 'Active' do |participation| -%>
+        <%=  check_box_tag 'participation[active]', "1", participation.active, :disabled => !current_user.is_admin_of?(@contest_instance),
+          :onclick => toggle_value(participation, contest_participant_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :id => participation.id, :uuid => @contest_instance.uuid)) -%>
+        <%=  image_tag "spinner.gif", :id => "spinner-#{participation.id}", :style => 'display: none' -%>
+    <%  end -%>
+  <%  end -%>
+<%  end -%>
