@@ -9,6 +9,7 @@ ActionController::Routing::Routes.draw do |map|
     :contest => "championship", :aggregate_root_type => "group", :aggregate_root_id => "A"
   map.resources :contests, :path_prefix => '/:contest/:role' do |contests|
     contests.resources :invitations
+    contests.resources :participants
   end
   map.resources :invitations, :path_prefix => '/:contest',
     :collection => {:pending => :get, :accepted => :get}
