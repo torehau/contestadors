@@ -33,6 +33,7 @@ Rails::Initializer.run do |config|
   config.gem "uuidtools", :version => '2.1.1'
   config.gem 'will_paginate', :version => '~> 2.3.12', :source => 'http://gemcutter.org'
   config.gem 'statistics', :version => '0.1.1', :source => 'http://github.com/acatighera/statistics.git'
+  config.gem 'later_dude', :version => '0.3.1'
 #  config.gem "inherited_resources", :version => '0.9.5'
 
   # Only load the plugins named here, in the order given (default is alphabetical).
