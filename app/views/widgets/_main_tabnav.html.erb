@@ -35,22 +35,18 @@ render_tabnav :main,
   add_tab do |t|
     t.named 'Predictions'
     t.titled 'Your predictions of the championship'
-    t.links_to new_prediction_path("championship", "group", "A")
-    # TODO helper method to build path if @contest and @wizard are set:
-    #t.links_to new_prediction_path(@contest.permalink, @wizard.current_step.type, @wizard.current_step.id)
-    #t.links_to new_prediction_path("group", "A")
+    t.links_to prediction_menu_link
     t.highlights_on :controller => "predictions"
   end
 
-  add_tab do |t|
-    t.named 'Invitations'
-    t.titled 'Your received contest invitations'
-    t.links_to pending_invitations_path("championship")
-    # TODO helper method to build path if @contest and @wizard are set:
-    #t.links_to new_prediction_path(@contest.permalink, @wizard.current_step.type, @wizard.current_step.id)
-    #t.links_to new_prediction_path("group", "A")
-    t.highlights_on :controller => "invitations", :action => "pending"
-    t.highlights_on :controller => "invitations", :action => "accepted"
+  if before_contest_participation_ends
+    add_tab do |t|
+      t.named 'Invitations'
+      t.titled 'Your received contest invitations'
+      t.links_to pending_invitations_path("championship")
+      t.highlights_on :controller => "invitations", :action => "pending"
+      t.highlights_on :controller => "invitations", :action => "accepted"
+    end
   end
 
   add_tab do |t|
@@ -58,9 +54,10 @@ render_tabnav :main,
     t.titled 'All contests you have created or accepted invitations for'
     t.links_to contests_path("championship", "all")
     t.highlights_on :controller => "contests", :action => "index"
-    t.highlights_on :controller => "contests", :action => "new"
-    t.highlights_on :controller => "contests", :action => "create"
-    #t.highlights_on :controller => "invitations", :action => "index" unless @role
+    if before_contest_participation_ends
+      t.highlights_on :controller => "contests", :action => "new"
+      t.highlights_on :controller => "contests", :action => "create"
+    end
   end
 
   selected = selected_contest
@@ -68,11 +65,14 @@ render_tabnav :main,
     add_tab do |t|
       t.named selected.name
       t.titled selected.name
-      t.links_to contest_path(:contest => "championship", :role => selected.role_for(current_user), :id => selected.permalink, :uuid => selected.uuid)
+      t.links_to contest_instance_menu_link(selected)
       t.highlights_on :controller => "contests", :action => "show"
-      t.highlights_on :controller => "contests", :action => "edit"
-      t.highlights_on :controller => "contests", :action => "update"
-      t.highlights_on :controller => "invitations", :action => "new"
+      t.highlights_on :controller => "participants"
+      if before_contest_participation_ends
+        t.highlights_on :controller => "contests", :action => "edit"
+        t.highlights_on :controller => "contests", :action => "update"
+        t.highlights_on :controller => "invitations", :action => "new"        
+      end
       t.highlights_on :controller => "invitations", :action => "index", :role => "admin"
     end
   end

@@ -11,7 +11,7 @@ render_navigation :contests, :separator => "", :generate_css => false do
     add_item do |i|
       i.named instance.name
       i.titled "Click to view contest details"
-      i.links_to contest_path(:contest => @contest.permalink, :id => instance.permalink, :uuid => instance.uuid)
+      i.links_to contest_instance_menu_link(instance)
       i.highlights_on(:action => "index") if @contest_instance and instance.eql?(@contest_instance)
       i.detailed_info instance.summary_for(current_user)
       #content_tag :div, :class => "creation_information" do
