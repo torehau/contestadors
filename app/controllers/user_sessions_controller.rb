@@ -11,7 +11,7 @@ class UserSessionsController < ApplicationController
     if @user_session.save
       # TODO instead of hard-coding the url here, use a helper that fetches the appropriate url
       # based on time, available contests etc.
-      redirect_back_or_default championship_predictions_url
+      redirect_back_or_default prediction_menu_link
     else
       render :action => :new
     end
