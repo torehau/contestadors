@@ -2,6 +2,7 @@ class InvitationsController < ApplicationController
   strip_tags_from_params :only =>  [:create, :update]
   before_filter :require_user
   before_filter :set_context_from_request_params
+  before_filter :before_contest_participation_ends, :except => :index
   before_filter :require_admin, :only => [:new, :create]  
 
   def new
@@ -54,7 +55,8 @@ class InvitationsController < ApplicationController
     @contest_instance = invitation.contest_instance
     participation = Participation.new(:user_id => current_user.id,
                          :contest_instance_id => @contest_instance.id,
-                         :invitation_id => invitation.id)
+                         :invitation_id => invitation.id,
+                         :active => true)
                        
     if participation.save
       flash[:notice] = render_to_string(:partial => 'successful_invitation_acceptance_message')
