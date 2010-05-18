@@ -8,6 +8,20 @@ module ApplicationHelper
     end
   end
 
+  def contest_instance_menu_link(contest_instance)
+    if before_contest_participation_ends
+      contest_participants_path(:contest => contest_instance.contest.permalink,
+        :role => contest_instance.role_for(current_user),
+        :contest_id => contest_instance.permalink,
+        :uuid => contest_instance.uuid)
+    else
+      contest_path(:contest => contest_instance.contest.permalink,
+        :role => contest_instance.role_for(current_user),
+        :id => contest_instance.permalink,
+        :uuid => contest_instance.uuid)
+    end
+  end
+
   # put this in the body after a form to set the input focus to a specific control id
   # at end of rhtml file: <%= set_focus_to_id 'form_field_label' %>
   def set_focus_to_id(id)
@@ -29,5 +43,12 @@ module ApplicationHelper
     options = {:frequency => 0.1, :function => function}.merge(options)
     out += observe_field(field_id, options)
     return out
+  end
+
+  def toggle_value(object, url)
+    remote_function(:url => url, :method => :put,
+                    :before => "Element.show('spinner-#{object.id}')",
+                    :after => "Element.hide('spinner-#{object.id}')",
+                    :with => "this.name + '=' + this.checked")
   end
 end
