@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free World Cup Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest#, :url_for_current_user
+  helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link
   filter_parameter_logging :password, :password_confirmation
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
@@ -25,6 +25,16 @@ class ApplicationController < ActionController::Base
 
     def current_action
       request.path_parameters['action']
+    end
+
+    def before_contest_participation_ends
+      return false unless defined?(@contest)
+      Time.now < @contest.participation_ends_at
+    end
+
+    def after_contest_participation_ends
+      return false unless defined?(@contest)
+      Time.now > @contest.participation_ends_at
     end
 
     def selected_contest
@@ -84,4 +94,21 @@ class ApplicationController < ActionController::Base
       end
       nil
     end
+
+  def prediction_menu_link
+    @contest ||= Configuration::Contest.find(:first)
+    contest_permalink = @contest.permalink
+
+    if before_contest_participation_ends
+#      wizard = current_user ? (@wizard ||= current_user.summary_of(@contest)) : nil
+#      wizard.setup_wizard(true)
+#      aggregate_root_type = wizard ? wizard.current_step.type : "group"
+#      aggregate_root_id = wizard ? wizard.current_step.id : "A"
+#      new_prediction_path(contest_permalink, aggregate_root_type, aggregate_root_id)
+      new_prediction_path(contest_permalink, "group", "A")
+    else
+      # TODO change to something more appropriate
+      home_path("about")
+    end
+  end
 end
