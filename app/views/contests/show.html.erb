@@ -1,19 +1,16 @@
-<%= grid(@participants_grid, :show_filters => :no) do |g|
-  g.column :column_name => 'Name', :attribute_name => 'name', :model_class => User do |participation|
-    participation.user.name
-  end
+<%= calendar_for(@date.year, @date.month) %>
+<%#*do |day|%>
+    <%#*if Calendar.has_events_on?(day)%>
+      <%#*#[link_to(day.day, events_path(day.year, day.month, day.day)), { :class => "dayWithEvents" }]%>
+    <%#*else%>
+      <%#*day.day%>
+    <%#*end%>
+  <%#*end %>
 
-  g.column :column_name => 'Role', :attribute_name => 'invitation_id' do |participation|
-    participation.invitation ? "Member" : "Administrator"
-  end
-
-  g.column :column_name => 'Participant since', :attribute_name => 'created_at' do |participation|
-    participation.created_at.to_s(:short)
-  end
-
-  g.column :column_name => 'Prediction Status' do |participation| # joined table
-    state = participation.user.summary_of(@contest).state
-    # TODO to avoid this lookup, a progress attribute should be included for the PredictionSummary
-    "Completed: " + Configuration::PredictionState.find_by_state_name(state).progress_accumulated.to_s + " %"
-  end
-end -%>
+<%#  weekly_calendar(@matches, :date => @date, :include_24_hours => true) do |w|  %>
+  <%#  w.week do |match, truncate|  %>
+    <%#=  match.play_date.strftime('%I:%M%p')  %>
+    <%#=  match.home_team.name + "-" +  match.away_team.name %>
+    <%#=  link_to truncate(event.name,truncate), event_path(event) %>
+  <%# end -%>
+<%# end -%>
