@@ -5,3 +5,4 @@ state_machine --version 0.9.0
 uuidtools --version 2.1.1
 will_paginate --version 2.3.12
 statistics --version 0.1.1
+later_dude --version 0.3.1
