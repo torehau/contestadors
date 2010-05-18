@@ -35,27 +35,25 @@ class ContestInstance < ActiveRecord::Base
   # ["Active participants: 1. Pending invitations:  0.", "Created at: " + instance.created_at.to_s(:short)]
   def summary_for(user)
     summaries = []
-    participants_summary = "Active participants: " + self.participations.size.to_s + ". "
+    active_participants_count = Participation.get_stat(:participants_count, :active => 't', :contest_instance_id => self.id)
+    participants_summary = "Active participants: " + active_participants_count.to_s + ". "
 
     if user.is_admin_of?(self)
 
       if Time.now < self.contest.participation_ends_at
-        invitations_count = Invitation.get_stat(:contest_invitations_count,  :state => 'New', :contest_instance_id => self.id)
-        participants_summary += "New invitations: "  + invitations_count.to_s
+        new_invitations_count = Invitation.get_stat(:contest_invitations_count,  :state => 'n', :contest_instance_id => self.id)
+        sent_invitations_count = Invitation.get_stat(:contest_invitations_count,  :state => 's', :contest_instance_id => self.id)
+        participants_summary += "New invitations: "  + (new_invitations_count + sent_invitations_count).to_s
       else
-        participants_summary += "Deactivated participants: 0 " # TODO set from deactivated participants
+        deactivated_participants_count = Participation.get_stat(:participants_count, :active => 'f', :contest_instance_id => self.id)
+        participants_summary += "Deactivated participants: " + deactivated_participants_count.to_s
       end
       summaries << participants_summary
       summaries << "Created on: " + self.created_at.to_s(:short)
     else
-      # participants summaries
-      if Time.now < self.contest.participation_ends_at
-        summaries << "Admin: " + self.admin.name + ". " + participants_summary
-        participation = user.participations.of(self)
-        summaries << "Invitation accepted on: " + participation.created_at.to_s(:short)
-      else
-
-      end
+      summaries << "Admin: " + self.admin.name + ". " + participants_summary
+      participation = user.participations.of(self)
+      summaries << "Invitation accepted on: " + participation.created_at.to_s(:short)
     end
     summaries
   end
