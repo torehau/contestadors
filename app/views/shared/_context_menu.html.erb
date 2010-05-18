@@ -8,7 +8,9 @@
     <%= tabnav :predictions %>
   <% elsif current_controller.eql?('contests') -%>
     <% if ['index', 'new', 'create'].include?(current_action) -%>
-      <%= render :partial => 'contests/create_new_contest_link'-%>
+      <% if before_contest_participation_ends -%>
+        <%= render :partial => 'contests/create_new_contest_link' -%>
+      <% end %>
       <%= tabnav :contests %>
      <% else -%>
        <%= tabnav :contest %>
@@ -19,5 +21,7 @@
      <% else -%>
        <%= tabnav :contest %>
      <% end -%>
+  <% elsif current_controller.eql?('participants') -%>
+    <%= tabnav :contest %>
   <% end -%>
 <% end -%>
