@@ -452,7 +452,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   width: 435px;
   margin: 0px 0px 0px 0px;
   height: 34px;
-  background: /*#efe;*//*#BCDD5A;*//*#B0E57C;*/#D8F3C9;
+  background: /*#efe;*//*#BCDD5A;*/#B0E57C;/*#D8F3C9;*/
   /*border-top: 1px #88c6cf solid;*/
   border-right: 1px #ffffff solid;
   border-left: 1px #ffffff solid;
@@ -464,7 +464,7 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   width: 435px;
   margin: 0px 0px 0px 0px;
   height: 34px;
-  background: /*#fee;*//*#FBB36B;*//*#FFEC94;*/#FDE8D7;
+  background: /*#fee;*//*#FBB36B;*/#FFEC94;/*#FDE8D7;*/
   /*border-top: 1px #88c6cf solid;*/
   border-right: 1px #ffffff solid;
   border-left: 1px #ffffff solid;
