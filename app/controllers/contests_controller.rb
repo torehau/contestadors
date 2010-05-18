@@ -4,6 +4,7 @@ class ContestsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :require_participation, :only => :show
   before_filter :require_admin, :only => [:edit, :update]
+  helper LaterDude::CalendarHelper
 
   def index
     @contest_instances = current_user.instances_of(@contest, @role.to_sym)
@@ -13,14 +14,12 @@ class ContestsController < ApplicationController
 
   def show
     session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
-
-    @participants_grid = initialize_grid(Participation,
-      :include => [:user],
-      :conditions => {:contest_instance_id => @contest_instance.id},
-      :order => 'participations.created_at',
-      :order_direction => 'desc',
-      :per_page => 10
-    )
+    @date = Time.now
+#    @matches = Predictable::Championship::Match.find(:all)
+#    @date = @matches.first.play_date
+#    @start_date = Date.new(@date.year, @date.month, @date.day)
+#    @end_date = @start_date + 7
+#    @matches = Predictable::Championship::Match.find(:all, :conditions => ['play_date between ? and ?', @start_date, @start_date + 7])
   end
   
   def new
