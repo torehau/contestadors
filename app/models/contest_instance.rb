@@ -12,7 +12,7 @@ class ContestInstance < ActiveRecord::Base
   end
 
   def after_create
-    Participation.create!(:user_id => self.admin.id, :contest_instance_id => self.id)
+    Participation.create!(:user_id => self.admin.id, :contest_instance_id => self.id, :active => true)
   end
 
   def self.default_name(contest, admin_user)
