@@ -4,6 +4,7 @@ class CreateParticipations < ActiveRecord::Migration
       t.integer :contest_instance_id, :null => false
       t.integer :user_id,             :null => false
       t.integer :invitation_id
+      t.boolean :active, :defaut => true
       t.timestamps
     end
 

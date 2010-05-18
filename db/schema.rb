@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(:version => 20100511190522) do
     t.integer  "contest_instance_id", :null => false
     t.integer  "user_id",             :null => false
     t.integer  "invitation_id"
+    t.boolean  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
