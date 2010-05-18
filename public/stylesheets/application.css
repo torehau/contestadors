@@ -412,7 +412,8 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 
 #group_table {
   width:435px;
-  border: 1px #88c6cf solid;
+  /*border: 1px #88c6cf solid;*/
+  /*border: 1px #ffffff solid;*/
   overflow: hidden;
   height: 175px;
   max-height: 175px;
@@ -451,8 +452,11 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   width: 435px;
   margin: 0px 0px 0px 0px;
   height: 34px;
-  background: #efe;
-  border-top: 1px #88c6cf solid;
+  background: /*#efe;*//*#BCDD5A;*//*#B0E57C;*/#D8F3C9;
+  /*border-top: 1px #88c6cf solid;*/
+  border-right: 1px #ffffff solid;
+  border-left: 1px #ffffff solid;
+  border-bottom: 1px #ffffff solid;
   font-weight: bold;
 }
 
@@ -460,18 +464,28 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
   width: 435px;
   margin: 0px 0px 0px 0px;
   height: 34px;
-  background: #fee;
-  border-top: 1px #88c6cf solid;
+  background: /*#fee;*//*#FBB36B;*//*#FFEC94;*/#FDE8D7;
+  /*border-top: 1px #88c6cf solid;*/
+  border-right: 1px #ffffff solid;
+  border-left: 1px #ffffff solid;
+  border-bottom: 1px #ffffff solid;
   color:#41686a;
 }
 
 .group_table_header {
   width: 435px;
-  margin: 1px 0px 0px 0px;
+  margin: 0px 0px 0px 0px;
+  padding-top: 1px;
   height: 34px;
-  background: #dff6f1;
+  background: /*#dff6f1;*/#ffffff;
   color: #333;
   font-weight: bold;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 .group_table_pos, .pld_matches, .won_matches, .draw_matches, .lost_matches, .goals_for, .goals_against, .goal_diff, .group_table_pts, .group_table_element_handler {
   width: 27px;
