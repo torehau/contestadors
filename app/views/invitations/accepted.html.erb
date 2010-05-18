@@ -1,6 +1,6 @@
 <%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
   g.column :column_name => 'Contest', :attribute_name => 'name', :model_class => ContestInstance do |invitation| # joined table
-    link_to(invitation.contest_instance.name, contest_path(:contest => @contest.permalink, :role => "member", :id => invitation.contest_instance.permalink, :uuid => invitation.contest_instance.uuid))
+    link_to(invitation.contest_instance.name, contest_instance_menu_link(invitation.contest_instance))
   end
 
   g.column :column_name => 'Invited by', :attribute_name => 'name', :model_class => User do |invitation| # joined table
