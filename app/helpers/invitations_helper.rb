@@ -25,7 +25,7 @@ module InvitationsHelper
 
   def successful_invitation_acceptance_message(contest, instance)
     # contests_path(@contest.permalink, "member")
-    "You have now successfully accepted the invitation and joined the #{link_to(instance.name, contest_path(:contest => contest.permalink, :role => "member", :id => instance.permalink, :uuid => instance.uuid))} contest."
+    "You have now successfully accepted the invitation and joined the #{link_to(instance.name, contest_instance_menu_link(instance))} contest."
   end
 
   def invitations_counter(total_entries, page)
