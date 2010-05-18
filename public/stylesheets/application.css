@@ -284,6 +284,15 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
 	padding: 0 0 0 25px;
 }
 
+#message_bar a, #message_bar a:visited {
+    color: #f0542b;
+}
+
+#message_bar a:hover, #message_bar a:hover {
+    color: #41686a;
+    background: #efe;
+}
+
 /* -- Predictions -- */
 #login, #registration {
    clear: left;
@@ -808,8 +817,10 @@ div.progressbar > div.progressbar_color_0 { background-color: #ACE97C; }
    float: left;   
 }
 
-#create_new_contest_link_container div.text_link a {
+#create_new_contest_link_container div.text_link a,
+#create_new_contest_link_container div.text_link a:visited {
    display:block;
+   color: #f0542b;
 }
 
 #create_new_contest_link_container div.text_link a:hover {
@@ -839,8 +850,9 @@ form.contest_create {
     padding: 0px 0px 5px 5px;
 }
 
-#add_invitation_link_container div.text_link a {
-   /*padding: 10px 0px 10px 2px;*/
+#add_invitation_link_container div.text_link a,
+#add_invitation_link_container div.text_link a:visited {
+   color: #f0542b;
 }
 
 #add_invitation_link_container div.text_link a:hover {
