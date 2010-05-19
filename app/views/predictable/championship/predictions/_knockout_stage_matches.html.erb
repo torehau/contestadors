@@ -17,8 +17,8 @@
   <% end -%>
   <% if stage.description.eql?("Final") -%>
     <%= render :partial => p_pref('stage_matches_spacing'), :locals => {:stage => stage} %>
-    <div class="<%= knockout_stage_label_div_class(selected, predicted) %>">
-     <%= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted, :label => "Third Place"} %>
+    <div class="<%= knockout_stage_label_div_class(selected, predicted, false) %>">
+      Third Place
     </div>
     <%= render :partial => p_pref('stage_match'), :locals => {:match => @result.aggregates[:third_place], :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
   <% end -%>
