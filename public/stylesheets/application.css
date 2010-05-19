@@ -1093,9 +1093,9 @@ form.contest_create {
 /*   border-top: 1px #88c6cf solid;
    border-left: 1px #88c6cf solid;
    border-right: 1px #88c6cf solid;*/
-   border-top: 1px #ffffff solid;
-   border-left: 1px #ffffff solid;
-   border-right: 1px #ffffff solid;
+   border-top: 1px #ccc solid;
+   border-left: 1px #ccc solid;
+   border-right: 1px #ccc solid;
    overflow: hidden;
    float:right;
    margin: 0px 0px 5px 0px;
@@ -1123,8 +1123,8 @@ form.contest_create {
   float: left;
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
-  border-bottom: 1px #ffffff solid;
-  background: /*#efe;*/#D8F3C9;
+  border-bottom: 1px #ccc solid;
+  background: /*#efe;*//*#D8F3C9;*/#ffffcc;
   color: black;
   text-align: left;
 }
@@ -1134,7 +1134,7 @@ form.contest_create {
   float: left;
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
-  border-bottom: 1px #ffffff solid;
+  border-bottom: 1px #ccc solid;
   background: /*#efe;*/#D8F3C9;
   color: black;
   font-weight: bold;
@@ -1146,7 +1146,7 @@ form.contest_create {
   float: left;
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
-  border-bottom: 1px #ffffff solid;
+  border-bottom: 1px #ccc solid;
   background: /*#fee;*/#FDE8D7;
   color: #41686a;
   text-align: left;
@@ -1157,7 +1157,7 @@ form.contest_create {
   float: left;
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
-  border-bottom: 1px #ffffff solid;
+  border-bottom: 1px #ccc solid;
   background: #ddd;
   color: #41686a;
   text-align: left;
@@ -1166,7 +1166,7 @@ form.contest_create {
 .knockout_stage_team_selection {
     float: right;
     /*border-left: 1px #88c6cf solid;*/
-    border-left: 1px #ffffff solid;
+    border-left: 1px #ccc solid;
     height: 23px;
     width: 23px;
     padding: 6px 0px 0px 10px;
