@@ -893,7 +893,7 @@ form.contest_create {
 .contests_navigation ul {
   padding: 0;
   margin: 0;
-  background: #efe;
+  background: #ffffee;
   text-align: left;
   list-style: none;
   border-top: 1px #88c6cf solid;
@@ -911,7 +911,7 @@ form.contest_create {
   padding: 7px 0px 3px 10px;
   /*margin: 5px 0px -5px 5px;*/
   font-weight: normal;
-  color: #CB4415;
+/*  color: #CB4415;*/
   display:block;
   font-size: 110%;
 }
@@ -926,7 +926,7 @@ form.contest_create {
   /*font-weight: bold;*/
   /*font-size: 110%;*/
   font-weight: bold;
-  background: #dff6f1;
+  background: /*#dff6f1;*/#D8F3C9;
   color: #000;
 }
 

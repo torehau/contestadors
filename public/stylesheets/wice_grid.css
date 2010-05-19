@@ -30,9 +30,9 @@
   font-weight: bold;
 }
 
-.wice_grid th a {
+/*.wice_grid th a {
   color: #f0542b;
-}
+}*/
 /*.wice_grid th a {
   color: #000; 
 }*/
@@ -48,7 +48,7 @@
 }
 .wice_grid tr.wice_grid_title_row th.sorted,
 .wice_grid tr.wice_grid_title_row th.sorted a:hover{
-  background-color: #dff6f1;
+  background-color: /*#dff6f1;*/#D8F3C9;
 }
 /*.wice_grid tr.wice_grid_title_row th.sorted a:hover {
     background-color: #dff6f1;
@@ -85,7 +85,7 @@
 
 .wice_grid td a, .wice_grid td a:visited {
     font-weight: bold;
-    color: #f0542b;
+/*    color: #f0542b;*/
 }
 
 .wice_grid td a:hover {
