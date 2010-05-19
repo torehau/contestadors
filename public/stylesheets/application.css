@@ -1000,7 +1000,7 @@ form.contest_create {
   margin: 0px 0px 5px 0px;
   height: 24px;
   /*border: 1px #88c6cf solid;*/
-  background: /*#dff6f1;*/#ffffff;
+  background: /*#dff6f1;*/#D8F3C9;
   background-image: url(/images/disk.png);
   background-position: 180px 4px;
   background-repeat:no-repeat;
@@ -1116,7 +1116,7 @@ form.contest_create {
 }
 
 .selected_knockout_stage_label a:hover {
-   background: #ffffff;
+   background: #D8F3C9;
    color: #41686a;
    height: 22px;
 }
@@ -1165,7 +1165,7 @@ form.contest_create {
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
   border-bottom: 1px #ccc solid;
-  background: /*#efe;*//*#D8F3C9;*/#ffffee;
+  background: /*#efe;*//*#D8F3C9;*/#fff;
   color: black;
   text-align: left;
 }
@@ -1176,7 +1176,7 @@ form.contest_create {
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
   border-bottom: 1px #ccc solid;
-  background: /*#efe;*/#D8F3C9;
+  background: /*#efe;*//*#D8F3C9;*/#e5ecf9;
   color: black;
   font-weight: bold;
   text-align: left;
@@ -1188,7 +1188,7 @@ form.contest_create {
   height: 23px;
   /*border-bottom: 1px #88c6cf solid;*/
   border-bottom: 1px #ccc solid;
-  background: /*#fee;*/#FDE8D7;
+  background: /*#fee;*//*#FDE8D7;*/#ffffee;
   color: #41686a;
   text-align: left;
 }
