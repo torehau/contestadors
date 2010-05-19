@@ -1017,6 +1017,28 @@ form.contest_create {
   -khtml-border-radius: 5px;
 }
 
+.unsaveable_selected_knockout_stage_label {
+  width: 205px;
+/*  padding-right: 3px;*/
+  margin: 0px 0px 5px 0px;
+  height: 24px;
+  /*border: 1px #88c6cf solid;*/
+  background: /*#dff6f1;*/#ffffff;
+  background-position: 180px 3px;
+  background-repeat:no-repeat;
+  color: #41686a;
+  font-weight: bold;
+  font-size: 110%;
+  text-align: center;
+  vertical-align: middle;
+  float: right;
+  display:block;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; /* future proofing */
+  -khtml-border-radius: 5px;
+}
+
 .knockout_stage_label {
   width: 205px;
   margin: 0px 0px 5px 0px;
@@ -1028,6 +1050,27 @@ form.contest_create {
   background-position: 180px 3px;
   background-repeat:no-repeat;
   color: #333;
+  font-weight: bold;
+  font-size: 110%;
+  text-align: center;
+  vertical-align: middle;
+  float: right;
+    -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px; /* future proofing */
+  -khtml-border-radius: 5px;
+}
+
+.uneditable_knockout_stage_label {
+  width: 205px;
+  margin: 0px 0px 5px 0px;
+/*  padding-right: 3px;*/
+  height: 24px;
+/*  border: 1px #ccc solid;*/
+  background: #ddd;
+  background-position: 180px 3px;
+  background-repeat:no-repeat;
+  color: #41686a;
   font-weight: bold;
   font-size: 110%;
   text-align: center;
