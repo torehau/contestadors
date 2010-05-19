@@ -31,10 +31,12 @@ module Predictable::Championship::PredictionsHelper
 
     if invalidated == true
       div_class_prefix += "invalidated_"
-    elsif selected == false and not is_match_winner
-      div_class_prefix += "losing_"
-    elsif is_match_winner.eql?(true)
-      div_class_prefix += "winning_"
+    elsif selected == false
+      if is_match_winner == true
+        div_class_prefix += "winning_"
+      else
+        div_class_prefix += "losing_"
+      end
     end
     div_class_prefix + "knockout_stage_team"
   end
