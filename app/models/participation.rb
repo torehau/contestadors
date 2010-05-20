@@ -8,7 +8,7 @@ class Participation < ActiveRecord::Base
 
   def after_create
     if self.invitation
-      self.invitation.accept_invitation!
+      self.invitation.accept!
     end
   end  
 end
