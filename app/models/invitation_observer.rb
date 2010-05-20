@@ -7,5 +7,6 @@ class InvitationObserver < ActiveRecord::Observer
       # TODO include in due time
 #      InvitationMailer.deliver_invite_new_user(invitation)
     end
+    invitation.deliver!
   end
 end
