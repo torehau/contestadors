@@ -16,18 +16,42 @@ class ParticipantsController < ApplicationController
     )
   end
 
+  # upon accepting an invitation sent on mail
+  def create
+    @invitation = Invitation.find_by_token(params[:invite_code])
+    
+    if @invitation
+      participation = Participation.new(:user_id => current_user.id,
+                           :contest_instance_id => @invitation.contest_instance.id,
+                           :invitation_id => @invitation.id,
+                           :active => true)
+
+      if participation.save
+        flash[:notice] = "You have now successfully accepted the invitation and joined the '#{@invitation.contest_instance.name}' contest."
+        redirect_to contest_participants_path(:contest => @invitation.contest_instance.contest.permalink,
+                                              :role => @invitation.contest_instance.role_for(current_user),
+                                              :contest_id => @invitation.contest_instance.permalink,
+                                              :uuid => @invitation.contest_instance.uuid)
+      else
+        flash[:alert] = "There was an unexpected problem that prevented us from completing your request."
+        redirect_to pending_invitations_path("championship")
+      end
+    else
+      flash[:alert] = "There was an unexpected problem that prevented us from completing your request."
+      redirect_to pending_invitations_path("championship")
+    end
+  end
+
+  # For activation and deactivation - allowed for contest instance admin users only
   def update
     @participation = Participation.find(params[:id])
 
     respond_to do |format|
       if @participation.update_attributes(params[:participation])
-#        flash[:notice] = "Participant active state successfully changed."
         format.html {redirect_to contest_participants_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)}
-#        format.xml { head :ok}
         format.js { head :ok}
       else
         format.html {redirect_to contest_participants_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)}
-#        format.xml { head :ok}
         format.js { head :unprocessable_entity}
       end
     end
