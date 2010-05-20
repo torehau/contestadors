@@ -60,4 +60,6 @@ Rails::Initializer.run do |config|
 
   ENV['RECAPTCHA_PUBLIC_KEY']  = '6LeLJroSAAAAAAWSeDsS17hDu484NPGwXCc92eEO'
   ENV['RECAPTCHA_PRIVATE_KEY'] = '6LeLJroSAAAAAP3YdLKNsxLJEBNhNi7rU0rG45fT'
+
+  config.action_mailer.default_url_options = {:host => 'www.contestadors.com'}
 end
