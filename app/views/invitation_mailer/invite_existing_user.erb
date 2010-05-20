@@ -3,9 +3,11 @@ Hi <%= @invitation.name %>,<br/>
 <%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
 prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
 for the FIFA World Cup 2010 Soccer Championship:<br/>
-<% if @invitation.contest_instance.description -%>
-  <q><%= '"' + @invitation.contest_instance.description + '"' %></q>
+<% if @invitation.contest_instance.description and @invitation.contest_instance.description.size > 0 -%>
+  <br/>
+  <q><%= + @invitation.contest_instance.description %></q>
 <% end -%>
+<br/>
 You can accept this invitation by clicking the following link:<br/>
 <%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %><br/>
 <br/>
