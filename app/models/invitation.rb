@@ -6,6 +6,7 @@ class Invitation < ActiveRecord::Base
   validates_presence_of :name, :email
   validates_email_format_of :email
   validates_uniqueness_of :email, :scope => :contest_instance_id
+  validate :email_different_from_invitor_email
   define_statistic :contest_invitations_count, :count => :all, :filter_on => { :state => 'state = ?', :contest_instance_id => 'contest_instance_id = ?'}
 
   STATE_DISPLAY_NAME_ID_BY_STATE_NAME             = {'n'  => 'New',
@@ -40,16 +41,27 @@ class Invitation < ActiveRecord::Base
   # stages :n - new, :s - sent, :a - accepted
   state_machine :initial => :n do
 
-    event :send_invitation do
+    event :deliver do
       transition :n => :s
     end
 
-    event :accept_invitation do
+    event :accept do
       transition [:n, :s] => :a
     end
   end
 
 private
+
+  def email_different_from_invitor_email
+    if is_the_same_email?(self.sender.try(:email), self.email)
+      errors.add(:email, "It is not allowed invite yourself as a contest member.")
+    end
+  end
+
+  def is_the_same_email?(email_1, email_2)
+    return false unless email_1 and email_2
+    email_1.downcase.eql?(email_2.downcase)
+  end
 
   def get_unique_token(timestamp = Time.now.to_f)
     seed = self.email + self.name + timestamp.to_s
