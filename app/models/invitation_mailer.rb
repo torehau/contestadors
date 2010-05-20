@@ -15,7 +15,7 @@ private
     recipients invitation.email
     from       'no-reply@contestadors.com'
     sent_on    Time.now
-
     body       :invitation => invitation
+    content_type "text/html"
   end
 end
