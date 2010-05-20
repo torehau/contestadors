@@ -18,6 +18,7 @@ class Invitation < ActiveRecord::Base
       self.name = existing_user.name
       self.existing_user_id = existing_user.id
     end
+    self.token = get_unique_token
   end
 
   def invited_on
@@ -46,5 +47,13 @@ class Invitation < ActiveRecord::Base
     event :accept_invitation do
       transition [:n, :s] => :a
     end
+  end
+
+private
+
+  def get_unique_token(timestamp = Time.now.to_f)
+    seed = self.email + self.name + timestamp.to_s
+    uuid = UUIDTools::UUID.sha1_create(UUIDTools::UUID_DNS_NAMESPACE, seed).to_s
+    Invitation.exists?(:token => uuid) ? get_unique_token(timestamp + 1) : uuid
   end
 end
