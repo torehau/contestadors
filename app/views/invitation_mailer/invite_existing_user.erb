@@ -7,7 +7,7 @@ for the FIFA World Cup 2010 Soccer Championship.
 <%= @invitation.contest_instance.description if @invitation.contest_instance.description %>
 
 You can accept this invitation by clicking the following link:
-<%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.invitation_token) %>
+<%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %>
 
 Alternatively, you can accept it from your list of new contest invitations:
 <%= link_to 'All new invitations', pending_invitations_url(:contest => "contest") %>
