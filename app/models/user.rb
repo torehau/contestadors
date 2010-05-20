@@ -62,7 +62,7 @@ class User < ActiveRecord::Base
            :order => "contest_instances.name")
     end
     def of(contest_instance)
-      find(:first, :conditions => ["participations.contest_instance_id = :contest_instance_id and participations.invitations_id is not null", {:contest_instance_id => contest_instance.id}])
+      find(:first, :conditions => ["participations.contest_instance_id = :contest_instance_id and participations.invitation_id is not null", {:contest_instance_id => contest_instance.id}])
     end
   end
 
