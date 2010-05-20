@@ -5,7 +5,7 @@ prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" 
 for the FIFA World Cup 2010 Soccer Championship:<br/>
 <% if @invitation.contest_instance.description and @invitation.contest_instance.description.size > 0 -%>
   <br/>
-  <q><%= + @invitation.contest_instance.description %></q>
+  <q><%= @invitation.contest_instance.description %></q>
 <% end -%>
 <br/>
 You can accept this invitation by clicking the following link:<br/>
