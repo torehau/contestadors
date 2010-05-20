@@ -3,17 +3,17 @@ Hi <%= @invitation.name %>,<br/>
 <%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
 prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
 for the FIFA World Cup 2010 Soccer Championship:<br/>
-<br/>
-<%= '"' + @invitation.contest_instance.description + '"' if @invitation.contest_instance.description %><br/>
-<br/>
-You can accept this invitation by clicking the following link:
+<% if @invitation.contest_instance.description -%>
+  <q><%= '"' + @invitation.contest_instance.description + '"' %></q>
+<% end -%>
+You can accept this invitation by clicking the following link:<br/>
 <%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %><br/>
 <br/>
-Alternatively, you can accept it from your list of new contest invitations:
+Alternatively, you can accept it from your list of new contest invitations:<br/>
 <%= link_to 'All new invitations', pending_invitations_url(:contest => "contest") %><br/>
 <br/>
 If you don't want to accept the invitation, please ignore this email.
-You will not join the '<%= @invitation.contest_instance.name %>' contest before accepting this invitation
+You will not join the <b><%= @invitation.contest_instance.name %></b> contest before accepting this invitation
 as described above.<br/>
 <br/>
 Regards,<br/>
