@@ -1,0 +1,3 @@
+InvitationMailer#invite_existing_user
+
+Find me in app/views/invitation_mailer/invite_existing_user.erb
