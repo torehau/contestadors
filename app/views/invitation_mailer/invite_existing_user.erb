@@ -12,12 +12,12 @@ You can accept this invitation by clicking the following link:<br/>
 <%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %><br/>
 <br/>
 Alternatively, you can accept it from your list of new contest invitations:<br/>
-<%= link_to 'All new invitations', pending_invitations_url(:contest => "contest") %><br/>
+<%= link_to 'All new invitations', pending_invitations_url(:contest => "championship") %><br/>
 <br/>
 If you don't want to accept the invitation, please ignore this email.
 You will not join the <b><%= @invitation.contest_instance.name %></b> contest before accepting this invitation
 as described above.<br/>
 <br/>
 Regards,<br/>
-Contestadors Team on behalf of <%= @invitation.sender.name %>,<br/>
-Administrator '<%= @invitation.contest_instance.name %>' contest<br/>
+Contestadors
+<i>Free World Cup Prediction Contests</i>
