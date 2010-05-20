@@ -1,4 +1,5 @@
 ActionController::Routing::Routes.draw do |map|
+  map.accept_invitation '/accept/:contest_instance/:invite_code', :controller => 'participants', :action => 'create'
   map.resource :account, :controller => "users"
   map.resources :users
   map.resource :user_session
