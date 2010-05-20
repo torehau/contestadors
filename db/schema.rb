@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100511190522) do
+ActiveRecord::Schema.define(:version => 20100520084256) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -105,11 +105,13 @@ ActiveRecord::Schema.define(:version => 20100511190522) do
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "token"
   end
 
   add_index "invitations", ["contest_instance_id"], :name => "index_invitations_on_contest_instance_id"
   add_index "invitations", ["email"], :name => "index_invitations_on_email"
   add_index "invitations", ["existing_user_id"], :name => "index_invitations_on_existing_user_id"
+  add_index "invitations", ["token"], :name => "index_invitations_on_token"
 
   create_table "participations", :force => true do |t|
     t.integer  "contest_instance_id", :null => false
