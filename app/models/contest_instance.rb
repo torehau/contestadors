@@ -68,7 +68,6 @@ class ContestInstance < ActiveRecord::Base
 private
 
   def get_unique_uuid(timestamp = Time.now.to_f)
-#    timestamp = Time.now.to_f
     seed = self.admin.email + self.name + timestamp.to_s
     uuid = UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, seed).to_s
     ContestInstance.exists?(:uuid => uuid) ? get_unique_uuid(timestamp + 1) : uuid
