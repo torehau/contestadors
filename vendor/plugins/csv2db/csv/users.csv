@@ -6,7 +6,6 @@ id,email,name,password,password_confirmation,created_at,updated_at
 5,geirhauge@hotmail.com,Geir Hauge,changeit,changeit,,
 6,kim@integrate.no,Kim Mjellekås,changeit,changeit,,
 7,erlend.nilsen@integrate.no,Erlend Nilsen,changeit,changeit,,
-8.mark@integrate.no,Mark White,changeit,changeit,,
 9,oyvsones@start.no,Øyvind Sønes,changeit,changeit,,
 10,haaken@integrate.no,Håken Stark,changeit,changeit,,
 11,p-o@nipbo.se,Per-Olof Vallin,changeit,changeit,,
@@ -26,3 +25,4 @@ id,email,name,password,password_confirmation,created_at,updated_at
 25,robin.friis@gmail.com,Robin Friis,changeit,changeit,,
 26,rbalsnes@hotmail.com,Runar Balsnes,changeit,changeit,,
 27,erlend.berg@online.no,Erlend Berg,changeit,changeit,,
+28,mark@integrate.no,Mark White,changeit,changeit,,
