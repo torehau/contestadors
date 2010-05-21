@@ -1,3 +1,23 @@
-InvitationMailer#invite_new_user
-
-Find me in app/views/invitation_mailer/invite_new_user.erb
+Hi <%= @invitation.name %>,<br/>
+<br/>
+<%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
+prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
+for the FIFA World Cup 2010 Soccer Championship:<br/>
+<% if @invitation.contest_instance.description and @invitation.contest_instance.description.size > 0 -%>
+  <br/>
+  <q><%= @invitation.contest_instance.description %></q><br/>
+<% end -%>
+<br/>
+You can accept this invitation by clicking the following link:<br/>
+<%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %><br/>
+<br/>
+Alternatively, you can accept it from your list of new contest invitations:<br/>
+<%= link_to 'All new invitations', pending_invitations_url(:contest => "championship") %><br/>
+<br/>
+If you don't want to accept the invitation, please ignore this email.
+You will not join the <b><%= @invitation.contest_instance.name %></b> contest before accepting this invitation
+as described above.<br/>
+<br/>
+Regards,<br/>
+Contestadors<br/>
+<i> Free World Cup Prediction Contests</i>
