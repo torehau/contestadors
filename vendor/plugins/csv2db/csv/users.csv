@@ -26,3 +26,6 @@ id,email,name,password,password_confirmation,created_at,updated_at
 26,rbalsnes@hotmail.com,Runar Balsnes,changeit,changeit,,
 27,erlend.berg@online.no,Erlend Berg,changeit,changeit,,
 28,mark@integrate.no,Mark White,changeit,changeit,,
+29,hfusdahl@microsoft.com,Harald Fusdahl,changeit,changeit,,
+
+
