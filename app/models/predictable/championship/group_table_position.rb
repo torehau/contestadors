@@ -53,7 +53,7 @@ module Predictable
           self.lost += 1
         end
         self.goals_for += gf
-        self.goals_against -= ga
+        self.goals_against += ga
         self.goal_diff += (gf - ga)
       end
 
