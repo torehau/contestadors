@@ -50,6 +50,15 @@ class Invitation < ActiveRecord::Base
     end
   end
 
+  def self.sync_existing_invitations_for(user)
+    if user
+      Invitation.find(:all, :conditions => {:email => user.email, :state => ['n', 's']}).each do |invitation|
+        invitation.existing_user_id = user.id
+        invitation.save
+      end
+    end
+  end
+
 private
 
   def email_different_from_invitor_email
