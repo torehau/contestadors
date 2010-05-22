@@ -25,8 +25,9 @@ module Predictable
 
         if predicted_scores_by_match_id and predicted_scores_by_match_id.length > 0
           set_predicted_match_results do |item|
-            prediction = predicted_scores_by_match_id[item.predictable_id.to_s]
-            prediction[:home_team_score] + '-' + prediction[:away_team_score]
+#            prediction = predicted_scores_by_match_id[item.predictable_id.to_s]
+#            prediction[:home_team_score] + '-' + prediction[:away_team_score]
+            predicted_scores_by_match_id[item.predictable_id.to_s]
           end
           GroupTableCalculator.new(@root).calculate(true)
         end
@@ -35,8 +36,11 @@ module Predictable
 
       def group_from_existing_predictions(user)
         set_predicted_match_results do |item|
+#          prediction = @predictions_by_item_id[item.id].first
+#          prediction.predicted_value
           prediction = @predictions_by_item_id[item.id].first
-          prediction.predicted_value
+          scores = prediction.predicted_value.split('-')
+          {:home_team_score => scores[0], :away_team_score => scores[1]}
         end
 
         @group_table_set = Configuration::Set.find_by_description "Group #{@root.name} Table"
@@ -52,8 +56,8 @@ module Predictable
 
         @predictable_set.predictable_items.each do |item|
           match = matches_by_id[item.predictable_id]
-          predicted_score = yield(item)
-          match.set_individual_team_scores(predicted_score)
+          predicted_scores = yield(item)
+          match.set_individual_team_scores(predicted_scores[:home_team_score], predicted_scores[:away_team_score])
           predicted_matches << match
         end
         @root.matches = predicted_matches
