@@ -45,8 +45,7 @@ module Predictable
                 [Predictable::Championship::Stage, :stage, m.description == stage_descr],
                 [PredictionSummary, :summary, m.state == current_state] do |v|
 
-                   @errors[v[:stage].id] = "Not possible to predict the " + v[:stage].description + ". Predictions for previous stages has been invalidated."
-#                   retract v[:gm]
+                   @errors[v[:stage].id] = "Not possible to predict the " + v[:stage].description + ". Predictions for previous knockout stages have been invalidated."
                  end
             end
           end
