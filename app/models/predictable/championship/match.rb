@@ -15,7 +15,8 @@ module Predictable
 
       def after_initialize
         @score ||= "0-0"
-        set_individual_team_scores(@score)
+        scores = @score.split("-")
+        set_individual_team_scores(scores[0],scores[1])
         self.state = "unsettled"
         self.rank = self.id
       end
@@ -26,14 +27,17 @@ module Predictable
         self.home_team.name <=> other.home_team.name
       end
 
+      def starts_at
+        self.play_date
+      end
 
-      def set_individual_team_scores(score)
-        scores = score.split('-')
-        
-        if scores and scores.length == 2
-          @home_team_score = scores[0]
-          @away_team_score = scores[1]
-        end
+      def ends_at
+        self.play_date + 2.hours
+      end
+
+      def set_individual_team_scores(home_team_score, away_team_score)
+        @home_team_score = home_team_score
+        @away_team_score = away_team_score
       end
 
       def team_not_through_to_next_stage
