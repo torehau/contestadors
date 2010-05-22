@@ -17,7 +17,7 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def knockout_stage_label_div_class(selected, predicted, saveable=true)
-    if selected == true
+    if selected == true and predicted == true
       saveable ? "selected_knockout_stage_label" : "unsaveable_selected_knockout_stage_label"
     elsif predicted == true
       saveable ? "knockout_stage_label" : "uneditable_knockout_stage_label"
