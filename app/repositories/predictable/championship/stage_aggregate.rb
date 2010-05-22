@@ -21,6 +21,10 @@ module Predictable
         @root.permalink
       end
 
+      def error_msg
+        has_validation_errors? ? @validation_errors.values.first : @default_error_msg
+      end
+
     protected
 
       def get_aggregate_root(aggregate_root_id)
@@ -30,6 +34,12 @@ module Predictable
 
       def get_aggregate_root_builder(aggregate_root_id)
         StageAggregateBuilder.new(aggregate_root_id)
+      end
+
+      def validate_new_predictions
+        errors = KnockoutStageValidator.new.validate(@new_predictions, summary)
+        reset_root_to_current_stage unless errors.empty?
+        errors
       end
 
       def get_new_predictions(new_predictions)
@@ -69,7 +79,7 @@ module Predictable
         unless equals_existing_predictions?
           save_stage_team_predictions
         else
-          @validation_errors[@root.id] = "Equals existing predictions."
+          @validation_errors[@root.id] = @default_error_msg
         end
       end
 
@@ -102,6 +112,14 @@ module Predictable
           stage_teams_by_id[stage_team.id] = stage_team
         end
         stage_teams_by_id
+      end
+
+      def reset_root_to_current_stage
+        current_prediction_state = @contest.prediction_state(summary.state)
+        next_prediction_state = current_prediction_state.next
+        if next_prediction_state
+          @root = Predictable::Championship::Stage.from_permalink(next_prediction_state.permalink)
+        end
       end
     end
   end
