@@ -43,6 +43,10 @@ module Predictable
       (has_validation_errors? and @validation_errors.has_key?(predictable_id))
     end
 
+    def error_msg
+      @default_error_msg
+    end
+
     def save
       set_update_mode_if_existing_predictions
 
