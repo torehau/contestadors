@@ -48,16 +48,16 @@ module Predictable
         def is_valid_score?(score_str)
           return false if score_str.nil? or not (1..2).include?(score_str.length)
           return false if score_str.length == 2 and score_str[0,1].eql?("0")
-          is_integer?(score_str)
+          is_non_negative_integer?(score_str)
         end
 
-        def is_integer?(str_value)
+        def is_non_negative_integer?(str_value)
           begin
-            Integer(str_value)
+            score_int = Integer(str_value)
           rescue ArgumentError => e
             return false
           else
-            return true
+            return score_int >= 0
           end
         end
       end
