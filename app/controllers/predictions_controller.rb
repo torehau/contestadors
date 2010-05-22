@@ -43,7 +43,7 @@ protected
 
   def set_flash_message(flash_now=false)
     message_type = @aggregate.has_validation_errors? ? :alert : :notice
-    message = message_type.eql?(:alert) ? @aggregate.default_error_msg : render_to_string(:partial => 'successful_predictions_message')
+    message = message_type.eql?(:alert) ? @aggregate.error_msg : render_to_string(:partial => 'successful_predictions_message')
 
     if flash_now
       flash.now[message_type] = message
