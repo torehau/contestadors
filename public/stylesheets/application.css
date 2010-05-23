@@ -265,7 +265,7 @@ div.progressbar > div.progressbar_color_0 { background-color: /*#ACE97C;*/#9CC08
     min-height: 20px;
     clear: both;
     background: #eee;
-    margin: 7px 25px 5px 20px;
+    padding: 7px 25px 5px 20px;
 }
 .flash_alert, .flash_recaptch_error {
   color: #333;
