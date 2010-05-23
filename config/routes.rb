@@ -16,4 +16,5 @@ ActionController::Routing::Routes.draw do |map|
     :collection => {:pending => :get, :accepted => :get}
   map.home ':action', :controller => 'home', :action => /about|rules|terms|privacy|contact/
   map.root :controller => "user_sessions", :action => "new"
+  map.catch_all '*url', :controller => "rescue"
 end
