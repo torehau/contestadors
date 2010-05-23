@@ -7,8 +7,10 @@ class ApplicationController < ActionController::Base
   helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link
   filter_parameter_logging :password, :password_confirmation
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
+  rescue_from Exception, :with => :handle_generic_error
+  rescue_from NoMethodError, :with => :handle_faulty_url
 
-  private
+private
     def current_user_session
       return @current_user_session if defined?(@current_user_session)
       @current_user_session = UserSession.find
@@ -110,5 +112,17 @@ class ApplicationController < ActionController::Base
       # TODO change to something more appropriate
       home_path("about")
     end
+  end
+
+  def handle_generic_error(exception)
+    flash[:alert] = "An error occured when handling your request. We will look at the problem shortly. " + exception.class.to_s
+    # TODO catch and forward error to hoptoad
+    redirect_to (current_user ? edit_account_path : root_path)
+  end
+
+  def handle_faulty_url
+    flash[:alert] = "An error occured when handling your request. The provided url was not recognized."
+    # TODO catch and forward error to hoptoad
+    redirect_to (current_user ? edit_account_path : root_path)
   end
 end
