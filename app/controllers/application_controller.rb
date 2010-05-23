@@ -115,14 +115,14 @@ private
   end
 
   def handle_generic_error(exception)
-    flash[:alert] = "An error occured when handling your request. We will look at the problem shortly. " + exception.class.to_s
-    # TODO catch and forward error to hoptoad
+    flash[:alert] = "An error occured when handling your request. We will look at the problem shortly. "
+    notify_hoptoad(exception)
     redirect_to (current_user ? edit_account_path : root_path)
   end
 
-  def handle_faulty_url
+  def handle_faulty_url(exception)
     flash[:alert] = "An error occured when handling your request. The provided url was not recognized."
-    # TODO catch and forward error to hoptoad
+    notify_hoptoad(exception)
     redirect_to (current_user ? edit_account_path : root_path)
   end
 end
