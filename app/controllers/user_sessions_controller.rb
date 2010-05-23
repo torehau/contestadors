@@ -13,6 +13,7 @@ class UserSessionsController < ApplicationController
       # based on time, available contests etc.
       redirect_back_or_default prediction_menu_link
     else
+      flash.now[:alert] = "Email or password not valid. Please try again."
       render :action => :new
     end
   end
