@@ -3,7 +3,6 @@
 
     <h2>Login</h2>
       <% form_for @user_session, :url => user_session_path do |f| %>
-        <%= f.error_messages %>
         <%= f.label :email %><br />
         <%= f.text_field :email %><br />
         <br />
@@ -17,5 +16,10 @@
 
   <% end -%>
 </div>
+<% if false -%>
 <div id="about">
+  <iframe src="http://www.facebook.com/widgets/like.php?href=http://www.contestadors.com"
+        scrolling="no" frameborder="0"
+        style="border:none; width:450px; height:80px"></iframe>
 </div>
+<% end -%>
