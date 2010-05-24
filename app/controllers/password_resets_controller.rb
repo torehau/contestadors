@@ -19,6 +19,7 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
+    render
   end
 
   def update
@@ -26,8 +27,8 @@ class PasswordResetsController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]#:confirm_password ?
     
     if @user.save
-      flash[:notice] = "Password successfully updated"
-      redirect_to account_url
+      flash[:notice] = "Password successfully updated."
+      redirect_to edit_account_path
     else
       render :action => :edit
     end
@@ -38,9 +39,9 @@ private
   def load_user_using_perishable_token
     @user = User.find_using_perishable_token(params[:id])
     unless @user
-      flash[:notice] = "We're sorry, but we could not locate your account. " +
-        "If you are having issues try copying and pasting the URL " +
-        "from your email into your browser or restarting the " +
+      flash[:notice] = "Your account could not be retrieved. " +
+        "Please try to copy and paste the URL " +
+        "from your email into your browser or repeate the " +
         "reset password process."
       redirect_to root_url
     end
