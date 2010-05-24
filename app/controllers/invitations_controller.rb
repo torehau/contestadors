@@ -1,9 +1,10 @@
-class InvitationsController < ApplicationController  
+class InvitationsController < ApplicationController
+  include ContestContext, ContestAccessChecker
   strip_tags_from_params :only =>  [:create, :update]
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :before_contest_participation_ends, :except => :index
-  before_filter :require_admin, :only => [:new, :create]  
+  before_filter :require_admin, :only => [:new, :create, :index]
 
   def new
     if @contest_instance
@@ -79,12 +80,6 @@ class InvitationsController < ApplicationController
 protected
 
   def set_context_from_request_params
-    @contest = Configuration::Contest.find_by_permalink(params[:contest])
-    @role = params[:role]
-    @contest_instance = ContestInstance.find_by_permalink_and_uuid(params[:contest_id], params[:uuid])
-  end
-
-  def require_admin
-    current_user.is_admin_of?(@contest_instance)
+    set_contest_context(params[:contest], params[:role], params[:contest_id], params[:uuid])
   end
 end

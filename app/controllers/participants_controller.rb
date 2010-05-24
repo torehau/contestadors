@@ -1,7 +1,9 @@
 class ParticipantsController < ApplicationController
+  include ContestContext, ContestAccessChecker
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :after_contest_participation_ends, :only => :update
+  before_filter :require_participation, :only => :index
   before_filter :require_admin, :only => :update
 
   def index
@@ -60,12 +62,6 @@ class ParticipantsController < ApplicationController
 protected
 
   def set_context_from_request_params
-    @contest = Configuration::Contest.find_by_permalink(params[:contest])
-    @role = params[:role]
-    @contest_instance = ContestInstance.find_by_permalink_and_uuid(params[:contest_id], params[:uuid])
-  end
-
-  def require_admin
-    current_user.is_admin_of?(@contest_instance)
+    set_contest_context(params[:contest], params[:role], params[:contest_id], params[:uuid])
   end
 end
