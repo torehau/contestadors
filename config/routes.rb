@@ -3,6 +3,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :account, :controller => "users"
   map.resources :users
   map.resource :user_session
+  map.resources :password_resets
   map.resources :predictions,
     :path_prefix => '/:contest/:aggregate_root_type/:aggregate_root_id'
   map.championship_predictions "championship/group/A",
