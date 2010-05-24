@@ -173,7 +173,7 @@ div.progresslabel {
 div.progressbar {
  border: 1px solid #ccc;
  width: 203px;
- margin: 3px 5px 1px 0;
+ margin: 2px 5px 1px 0;
  padding: 1px;
  float: right;
  background: white;
@@ -834,7 +834,7 @@ div.progressbar > div.progressbar_color_0 { background-color: /*#ACE97C;*/#9CC08
   -webkit-border-radius: 7px;
   border-radius: 7px; /* future proofing */
   -khtml-border-radius: 7px; /* for old Konqueror browsers */
-   margin: 2px 20px 0px 0px;
+   margin: 1px 20px 1px 0px;
    background: #fff;
    font-weight: bold;
 }
