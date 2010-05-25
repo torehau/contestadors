@@ -8,14 +8,18 @@ class PasswordResetsController < ApplicationController
 
   def create
     @user = User.find_by_email(params[:email])
+
     if @user
-      @user.deliver_password_reset_instructions!
-      flash[:notice] = "Instructions to reset your password have been emailed to you. Please check your email."
-      redirect_to root_url
-    else
-      flash.now[:alert] = "No user was found with that email address."
-      render :action => :new
+
+      if verify_recaptcha
+        @user.deliver_password_reset_instructions!
+        flash[:notice] = "Instructions to reset your password have been emailed to you. Please check your email."
+        redirect_to root_url
+        return
+      end
     end
+    flash[:alert] = "Unknown email og incorrect word verification response. Please try again."
+    redirect_to :action => :new
   end
 
   def edit
