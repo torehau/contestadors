@@ -10,7 +10,7 @@ class PasswordResetsController < ApplicationController
     @user = User.find_by_email(params[:email])
     if @user
       @user.deliver_password_reset_instructions!
-      flash.now[:notice] = "Instructions to reset your password have been emailed to you. Please check your email."
+      flash[:notice] = "Instructions to reset your password have been emailed to you. Please check your email."
       redirect_to root_url
     else
       flash.now[:alert] = "No user was found with that email address."
@@ -27,9 +27,10 @@ class PasswordResetsController < ApplicationController
     @user.password_confirmation = params[:user][:password_confirmation]#:confirm_password ?
     
     if @user.save
-      flash.now[:notice] = "Password successfully updated."
+      flash[:notice] = "Password successfully updated."
       redirect_to edit_account_path
     else
+      flash.now[:alert] = "Password reset failed."
       render :action => :edit
     end
   end
