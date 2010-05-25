@@ -1,11 +1,31 @@
-<h3>Forgot Password</h3>
+<div id="contests">
+  <div id="create_contest_form_container">
+    <h3>Forgot Password</h3>
+    Fill out the form below and instructions to reset your password will be emailed to you:<br/>
+    <br/>
 
-Fill out the form below and instructions to reset your password will be emailed to you:<br />
-<br />
-
-<% form_tag password_resets_path do %>
-  <label>Email:</label><br />
-  <%= text_field_tag "email" %><br />
-  <br />
-  <%= submit_tag "Reset my password" %>
-<% end %>
+    <% form_tag password_resets_path do %>
+    <table>
+      <tbody>
+        <tr>
+          <td class="<%= "email".eql?(@focused_field_id) ? "invalid" : "" %>">
+            <%= label_tag :email, "Email: " %>
+          </td>
+          <td><%= text_field_tag "email", "", :size => 36, :maxlength => 50 %></td>
+        </tr>
+        <tr>
+          <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
+            Type the words in the image:
+          </td>
+          <td><%= recaptcha_tags :display => {:theme => 'clean'} %></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><%= submit_tag "Reset my password" %></td>
+        </tr>
+      </tbody>
+    </table>
+    <% end -%>
+  </div>
+</div>
+<%= set_focus_to_id @focused_field_id ||= 'email' %>
