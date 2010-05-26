@@ -216,3 +216,11 @@
   margin-left : 0px;
 }
 
+.table_description {
+  /*width:430px;*/
+  /*margin-top: 5px;*/
+  color: #41686a;
+  font-style: italic;
+  float: right;
+}
+
