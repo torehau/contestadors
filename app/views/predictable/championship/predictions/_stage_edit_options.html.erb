@@ -1,7 +1,21 @@
-<% if selected == true and predicted == true -%>
-  <%= link_to_function label, "javascript:document.getElementById(\"stage_form\").submit();return false" %>
-<% elsif predicted == true -%>
-  <%= link_to label, new_prediction_path(:contest => @contest.permalink, :aggregate_root_type => "stage", :aggregate_root_id => stage.permalink) %>
-<% else -%>
-  <%= label %>
-<% end -%>
+<div class="text_label"><%= label %></div>
+<div class="edit_options">
+  <% if selected == true and predicted == true -%>
+    <%= form.submit "Save" %>
+    <% if false -%>
+    <div class="icon_link">
+      <%= link_to_function(image_tag("disk.png"), "javascript:document.getElementById(\"stage_form\").submit();return false") %>
+    </div>
+    <div class="text_link">
+      <%= link_to_function "Save", "javascript:document.getElementById(\"stage_form\").submit();return false" %>
+    </div>
+    <% end -%> 
+  <% elsif predicted == true -%>
+    <div class="icon_link">
+      <%= link_to(image_tag("page_white_edit.png"), new_prediction_path(:contest => @contest.permalink, :aggregate_root_type => "stage", :aggregate_root_id => stage.permalink)) %>
+    </div>
+    <div class="text_link">
+      <%= link_to "Edit", new_prediction_path(:contest => @contest.permalink, :aggregate_root_type => "stage", :aggregate_root_id => stage.permalink) %>
+    </div>
+  <% end -%>
+</div>

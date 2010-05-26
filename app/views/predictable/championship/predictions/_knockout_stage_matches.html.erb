@@ -6,8 +6,11 @@
   <% predicted_stage = @result.aggregates[:predicted][stage.id]; predicted = !predicted_stage.nil? -%>
   <% invalidated = @result.aggregates[:invalidated].include?(stage.id) -%>
   <div class="<%= knockout_stage_label_div_class(selected, predicted) %>">
-    <%= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted, :label => stage.description} %>
+    <%= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted,  :label => stage.description, :form => form} %>
   </div>
+  <%#*<div class="knockout_stage_edit_options">%>
+    <%#= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted, :form => form} %>
+  <%#*</div>%>
   
   <%= render :partial => p_pref('stage_matches_top_spacing'), :locals => {:stage => stage} %>
   <% matches = predicted ? predicted_stage.matches : stage.matches; max_index = matches.size - 1 -%>
@@ -18,7 +21,7 @@
   <% if stage.description.eql?("Final") -%>
     <%= render :partial => p_pref('stage_matches_spacing'), :locals => {:stage => stage} %>
     <div class="<%= knockout_stage_label_div_class(selected, predicted, false) %>">
-      Third Place
+      <div class="text_label">Third Place</div>
     </div>
     <%= render :partial => p_pref('stage_match'), :locals => {:match => @result.aggregates[:third_place], :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
   <% end -%>
