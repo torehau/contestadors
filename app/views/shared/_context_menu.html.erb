@@ -21,7 +21,7 @@
      <% else -%>
        <%= tabnav :contest %>
      <% end -%>
-  <% elsif current_controller.eql?('participants') -%>
+  <% elsif ['participants', 'score_tables'].include?(current_controller) -%>
     <%= tabnav :contest %>
   <% end -%>
 <% end -%>
