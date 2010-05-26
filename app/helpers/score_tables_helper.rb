@@ -1,0 +1,2 @@
+module ScoreTablesHelper
+end
