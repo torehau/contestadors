@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100524195631) do
+ActiveRecord::Schema.define(:version => 20100526124728) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -71,6 +71,8 @@ ActiveRecord::Schema.define(:version => 20100524195631) do
     t.datetime "updated_at"
     t.string   "aggregate_root_type"
     t.integer  "aggregate_root_id"
+    t.integer  "points_delta"
+    t.integer  "points_accumulated"
   end
 
   create_table "configuration_sets", :force => true do |t|
@@ -224,6 +226,22 @@ ActiveRecord::Schema.define(:version => 20100524195631) do
 
   add_index "predictions", ["configuration_predictable_item_id"], :name => "index_predictions_on_configuration_predictable_item_id"
   add_index "predictions", ["user_id"], :name => "index_predictions_on_user_id"
+
+  create_table "score_table_positions", :force => true do |t|
+    t.integer  "participation_id",      :null => false
+    t.integer  "prediction_summary_id", :null => false
+    t.integer  "contest_instance_id",   :null => false
+    t.integer  "user_id",               :null => false
+    t.integer  "position",              :null => false
+    t.integer  "previous_position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "score_table_positions", ["contest_instance_id"], :name => "index_score_table_positions_on_contest_instance_id"
+  add_index "score_table_positions", ["participation_id"], :name => "index_score_table_positions_on_participation_id"
+  add_index "score_table_positions", ["prediction_summary_id"], :name => "index_score_table_positions_on_prediction_summary_id"
+  add_index "score_table_positions", ["user_id"], :name => "index_score_table_positions_on_user_id"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
