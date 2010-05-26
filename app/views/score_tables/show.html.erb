@@ -1,0 +1,27 @@
+<% grid(@positions_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+  <%  g.column :column_name => 'Position', :attribute_name => 'position' do |score_table_position| -%>
+    <%= score_table_position.position.to_s -%>
+  <%  end -%>
+
+  <%  g.column do |score_table_position| -%>
+    <% if score_table_position.previous_position -%>
+    <% else -%>
+      -
+    <% end -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Participant Name', :attribute_name => 'name', :model_class => User do |score_table_position| -%>
+    <%= score_table_position.user.name -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Points', :attribute_name => 'total_score', :model_class => PredictionSummary do |score_table_position| -%>
+    <%= score_table_position.prediction_summary.total_score.to_s -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'MAP*', :attribute_name => 'map', :model_class => PredictionSummary do |score_table_position| -%>
+    <%= score_table_position.prediction_summary.map.to_s -%>
+  <%  end -%>
+<%  end -%>
+<div class="table_description">
+  <b>MAP = Max Achievable Points</b>. Calculated from the current prediction completeness of the participants.
+</div>
