@@ -65,6 +65,7 @@ class User < ActiveRecord::Base
       find(:first, :conditions => ["participations.contest_instance_id = :contest_instance_id and participations.invitation_id is not null", {:contest_instance_id => contest_instance.id}])
     end
   end
+  has_many :score_table_positions
 
   def summary_of(contest)
     prediction_summaries.for_contest(contest)
