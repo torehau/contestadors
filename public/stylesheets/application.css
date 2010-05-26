@@ -848,8 +848,22 @@ div.progressbar > div.progressbar_color_0 { background-color: /*#ACE97C;*/#9CC08
    display:block;
 }
 
+.edit_options div.icon_link {
+   float: left;
+   margin-top: 2px;
+   /*padding-left: 5px;*/
+   width: 15px;
+   margin-left: 5px;
+   display:block;
+}
+
 #create_new_contest_link_container div.text_link {
    float: left;   
+}
+
+.edit_options div.text_link {
+   margin-left: 2px;
+   /*font-size: 110%;*/
 }
 
 /*#create_new_contest_link_container div.text_link a,
@@ -1009,17 +1023,19 @@ form.contest_create {
 .selected_knockout_stage_label {
   width: 205px;
 /*  padding-right: 3px;*/
-  margin: 0px 0px 5px 0px;
-  height: 24px;
-  /*border: 1px #88c6cf solid;*/
+  margin: 0px 0px 15px 0px;
+  /*padding-left: 30px;*/
+  height: 30px;
   background: /*#dff6f1;*/#D8F3C9;
+  /*border: 1px #88c6cf solid;*/
+/*  background: #dff6f1;#D8F3C9;
   background-image: url(/images/disk.png);
-  background-position: 180px 4px;
-  background-repeat:no-repeat;
+  background-position: 150px 7px;
+  background-repeat:no-repeat;*/
   color: #333;
   font-weight: bold;
   font-size: 110%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   float: right;
   display:block;
@@ -1031,19 +1047,35 @@ form.contest_create {
   border-top-right-radius: 5px;
 }
 
+.text_label {
+    float:left;
+    margin: 5px 0px 0px 30px;
+    /*width: 115px;*/
+}
+
+.edit_options {
+    float:right;
+    margin: 5px 5px 0px 0px;
+    width: 50px;
+}
+
+.selected_knockout_stage_label input#stage_submit {
+   float:right;
+}
+
 .unsaveable_selected_knockout_stage_label {
   width: 205px;
 /*  padding-right: 3px;*/
-  margin: 0px 0px 5px 0px;
+  margin: 0px 0px 15px 0px;
   height: 24px;
   /*border: 1px #88c6cf solid;*/
-  background: /*#dff6f1;*/#ffffff;
-  background-position: 180px 3px;
-  background-repeat:no-repeat;
-  color: #41686a;
+  background: /*#dff6f1;*/#D8F3C9;
+/*  background-position: 180px 3px;
+  background-repeat:no-repeat;*/
+  color: #333;
   font-weight: bold;
   font-size: 110%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   float: right;
   display:block;
@@ -1051,14 +1083,15 @@ form.contest_create {
 
 .knockout_stage_label {
   width: 205px;
-  margin: 0px 0px 5px 0px;
 /*  padding-right: 3px;*/
-  height: 24px;
+  margin: 0px 0px 15px 0px;
+  /*padding-left: 30px;*/
+  height: 30px;
 /*  border: 1px #ccc solid;*/
   background: #ddd;
-  background-image: url(/images/page_white_edit.png);
+/*  background-image: url(/images/page_white_edit.png);
   background-position: 180px 4px;
-  background-repeat:no-repeat;
+  background-repeat:no-repeat;*/
   color: #333;
   font-weight: bold;
   font-size: 110%;
@@ -1075,32 +1108,41 @@ form.contest_create {
 
 .uneditable_knockout_stage_label {
   width: 205px;
-  margin: 0px 0px 5px 0px;
+  margin-bottom: 15px;
+  /*padding: 0px 0px 5px 30px;*/
 /*  padding-right: 3px;*/
   height: 24px;
 /*  border: 1px #ccc solid;*/
   background: #ddd;
-  background-position: 180px 3px;
-  background-repeat:no-repeat;
+/*  background-position: 180px 3px;
+  background-repeat:no-repeat;*/
   color: #41686a;
   font-weight: bold;
   font-size: 110%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   float: right;
 }
 
+.unsaveable_selected_knockout_stage_label .text_label,
+.uneditable_knockout_stage_label .text_label {
+    float:left;
+    margin: 0px 0px 0px 30px;
+    /*width: 115px;*/
+}
+
 .undeceided_knockout_stage_label {
   width: 205px;
-  margin: 0px 0px 5px 0px;
-/*  padding-right: 3px;*/
-  height: 24px;
+    /*  padding-right: 3px;*/
+  margin: 0px 0px 15px 30px;
+    /*padding-left: 30px;*/
+  height: 30px;
   /*border: 1px #ccc solid;*/
   background: #ddd;
   color: #41686a;
   font-weight: bold;
   font-size: 110%;
-  text-align: center;
+  text-align: left;
   vertical-align: middle;
   float: right;
   -moz-border-radius-topleft: 5px;
@@ -1111,14 +1153,28 @@ form.contest_create {
   border-top-right-radius: 5px;
 }
 
+.knockout_stage_edit_options {
+   clear:both;
+   display:block;
+   width: 205px;
+   height: 25px;
+   min-height: 25px;
+   /*float:right;*/
+}
+
+.knockout_stage_edit_options input {
+    float: right;
+}
+
 .selected_knockout_stage_label a, .selected_knockout_stage_label a:visited,
 .knockout_stage_label a, .knockout_stage_label a:visited {
 /*   color: #f0542b;#B96A9A;*/
-   display:block;
-  -moz-border-radius: 5px;
+   /*display:block;*/
+   float:right;
+/*  -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  border-radius: 5px; /* future proofing */
-  -khtml-border-radius: 5px;
+  border-radius: 5px;  future proofing 
+  -khtml-border-radius: 5px;*/
 }
 
 .knockout_stage_label a:hover {
@@ -1274,7 +1330,7 @@ form.contest_create {
    display: block;
 }
 
-.next_stage_qualification_container {width: 25px;float: left;}
+.next_stage_qualification_container {width: 25px;float: left;margin-top: 16px;}
 .to_stage_column {float: right;width: 12px;}
 .from_stage_column {float: left;width: 13px;}
 .qualification_spacer_1 {height: 71px; min-height:  71px;display: block;}
