@@ -67,6 +67,7 @@ render_tabnav :main,
       t.titled selected.name
       t.links_to contest_instance_menu_link(selected)
       t.highlights_on :controller => "contests", :action => "show"
+      t.highlights_on :controller => "score_tables"
       t.highlights_on :controller => "participants"
       if before_contest_participation_ends
         t.highlights_on :controller => "contests", :action => "edit"
