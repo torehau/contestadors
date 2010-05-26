@@ -24,6 +24,10 @@ module ContestsHelper
         :path => contest_path(:contest => @contest.permalink, :role => @role, :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
         :highlight_conditions => [{:controller => "contests", :action => "show"}]}
     end
+    items << {:name => "Score Table",
+      :tip => "Ranking of the contest participants",
+      :path => contest_score_table_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+      :highlight_conditions => [{:controller => "score_tables", :action => "show"}]}
     items << {:name => "Participants",
       :tip => "All participants of the contest",
       :path => contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
