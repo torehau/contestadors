@@ -3,6 +3,7 @@ class ContestInstance < ActiveRecord::Base
   belongs_to :admin, :class_name => "User", :foreign_key => "admin_user_id"
   has_many :invitations
   has_many :participations
+  has_many :score_table_positions
   validates_presence_of :name, :admin_user_id, :configuration_contest_id
   validates_length_of :description, :maximum => 255
 
