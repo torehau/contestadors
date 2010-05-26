@@ -12,6 +12,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :contests, :path_prefix => '/:contest/:role' do |contests|
     contests.resources :invitations
     contests.resources :participants
+    contests.resource :score_table
   end
   map.resources :invitations, :path_prefix => '/:contest',
     :collection => {:pending => :get, :accepted => :get}
