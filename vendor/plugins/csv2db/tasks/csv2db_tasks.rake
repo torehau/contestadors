@@ -33,4 +33,9 @@ namespace :csv2db do
   task(:add_users => :environment) do
     User.load_from_csv
   end
+
+  desc "Updates existing database entries with new fields as given by the corresponding CSV file."
+  task(:update_prediction_states => :environment) do
+    Configuration::PredictionState.update_from_csv(:state_name, [:points_delta, :points_accumulated])
+  end
 end

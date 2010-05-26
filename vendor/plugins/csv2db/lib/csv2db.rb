@@ -55,6 +55,30 @@ module Csv2Db
         dependencies[self.table_name.to_sym] = @csv_id_to_db_id_map
       end
 
+      # For updating existing entries, i.e. if new non-relational fields are introduced.
+      def update_from_csv(key, fields_to_update)
+        parser = FasterCSV.new(File.open(filename(), 'r'),
+                               :headers => true, :header_converters => :symbol,
+                               :col_sep => ',')
+
+        parser.each do |@row|
+          if @row and @row.length > 0 and @row.include?(key)
+            key_value = @row.field(key)
+            existing_entry = self.find(:first, :conditions => {key => key_value})
+
+            if existing_entry
+              fields_to_update.each do |field_to_update|
+                value = @row.field(field_to_update)
+                existing_entry.update_attribute(field_to_update, value)
+                existing_entry.save!
+
+                puts "Updated " + self.name + " for " + key.to_s + ": " + key_value + ", " + field_to_update.to_s + ": " + value
+              end
+            end
+          end
+        end
+      end
+
       def filename
         $csv_dir + self.table_name + '.csv'
       end
