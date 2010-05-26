@@ -18,7 +18,7 @@ class PasswordResetsController < ApplicationController
         return
       end
     end
-    flash[:alert] = "Unknown email og incorrect word verification response. Please try again."
+    flash[:alert] = "Unknown email or incorrect word verification response. Please try again."
     redirect_to :action => :new
   end
 
