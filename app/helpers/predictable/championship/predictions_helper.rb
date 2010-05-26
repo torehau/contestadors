@@ -22,7 +22,7 @@ module Predictable::Championship::PredictionsHelper
     elsif predicted == true
       saveable ? "knockout_stage_label" : "uneditable_knockout_stage_label"
     else
-      "undeceided_knockout_stage_label"
+      saveable ? "undeceided_knockout_stage_label" : "uneditable_knockout_stage_label"
     end
   end
 
