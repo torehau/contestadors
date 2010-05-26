@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  participation_id: 1
+  prediction_summary_id: 1
+  contest_instance_id: 1
+  position: 1
+  previous_position: 1
+
+two:
+  participation_id: 1
+  prediction_summary_id: 1
+  contest_instance_id: 1
+  position: 1
+  previous_position: 1
