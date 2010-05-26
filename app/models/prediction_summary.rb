@@ -2,7 +2,12 @@ class PredictionSummary < ActiveRecord::Base
   belongs_to :user
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => 'configuration_contest_id'
   has_many :predictions, :through => :user
+  has_many :score_table_positions
 
+  def after_create
+    update_map
+  end
+  
   KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
   KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
                                                      'q'  => 'quarter-finals',
@@ -17,6 +22,7 @@ class PredictionSummary < ActiveRecord::Base
                      [:s, :fi, :t] => [:r, :q],
                      [:t] => [:r, :q, :s], :do => :delete_invalidated_predictions
     after_transition any => any - :fi, :do => :update_wizard
+    after_transition any => any, :do => :update_map
 
     from_state = :i
 
@@ -61,5 +67,11 @@ private
   # for deleting any predictions invalidated by a state transiction
   def delete_invalidated_predictions
     contest.delete_invalidated_predictions(user)
+  end
+
+  def update_map
+    prediction_state = Configuration::PredictionState.find_by_state_name(self.state)
+    self.map = prediction_state.points_accumulated
+    self.save!
   end
 end
