@@ -37,7 +37,6 @@ module Predictable
           
           @group.table_positions.each{|table_position| e.assert table_position}
           e.assert @group.runner_up_stage_team
-          e.assert ValidateCommand.new
 
           e.match
         end
