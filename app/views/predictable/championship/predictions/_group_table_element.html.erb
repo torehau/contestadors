@@ -20,14 +20,14 @@
           <div class="group_table_edit_move_up">
             <%= link_to image_tag("arrow_top.png"),
               prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
-              :id => group_table_element.id,:operation => :move, :command => :up), {:method => :put, :title => "Move Up"} %>
+              :id => group_table_element.id,:pos => group_table_element.display_order, :command => :up), {:method => :put, :title => "Move Up"} %>
           </div>
         <% end -%>
         <% if group_table_element.can_move_down -%>
           <div class="group_table_edit_move_down">
             <%= link_to image_tag("arrow_down.png"),
                prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
-              :id => group_table_element.id,:operation => :move, :command => :down), {:method => :put, :title => "Move Down"} %>
+              :id => group_table_element.id,:pos => group_table_element.display_order, :command => :down), {:method => :put, :title => "Move Down"} %>
           </div>
         <% end -%>
       <% end -%>
