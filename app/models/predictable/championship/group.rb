@@ -55,7 +55,35 @@ module Predictable
         return false
       end
 
-      private
+      # Assigns position and display order accoring to the sorted group table positions
+      def sort_group_table(calculate_display_order)
+        pos, increment, display_order = 0, 1, 1
+        previous, current = nil, nil
+
+        self.table_positions.sort!{|a, b| calculate_display_order ? (b <=> a) : (a.display_order <=> b.display_order)}.each do |table_position|
+          current = table_position
+
+          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
+            pos += increment
+            increment = 1
+          else
+            increment += 1
+            previous.can_move_down = true
+            current.can_move_up = true
+          end
+          table_position.pos = pos
+
+          if calculate_display_order
+            table_position.display_order = display_order
+            self.winner = table_position.team if display_order == 1
+            self.runner_up = table_position.team if display_order == 2
+            display_order += 1
+          end
+          previous = current
+        end
+      end
+
+    private
 
       def stage_team(stage, path, is_winner)
         Predictable::Championship::StageTeam.find(:first,
