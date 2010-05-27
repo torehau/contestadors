@@ -18,8 +18,10 @@ class PredictionsController < ApplicationController
   end
 
   def update
-    @repository.update(@aggregate_root_id, params)
-    redirect_to :action => :new
+    @result = @repository.update(@aggregate_root_id, params)
+    @aggregate = @result.current
+    set_wizard_and_progress_for_current_user
+    render :action => :new
   end
 
 protected
