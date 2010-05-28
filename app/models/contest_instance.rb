@@ -21,7 +21,7 @@ class ContestInstance < ActiveRecord::Base
   end
 
   def self.default_invitation_message(contest, admin_user)
-    admin_user.name + " invites you to participate in a contest for predicting the FIFA 2010 World Cup Championship."
+    admin_user.name + " invites you to participate in a contest for predicting the 2010 FIFA World Cup."
   end
 
   def eql?(other)
