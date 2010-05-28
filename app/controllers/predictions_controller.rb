@@ -1,6 +1,7 @@
 class PredictionsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :before_contest_participation_ends, :only => [:new, :create, :update]
+  before_filter :set_time_zone
 
   def new
     @result = @repository.get(@aggregate_root_id)
@@ -57,5 +58,9 @@ protected
   def get_aggregate_root_id
     return 'completed' if @wizard and @wizard.is_completed? and not @aggregate.has_validation_errors?
     @aggregate.root_id
+  end
+
+  def set_time_zone
+    Time.zone = 'Berlin'
   end
 end
