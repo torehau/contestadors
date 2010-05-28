@@ -30,6 +30,8 @@ module Predictable
 
       class GroupMatchesValidationRulebook < Ruleby::Rulebook
 
+        INVALID_LEADING_CHARACTERS = ["0", "-", "+"]
+
         attr_accessor :errors
 
         def rules
@@ -47,7 +49,7 @@ module Predictable
         # Checks that the input str is in the valid numeric format and within the range 0..99
         def is_valid_score?(score_str)
           return false if score_str.nil? or not (1..2).include?(score_str.length)
-          return false if score_str.length == 2 and score_str[0,1].eql?("0")
+          return false if score_str.length == 2 and INVALID_LEADING_CHARACTERS.include?(score_str[0,1])
           is_non_negative_integer?(score_str)
         end
 
