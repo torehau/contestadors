@@ -38,4 +38,9 @@ namespace :csv2db do
   task(:update_prediction_states => :environment) do
     Configuration::PredictionState.update_from_csv(:state_name, [:points_delta, :points_accumulated])
   end
+
+  desc "Updates existing database entries with new match play datetime as given by the corresponding CSV file."
+  task(:update_match_playtime => :environment) do
+    Predictable::Championship::Match.update_from_csv(:id, [:play_date])
+  end
 end
