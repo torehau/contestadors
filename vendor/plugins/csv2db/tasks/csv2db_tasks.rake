@@ -43,4 +43,9 @@ namespace :csv2db do
   task(:update_match_playtime => :environment) do
     Predictable::Championship::Match.update_from_csv(:id, [:play_date])
   end
+
+  desc "Updates existing database entries with new match play datetime as given by the corresponding CSV file."
+  task(:update_teams => :environment) do
+    Predictable::Championship::Team.update_from_csv(:id, [:country_flag, :name])
+  end
 end
