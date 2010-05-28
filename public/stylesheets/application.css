@@ -396,6 +396,10 @@ div.progressbar > div.progressbar_color_0 { background-color: /*#ACE97C;*/#9CC08
     color: #41686a;
 }
 
+.knockout_stage_match_container .match_date {
+    margin-left: 34px;
+}
+
 /* Group styling */
 #group {
   width: 910px;
@@ -1299,8 +1303,9 @@ form.contest_create {
   height: 23px;
   border-bottom: 1px #ccc solid;
   background: #ddd;
-  color: black;
-  text-align: center;
+  color: #41686a;
+  text-align: left;
+  padding-left: 35px;
 }
 
 .knockout_stage_matches_spacer_1 {
