@@ -21,7 +21,7 @@ module Predictable
 
         engine :rearrange_group_table do |e|
           rulebook = RearrangableGroupTableValidationRulebook.new(e)
-          rulebook.rules("Group #{@group.name} Table", @table_position, @move_direction)#, @prediction.predicted_value.to_i)
+          rulebook.rules("Group #{@group.name} Table", @position_id.to_i, @table_position, @move_direction)
           rulebook.predictions_to_update = @predictions_to_update
           rulebook.updated_prediction_values = @updated_prediction_values
           rulebook.group_table_positions_to_swap = @group_table_positions_to_swap
@@ -59,14 +59,14 @@ module Predictable
         
         attr_accessor :predictions_to_update, :updated_prediction_values, :group_table_positions_to_swap
 
-        def rules(group_descr, table_position, move_direction)
+        def rules(group_descr, position_id, table_position, move_direction)
           @current_value = table_position.to_i
           @updated_value = move_direction.eql?("up") ? (@current_value - 1) : (@current_value + 1)
 
           if move_direction.eql?("up")
-            move_team_up_rule(group_descr, table_position)
+            move_team_up_rule(position_id, group_descr, table_position)
           else
-            move_team_down_rule(group_descr, table_position)
+            move_team_down_rule(position_id, group_descr, table_position)
           end
 
           if [@current_value, @updated_value].include?(1)
@@ -76,7 +76,7 @@ module Predictable
           end
         end
 
-        def move_team_up_rule(group_descr, table_position)
+        def move_team_up_rule(position_id, group_descr, table_position)
 
           rule :move_team_up, {:priority => 2},
              [Configuration::Set, :group_table_set,
@@ -84,12 +84,13 @@ module Predictable
               {m.id => :group_table_set_id}],
              [Configuration::PredictableItem, :group_position_item,
                m.configuration_set_id == b(:group_table_set_id),
-              {m.id => :group_position_item_id, m.predictable_id => :group_position_id}],
+               m.predictable_id == position_id,
+              {m.id => :group_position_item_id}],
              [Prediction, :prediction,
                m.configuration_predictable_item_id == b(:group_position_item_id),
                m.predicted_value == table_position],
              [Predictable::Championship::GroupTablePosition, :current_position,
-               m.id == b(:group_position_id),
+               m.id == position_id,
                m.display_order==@current_value,
                m.can_move_up == true],
              [Configuration::PredictableItem, :other_group_position_item,
@@ -114,19 +115,20 @@ module Predictable
           end
         end
 
-        def move_team_down_rule(group_descr, table_position)
+        def move_team_down_rule(position_id, group_descr, table_position)
           rule :move_team_down, {:priority => 2},
              [Configuration::Set, :group_table_set,
                m.description == group_descr,
               {m.id => :group_table_set_id}],
              [Configuration::PredictableItem, :group_position_item,
                m.configuration_set_id == b(:group_table_set_id),
-              {m.id => :group_position_item_id, m.predictable_id => :group_position_id}],
+               m.predictable_id == position_id,
+              {m.id => :group_position_item_id}],
              [Prediction, :prediction,
                m.configuration_predictable_item_id == b(:group_position_item_id),
                m.predicted_value == table_position],
              [Predictable::Championship::GroupTablePosition, :current_position,
-               m.id == b(:group_position_id),
+               m.id == position_id,
                m.display_order==@current_value,
                m.can_move_down == true],
              [Configuration::PredictableItem, :other_group_position_item,
