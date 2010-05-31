@@ -7,3 +7,6 @@ will_paginate --version 2.3.12
 statistics --version 0.1.1
 later_dude --version 0.3.1
 hoptoad_notifier --version 2.2.2
+rpx_now --version '0.6.12'
+authlogic_rpx --version '1.1.1'
+
