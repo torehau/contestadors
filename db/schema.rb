@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100526124728) do
+ActiveRecord::Schema.define(:version => 20100529182637) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -227,6 +227,17 @@ ActiveRecord::Schema.define(:version => 20100526124728) do
   add_index "predictions", ["configuration_predictable_item_id"], :name => "index_predictions_on_configuration_predictable_item_id"
   add_index "predictions", ["user_id"], :name => "index_predictions_on_user_id"
 
+  create_table "rpx_identifiers", :force => true do |t|
+    t.string   "identifier",    :null => false
+    t.string   "provider_name"
+    t.integer  "user_id",       :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rpx_identifiers", ["identifier"], :name => "index_rpx_identifiers_on_identifier", :unique => true
+  add_index "rpx_identifiers", ["user_id"], :name => "index_rpx_identifiers_on_user_id"
+
   create_table "score_table_positions", :force => true do |t|
     t.integer  "participation_id",      :null => false
     t.integer  "prediction_summary_id", :null => false
@@ -257,9 +268,9 @@ ActiveRecord::Schema.define(:version => 20100526124728) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "email",                             :null => false
-    t.string   "name",                              :null => false
-    t.string   "crypted_password",                  :null => false
-    t.string   "password_salt",                     :null => false
+    t.string   "name"
+    t.string   "crypted_password"
+    t.string   "password_salt"
     t.string   "persistence_token",                 :null => false
     t.integer  "login_count",       :default => 0,  :null => false
     t.datetime "last_request_at"
