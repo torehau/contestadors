@@ -1,38 +1,13 @@
-<!-- header -->
 <div id="header">
-  <div id="top">
-    <% if current_user -%>
-      <%= image_tag("contestadors-logo-blueblack-2.gif") %>
-    <% else -%>
-<img src="http://www.logomaker.com/logo-images/9f088ab68c08f113.gif"/>
-<a href="http://www.logomaker.com/"><img src="http://www.logomaker.com/images/logos.gif" alt="free logos" border="0"/></a>
-    <% end -%>
-    <!--<h1 id="logo">Contest<span class="gray">adors.com</span>-->
-    <!--<span class="slogan">Free <span class="slogan-blue">World Cup</span> Prediction Contests</span>--></h1>
-  </div>
-  <div id="top_right">
-    <div id="nav">
-      <ul>
-        &nbsp; &nbsp; &nbsp;
-        <% if current_user -%>
-          <li><%= current_user.email %></li>
-          |
-          <li><%= link_to "Account", edit_account_path %></li>
-          |
-          <li><%= link_to 'Sign Out &raquo;', user_session_path, :method => :delete %></li>
-        <% else -%>
-          <li><%= link_to "Try It Out! &raquo;", championship_predictions_path(:preview => true) %></li>
-          |
-          <li><%= link_to "Join Now! &raquo;", new_account_path %></li>
-          |
-          <li><%= link_to 'Sign In &raquo;', "#{new_user_session_path}?height=250&width=320", :title => 'Sign In', :class => 'thickbox' %></li>
-        <% end -%>
-      </ul>
-    </div>
-  </div>
+  <%= render "shared/logo" %>
 
-  <div id="top_center">
-    <h3 id="slogan">Free <span class="slogan-blue">World Cup</span> Prediction Contests</h3>
-  </div>
+  <% if current_user -%>
+    <%= render "shared/signed_in_user_top_menu" %>
 
+  <% else -%>
+
+    <%= render "shared/not_signed_in_user_top_menu" %>
+  <% end -%>
+  
+  <%= render "shared/slogan" %>
 </div>

@@ -14,7 +14,7 @@
         <tr>
           <td class="<%= @contest_instance.errors.invalid?(:description) ? "invalid" : "" %>">
             <%= form.label :description, "Invitation Message: " %><br/>
-            (Optional, max 255 letters)
+            (Optional, max 1000 letters)
           </td>
           <td>
              <%= form.text_area :description %><br/>
@@ -41,5 +41,5 @@
     <% end -%>
   </div>
 </div>
-<%= countdown_field('contest_instance_description','counter', 255) %>
+<%= countdown_field('contest_instance_description','counter', 1000) %>
 <%= set_focus_to_id @focused_field_id ||= 'contest_instance_name' %>

@@ -1,16 +1,19 @@
 Hi <%= @invitation.name %>,<br/>
 <br/>
-<%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
-prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
-for the 2010 FIFA World Cup:<br/>
+
 <% if @invitation.contest_instance.description and @invitation.contest_instance.description.size > 0 -%>
   <br/>
   <q><%= @invitation.contest_instance.description %></q><br/>
+<% else -%>
+  <%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
+  prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
+  for the 2010 FIFA World Cup.<br/>
 <% end -%>
 <br/>
 You can accept this invitation by clicking the following link:<br/>
-<%= link_to 'Accept invitation', accept_invitation_url(:contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %><br/>
+<%= link_to 'Accept invitation', accept_invitation_url(:contest => @invitation.contest_instance.contest.permalink, :contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %> (<%= accept_invitation_url(:contest => @invitation.contest_instance.contest.permalink, :contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %>)<br/>
 <br/>
+If the above URL does not work try to copy and paste it into your browser.<br/>
 Alternatively, you can accept it from your list of new contest invitations:<br/>
 <%= link_to 'All new invitations', pending_invitations_url(:contest => "championship") %><br/>
 <br/>

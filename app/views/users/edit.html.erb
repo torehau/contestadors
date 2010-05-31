@@ -1,14 +1,1 @@
-<div id="registration">
-  <% spiffy_corners :generate_css => false do %>
-    <h2>Your Account Settings</h2>
-
-    <% form_for @user, :url => account_path do |f| %>
-      <%= f.error_messages %>
-      <%= render :partial => "form", :object => f %>
-      <br />
-      <%= f.submit "Update Account" %>
-    <% end %>
-
-    <br />
-  <% end -%>
-</div>
+<%= render "form", :title => "Your Account Settings", :submit_text => "Update Account" %>

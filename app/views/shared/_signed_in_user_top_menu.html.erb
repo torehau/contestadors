@@ -1,0 +1,11 @@
+<div id="top_right">
+  <div id="nav">
+    <ul>
+      <li><%= current_user.email %></li>
+      |
+      <li><%= link_to "Account", edit_account_path %></li>
+      |
+      <li><%= link_to 'Sign Out &raquo;', signout_path %></li>
+    </ul>
+  </div>
+</div>

@@ -1,13 +1,2 @@
-<div id="registration">
-  <% spiffy_corners :generate_css => false do %>
-    <h2>Register</h2>
+<%= render "form", :title => "Create New User Account", :submit_text => "Create Account" %>
 
-    <% form_for @user, :url => account_path do |f| %>
-      <%= f.error_messages %>
-      <%= @parameters if @parameters %>
-      <%= render :partial => "form", :object => f %>
-      <br />
-      <%= f.submit "Register" %>
-    <% end %>
-  <% end -%>
-</div>
