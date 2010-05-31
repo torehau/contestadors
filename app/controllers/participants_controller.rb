@@ -23,23 +23,24 @@ class ParticipantsController < ApplicationController
     @invitation = Invitation.find_by_token(params[:invite_code])
     
     if @invitation
+      @contest_instance = @invitation.contest_instance
       participation = Participation.new(:user_id => current_user.id,
-                           :contest_instance_id => @invitation.contest_instance.id,
+                           :contest_instance_id => @contest_instance.id,
                            :invitation_id => @invitation.id,
                            :active => true)
 
       if participation.save
-        flash[:notice] = "You have now successfully accepted the invitation and joined the '#{@invitation.contest_instance.name}' contest."
-        redirect_to contest_participants_path(:contest => @invitation.contest_instance.contest.permalink,
-                                              :role => @invitation.contest_instance.role_for(current_user),
-                                              :contest_id => @invitation.contest_instance.permalink,
-                                              :uuid => @invitation.contest_instance.uuid)
+        flash[:notice] = "You have now successfully accepted the invitation and joined the '#{@contest_instance.name}' contest."
+        redirect_to contest_participants_path(:contest => @contest_instance.contest.permalink,
+                                              :role => @contest_instance.role_for(current_user),
+                                              :contest_id => @contest_instance.permalink,
+                                              :uuid => @contest_instance.uuid)
       else
-        flash[:alert] = "There was an unexpected problem that prevented us from completing your request."
+        raise "Failed to accept invitation with invite code: " + params[:invite_code]
         redirect_to pending_invitations_path("championship")
       end
     else
-      flash[:alert] = "There was an unexpected problem that prevented us from completing your request."
+      raise "Failed to find invitation with invite code: " + (params[:invite_code] ? params[:invite_code] : "nil")
       redirect_to pending_invitations_path("championship")
     end
   end
