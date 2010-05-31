@@ -1,5 +1,11 @@
 class User < ActiveRecord::Base
-  acts_as_authentic
+  acts_as_authentic do |c|
+    # enable Authlogic_RPX account merging (false by default, if this statement is not present)
+    c.account_merge_enabled true
+
+    # set Authlogic_RPX account mapping mode
+    c.account_mapping_mode :internal
+  end
   has_many :prediction_summaries do#, :class_name => "Prediction::Summary", :foreign_key => "user_id", :dependent => :destroy do
     def for_contest(contest)
       find(:first, :conditions => {:configuration_contest_id => contest.id})
