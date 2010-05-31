@@ -8,6 +8,10 @@ module ApplicationHelper
     end
   end
 
+  def not_signed_in_message
+    "You must be signed in to access this page. Sign in with one of the options listed below to the right, or #{link_to('create a new Contestadors account ', new_account_path)}."
+  end
+
   def contest_instance_menu_link(contest_instance)
     if before_contest_participation_ends
       contest_participants_path(:contest => contest_instance.contest.permalink,
