@@ -1,8 +1,11 @@
 ActionController::Routing::Routes.draw do |map|
-  map.accept_invitation '/accept/:contest_instance/:invite_code', :controller => 'participants', :action => 'create'
+  map.accept_invitation '/accept/invitation/:contest/contest/:contest_instance/:invite_code', :controller => 'participants', :action => 'create'
   map.resource :account, :controller => "users"
   map.resources :users
-  map.resource :user_session
+#  map.signin "login", :controller => "user_sessions", :action => "new"
+  map.signout "signout", :controller => "user_sessions", :action => "destroy"
+  map.resources :user_sessions
+#  map.resource :user_session
   map.resources :password_resets
   map.resources :predictions,
     :path_prefix => '/:contest/:aggregate_root_type/:aggregate_root_id'
