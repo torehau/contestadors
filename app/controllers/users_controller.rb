@@ -4,36 +4,80 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    flash.now[:notice] = "Operation not yet supported"
   end
 
   def create
-    @user = User.new
-    flash.now[:notice] = "Operation not yet supported"
+    @user = User.new(params[:user])
+
+    if verify_recaptcha
+
+      if @user.save
+        flash[:notice] = "Account registered!"
+        redirect_back_or_default account_url
+        return
+      else
+        set_error_details
+      end
+    else
+      @focused_field_id = "recaptcha_response_field"
+      flash.now[:alert] = "Word verification response is incorrect, please try again."
+    end
     render :action => :new
-    # TODO comment in when new users are allowed to sign up
-#    @user = User.new(params[:core_user])
-#    if @user.save
-#      flash[:notice] = "Account registered!"
-#      redirect_back_or_default account_url
-#    else
-#      render :action => :new
-#    end
   end
 
   def show
-    @user = @current_user
+    @user = current_user
+    @user.valid?
+    render :edit
   end
 
   def edit
-    @user = @current_user
+    @user = current_user
+    @user.valid?
   end
 
   def update
-    @user = @current_user # makes our views "cleaner" and more consistent
+    @user = current_user # makes our views "cleaner" and more consistent
+    
     if @user.update_attributes(params[:user])
       flash.now[:notice] = "Account updated!"
     end
     render :action => :edit
+  end
+
+private
+
+  def set_error_details
+    if @user.errors.on(:name)
+      flash.now[:alert] = "The name was not valid."
+      @focused_field_id = "name"
+    elsif @user.errors.on(:email)
+      flash.now[:alert] = "The email is not valid."
+      @focused_field_id = "name"
+    elsif @user.errors.on(:password)
+      @focused_field_id = "password"
+      err_msg = "The password "
+      
+      if @user.errors.on(:passord).is_a?(String)
+        err_msg += @user.errors.on(:passord)
+      elsif @user.errors.on(:passord).is_a?(Array)
+        @user.errors.on(:passord).each{|error| err_msg += error + ", " }
+      else
+        err_msg += "is not valid."
+      end
+      flash.now[:alert] = err_msg
+    elsif @user.errors.on(:password_confirmation)
+      @focused_field_id = "password"
+      err_msg = "The password "
+
+      if @user.errors.on(:password_confirmation).is_a?(String)
+        err_msg += @user.errors.on(:password_confirmation)
+      elsif @user.errors.on(:password_confirmation).is_a?(Array)
+        @user.errors.on(:password_confirmation).each{|error| err_msg += error + ", " }
+      else
+        err_msg += " is not valid. Confirmation does not match first entry."
+      end
+      flash.now[:alert] = err_msg
+    end
   end
 end
