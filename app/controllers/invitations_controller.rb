@@ -1,6 +1,6 @@
 class InvitationsController < ApplicationController
   include ContestContext, ContestAccessChecker
-  strip_tags_from_params :only =>  [:create, :update]
+  strip_tags_from_params :only => :create
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :before_contest_participation_ends, :except => :index
@@ -49,22 +49,6 @@ class InvitationsController < ApplicationController
       :order_direction => 'desc',
       :per_page => 10
     )
-  end
-
-  def update
-    invitation = Invitation.find(params[:id])
-    @contest_instance = invitation.contest_instance
-    participation = Participation.new(:user_id => current_user.id,
-                         :contest_instance_id => @contest_instance.id,
-                         :invitation_id => invitation.id,
-                         :active => true)
-                       
-    if participation.save
-      flash[:notice] = render_to_string(:partial => 'successful_invitation_acceptance_message')
-    else
-      flash[:alert] = "Something went wrong."
-    end
-    redirect_to :action => 'pending'
   end
 
   def accepted
