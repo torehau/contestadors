@@ -66,7 +66,7 @@ private
     def require_user
       unless current_user
         store_location
-        flash[:notice] = "You must be logged in to access this page."
+        flash[:notice] = render_to_string(:partial => 'shared/you_must_be_signed_in_message')
         redirect_to new_user_session_url
         return false
       end
@@ -109,7 +109,7 @@ private
 #      new_prediction_path(contest_permalink, aggregate_root_type, aggregate_root_id)
       new_prediction_path(contest_permalink, "group", "A")
     else
-      # TODO change to something more appropriate
+      # TODO change to something more appropriate, e.g., if have contests - score table for default contest
       home_path("about")
     end
   end
