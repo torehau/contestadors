@@ -22,7 +22,7 @@ namespace :csv2db do
      Configuration::PredictableItem,
      Prediction,
      PredictionSummary,
-     User,
+#     User,
     ].each do |klass|
       klass.delete_all
       klass.load_from_csv(dependencies)
