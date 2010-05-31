@@ -5,7 +5,7 @@ class ContestInstance < ActiveRecord::Base
   has_many :participations
   has_many :score_table_positions
   validates_presence_of :name, :admin_user_id, :configuration_contest_id
-  validates_length_of :description, :maximum => 255
+  validates_length_of :description, :maximum => 1000
 
   def before_save
     self.permalink = self.name.to_permalink
@@ -21,7 +21,7 @@ class ContestInstance < ActiveRecord::Base
   end
 
   def self.default_invitation_message(contest, admin_user)
-    admin_user.name + " invites you to participate in a contest for predicting the 2010 FIFA World Cup."
+    admin_user.name + " invites you to join a prediction contest at Contestadors for the 2010 FIFA World Cup."
   end
 
   def eql?(other)
