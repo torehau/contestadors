@@ -84,7 +84,7 @@ protected
     if @contest_instance.errors.on(:name)
       flash.now[:alert] = "The name was not valid."
     else
-      flash.now[:alert] = "Maximum 255 characters allowed for the invitation message."
+      flash.now[:alert] = "Maximum 1000 characters allowed for the invitation message."
       @focused_field_id = "contest_instance_description"
     end
   end
