@@ -28,6 +28,8 @@ Rails::Initializer.run do |config|
   # config.gem "aws-s3", :lib => "aws/s3"
   config.gem "fastercsv", :version => '1.5.0'
   config.gem "authlogic", :version => '2.1.3'
+  config.gem 'rpx_now', :version => '0.6.12', :source => 'http://gemcutter.org'
+  config.gem 'authlogic_rpx', :version => '1.1.1', :source => 'http://gemcutter.org'
   config.gem "ruleby", :version => '0.6'
   config.gem "state_machine", :version => '0.9.0'
   config.gem "uuidtools", :version => '2.1.1'
@@ -60,6 +62,8 @@ Rails::Initializer.run do |config|
 
   config.action_view.field_error_proc = Proc.new{ |html_tag, instance| "<span class=&quot;fieldWithErrors&quot;>#{html_tag}</span>" }
 
+  ENV['RPX_API_KEY'] = 'a1246984717efc09ee04485fe76c2f778d9783d1'
+  RPX_API_KEY = ENV['RPX_API_KEY']
   ENV['RECAPTCHA_PUBLIC_KEY']  = '6LeLJroSAAAAAAWSeDsS17hDu484NPGwXCc92eEO'
   ENV['RECAPTCHA_PRIVATE_KEY'] = '6LeLJroSAAAAAP3YdLKNsxLJEBNhNi7rU0rG45fT'
 
