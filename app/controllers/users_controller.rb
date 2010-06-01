@@ -43,6 +43,8 @@ class UsersController < ApplicationController
     
     if @user.update_attributes(params[:user])
       flash.now[:notice] = "Account updated!"
+    else
+      set_error_details
     end
     render :action => :edit
   end
@@ -52,12 +54,12 @@ private
   def set_error_details
     if @user.errors.on(:name)
       flash.now[:alert] = "The name was not valid."
-      @focused_field_id = "name"
+      @focused_field_id = "user_name"
     elsif @user.errors.on(:email)
-      flash.now[:alert] = "The email is not valid."
-      @focused_field_id = "name"
+      flash.now[:alert] = "The email is not valid. Incorrect format or already registered."
+      @focused_field_id = "user_email"
     elsif @user.errors.on(:password)
-      @focused_field_id = "password"
+      @focused_field_id = "user_password"
       err_msg = "The password "
       
       if @user.errors.on(:passord).is_a?(String)
