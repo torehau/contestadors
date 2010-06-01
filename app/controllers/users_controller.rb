@@ -33,7 +33,9 @@ class UsersController < ApplicationController
 
   def edit
     @user = current_user
-    @user.valid?
+    unless @user.valid?
+      flash.now[:notice] = "Please complete the required registration details before continuing.."
+    end
   end
 
   def update
