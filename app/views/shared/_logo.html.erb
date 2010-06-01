@@ -1,8 +1,3 @@
 <div id="top">
-  <%# if current_user -%>
-    <%= link_to(image_tag("contestadors-logo-blueblack-2.gif"), (current_user ? prediction_menu_link : new_user_session_path)) %>
-  <%# else -%>
-     <%#*<img src="http://www.logomaker.com/logo-images/9f088ab68c08f113.gif"/>%>
-     <%#*<a href="http://www.logomaker.com/"><img src="http://www.logomaker.com/images/logos.gif" alt="free logos" border="0"/></a>%>
-  <%# end -%>
+  <%= link_to(image_tag("contestadors-logo.jpg"), (current_user ? prediction_menu_link : new_user_session_path)) %>
 </div>
