@@ -3,7 +3,7 @@ Hi <%= @invitation.name %>,<br/>
 
 <% if @invitation.contest_instance.description and @invitation.contest_instance.description.size > 0 -%>
   <br/>
-  <q><%= @invitation.contest_instance.description %></q><br/>
+  <%= @invitation.contest_instance.description %><br/>
 <% else -%>
   <%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
   prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
