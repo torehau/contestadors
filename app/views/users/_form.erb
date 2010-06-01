@@ -5,9 +5,11 @@
       By submitting the form below you confirm that you accept the <%= link_to "Terms of Use", home_path("terms"), :target => "_blank" %>
       and <%= link_to "Privacy Policy", home_path("privacy"), :target => "_blank" %> conditions for Contestadors user accounts.
     <% else -%>
+      Sign in using your account with Google, Windows Live ID, Yahoo, Facebook, Twitter or OpenID: <b><%= rpx_popup( :link_text => " Add RPX authentication for this account &raquo;", :app_name => "contestadors", :return_url => addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
+      <br/>
       Below is the current information stored about you. You may updated this information as desired. Note however that
       the email address must be unique within Contestadors. I.e., you cannot have two user accounts registered with the
-      same email.
+      same email.      
     <% end -%>
     <br/><br/>
 
