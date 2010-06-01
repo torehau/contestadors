@@ -13,7 +13,7 @@ Hi <%= @invitation.name %>,<br/>
 You can accept this invitation by clicking the following link:<br/>
 <%= link_to 'Accept invitation', accept_invitation_url(:contest => @invitation.contest_instance.contest.permalink, :contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %> (<%= accept_invitation_url(:contest => @invitation.contest_instance.contest.permalink, :contest_instance => @invitation.contest_instance.permalink, :invite_code => @invitation.token) %>)<br/>
 <br/>
-If the above URL does not work try to copy and paste it into your browser.<br/>
+If the above link does not work, try to copy and paste the actual URL shown next to it into your browser.<br/>
 Alternatively, you can accept it from your list of new contest invitations:<br/>
 <%= link_to 'All new invitations', pending_invitations_url(:contest => "championship") %><br/>
 <br/>
