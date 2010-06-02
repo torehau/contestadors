@@ -16,7 +16,7 @@ class InvitationsController < ApplicationController
 
   def create
     @invitations = []
-    params[:invitations].each {|invite| @invitations << Invitation.new(:contest_instance_id => @contest_instance.id, :name => invite[:name], :email => invite[:email], :sender_id => current_user.id) }
+    params[:invitations].each {|invite| @invitations << Invitation.new(:contest_instance_id => @contest_instance.id, :name => invite[:name], :email => invite[:email].try(:gsub, /\s/, ''), :sender_id => current_user.id) }
     errors = 0
     @invitations.each {|invitation| errors += 1 if invitation.invalid?}
 
