@@ -165,11 +165,6 @@ class User < ActiveRecord::Base
 	#
 	def before_merge_rpx_data( from_user, to_user )
     User.transaction do
-      # transfer administrated contests, i.e, contests created by from_user, to to_user
-      from_user.administered_contest_instances.each do |contest_instance|
-        contest_instance.admin_user_id = to_user.id
-        contest_instance.save!
-      end
 
       # transfer all invitations sent by from_user to to_user, except where where the invitations were sent to to_user
       from_user.sent_invitations.each do |sent_invitation|
@@ -202,6 +197,12 @@ class User < ActiveRecord::Base
           position.prediction_summary_id = to_user.prediction_summaries.first.id
           position.save!
         end
+      end
+
+      # transfer administrated contests, i.e, contests created by from_user, to to_user
+      from_user.administered_contest_instances.each do |contest_instance|
+        contest_instance.admin_user_id = to_user.id
+        contest_instance.save!
       end
     end
 	end
