@@ -157,6 +157,72 @@ class User < ActiveRecord::Base
     Notifier.deliver_password_reset_instructions(self)
   end
 
+	# before_merge_rpx_data provides a hook for application developers to perform data migration prior to the merging of user accounts.
+	# This method is called just before authlogic_rpx merges the user registration for 'from_user' into 'to_user'
+	# Authlogic_RPX is responsible for merging registration data.
+	#
+	# By default, it does not merge any other details (e.g. application data ownership)
+	#
+	def before_merge_rpx_data( from_user, to_user )
+    User.transaction do
+      # transfer administrated contests, i.e, contests created by from_user, to to_user
+      from_user.administered_contest_instances.each do |contest_instance|
+        contest_instance.admin_user_id = to_user.id
+        contest_instance.save!
+      end
+
+      # transfer all invitations sent by from_user to to_user, except where where the invitations were sent to to_user
+      from_user.sent_invitations.each do |sent_invitation|
+        unless sent_invitation.existing_user_id.eql?(to_user.id)
+          sent_invitation.sender_id = to_user.id
+          sent_invitation.save!
+        end
+      end
+
+      # transfer all invitations received by from_user to to_user, except where the invitations where sent by to_user
+      from_user.invitations.each do |invitation|
+        unless invitation.sender_id.eql?(to_user.id)
+          invitation.existing_user_id = to_user.id
+          invitation.save!
+        end
+      end
+
+      # transfer all participations for from_user to to_user, except where to_user already has a participation
+      from_user.participations.each do |participation|
+        unless to_user.is_participant_of?(participation.contest_instance)
+          participation.user_id = to_user.id
+          participation.save!
+        end
+      end
+
+      # transfer all score_table_positions for from_user to to_user, except where to_user already has a participation/score_table_position
+      from_user.score_table_positions.each do |position|
+        unless to_user.is_participant_of?(position.contest_instance)
+          position.user_id = to_user.id
+          position.prediction_summary_id = to_user.prediction_summaries.first.id
+          position.save!
+        end
+      end
+    end
+	end
+
+	# after_merge_rpx_data provides a hook for application developers to perform account clean-up after authlogic_rpx has
+	# migrated registration details.
+	#
+	# By default, does nothing. It could, for example, be used to delete or disable the 'from_user' account
+	#
+	def after_merge_rpx_data( from_user, to_user )
+    User.transaction do
+      from_user.predictions.each{|prediction| prediction.destroy}
+      from_user.prediction_summaries.each{|summary| summary.destroy}
+      from_user.sent_invitations.each{|sent_invitation| sent_invitation.destroy}
+      from_user.invitations.each{|invitation| invitation.destroy}
+      from_user.participations.each{|participation| participation.destroy}
+      from_user.score_table_positions.each{|score_table_position| score_table_position.destroy}
+      from_user.destroy
+    end
+	end
+
 protected
 
   def after_create
