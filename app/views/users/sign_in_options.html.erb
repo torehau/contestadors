@@ -1,0 +1,17 @@
+<div id="account_edit">
+  <div id="account_edit_menu">
+    <%= navigation :account_edit %>
+  </div>
+    <div id="account_edit_area">
+      <h3>Sign In with an Identity Provider</h3>
+      <p>You can sign in to Contestadors using your existing account with Identity Providers like Google, Windows Live ID, Yahoo, Facebook, Twitter or OpenID: </p>
+      <b><%= rpx_popup( :link_text => "Add Identity Provider For Contestadors Sign In &raquo;", :app_name => "contestadors", :return_url => addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
+    <br/>
+    <p>You may add as many of the available Identity Providers for signing in to Contestadors as you like.</p>
+    <div class="warning_message" >
+      <b>WARNING - may cause account merging, with deletion of predictions</b><br/>
+      <span class="message">If you already have another Contestadors account associated with an Identity Provider you add for signing in to this account, the two accounts will be merged. All contests owner- and memberships for both accounts will be kept in this situation, but any predictions placed under the other account will be deleted.</span>
+    </div>
+    <br/>
+  </div>
+</div>
