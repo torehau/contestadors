@@ -1475,9 +1475,14 @@ form.contest_create {
 
 #account_edit_area {
     width: 650px;
+    min-height: 265px;
     float: right;
     display: block;
     /*clear: both;*/
+}
+
+#account_edit_area a:hover {
+    background: #fff;
 }
 
 .account_edit_navigation {
