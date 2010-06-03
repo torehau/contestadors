@@ -32,6 +32,10 @@ class Invitation < ActiveRecord::Base
     created_at
   end
 
+  def is_accepted?
+    self.state.eql?("a")
+  end
+
   def state_display_name
     STATE_DISPLAY_NAME_ID_BY_STATE_NAME[self.state]
   end
