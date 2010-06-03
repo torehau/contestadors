@@ -874,7 +874,8 @@ padding-left: 40px;
    width: 612px;
 }
 
-#create_contest_form_container form table tbody tr td.invalid label {
+#create_contest_form_container form table tbody tr td.invalid label,
+#account_edit form table tbody tr td.invalid label {
     color:red;
 }
 
@@ -1451,5 +1452,101 @@ form.contest_create {
     margin-top: -20px;
     font-weight: bold;
     color: #41686a;
+}
+
+#account_edit {
+  /*width: 910px;*/
+  /*margin-top: 10px;*/
+  overflow: hidden;
+   padding: 10px 0px 10px 50px;
+   background: #fff;/*#9cbcda;*/
+   border: 1px #88c6cf solid;
+/*   height: inherit;*/
+   clear: both;
+   /*height: 100px;*/
+}
+
+#account_edit_menu {
+    width: 200px;
+    float: left;
+    /*clear: both;*/
+    display: block;
+}
+
+#account_edit_area {
+    width: 650px;
+    float: right;
+    display: block;
+    /*clear: both;*/
+}
+
+.account_edit_navigation {
+  display: block;
+  font-size: 120%;
+  /*padding-right: 20px;*/
+}
+
+.account_edit_navigation ul {
+  padding: 0px 0px 0px 10px;
+  margin: 0px 0px 0px 0px;
+  text-align: left;
+  list-style: none;
+}
+
+.account_edit_navigation li {
+    /*display:inline;*/
+    /*margin: 0px 0px 0px 0px;*/
+    list-style-type: none;
+    min-width: 100px;
+/*   background: #9cbcda;
+    font-weight: bold;
+    min-height: 25px;
+    min-width: 100px;
+    margin: 3px 10px 1px 0px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 3px 10px 1px 10px;*/
+}
+
+.account_edit_navigation a, .account_edit_navigation a:visited, .account_edit_navigation a:hover {
+        min-height: 25px;
+        line-height: 25px;
+    /*background: #9cbcda;*/
+    font-weight: bold;
+    min-height: 25px;
+    min-width: 100px;
+    margin: 0px 10px 5px 0px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    padding: 3px 10px 1px 10px;
+    display: block;
+}
+
+.account_edit_navigation a:hover {
+/*  font-weight: normal;*/
+  color: #41686a;
+}
+
+.account_edit_navigation a.active, .account_edit_navigation a.active:hover {
+  /*font-weight: bold;*/
+  /*font-size: 110%;*/
+  background: #9cbcda;
+  font-weight: bold;
+  /*background: #dff6f1;#D8F3C9;*/
+  color: #000;
+  padding: 3px 10px 3px 10px;
+  color: #ffffff;
+}
+
+.warning_message {
+  color: #333;
+	background: #fee;
+	border: solid 1px #db7;
+  margin-right: 10px;
+  padding: 3px 10px 3px 10px;
 }
 
