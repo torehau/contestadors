@@ -1,0 +1,26 @@
+<%  
+# this partial renders a navigation bar, you can call it in your views with:
+#   <% navigation :account_edit % > 
+#
+# you can pass render_navigation a few options:
+#   :generate_css => true|false #=> generates a default inline css for the tabnav, defaults to false
+#   :html => aHash #=> sets html options for the tabnav's div (es :html => {:class=> 'myCssClass', :id=>'myCssId'}) 
+#  
+render_navigation :account_edit, :separator => "", :generate_css => false do
+    
+  add_item do |i|
+    i.named 'General Settings'
+    i.titled 'Display name and user credentials'
+    i.links_to edit_account_path
+    i.highlights_on :action => "edit"
+    i.highlights_on :action => "update"
+  end
+
+  add_item do |i|
+    i.named 'Sign In Options'
+    i.titled 'Allows you to add other identity providers for sign in'
+    i.links_to sign_in_options_path
+    i.highlights_on :action => "sign_in_options"
+  end
+end 
+%>
