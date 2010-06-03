@@ -6,12 +6,14 @@ class Invitation < ActiveRecord::Base
   validates_presence_of :name, :email
   validates_email_format_of :email
   validates_uniqueness_of :email, :scope => :contest_instance_id
-  validate :email_different_from_invitor_email
+  validate :email_different_from_invitor_email, :no_dummy_values_provided
   define_statistic :contest_invitations_count, :count => :all, :filter_on => { :state => 'state = ?', :contest_instance_id => 'contest_instance_id = ?'}
 
   STATE_DISPLAY_NAME_ID_BY_STATE_NAME             = {'n'  => 'New',
                                                      's'  => 'Sent',
                                                      'a'  => 'Accepted'}
+  DUMMY_EMAIL = "participant@email.com"
+  DUMMY_NAME = "New Participant Name"
 
   def before_create
     existing_user = User.find_by_email(self.email)
@@ -20,6 +22,10 @@ class Invitation < ActiveRecord::Base
       self.existing_user_id = existing_user.id
     end
     self.token = get_unique_token
+  end
+
+  def self.new_with_dummy_values
+    Invitation.new(:name => DUMMY_NAME, :email => DUMMY_EMAIL)
   end
 
   def invited_on
@@ -61,9 +67,19 @@ class Invitation < ActiveRecord::Base
 
 private
 
+  def no_dummy_values_provided
+    if self.email and self.email.downcase.eql?(DUMMY_EMAIL)
+      errors.add(:email, "The provided email address is not valid.")
+    end
+
+    if self.name and self.name.downcase.eql?(DUMMY_NAME)
+      errors.add(:name, "The provided name is not valid.")
+    end
+  end
+
   def email_different_from_invitor_email
     if is_the_same_email?(self.sender.try(:email), self.email)
-      errors.add(:email, "It is not allowed invite yourself as a contest member.")
+      errors.add(:email, "It is not allowed to invite yourself as a contest member.")
     end
   end
 
