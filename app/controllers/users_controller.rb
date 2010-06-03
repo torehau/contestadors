@@ -62,6 +62,10 @@ class UsersController < ApplicationController
     render :action => 'edit'
 	end
 
+  def sign_in_options
+    render
+  end
+
 
 private
 
