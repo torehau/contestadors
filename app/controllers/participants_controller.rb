@@ -24,6 +24,15 @@ class ParticipantsController < ApplicationController
     
     if @invitation
       @contest_instance = @invitation.contest_instance
+
+      if @invitation.is_accepted?
+        flash[:notice] = "You have already accepted the invitation for the '#{@contest_instance.name}' contest."
+        redirect_to contest_participants_path(:contest => @contest_instance.contest.permalink,
+                                              :role => @contest_instance.role_for(current_user),
+                                              :contest_id => @contest_instance.permalink,
+                                              :uuid => @contest_instance.uuid)
+        return
+      end
       participation = Participation.new(:user_id => current_user.id,
                            :contest_instance_id => @contest_instance.id,
                            :invitation_id => @invitation.id,
