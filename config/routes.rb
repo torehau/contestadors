@@ -5,6 +5,7 @@ ActionController::Routing::Routes.draw do |map|
 #  map.signin "login", :controller => "user_sessions", :action => "new"
   map.signout "signout", :controller => "user_sessions", :action => "destroy"
   map.addrpxauth "addrpxauth", :controller => "users", :action => "addrpxauth", :method => :post
+  map.sign_in_options 'account/edit/sign-in-options', :controller => "users", :action => "sign_in_options", :method => :get
   map.resources :user_sessions
 #  map.resource :user_session
   map.resources :password_resets
