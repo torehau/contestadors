@@ -10,7 +10,7 @@ class InvitationsController < ApplicationController
     if @contest_instance
       session[:selected_contest_id] = @contest_instance.id.to_s
       @invitations = []
-      @invitations << Invitation.new(:name => "New Participant Name", :email => "participant@email.com")
+      @invitations << Invitation.new_with_dummy_values
     end
   end
 
