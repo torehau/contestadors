@@ -2,12 +2,14 @@ module InvitationsHelper
   def add_invitation_link(name)
     link_to_function name do |page|
       page.insert_html :bottom, :contest_invitations, :partial => 'contest_invitation', 
-        :object => Invitation.new(:name => "New Participant Name", :email => "participant@email.com")
+        :object => Invitation.new_with_dummy_values
     end
   end
 
   def contest_invitation_div_class(contest_invitation)
-    return "invalid_contest_invitation" if contest_invitation.invalid?
+    if current_action.eql?("create") and contest_invitation.invalid?
+      return "invalid_contest_invitation"
+    end
     "contest_invitation"
   end
 
