@@ -1,59 +1,49 @@
-<div id="contests">
-  <div id="create_contest_form_container">
-    <h3><%= title %></h3>
-    <% if ["new", "create"].include?(current_action) -%>
-      By submitting the form below you confirm that you accept the <%= link_to "Terms of Use", home_path("terms"), :target => "_blank" %>
-      and <%= link_to "Privacy Policy", home_path("privacy"), :target => "_blank" %> conditions for Contestadors user accounts.
-    <% else -%>
-      Sign in using your account with Google, Windows Live ID, Yahoo, Facebook, Twitter or OpenID: <b><%= rpx_popup( :link_text => " Add RPX authentication for this account &raquo;", :app_name => "contestadors", :return_url => addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
-      <br/>
-      <b>NOTE:</b> If you already have a Contestadors account associated with one of these Identity providers, the contests for this account will be merged with this account. Also, any predictions for the account merged from will be deleted.<br/>
-      <br/>
-      Below is the current information stored about you. You may updated this information as desired. Note however that
-      the email address must be unique within Contestadors. I.e., you cannot have two user accounts registered with the
-      same email.      
-    <% end -%>
-    <br/><br/>
+<h3><%= title %></h3>
+<% if ["new", "create"].include?(current_action) -%>
+  By submitting the form below you confirm that you accept the <%= link_to "Terms of Use", home_path("terms"), :target => "_blank" %>
+  and <%= link_to "Privacy Policy", home_path("privacy"), :target => "_blank" %> conditions for Contestadors user accounts.
+<% else -%>
+  Below is the current information stored about you. You may updated this information as desired.
+<% end -%>
+<br/><br/>
 
-    <% form_for @user, :url => account_path do |form| %>
-      <%#= @parameters if @parameters %>
-    <table>
-      <tbody>
+<% form_for @user, :url => account_path do |form| %>
+  <%#= @parameters if @parameters %>
+  <table>
+    <tbody>
+      <tr>
+        <td class="<%= @user.errors.on(:name) ? "invalid" : "" %>"><%= form.label :name, form.object.new_record? ? nil : "Contest Display Name" %></td>
+        <td><%= form.text_field :name %></td>
+      </tr>
+      <tr>
+        <td class="<%= @user.errors.on(:email) ? "invalid" : "" %>">
+          <%= form.label :email %><br />
+        </td>
+        <td>
+          <%= form.text_field :email %><br />
+        </td>
+      </tr>
+      <tr>
+        <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password, form.object.new_record? ? nil : "Change password" %></td>
+        <td><%= form.password_field :password %></td>
+      </tr>
+      <tr>
+        <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
+        <td><%= form.password_field :password_confirmation %></td>
+      </tr>
+      <% if ["new", "create"].include?(current_action) -%>
         <tr>
-          <td class="<%= @user.errors.on(:email) ? "invalid" : "" %>">
-            <%= form.label :email %><br />
+          <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
+            Type the words in the image
           </td>
-          <td>
-            <%= form.text_field :email %><br />
-          </td>
+          <td><%= recaptcha_tags :display => {:theme => 'clean'} %></td>
         </tr>
-        <tr>
-          <td class="<%= @user.errors.on(:name) ? "invalid" : "" %>"><%= form.label :name %></td>
-          <td><%= form.text_field :name %></td>
-        </tr>
-        <tr>
-          <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password, form.object.new_record? ? nil : "Change password" %></td>
-          <td><%= form.password_field :password %></td>
-        </tr>
-        <tr>
-          <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
-          <td><%= form.password_field :password_confirmation %></td>
-        </tr>
-        <% if ["new", "create"].include?(current_action) -%>
-          <tr>
-            <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
-              Type the words in the image:
-            </td>
-            <td><%= recaptcha_tags :display => {:theme => 'clean'} %></td>
-          </tr>
-        <% end -%>
-        <tr>
-          <td></td>
-          <td><%= form.submit submit_text %></td>
-        </tr>
-      </tbody>
-    </table>
-    <% end %>
-  </div>
-</div>
-<%= set_focus_to_id @focused_field_id ||= 'user_email' %>
+      <% end -%>
+      <tr>
+        <td></td>
+        <td><%= form.submit submit_text %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+<%= set_focus_to_id @focused_field_id ||= 'user_name' %>
