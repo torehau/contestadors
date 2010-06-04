@@ -5,10 +5,9 @@ module ContestAccessChecker
     unless current_user.is_admin_of?(@contest_instance)
       unless current_user.is_participant_of?(@contest_instance)
 
-        unauthorized = @contest_instance.id.to_s + ", " + @contest_instance.uuid
         @contest_instance = selected_contest
         unless current_user.is_admin_of?(@contest_instance)
-          raise "User id: " + current_user.id.to_s + " attempted to access unauthorized contest: " + unauthorized
+          raise "User id: " + current_user.id.to_s + " attempted to access unauthorized contest."
         end
       end
     end
