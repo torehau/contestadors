@@ -2,6 +2,12 @@ class PredictionsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :before_contest_participation_ends, :only => [:new, :create, :update]
 
+  def index
+    if before_contest_participation_ends
+      redirect_to :action => "new"
+    end
+  end
+
   def new
     @result = @repository.get(@aggregate_root_id)
     @aggregate = @result.current
