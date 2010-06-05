@@ -64,10 +64,10 @@ module Predictable::Championship::PredictionsHelper
   def link_to_next_wizard_step(wizard)
     message = ""
 
-    if ('a'...'h') === wizard.current_step
+    if ('A'...'H') === wizard.current_step
       next_group = wizard.next_step.upcase
       message += "#{link_to('Group ' + next_group, new_prediction_path('championship','group', next_group))}."
-    elsif 'h'.eql?(wizard.current_step)
+    elsif 'H'.eql?(wizard.current_step)
       message += "the #{link_to('Knockout Stages', new_prediction_path('championship', 'stage', 'round-of-16'))}."
     end
     message
