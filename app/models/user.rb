@@ -77,6 +77,13 @@ class User < ActiveRecord::Base
     prediction_summaries.for_contest(contest)
   end
 
+  def next_available_prediction_state(contest)
+    summary = self.summary_of(contest)
+    prediction_state = contest.prediction_state(summary.state)
+    next_prediction_state = prediction_state.next
+    (next_prediction_state ? next_prediction_state : prediction_state)
+  end
+
   def predictions_for(set)
     predictions.for_set(set)
   end
