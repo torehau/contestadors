@@ -2,6 +2,7 @@ class ParticipantsController < ApplicationController
   include ContestContext, ContestAccessChecker
   before_filter :require_user
   before_filter :set_context_from_request_params
+  before_filter :require_contest
   before_filter :after_contest_participation_ends, :only => :update
   before_filter :require_participation, :only => :index
   before_filter :require_admin, :only => :update

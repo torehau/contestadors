@@ -3,6 +3,7 @@ class InvitationsController < ApplicationController
   strip_tags_from_params :only => :create
   before_filter :require_user
   before_filter :set_context_from_request_params
+  before_filter :require_contest
   before_filter :before_contest_participation_ends, :except => :index
   before_filter :require_admin, :only => [:new, :create, :index]
 
