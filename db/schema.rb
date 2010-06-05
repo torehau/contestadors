@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100601013559) do
+ActiveRecord::Schema.define(:version => 20100604200656) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -73,6 +73,8 @@ ActiveRecord::Schema.define(:version => 20100601013559) do
     t.integer  "aggregate_root_id"
     t.integer  "points_delta"
     t.integer  "points_accumulated"
+    t.boolean  "preview_available",        :default => false
+    t.integer  "position"
   end
 
   create_table "configuration_sets", :force => true do |t|
