@@ -16,7 +16,7 @@ module Predictable
         def update_wizard
           current_prediction_state = contest.prediction_state(state)
           self.prediction_progress = current_prediction_state.progress_accumulated
-          self.current_step = current_prediction_state.permalink
+          self.current_step = current_prediction_state.permalink          
           next_prediction_state = current_prediction_state.next
           self.next_step = next_prediction_state ? next_prediction_state.permalink : nil
           self.all_available_steps = collect_available_steps
@@ -24,8 +24,8 @@ module Predictable
 
         def collect_available_steps
           steps = []
-          last_available_group = is_all_groups_predicted? ? 'h' : self.next_step
-          ('a'..last_available_group).each{|group_name| steps << GroupWizardStep.new(group_name)}
+          last_available_group = is_all_groups_predicted? ? 'H' : self.next_step
+          ('A'..last_available_group).each{|group_name| steps << GroupWizardStep.new(group_name)}
           steps << StageWizardStep.new(stage_permalink) if is_all_groups_predicted?
           steps
         end
