@@ -36,7 +36,7 @@ namespace :csv2db do
 
   desc "Updates existing database entries with new fields as given by the corresponding CSV file."
   task(:update_prediction_states => :environment) do
-    Configuration::PredictionState.update_from_csv(:state_name, [:points_delta, :points_accumulated])
+    Configuration::PredictionState.update_from_csv(:state_name, [:permalink, :points_delta, :points_accumulated, :preview_available, :position])
   end
 
   desc "Updates existing database entries with new match play datetime as given by the corresponding CSV file."
