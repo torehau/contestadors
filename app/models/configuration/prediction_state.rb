@@ -7,5 +7,14 @@ module Configuration
     def next
       PredictionState.find(:first, :conditions => {:state_name => next_state_name})
     end
+
+    def is_before?(other_state)
+      return false unless other_state
+      self.position < other_state.position
+    end
+
+    def request_params
+      {:contest => self.contest.permalink, :aggregate_root_type => self.aggregate_root_type, :aggregate_root_id => self.permalink}
+    end
   end
 end
