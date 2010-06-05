@@ -14,6 +14,15 @@ namespace :app do
 
   namespace :updates do
 
+    desc "For adding and populating new preview_available column to configuration_prediction_states table"
+    task(:prediction_states) do
+      puts "migrating database schema..."
+      Rake::Task["db:migrate"].invoke
+
+      puts "setting values of new points columns for configuration_prediction_states table..."
+      Rake::Task["csv2db:update_prediction_states"].invoke
+    end
+
     desc "Task for introducing contest score tables"
     task(:init_score_tables) do
       puts "migrating database schema..."
