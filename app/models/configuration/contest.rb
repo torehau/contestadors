@@ -7,6 +7,9 @@ module Configuration
       def by_state_name(state_name)
         find(:first, :conditions => {:state_name => state_name})
       end
+      def by_aggregate_root(aggregate_root_type, permalink)
+        find(:first, :conditions => {:aggregate_root_type => aggregate_root_type, :permalink => permalink})
+      end
     end
     has_many :prediction_summaries
     has_many :contest_instances, :foreign_key => "configuration_contest_id"
@@ -16,8 +19,17 @@ module Configuration
       find(:all, :conditions => ["available_from <= ? and participation_ends_at >= ?", now, now])
     end
 
+    def self.from_permalink_or_first_available(permalink)
+      contest = self.find_by_permalink(permalink)
+      contest ||= self.all_available.first
+    end
+
     def prediction_state(state_name)
       prediction_states.by_state_name(state_name)
+    end
+
+    def prediction_state_by_aggregate_root(aggregate_root_type, aggregate_root_id)
+      prediction_states.by_aggregate_root(aggregate_root_type, aggregate_root_id)
     end
 
     def wizard_module
