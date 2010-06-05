@@ -29,13 +29,15 @@ private
       request.path_parameters['action']
     end
 
-    def before_contest_participation_ends
+    def require_contest
       return false unless defined?(@contest)
+    end
+
+    def before_contest_participation_ends
       Time.now < @contest.participation_ends_at
     end
 
     def after_contest_participation_ends
-      return false unless defined?(@contest)
       Time.now > @contest.participation_ends_at
     end
 
