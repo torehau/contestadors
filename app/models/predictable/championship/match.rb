@@ -27,6 +27,10 @@ module Predictable
         self.home_team.name <=> other.home_team.name
       end
 
+      def winner_id
+        self.winner ? self.winner.id : nil
+      end
+
       def starts_at
         self.play_date
       end
