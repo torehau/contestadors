@@ -5,6 +5,8 @@ class Prediction < ActiveRecord::Base
   validates_presence_of :user_id, :configuration_predictable_item_id, :predicted_value
   validates_numericality_of :user_id, :configuration_predictable_item_id
 
+  delegate :description, :to => :predictable_item
+
   # saves predictions for the given user and set. second parameter must be a hash to the actual
   # predictable instances (e.g., match or table position) keyed by the corresponding ids.
   # The invoker must pass in a block returning the value to be predicted on the predictable instance.
