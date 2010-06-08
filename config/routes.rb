@@ -14,6 +14,7 @@ ActionController::Routing::Routes.draw do |map|
   map.championship_predictions "championship/group/A",
     :controller => "predictions", :action => "new",
     :contest => "championship", :aggregate_root_type => "group", :aggregate_root_id => "A"
+#  map.user_predictions '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions', :controller => "predictions", :action => "show", :method => :get
   map.resources :contests, :path_prefix => '/:contest/:role' do |contests|
     contests.resources :invitations
     contests.resources :participants
@@ -21,7 +22,8 @@ ActionController::Routing::Routes.draw do |map|
   end
   map.resources :invitations, :path_prefix => '/:contest',
     :collection => {:pending => :get, :accepted => :get}
-  map.home ':action', :controller => 'home', :action => /about|rules|terms|privacy|contact/
+#  map.participant_predictions '/:contest/:role/:contest_id/participant-predictions', :controller => "participants", :action => "show"
+  map.home ':action', :controller => 'home', :action => /about|rules|terms|privacy|contact|faq/
   map.root :controller => "user_sessions", :action => "new"
   map.catch_all '*url', :controller => "rescue"
 end
