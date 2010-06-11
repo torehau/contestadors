@@ -3,6 +3,10 @@
     invitation.name
   end
 
+  g.column :column_name => 'Participant Name', :attribute_name => 'name', :model_class => User do |invitation| # joined table
+    invitation.participation ? invitation.participation.user.name : "N.A."
+  end
+
   g.column :column_name => 'Email', :attribute_name => 'email' do |invitation| # joined table
     invitation.email
   end
