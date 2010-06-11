@@ -9,9 +9,13 @@ module Predictable
       has_many :group_qualifications, :class_name => "Predictable::Championship::GroupQualification", :foreign_key => "predictable_championship_match_id"
       has_one :stage_qualifications, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_match_id"
 
+      named_scope :upcomming, :conditions => ["score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
+      named_scope :latest, :conditions => ["score is not null and result is not null and play_date < ? ", Time.now + 2.hours], :order => "play_date DESC", :limit => 2
+
       attr_accessor :home_team_score, :away_team_score, :state
       attr_accessor :rank
       attr_accessor :winner
+      attr_accessor :objectives_meet
 
       def after_initialize
         @score ||= "0-0"
@@ -49,6 +53,28 @@ module Predictable
         self.away_team
       end
 
+      def settle_match(score)
+        self.update_attributes(:score => score, :result => result_from(score))
+        self.save!
+      end
+
+      def resolve_objectives_for(prediction, objectives)
+        predicted_score = prediction.predicted_value
+        return {:objectives_meet => objectives, :objectives_missed => []} if self.score.eql?(predicted_score)
+        result = {:objectives_meet => [], :objectives_missed => []}
+
+        objectives.each do |objective|
+          
+          if ("score".eql?(objective.predictable_field))
+            result[:objectives_missed] << objective
+          else
+            outcome = is_same_result?(String.new(predicted_score)) ? :objectives_meet : :objectives_missed
+            result[outcome] << objective
+          end
+        end
+        result
+      end
+
       state_machine :initial => :unsettled do
 
         event :settle do
@@ -63,6 +89,19 @@ module Predictable
           transition :tied => :solved
         end
 
+      end
+
+    private
+
+      RESULT_BY_COMPARE_RESULT = {0 => "x", 1 => "1", -1 => "2"}
+
+      def result_from(score)
+        team_scores = score.split('-')
+        RESULT_BY_COMPARE_RESULT[team_scores[0] <=> team_scores[1]]
+      end
+      
+      def is_same_result?(predicted_score)
+        self.result.eql?(result_from(predicted_score))
       end
     end
   end
