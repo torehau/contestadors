@@ -10,7 +10,7 @@ module Predictable
       has_one :stage_qualifications, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_match_id"
 
       named_scope :upcomming, :conditions => ["score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
-      named_scope :latest, :conditions => ["score is not null and result is not null and play_date < ? ", Time.now + 2.hours], :order => "play_date DESC", :limit => 2
+      named_scope :latest, :conditions => ["score is not null and result is not null"], :order => "play_date DESC", :limit => 2
 
       attr_accessor :home_team_score, :away_team_score, :state
       attr_accessor :rank
