@@ -62,6 +62,14 @@ class PredictionSummary < ActiveRecord::Base
     send(('predict_' + description.gsub(/ /, '_').downcase).to_sym)
   end
 
+  def update_score_and_map_values(points_to_add, points_to_reduce_from_map)
+    previous_score, previous_map = self.total_score, self.map
+    updated_score = self.total_score + points_to_add
+    updated_map = self.map - points_to_reduce_from_map
+    self.update_attributes(:previous_score => previous_score, :previous_map => previous_map, :total_score => updated_score, :map => updated_map)
+    self.save!
+  end
+
 private
 
   # for deleting any predictions invalidated by a state transiction
