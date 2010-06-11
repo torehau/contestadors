@@ -10,7 +10,7 @@
         <%= render :partial => p_pref('group_table_element'), :collection => @aggregate.root.table_positions, :locals => {:group => @aggregate.root} -%>
     </div>
   </div>
-  <% if @aggregate.is_rearrangable? -%>
+  <% if @aggregate.is_rearrangable? and @before_contest_participation_ends -%>
     <div class="group_table_rearrangable">
       Teams with the same score can be rearranged using the arrows to the right.
     </div>
