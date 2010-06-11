@@ -7,12 +7,13 @@ class ScoreTablesController < ApplicationController
 
 
   def show
+    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
     @positions_grid = initialize_grid(ScoreTablePosition,
-      :include => [:user, :prediction_summary],
-      :conditions => {:contest_instance_id => @contest_instance.id},
+      :include => [:user, :prediction_summary, :participation],
+      :conditions => {:contest_instance_id => @contest_instance.id, :participations => {:active => true}},
       :order => (before_contest_participation_ends ? 'prediction_summaries.map' : 'position'),
       :order_direction => (before_contest_participation_ends ? 'desc' : 'asc'),
-      :per_page => 10
+      :per_page => 25
     )
 
     if before_contest_participation_ends
