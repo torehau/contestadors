@@ -1,0 +1,17 @@
+<h3 id="match"><%= match.play_date.to_s(:short) %> <span class="black"><%= match.home_team.name %> - <%= match.away_team.name %></span> <%= match.score if match.score %></h3>
+<h4 id="description">Predictions by contest participants:</h4>
+<div class="participants_predictions">
+  <% predictions = @predictions_by_predictable[match];predictable_item_processed = predictions.values.first.predictable_item.processed? -%>
+  <% predictions.keys.sort_by {|x| x.downcase}.each do |name| -%>
+    <% prediction = predictions[name] -%>
+    <div class="participant_prediction">
+      <div class="<%= objectives_meet_div_class(prediction, predictable_item_processed)  %>">
+        <div class="participant_name"><%= name %></div>
+        <div class="participant_predicted_value">
+          <%= prediction.predicted_value %>
+        </div>
+      </div>
+    </div>
+  <% end -%>
+</div>
+<hr/><br/>

@@ -1,0 +1,7 @@
+<div id="picture-background-wallpaper">
+  <div id="transbox_outer_frame">
+    <% @predictions_by_predictable.keys.sort.reverse.each do |match| -%>
+      <%= render "participants_match_predictions", :match => match %>
+    <% end -%>
+  </div>
+</div>
