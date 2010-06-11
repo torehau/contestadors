@@ -4,7 +4,7 @@ module Predictable
     class RepositoryFactory
 
       def self.create(aggregate_root_type=nil, contest=nil, user=nil)
-        return Repository.new unless aggregate_root_type
+        return Repository.new(nil, user) unless aggregate_root_type
         repository = nil
 
         if aggregate_root_type.to_sym.eql?(:group)
