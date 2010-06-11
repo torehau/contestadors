@@ -2,11 +2,12 @@ class PredictionsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :require_contest
   before_filter :before_contest_participation_ends, :only => [:new, :create, :update]
+  before_filter :after_contest_participation_ends, :only => :show
   before_filter :require_user, :unless => :preview_available
   before_filter :prediction_state_available, :if => :current_user
 
   def index
-    if before_contest_participation_ends
+    if @before_contest_participation_ends
       redirect_to :action => "new"
     end
   end
@@ -33,12 +34,20 @@ class PredictionsController < ApplicationController
     render :action => :new
   end
 
+  def show
+    @result = @repository.get(@aggregate_root_id)
+    @aggregate = @result.current
+    set_wizard_and_progress_for_current_user
+#    render
+  end
+
 protected
 
   def set_context_from_request_params
     @contest = Configuration::Contest.from_permalink_or_first_available(params[:contest])
     @aggregate_root_type = params[:aggregate_root_type]
     @aggregate_root_id = params[:aggregate_root_id]
+    @before_contest_participation_ends = before_contest_participation_ends
     @requested_prediction_state = @contest.prediction_state_by_aggregate_root(@aggregate_root_type, @aggregate_root_id)
     @repository = @contest.repository(@aggregate_root_type, current_user)
     @predictions_view_path = "predictable/#{@contest.permalink}/predictions/"
@@ -49,7 +58,10 @@ protected
       @wizard = current_user.summary_of(@contest)
       @wizard.setup_wizard
       @progress = @wizard.prediction_progress
-      flash.now[:notice] = @wizard.start_hint if @progress == 0
+
+      if @before_contest_participation_ends
+        flash.now[:notice] = @wizard.start_hint if @progress == 0
+      end
     end
   end
 
