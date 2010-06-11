@@ -224,3 +224,25 @@
   float: right;
 }
 
+.score_table_diff img {
+    /*padding-top: 5px;*/
+    vertical-align: middle;
+}
+
+.score_table_diff {
+    /*vertical-align:text-top;*/
+}
+.participant_score_delta {
+    color: #41686a;
+    margin: 0px -20px 0px 20px;
+}
+.participant_position_movement {
+    float:right;
+    margin: 0px 50px 0px -50px;
+}
+.current_participant_position {
+    margin: 0px -20px 0px 20px;
+    float:left;
+    /*padding-left: 20px;*/
+}
+
