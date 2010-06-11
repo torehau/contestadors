@@ -2,7 +2,11 @@ class ContestInstance < ActiveRecord::Base
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => "configuration_contest_id"
   belongs_to :admin, :class_name => "User", :foreign_key => "admin_user_id"
   has_many :invitations
-  has_many :participations
+  has_many :participations do
+    def active
+      find(:all, :conditions => {:active => true})
+    end
+  end
   has_many :score_table_positions
   validates_presence_of :name, :admin_user_id, :configuration_contest_id
   validates_length_of :description, :maximum => 1000
@@ -59,12 +63,29 @@ class ContestInstance < ActiveRecord::Base
     summaries
   end
 
-#  def to_param
-#    permalink
-##    uuid
-##    permalink
-##    "#{permalink}-#{uuid}"
-#  end
+  def active_participants
+    self.participations.active.collect {|participation| participation.user }
+  end
+
+  def update_score_table_positions
+    previous = nil
+    position, delta = 1, 1
+    self.score_table_positions.sort.each do |current|
+      if previous
+        
+        if (current <=> previous) == 0
+          delta += 1
+        else
+          position += delta
+          delta = 1
+        end
+      end
+      current.previous_position = current.position
+      current.position = position
+      current.save!
+      previous = current
+    end
+  end
 
 private
 
