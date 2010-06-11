@@ -2,7 +2,7 @@ module Configuration
   class PredictableItem < ActiveRecord::Base
     set_table_name("configuration_predictable_items")
     belongs_to :set, :class_name => "Configuration::Set", :foreign_key => 'configuration_set_id'
-    has_many :predictions, :class_name => "Core::Prediction", :foreign_key => "configuration_predictable_item_id"
+    has_many :predictions, :class_name => "Prediction", :foreign_key => "configuration_predictable_item_id"
 
     delegate :description, :to => :set
 
@@ -20,6 +20,18 @@ module Configuration
 
     def predictable_table
       snakecase(set.predictable_type.pluralize)
+    end
+
+    state_machine :initial => :unsettled do
+
+      event :settle do
+        transition :unsettled => :settled
+      end
+
+      event :complete do
+        transition :settled => :processed
+      end
+
     end
 
     private
