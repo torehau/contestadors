@@ -64,6 +64,22 @@ class ContestsController < ApplicationController
     render :action => :edit
   end
 
+  def upcoming_events
+    if @contest_instance
+      @participants = @contest_instance.active_participants
+      @repository = @contest.repository(nil, nil)
+      @predictions_by_predictable = @repository.get_all_upcoming(@participants)
+    end
+  end
+
+  def latest_results
+    if @contest_instance
+      @participants = @contest_instance.active_participants
+      @repository = @contest.repository(nil, nil)
+      @predictions_by_predictable = @repository.get_all_latest(@participants)
+    end
+  end
+
 protected
 
   def set_context_from_request_params
