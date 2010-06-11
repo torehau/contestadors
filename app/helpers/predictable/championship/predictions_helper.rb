@@ -17,21 +17,37 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def knockout_stage_label_div_class(selected, predicted, saveable=true)
-    if selected == true and predicted == true
-      saveable ? "selected_knockout_stage_label" : "unsaveable_selected_knockout_stage_label"
-    elsif predicted == true
-      saveable ? "knockout_stage_label" : "uneditable_knockout_stage_label"
+    if @before_contest_participation_ends
+      if selected == true and predicted == true
+        saveable ? "selected_knockout_stage_label" : "unsaveable_selected_knockout_stage_label"
+      elsif predicted == true
+        saveable ? "knockout_stage_label" : "uneditable_knockout_stage_label"
+      else
+        saveable ? "undeceided_knockout_stage_label" : "uneditable_knockout_stage_label"
+      end
     else
-      saveable ? "undeceided_knockout_stage_label" : "uneditable_knockout_stage_label"
+      if predicted == true
+        "knockout_stage_label"
+      else
+        "undeceided_knockout_stage_label"
+      end
     end
   end
 
   def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
     div_class_prefix = ""
 
-    if invalidated == true
-      div_class_prefix += "invalidated_"
-    elsif selected == false
+    if @before_contest_participation_ends
+      if invalidated == true
+        div_class_prefix += "invalidated_"
+      elsif selected == false
+        if is_match_winner == true
+          div_class_prefix += "winning_"
+        else
+          div_class_prefix += "losing_"
+        end
+      end
+    else
       if is_match_winner == true
         div_class_prefix += "winning_"
       else
