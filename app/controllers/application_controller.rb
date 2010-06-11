@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free World Cup Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link
+  helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
   filter_parameter_logging :password, :password_confirmation
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
@@ -34,10 +34,12 @@ private
     end
 
     def before_contest_participation_ends
+      @contest ||= Configuration::Contest.find(:first)
       Time.now < @contest.participation_ends_at
     end
 
     def after_contest_participation_ends
+      @contest ||= Configuration::Contest.find(:first)
       Time.now > @contest.participation_ends_at
     end
 
@@ -98,20 +100,25 @@ private
       nil
     end
 
-  def prediction_menu_link
-    @contest ||= Configuration::Contest.find(:first)
-    contest_permalink = @contest.permalink
+  def prediction_menu_link(contest_permalink="championship",aggregate_root_type="group",aggregate_root_id="A")
 
     if before_contest_participation_ends
-#      wizard = current_user ? (@wizard ||= current_user.summary_of(@contest)) : nil
-#      wizard.setup_wizard(true)
-#      aggregate_root_type = wizard ? wizard.current_step.type : "group"
-#      aggregate_root_id = wizard ? wizard.current_step.id : "A"
-#      new_prediction_path(contest_permalink, aggregate_root_type, aggregate_root_id)
-      new_prediction_path(contest_permalink, "group", "A")
+      new_prediction_path(contest_permalink,aggregate_root_type,aggregate_root_id)
     else
-      # TODO change to something more appropriate, e.g., if have contests - score table for default contest
-      home_path("about")
+      user_predictions_path(contest_permalink,aggregate_root_type,aggregate_root_id)
+    end
+  end
+
+  def contest_instance_menu_link(contest_instance)
+    if before_contest_participation_ends
+      contest_participants_path(:contest => contest_instance.contest.permalink,
+        :role => contest_instance.role_for(current_user),
+        :contest_id => contest_instance.permalink,
+        :uuid => contest_instance.uuid)
+    else
+      contest_score_table_path(:contest => contest_instance.contest.permalink,
+        :role => contest_instance.role_for(current_user),
+        :contest_id => contest_instance.permalink, :uuid => contest_instance.uuid)
     end
   end
 
