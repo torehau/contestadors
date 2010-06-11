@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100604200656) do
+ActiveRecord::Schema.define(:version => 20100609235415) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20100604200656) do
     t.integer  "predictable_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "state",                :default => "unsettled"
   end
 
   create_table "configuration_prediction_states", :force => true do |t|
@@ -224,6 +225,8 @@ ActiveRecord::Schema.define(:version => 20100604200656) do
     t.string   "predicted_value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "objectives_meet",                   :default => 0
+    t.integer  "received_points",                   :default => 0
   end
 
   add_index "predictions", ["configuration_predictable_item_id"], :name => "index_predictions_on_configuration_predictable_item_id"
