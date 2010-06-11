@@ -1,0 +1,21 @@
+<h4>Group <%= group_name %></h4>
+<% unless @predictions[:groups][group_name][:matches].empty? -%>
+  <div class="predicted_matches">
+    <% @predictions[:groups][group_name][:matches].sort.each do |match| -%>
+      <div class="<%= objectives_meet_div_class_for(match) %>">
+        <div class="predicted_match">
+          <div class="predicted_match_time"><%= match.play_date.to_s(:short) %></div>
+          <div class="predicted_match_teams"><%= match.home_team.name %> - <%= match.away_team.name %></div>
+          <div class="predicted_match_score"><%= match.score %></div>
+        </div>
+      </div>
+    <% end -%>
+  </div>
+  <div class="predicted_table">
+    <% ("1".."4").each do |pos| -%>
+      <%= pos %> <%= @predictions[:groups][group_name][:table][pos] -%><br/>
+    <% end -%>
+  </div>
+<% else -%>
+  <p>Not predicted.</p>
+<% end -%>

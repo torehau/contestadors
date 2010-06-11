@@ -1,0 +1,8 @@
+<h4>Teams in <%= stage %></h4>
+<% unless @predictions[:stages][stage][:teams].empty? -%>
+  <% @predictions[:stages][stage][:teams].each do |team| -%>
+    <%= team.name %><br/>
+  <% end -%>
+<% else -%>
+  <p>Not predicted.</p>
+<% end -%>

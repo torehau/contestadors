@@ -1,0 +1,32 @@
+<div id="picture-background-wallpaper">
+  <div id="transbox_outer_frame">
+    <h3 id="summary">2010 FIFA World Cup <span class="participant"><%= "Predicted by " + (@participant ? @participant.name : "Unknown")  %></span></h3>
+    <br/>
+    <% [["A","B"], ["C","D"], ["E","F"], ["G","H"]].each do |two_groups| -%>
+      <div class="two_predicted_groups">
+        <% two_groups.each do |group_name| -%>
+          <div class="one_predicted_group">
+            <%= render "predicted_group", :group_name => group_name %>
+          </div>
+        <% end -%>
+      </div>
+      <hr/>
+    <% end -%>
+
+    <div class="all_predicted_stages">
+      <div class="one_predicted_stage">
+        <%= render "predicted_stage_teams", :stage => "Round of 16" %>
+      </div>
+      <div class="one_predicted_stage">
+        <%= render "predicted_stage_teams", :stage => "Quarter finals" %><br/><br/>
+        <%= render "predicted_stage_teams", :stage => "Semi finals" %>
+      </div>
+      <div class="one_predicted_stage">
+        <%= render "predicted_stage_teams", :stage => "Final" %><br/><br/><br/>
+        <%= render "predicted_match_winner", :title => "Third Place Play-off", :match => "Third Place" %><br/>
+        <%= render "predicted_match_winner", :title => "2010 FIFA World Cup", :match => "Final" %>
+      </div>
+    </div>
+    <hr/>
+  </div>
+</div>
