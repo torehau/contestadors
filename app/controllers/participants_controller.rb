@@ -70,6 +70,18 @@ class ParticipantsController < ApplicationController
     end
   end
 
+  def show
+    @participant = params[:pid] ? Invitation.user_by_token(params[:pid]) : @contest_instance.admin
+
+    if @participant
+      @repository = @contest.repository(nil, @participant)
+      @predictions = @repository.get_all
+    else
+      flash[:alert] = "Not possible to identify participant."
+      redirect_to contest_score_table_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)
+    end
+  end
+
 protected
 
   def set_context_from_request_params
