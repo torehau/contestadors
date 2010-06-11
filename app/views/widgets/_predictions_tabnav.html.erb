@@ -5,7 +5,7 @@
         add_tab do |t|
           t.named step.label
           t.titled step.label
-          t.links_to new_prediction_path(@contest.permalink, step.type, step.id)
+          t.links_to prediction_menu_link(@contest.permalink, step.type, step.id)
           t.highlights_on step.highlight_conditions
         end
       end
