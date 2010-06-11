@@ -20,6 +20,26 @@ module Predictable
         Predictable::Result.new(@aggregate)
       end
 
+      # returns a prediction summary for the given user, a nested hash map with the following structure:
+      # {:groups => {:a => {:matches => [Match1, Match2,..,Match6], :table => [Position1, ..., Position4]},
+      #             {:b => {:matches => [Match1, Match2,..,Match6], :table => [Position1, ..., Position4]}},
+      #             ...
+      #  :stage => {:round-of-16 => {:teams => [Team1, Team2, .., Team8]}},...,
+      #            {:final => {:teams => [Team1, Team2], :winner => Team2}},
+      #            {:third-place => {:teams => [Team1, Team2], :winner => Team2}}
+      #  }
+      def get_all
+        PredictionCollector.new(@user).get_all
+      end
+
+      def get_all_upcoming(participants)
+        PredictionCollector.new.get_all_upcoming(participants)
+      end
+
+      def get_all_latest(participants)
+        PredictionCollector.new.get_all_latest(participants)
+      end
+
       # saves the predictions in the provided input hash if the user is signed in
       # If not signed in, the aggregate root instance variable will only be updated
       # with the predicted values, and these will not be saved to the db
