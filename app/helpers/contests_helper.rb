@@ -18,7 +18,7 @@ module ContestsHelper
   def contest_tabnav_items
     items = []
     
-    if after_contest_participation_ends
+    if false#after_contest_participation_ends
       items << {:name => "Overview",
         :tip => "Contest overview and updates",
         :path => contest_path(:contest => @contest.permalink, :role => @role, :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
@@ -35,7 +35,7 @@ module ContestsHelper
   
     if current_user.is_admin_of?(@contest_instance)
 
-      if before_contest_participation_ends
+      if @before_contest_participation_ends
         items << {:name => "Invite",
                   :tip => "Invite people to join the contest",
                   :path => new_contest_invitation_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
@@ -47,7 +47,7 @@ module ContestsHelper
                 :path => contest_invitations_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
                 :highlight_conditions => [{:controller => "invitations", :action => "index"}]}
 
-      if before_contest_participation_ends
+      if @before_contest_participation_ends
         items << {:name => "Edit Contest",
                   :tip => "Rename contest or update invitation message",
                   :path => edit_contest_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
@@ -55,6 +55,31 @@ module ContestsHelper
                                             {:controller => "contests", :action => "update"}]}
       end
     end
+    unless @before_contest_participation_ends# and @participant_name
+      items << {:name => "Latest Results",
+        :tip => "Summery of the predictions placed by the contest participants for the latest settled matches ",
+        :path => latest_results_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+        :highlight_conditions => [{:controller => "contests", :action => "latest_results"}]}
+
+      items << {:name => "Upcoming Matches",
+        :tip => "Summery of the predictions placed by the contest participants for the upcoming matches ",
+        :path => upcoming_events_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+        :highlight_conditions => [{:controller => "contests", :action => "upcoming_events"}]}
+
+      items << {:name => "Prediction Summary",
+        :tip => "Summery of the predictions placed by a participant ",
+        :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
+        :highlight_conditions => [{:controller => "participants", :action => "show"}]}
+    end
     items
+  end
+
+  def objectives_meet_div_class(prediction, predictable_item_processed)
+    div_class = "objectives_meet"
+    
+    if predictable_item_processed
+      div_class += "_" + prediction.objectives_meet.to_s
+    end
+    div_class
   end
 end
