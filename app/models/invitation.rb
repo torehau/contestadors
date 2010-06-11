@@ -28,6 +28,20 @@ class Invitation < ActiveRecord::Base
     Invitation.new(:name => DUMMY_NAME, :email => DUMMY_EMAIL)
   end
 
+  def self.user_by_token(token)
+    invitation = Invitation.find_by_token(token)
+
+    if invitation
+
+      if invitation.participation
+        return invitation.participation.user
+      else
+        return invitation.existing_user
+      end
+    end
+    nil
+  end
+
   def invited_on
     created_at
   end
