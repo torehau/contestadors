@@ -104,7 +104,7 @@ em {
   width:910px;
   min-height:75px;
   /*clear: both;*/
-  display: box;
+  display: block;
   padding: 0px 20px 10px 20px;
   -moz-border-radius-topleft: 7px;
   -moz-border-radius-topright: 7px;
@@ -439,6 +439,14 @@ padding-left: 40px;
   width:20px;
   text-align: right;
 }
+.match_score {
+  width:65px;
+  text-align: center;
+  float: left;
+  font-size:110%;
+/*  font-weight: bold;
+  color: #41686a;*/
+}
 
 .space-line {
     clear:left;    
@@ -490,7 +498,7 @@ padding-left: 40px;
     width:435px;
     opacity: .5;
     position: absolute;
-    margin: 0px inherit;
+    margin: 0px;
     padding-top: 60px;
     height: 35px;
     max-height: 35px;
@@ -1555,3 +1563,139 @@ form.contest_create {
   padding: 3px 10px 3px 10px;
 }
 
+#picture-background-wallpaper {
+   overflow: hidden;
+   width: 910px;
+   min-height: 550px;
+   background: url(/images/cheeringcrowd_original.jpg) repeat;
+   margin: 0px;
+   padding: 0px;
+}
+
+#transbox_outer_frame {
+  width: 910px;
+   min-height: 550px;
+  padding: 10px 30px 10px 30px;
+  background-color: #ffffff;
+  filter:alpha(opacity=85);
+  opacity:0.85;
+  -moz-opacity:0.85;
+}
+
+#prediction_summary_container {
+   padding: 10px 30px 10px 30px;
+   background: #fff;/*#9cbcda;*/
+   border: 1px #88c6cf solid;
+/*   height: inherit;*/
+   display: block;
+}
+
+#prediction_summary_container h3 {
+   /*text-align: center;*/
+}
+
+.two_predicted_groups {
+   width: 850px;
+   margin-bottom: 20px;
+   display: block;
+}
+
+.one_predicted_group {
+  width: 420px;
+  margin: 0px 5px 30px 0px;
+  float: left;
+}
+.predicted_matches {
+  width: 290px;
+  margin-right: 10px;
+  float: left;
+}
+.predicted_match {
+  margin: 0px 0px 3px 0px;
+  display: block;
+}
+.predicted_match_time {
+  width: 90px;
+  float: left;
+}
+.predicted_match_teams {
+  width: 170px;
+  float: left;
+  /*font-weight:bold;*/
+}
+.predicted_match_score {
+  width: 30px;
+  float: left;
+}
+.predicted_table {
+  width: 110px;
+  /*margin-right: 10px;*/
+  float: right;
+  /*font-weight:bold;*/
+  font-size: 110%
+}
+
+.all_predicted_stages {
+   width: 850px;
+   margin-bottom: 20px;
+   /*display: block;*/
+   clear: both;
+}
+.one_predicted_stage {
+  width: 280px;
+  margin: 0px 0px 30px 0px;
+  float: left;
+  display: block;
+  font-size: 110%
+  /*height: 420px;*/
+  /*clear: both;*/
+}
+
+#transbox_outer_frame h3#match span.black,
+#transbox_outer_frame h3#summary span.participant {
+    margin: 0px 10px 0px 20px;
+    color: #333;}
+
+#transbox_outer_frame h4#description {
+    font-weight: bold;
+    color: #41686a;
+}
+
+.participants_predictions {
+   width: 850px;
+   margin-bottom: 30px;
+   display: block;
+   float: left;
+   /*clear: both;*/
+}
+
+.participant_prediction {
+  width: 240px;
+  margin: 0px 40px 7px 0px;
+  float: left;
+  display: block;
+  font-size: 110%
+}
+
+.objectives_meet {
+}
+.objectives_meet_0 {
+    color: red;
+}
+.objectives_meet_1 {
+    color:green;
+}
+.objectives_meet_2 {
+    color:green;
+    font-weight: bold;
+}
+
+.participant_name {
+    width: 210px;
+    float: left;
+}
+
+.participant_predicted_value {
+    width: 30px;
+    float: left;
+}
