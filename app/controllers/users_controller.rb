@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    redicrect_to :action => "new"
+    redirect_to :action => "new"
 #    @user = User.new(params[:user])
 #
 #    if verify_recaptcha
