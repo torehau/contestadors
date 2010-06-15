@@ -22,6 +22,22 @@ module Configuration
       snakecase(set.predictable_type.pluralize)
     end
 
+    def settle_predictions_for(predictable)
+      self.settle!
+      objectives = self.set.objectives
+
+      self.predictions.each do |prediction|
+        compare_result = predictable.resolve_objectives_for(prediction, objectives)
+        score, map_reduction, objectives_meet = 0, 0, compare_result[:objectives_meet].size
+        compare_result[:objectives_meet].each {|objective| score += objective.possible_points}
+        compare_result[:objectives_missed].each {|objective| map_reduction += objective.possible_points}
+        prediction.update_attributes(:received_points => score, :objectives_meet => objectives_meet)
+        prediction.save!
+        yield(prediction.user, score, map_reduction)
+      end
+      self.complete!
+    end
+
     state_machine :initial => :unsettled do
 
       event :settle do
