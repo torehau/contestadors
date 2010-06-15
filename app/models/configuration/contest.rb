@@ -49,6 +49,10 @@ module Configuration
       repository.delete(items, user)
     end
 
+    def update_all_score_tables
+      self.contest_instances.each {|instance| instance.update_score_table_positions}
+    end
+
   private
 
     # TODO the following methods handles a separate concern and should be moved to a dedicated module
