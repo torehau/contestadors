@@ -75,5 +75,48 @@ namespace :predictable do
         puts "prediction summary updated for " + user.name
       end
     end
+
+    desc "Correcting predictions placed incorrectly using IE"
+    task(:correct_predictions => :environment) do
+      user = User.find(125)
+      mexico = Predictable::Championship::Team.find_by_name("Mexico")
+      england = Predictable::Championship::Team.find_by_name("England")
+      argentina = Predictable::Championship::Team.find_by_name("Argentina")
+      slovakia = Predictable::Championship::Team.find_by_name("Slovakia")
+      spain = Predictable::Championship::Team.find_by_name("Spain")
+
+      set = Configuration::Set.find_by_description("Teams through to Semi finals")
+      user.predictions_for(set).each do |prediction|
+
+        if prediction.predicted_value.eql?(mexico.id.to_s)
+          prediction.predicted_value = england.id.to_s
+          prediction.save!
+        elsif prediction.predicted_value.eql?(slovakia.id.to_s)
+          prediction.predicted_value = spain.id.to_s
+          prediction.save!
+        end
+      end
+
+      set = Configuration::Set.find_by_description("Teams through to Final")
+      user.predictions_for(set).each do |prediction|
+
+        if prediction.predicted_value.eql?(mexico.id.to_s)
+          prediction.predicted_value = england.id.to_s
+          prediction.save!
+        end
+      end
+
+      set = Configuration::Set.find_by_description("Third Place Team")
+      user.predictions_for(set).each do |prediction|
+        prediction.predicted_value = spain.id.to_s
+        prediction.save!
+      end
+
+      set = Configuration::Set.find_by_description("Winner Team")
+      user.predictions_for(set).each do |prediction|
+        prediction.predicted_value = argentina.id.to_s
+        prediction.save!
+      end
+    end
   end
 end
