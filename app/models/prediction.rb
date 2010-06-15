@@ -35,14 +35,4 @@ class Prediction < ActiveRecord::Base
     prediction.predicted_value = value
     prediction.save!
   end
-
-  def set_score_for(predictable, objectives)
-    compare_result = predictable.resolve_objectives_for(self, objectives)
-    score, map_reduction, objectives_meet = 0, 0, compare_result[:objectives_meet].size
-    compare_result[:objectives_meet].each {|objective| score += objective.possible_points}
-    compare_result[:objectives_missed].each {|objective| map_reduction += objective.possible_points}
-    self.update_attributes(:received_points => score, :objectives_meet => objectives_meet)
-    self.save!
-    self.user.prediction_summaries.first.update_score_and_map_values(score, map_reduction)
-  end
 end
