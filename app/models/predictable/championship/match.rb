@@ -1,7 +1,7 @@
 module Predictable
   module Championship
     class Match < ActiveRecord::Base
-      include Comparable
+      include Comparable, Predictable::Handler
       set_table_name("predictable_championship_matches")
       belongs_to :stage, :class_name => "Predictable::Championship::Stage", :foreign_key => "predictable_championship_stage_id"
       belongs_to :home_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'home_team_id'
@@ -15,7 +15,6 @@ module Predictable
       attr_accessor :home_team_score, :away_team_score, :state
       attr_accessor :rank
       attr_accessor :winner
-      attr_accessor :objectives_meet
 
       def after_initialize
         @score ||= "0-0"
@@ -97,7 +96,7 @@ module Predictable
 
       def result_from(score)
         team_scores = score.split('-')
-        RESULT_BY_COMPARE_RESULT[team_scores[0] <=> team_scores[1]]
+        RESULT_BY_COMPARE_RESULT[team_scores[0].to_i <=> team_scores[1].to_i]
       end
       
       def is_same_result?(predicted_score)
