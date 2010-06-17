@@ -11,6 +11,18 @@ module Predictable
         return nil unless stage_qualification
         stage_qualification.match
       end
+
+      def settle(team)
+        self.team = team
+        
+        if self.is_home_team?
+          self.match.home_team = team
+        else
+          self.match.away_team = team
+        end
+        self.match.save!
+        self.save!
+      end
     end
   end
 end
