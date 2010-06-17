@@ -1,7 +1,7 @@
 module Predictable
   module Championship
     class GroupTablePosition < ActiveRecord::Base
-      include Comparable
+      include Comparable, Predictable::Handler
       set_table_name("predictable_championship_group_table_positions")
       belongs_to :group, :class_name => "Predictable::Championship::Group", :foreign_key => "predictable_championship_group_id"
       belongs_to :team, :class_name => "Predictable::Championship::Team", :foreign_key => 'predictable_championship_team_id'
@@ -65,6 +65,24 @@ module Predictable
       # adds the rank by adding the goals scored and subtract the goals conceeded
       def update_rank(goals_for, goals_against)
         self.rank += (goals_for - goals_against)
+      end
+
+      # TODO should be moved to Handler module
+      def settle(position)
+        self.pos = position.to_i
+                
+        if self.pos == 1
+          self.group.winner_stage_team.settle(self.team)
+        elsif self.pos == 2
+          self.group.runner_up_stage_team.settle(self.team)
+        end
+        self.save!
+      end
+
+      def resolve_objectives_for(prediction, objectives)
+        predicted_pos = prediction.predicted_value
+        return {:objectives_meet => objectives, :objectives_missed => []} if self.pos.to_s.eql?(predicted_pos)
+        {:objectives_meet => [], :objectives_missed => objectives}
       end
     end
   end
