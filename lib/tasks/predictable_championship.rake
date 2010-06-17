@@ -10,21 +10,35 @@ namespace :predictable do
         @contest = Configuration::Contest.find_by_name("FIFA World Cup 2010")
         @score_and_map_reduced_by_user_id = {}
         @user_by_id = {}
-        @matches_by_id = {}
+        @predictable_types = {:group_matches => "Group Matches", :group_positions => "Group Tables", :stage_teams => "Stage Teams"}
+        @predictables_by_id = {}
+        @predictable_types.keys.each {|predictable_type| @predictables_by_id[predictable_type] = {}}
+        @unsettled_items_by_predictable_id = {}
         
         puts "sets match scores..."        
         Rake::Task["predictable:championship:set_match_scores"].invoke
-        puts "found number of values: " + @matches_by_id.values.size.to_s
+        puts "found number of matches: " + @predictables_by_id[:group_matches].values.size.to_s
 
-        puts "fetches the corresponding unsettled predictable items..."
-        @unsettled_items_by_predictable_id = Predictable::Championship::PredictableItemsResolver.new(@matches_by_id.values).find_items
+        puts "sets group table positions..."
+        Rake::Task["predictable:championship:set_group_positions"].invoke
+        puts "found number of group positions: " + @predictables_by_id[:group_positions].values.size.to_s
+
+        puts "sets stage teams..."
+        Rake::Task["predictable:championship:set_stage_teams"].invoke
+        puts "found number of stage teams: " + @predictables_by_id[:stage_teams].values.size.to_s
+        
+        @predictable_types.each do |predictable_type, category_descr|
+          puts "fetches the corresponding unsettled " + predictable_type.to_s.gsub('_', ' ') + " predictable items..."
+          @unsettled_items_by_predictable_id[predictable_type] = Predictable::Championship::PredictableItemsResolver.new(@predictables_by_id[predictable_type].values).find_items(category_descr)
+          puts "found number of unsettled " + predictable_type.to_s.gsub('_', ' ') + " predictable items: " + @unsettled_items_by_predictable_id[predictable_type].size.to_s
+        end
 
         puts "sets prediction score points and objectives meet..."
         Rake::Task["predictable:championship:set_prediction_points"].invoke
 
         puts "updates prediction summaries ..."
         Rake::Task["predictable:championship:update_prediction_summaries"].invoke
-        
+
         puts "update all contest score tables ..."
         @contest.update_all_score_tables
 
@@ -45,22 +59,64 @@ namespace :predictable do
         match = Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => home_team.id, :away_team_id => away_team.id})
         match.settle_match(@row.field(:score))
         puts "... score and result set for match " + match.home_team.name + " - " + match.away_team.name + " " + match.score + " (" + match.result + ")"
-        @matches_by_id[match.id] = match
+        @predictables_by_id[:group_matches][match.id] = match
       end
     end
 
-    desc "Calculates points for all predictions of unsettled predictable items."
+    desc "Sets the score and result for matches listed in the CSV file."
+    task(:set_group_positions => :environment) do
+      file_name = File.join(File.dirname(__FILE__), '/predictable_championship_group_positions.csv')
+      parser = FasterCSV.new(File.open(file_name, 'r'),
+                             :headers => true, :header_converters => :symbol,
+                             :col_sep => ',')
+
+      parser.each do |@row|        
+        group = Predictable::Championship::Group.find_by_name(@row.field(:group))
+        team = Predictable::Championship::Team.find_by_name(@row.field(:team))
+        group_table_position = Predictable::Championship::GroupTablePosition.find(:first, :conditions => {:predictable_championship_group_id => group.id, :predictable_championship_team_id => team.id})
+        group_table_position.settle(@row.field(:pos))
+        
+        puts group_table_position.pos.to_s + ". position group " + group_table_position.group.name + ": " + group_table_position.team.name
+        @predictables_by_id[:group_positions][group_table_position.id] = group_table_position
+      end
+    end
+
+    desc "Sets the score and result for matches listed in the CSV file."
+    task(:set_stage_teams => :environment) do
+      file_name = File.join(File.dirname(__FILE__), '/predictable_championship_stage_teams.csv')
+      parser = FasterCSV.new(File.open(file_name, 'r'),
+                             :headers => true, :header_converters => :symbol,
+                             :col_sep => ',')
+
+      parser.each do |@row|
+        stage = Predictable::Championship::Stage.find_by_description(@row.field(:stage))
+        team = Predictable::Championship::Team.find_by_name(@row.field(:team))
+        stage_team = Predictable::Championship::StageTeam.find(:first, :conditions => {:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id})
+
+        puts "Stage: " + stage_team.stage.description + ", Team: " + stage_team.team.name
+        @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+      end
+    end
+
+    desc "Calculates points for all predictions of unsettled group match predictable items."
     task(:set_prediction_points => :environment) do
-      @unsettled_items_by_predictable_id.values.each do |item|
-        puts "... settles one item for set " + item.description
-        item.settle_predictions_for(@matches_by_id[item.predictable_id]) do |user, score, map_reduction|
-          unless @user_by_id.has_key?(user.id)
-            @user_by_id[user.id] = user
-            @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
-          else
-            @score_and_map_reduced_by_user_id[user.id][:score] += score
-            @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
+      @predictable_types.each do |predictable_type, category_descr|
+        unless "Stage Teams".eql?(category_descr)
+          @unsettled_items_by_predictable_id[predictable_type].values.each do |item|
+            puts "... settles one item for set " + item.description
+            item.settle_predictions_for(@predictables_by_id[predictable_type][item.predictable_id]) do |user, score, map_reduction|
+              unless @user_by_id.has_key?(user.id)
+                @user_by_id[user.id] = user
+                @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
+              else
+                @score_and_map_reduced_by_user_id[user.id][:score] += score
+                @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
+              end
+            end
           end
+        else
+          items = @unsettled_items_by_predictable_id[predictable_type].values
+          Configuration::PredictableItem.settle_predictions_for(items)
         end
       end
     end
@@ -73,6 +129,27 @@ namespace :predictable do
         summary = user.summary_of(@contest)
         summary.update_score_and_map_values(score, map_reduction)
         puts "prediction summary updated for " + user.name
+      end
+    end
+
+    desc "Correcting user with predictions on one account and predictions on another account"
+    task(:merge_users => :environment) do
+      u1 = User.find(141)
+      puts "User 1 " + u1.name
+      u2 = User.find(189)
+      puts "User 1 " + u2.name
+      contest = Configuration::Contest.find(:first)
+
+      ActiveRecord::Base.transaction do
+        u1.participations.each do |participation|
+          participation.user = u2
+          participation.save!
+        end
+        u1.score_table_positions.each do |stp|
+          stp.user = u2
+          stp.prediction_summary = u2.summary_of(contest)
+          stp.save!
+        end
       end
     end
 
