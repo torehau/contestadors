@@ -38,6 +38,18 @@ module Configuration
       self.complete!
     end
 
+    def self.settle_predictions_for(items)
+      # TODO collect objectives for items, and predictable values
+
+      User.find(:all).each do |user|
+        predictions = user.predictions_for_subset(items)
+
+        unless predictions.empty?
+          # TODO compare predicted_values with acutal predictable values for the items and assign objectives..
+        end
+      end
+    end
+
     state_machine :initial => :unsettled do
 
       event :settle do
