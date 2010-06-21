@@ -2,7 +2,7 @@
 <% unless @predictions[:groups][group_name][:matches].empty? -%>
   <div class="predicted_matches">
     <% @predictions[:groups][group_name][:matches].sort.each do |match| -%>
-      <div class="<%= objectives_meet_div_class_for(match) %>">
+      <div class="<%= objectives_meet_div_class_for(match.objectives_meet) %>">
         <div class="predicted_match">
           <div class="predicted_match_time"><%= match.play_date.to_s(:short) %></div>
           <div class="predicted_match_teams"><%= match.home_team.name %> - <%= match.away_team.name %></div>
@@ -13,7 +13,10 @@
   </div>
   <div class="predicted_table">
     <% ("1".."4").each do |pos| -%>
-      <%= pos %> <%= @predictions[:groups][group_name][:table][pos] -%><br/>
+      <% group_table_position = @predictions[:groups][group_name][:table][pos] -%>
+      <div class="<%= objectives_meet_div_class_for(group_table_position.objectives_meet) %>">
+        <%= pos %> <%= group_table_position.team.name -%><br/>
+      </div>
     <% end -%>
   </div>
 <% else -%>

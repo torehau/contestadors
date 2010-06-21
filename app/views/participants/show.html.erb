@@ -15,14 +15,14 @@
 
     <div class="all_predicted_stages">
       <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage => "Round of 16" %>
+        <%= render "predicted_stage_teams", :stage_name => "Round of 16" %>
       </div>
       <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage => "Quarter finals" %><br/><br/>
-        <%= render "predicted_stage_teams", :stage => "Semi finals" %>
+        <%= render "predicted_stage_teams", :stage_name => "Quarter finals" %><br/><br/>
+        <%= render "predicted_stage_teams", :stage_name => "Semi finals" %>
       </div>
       <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage => "Final" %><br/><br/><br/>
+        <%= render "predicted_stage_teams", :stage_name => "Final" %><br/><br/><br/>
         <%= render "predicted_match_winner", :title => "Third Place Play-off", :match => "Third Place" %><br/>
         <%= render "predicted_match_winner", :title => "2010 FIFA World Cup", :match => "Final" %>
       </div>
