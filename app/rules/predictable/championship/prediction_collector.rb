@@ -107,7 +107,7 @@ module Predictable
             end
 
             table_set = Configuration::Set.find_by_description("Group " + group_name + " Table")
-            rule :set_predicted_group_matches, {:priority => 3},
+            rule :set_predicted_group_tables, {:priority => 3},
                [Configuration::PredictableItem, :table_position_item,
                  m.configuration_set_id == table_set.id,
                 {m.predictable_id => :table_position_id, m.id => :table_position_item_id}],
@@ -116,17 +116,19 @@ module Predictable
                [Predictable::Championship::GroupTablePosition, :table_position,
                  m.id == b(:table_position_id)] do |v|
 
-                 @summary[:groups][group_name][:table][v[:prediction].predicted_value] = v[:table_position].team.name
+                 v[:table_position].objectives_meet = v[:prediction].objectives_meet if v[:table_position_item].processed?
+                 @summary[:groups][group_name][:table][v[:prediction].predicted_value] = v[:table_position]
                  retract v[:table_position]
                  retract v[:prediction]
                  retract v[:table_position_item]
             end
           end
 
-          ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage|
-            stage_set = Configuration::Set.find_by_description("Teams through to " + stage)
+          ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage_descr|
+            stage_set = Configuration::Set.find_by_description("Teams through to " + stage_descr)
+            stage = Predictable::Championship::Stage.find_by_description(stage_descr)
             
-            rule :set_predicted_group_matches, {:priority => 2},
+            rule :set_predicted_stage_teams, {:priority => 2},
                [Configuration::PredictableItem, :stage_team_item,
                  m.configuration_set_id == stage_set.id,
                 {m.id => :stage_team_item_id}],
@@ -136,14 +138,15 @@ module Predictable
                [Predictable::Championship::Team, :team,
                  m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
-                 @summary[:stages][stage][:teams] << v[:team]
+#                 if v[:stage_team_item].processed?
+#                   v[:team].objectives_meet = v[:team].is_through_to_stage?(stage) ? 1 : 0
+#                 end
+                 v[:team].objectives_meet_for[stage.id] = v[:prediction].objectives_meet
+#                 v[:team].objectives_meet = v[:prediction].objectives_meet
+                 @summary[:stages][stage_descr][:teams] << v[:team]
                  retract v[:stage_team_item]
                  retract v[:prediction]
                  modify v[:team]
-
-#                 if "Final".eql?(stage)
-#                   ["Final", "Third Place"].each {|match_descr| assert Predictable::Championship::Match.find_by_description(match_descr)}
-#                 end
             end
           end
 
@@ -162,8 +165,8 @@ module Predictable
                  {m.predicted_value => :team_id}],
                [Predictable::Championship::Team, :team, m.id(:team_id, &c{|id,tid| id.to_s.eql?(tid)})] do |v|
 
-#              puts "**** Winner of " + match_descr + ": " + v[:team].name
-#              v[:match].winner = v[:team]
+
+                 v[:team].objectives_meet = v[:winner_prediction].objectives_meet
                  @summary[:stages][match_descr][:winner_team] = v[:team]
                  retract v[:match]
                  retract v[:stage_team_item]
