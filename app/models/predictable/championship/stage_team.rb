@@ -12,6 +12,7 @@ module Predictable
         stage_qualification.match
       end
 
+      # TODO move declearation to Handler module
       def settle(team)
         self.team = team
         
@@ -22,6 +23,22 @@ module Predictable
         end
         self.match.save!
         self.save!
+      end
+
+      # TODO move declearation to Handler module, or preferably the item should
+      # fetch this dynamically using the Configuration::Objective (predictable_field)
+      def predictable_field_value
+        return nil unless self.team
+        self.team.id.to_s
+      end
+
+      # TODO move default implementation (return empty array) to Handler module
+      # OBS OBS TODO DB fix must be done for stage_qualifications table
+      def dependant_predictables(dependants=[])
+        return dependants if self.stage.description.eql?("Final")
+        next_stage_team = self.match.stage_qualifications.for_winner.stage_team
+        dependants << next_stage_team
+        next_stage_team.dependant_predictables(dependants)
       end
     end
   end
