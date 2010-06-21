@@ -72,7 +72,9 @@ namespace :predictable do
 
       parser.each do |@row|        
         group = Predictable::Championship::Group.find_by_name(@row.field(:group))
+        puts "Found group: " + group.name
         team = Predictable::Championship::Team.find_by_name(@row.field(:team))
+        puts "Found team: " + team.name
         group_table_position = Predictable::Championship::GroupTablePosition.find(:first, :conditions => {:predictable_championship_group_id => group.id, :predictable_championship_team_id => team.id})
         group_table_position.settle(@row.field(:pos))
         
@@ -91,10 +93,13 @@ namespace :predictable do
       parser.each do |@row|
         stage = Predictable::Championship::Stage.find_by_description(@row.field(:stage))
         team = Predictable::Championship::Team.find_by_name(@row.field(:team))
-        stage_team = Predictable::Championship::StageTeam.find(:first, :conditions => {:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id})
+        
+        if stage and team
+          stage_team = Predictable::Championship::StageTeam.find(:first, :conditions => {:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id})
 
-        puts "Stage: " + stage_team.stage.description + ", Team: " + stage_team.team.name
-        @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+          puts "Stage: " + stage_team.stage.description + ", Team: " + stage_team.team.name
+          @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+        end
       end
     end
 
@@ -116,7 +121,27 @@ namespace :predictable do
           end
         else
           items = @unsettled_items_by_predictable_id[predictable_type].values
-          Configuration::PredictableItem.settle_predictions_for(items)
+          third_place_set = Configuration::Set.find_by_description("Third Place Team")
+          third_place_item = third_place_set.predictable_items.first
+          winner_set = Configuration::Set.find_by_description("Winner Team")
+          winner_item = winner_set.predictable_items.first
+          dependant_items_by_item_id = {}
+          items.each do |item|
+            dependant_items = Predictable::Championship::PredictableItemsResolver.new(item.predictable.dependant_predictables).find_items(category_descr)
+            dependant_items_by_item_id[item.id] = dependant_items.values
+            dependant_items_by_item_id[item.id] << third_place_item
+            dependant_items_by_item_id[item.id] << winner_item
+          end
+          
+          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id) do |user, score, map_reduction|
+            unless @user_by_id.has_key?(user.id)
+              @user_by_id[user.id] = user
+              @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
+            else
+              @score_and_map_reduced_by_user_id[user.id][:score] += score
+              @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
+            end
+          end
         end
       end
     end
@@ -129,6 +154,34 @@ namespace :predictable do
         summary = user.summary_of(@contest)
         summary.update_score_and_map_values(score, map_reduction)
         puts "prediction summary updated for " + user.name
+      end
+    end
+
+    desc "Sets up dev application in dev mode"
+    task(:dev_setup => :environment) do
+      puts "get most recent db changes..."
+      Rake::Task["db:migrate"].invoke
+      puts "set default password for all users to 'changeit' "
+      User.find(:all).each {|user| user.update_attributes(:password => 'changeit', :password_confirmation => 'changeit')}
+      puts "correct data error in stage_qualifications table"
+      Rake::Task["predictable:championship:correct_stage_qualifications"].invoke
+    end
+
+    desc "Correct stage qualifications to set final stage teams as SF match winners, and third place PO stage teams as SF match loosers"
+    task(:correct_stage_qualifications => :environment) do
+      third_place = Predictable::Championship::Match.find_by_description("Third Place")
+      third_place_stage_teams = Predictable::Championship::StageTeam.find(:all, :conditions => {:predictable_championship_match_id => third_place.id})
+      stage_team_ids = third_place_stage_teams.collect {|tpst| tpst.id}
+      Predictable::Championship::StageQualification.find(:all, :conditions => {:predictable_championship_stage_team_id => stage_team_ids}).each do |qual|
+        qual.is_winner = false
+        qual.save!
+      end
+      final = Predictable::Championship::Match.find_by_description("Final")
+      final_stage_teams = Predictable::Championship::StageTeam.find(:all, :conditions => {:predictable_championship_match_id => final.id})
+      stage_team_ids = final_stage_teams.collect {|tpst| tpst.id}
+      Predictable::Championship::StageQualification.find(:all, :conditions => {:predictable_championship_stage_team_id => stage_team_ids}).each do |qual|
+        qual.is_winner = true
+        qual.save!
       end
     end
 
