@@ -38,16 +38,47 @@ module Configuration
       self.complete!
     end
 
-    def self.settle_predictions_for(items)
-      # TODO collect objectives for items, and predictable values
+    def self.settle_predictions_for(items, dependant_items_by_item_id)
+      items_by_actual_values = {}
+      items.each do |item|
+        item.settle!
+        actual_value = item.predictable.predictable_field_value
+        items_by_actual_values[actual_value] = item if actual_value
+      end
 
       User.find(:all).each do |user|
-        predictions = user.predictions_for_subset(items)
+        score, map_reduction = 0, 0
 
-        unless predictions.empty?
-          # TODO compare predicted_values with acutal predictable values for the items and assign objectives..
+        user.predictions_for_subset(items).each do |prediction|
+           received_points, objectives_meet = 0, 0
+
+          if items_by_actual_values.keys.include?(prediction.predicted_value)
+            item = items_by_actual_values[prediction.predicted_value]
+            item.set.objectives.each do |objective|
+              objectives_meet += 1
+              received_points += objective.possible_points
+              score += received_points
+            end            
+          else
+            item = prediction.predictable_item
+            item.set.objectives.each {|objective| map_reduction += objective.possible_points}
+
+            user.predictions_for_subset(dependant_items_by_item_id[item.id]).each do |dependant_prediction|
+              if dependant_prediction.predicted_value.eql?(prediction.predicted_value)
+                dependant_item = dependant_prediction.predictable_item
+                dependant_item.set.objectives.each {|objective| map_reduction += objective.possible_points}
+                dependant_prediction.update_attributes(:received_points => 0, :objectives_meet => 0)
+                dependant_prediction.save!
+              end
+            end
+          end
+          prediction.update_attributes(:received_points => received_points, :objectives_meet => objectives_meet)
+          prediction.save!
         end
+        yield(user, score, map_reduction)        
       end
+      
+      items.each {|item| item.complete!}
     end
 
     state_machine :initial => :unsettled do
