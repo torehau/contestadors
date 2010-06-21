@@ -7,7 +7,12 @@ module Predictable
       belongs_to :home_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'home_team_id'
       belongs_to :away_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'away_team_id'
       has_many :group_qualifications, :class_name => "Predictable::Championship::GroupQualification", :foreign_key => "predictable_championship_match_id"
-      has_one :stage_qualifications, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_match_id"
+      has_many :stage_qualifications, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_match_id" do
+        def for_winner
+          find(:first, :conditions => {:is_winner => true})
+        end
+      end
+
 
       named_scope :upcomming, :conditions => ["score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
       named_scope :latest, :conditions => ["score is not null and result is not null"], :order => "play_date DESC", :limit => 2
