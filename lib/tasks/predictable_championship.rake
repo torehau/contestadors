@@ -152,8 +152,10 @@ namespace :predictable do
         score = @score_and_map_reduced_by_user_id[user.id][:score]
         map_reduction = @score_and_map_reduced_by_user_id[user.id][:map_reduction]
         summary = user.summary_of(@contest)
-        summary.update_score_and_map_values(score, map_reduction)
-        puts "prediction summary updated for " + user.name
+        if summary
+          summary.update_score_and_map_values(score, map_reduction)
+          puts "prediction summary updated for " + user.name
+        end
       end
     end
 
