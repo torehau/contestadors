@@ -210,13 +210,29 @@ namespace :predictable do
 
     desc "Correcting predictions placed incorrectly using IE"
     task(:correct_predictions => :environment) do
-      user = User.find(171)
-      mexico = Predictable::Championship::Team.find_by_name("Mexico")
+      user = User.find(76)
+
+# 1/4 finale
+#Paraguay - Spania    Spania
+#Argentina - Tyskland      Argentina
+#Frankrike - England    England
+#Holland - Brasil                    Brasil
+#
+# Semi
+#ARG - SPA    Spania
+#ENG - BRA         Brasil
+#
+#  vinner av finalen SPA-BRA?    Spania
+#
+#  vinner av 3. plass ENG-ARG? Argentina
+
+      paraguay = Predictable::Championship::Team.find_by_name("Paraguay")
       netherlands = Predictable::Championship::Team.find_by_name("Netherlands")
       argentina = Predictable::Championship::Team.find_by_name("Argentina")
-      italy = Predictable::Championship::Team.find_by_name("Italy")
+      england = Predictable::Championship::Team.find_by_name("England")
       spain = Predictable::Championship::Team.find_by_name("Spain")
       brazil = Predictable::Championship::Team.find_by_name("Brazil")
+      france = Predictable::Championship::Team.find_by_name("France")
 
       set = Configuration::Set.find_by_description("Teams through to Semi finals")
       user.predictions_for(set).each do |prediction|
@@ -224,8 +240,13 @@ namespace :predictable do
         if prediction.predicted_value.eql?(netherlands.id.to_s)
           prediction.predicted_value = brazil.id.to_s
           prediction.save!
-        elsif prediction.predicted_value.eql?(italy.id.to_s)
+        elsif prediction.predicted_value.eql?(paraguay.id.to_s)
           prediction.predicted_value = spain.id.to_s
+          prediction.save!
+        elsif prediction.predicted_value.eql?(france.id.to_s)
+          prediction.predicted_value = england.id.to_s
+          prediction.objectives_meet = nil
+          prediction.received_points = nil
           prediction.save!
         end
       end
@@ -233,8 +254,10 @@ namespace :predictable do
       set = Configuration::Set.find_by_description("Teams through to Final")
       user.predictions_for(set).each do |prediction|
 
-        if prediction.predicted_value.eql?(mexico.id.to_s)
+        if prediction.predicted_value.eql?(france.id.to_s)
           prediction.predicted_value = brazil.id.to_s
+          prediction.objectives_meet = nil
+          prediction.received_points = nil
           prediction.save!
         elsif prediction.predicted_value.eql?(argentina.id.to_s)
           prediction.predicted_value = spain.id.to_s
@@ -243,16 +266,27 @@ namespace :predictable do
       end
 
       set = Configuration::Set.find_by_description("Third Place Team")
-      user.predictions_for(set).each do |prediction|
-        prediction.predicted_value = argentina.id.to_s
-        prediction.save!
-      end
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => set.predictable_items.first.id,
+        :predicted_value => argentina.id.to_s)
+#      user.predictions_for(set).each do |prediction|
+#        prediction.predicted_value = argentina.id.to_s
+#        prediction.save!
+#      end
 
       set = Configuration::Set.find_by_description("Winner Team")
-      user.predictions_for(set).each do |prediction|
-        prediction.predicted_value = brazil.id.to_s
-        prediction.save!
-      end
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => set.predictable_items.first.id,
+        :predicted_value => spain.id.to_s)
+#      user.predictions_for(set).each do |prediction|
+#        prediction.predicted_value = spain.id.to_s
+#        prediction.save!
+#      end
+      contest = Configuration::Contest.find(:first)
+      summary = user.summary_of(contest)
+      summary.map = summary.map + 16 + 9
+      summary.previous_map = summary.previous_map + 16 + 9
+      summary.save!
     end
   end
 end
