@@ -8,7 +8,8 @@ module Predictable
              {m.id => :stage_id}],
            [Predictable::Championship::Match, :match,
               m.predictable_championship_stage_id == b(:stage_id),
-              m.home_team == nil,
+              # TODO this might be needed when for setting predictions
+#              m.home_team == nil,
              {m.id => :match_id}],
            [Predictable::Championship::StageTeam, :stage_team,
               m.predictable_championship_stage_id == b(:stage_id),
@@ -37,8 +38,9 @@ module Predictable
              {m.id => :stage_id}],
            [Predictable::Championship::Match, :match,
               m.predictable_championship_stage_id == b(:stage_id),
-              m.home_team.not == nil,
-              m.away_team == nil,
+              # TODO this might be needed when for setting predictions
+#              m.home_team.not == nil,
+#              m.away_team == nil,
              {m.id => :match_id}],
            [Predictable::Championship::StageTeam, :stage_team,
               m.predictable_championship_stage_id == b(:stage_id),
