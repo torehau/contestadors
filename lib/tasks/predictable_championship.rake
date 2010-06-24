@@ -286,6 +286,7 @@ namespace :predictable do
       summary = user.summary_of(contest)
       summary.map = summary.map + 16 + 9
       summary.previous_map = summary.previous_map + 16 + 9
+      summary.state = "t"
       summary.save!
     end
   end
