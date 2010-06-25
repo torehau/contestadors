@@ -7,6 +7,7 @@ module Predictable
       has_many :stage_teams, :class_name => "Predictable::Championship::StageTeam", :foreign_key => "predictable_championship_stage_id"
       has_many :teams, :through => :stage_teams, :class_name => "Predictable::Championship::Team"
       belongs_to :next, :class_name => "Predictable::Championship::Stage", :foreign_key => "next_stage_id"
+      has_one :previous, :class_name => "Predictable::Championship::Stage", :foreign_key => "next_stage_id"
 
       named_scope :knockout_stages, :conditions => {:description => ["Round of 16", "Quarter finals", "Semi finals", "Final"]}, :order => "id DESC"
       named_scope :explicit_predicted_knockout_stages, :conditions => {:description => ["Quarter finals", "Semi finals", "Final"]}, :order => "id DESC"
@@ -18,6 +19,10 @@ module Predictable
 
       def permalink
         description.downcase.gsub(' ', '-')
+      end
+
+      def is_final_stage?
+        "Final".eql?(self.description)
       end
 
       # Returns a hash with the matches keyed by the id
