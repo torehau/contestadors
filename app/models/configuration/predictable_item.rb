@@ -38,7 +38,7 @@ module Configuration
       self.complete!
     end
 
-    def self.settle_predictions_for(items, dependant_items_by_item_id)
+    def self.settle_predictions_for(items, dependant_items_by_item_id, points_giving_value, map_reduction_value)
       items_by_actual_values = {}
       items.each do |item|
         item.settle!
@@ -64,6 +64,7 @@ module Configuration
             item.set.objectives.each {|objective| map_reduction += objective.possible_points}
 
             user.predictions_for_subset(dependant_items_by_item_id[item.id]).each do |dependant_prediction|
+              
               if dependant_prediction.predicted_value.eql?(prediction.predicted_value)
                 dependant_item = dependant_prediction.predictable_item
                 dependant_item.set.objectives.each {|objective| map_reduction += objective.possible_points}
