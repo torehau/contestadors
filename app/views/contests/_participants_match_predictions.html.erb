@@ -1,17 +1,52 @@
 <h3 id="match"><%= match.play_date.to_s(:short) %> <span class="black"><%= match.home_team.name %> - <%= match.away_team.name %></span> <%= match.score if match.score %></h3>
-<h4 id="description">Predictions by contest participants:</h4>
-<div class="participants_predictions">
-  <% predictions = @predictions_by_predictable[match];predictable_item_processed = predictions.values.first.predictable_item.processed? -%>
-  <% predictions.keys.sort_by {|x| x.downcase}.each do |name| -%>
-    <% prediction = predictions[name] -%>
-    <div class="participant_prediction">
-      <div class="<%= objectives_meet_div_class(prediction, predictable_item_processed)  %>">
-        <div class="participant_name"><%= name %></div>
-        <div class="participant_predicted_value">
-          <%= prediction.predicted_value %>
+<% if match.is_group_match? -%>
+  <h4 id="description">Predictions by contest participants:</h4>
+  <div class="participants_predictions">
+    <% predictions = @predictions_by_predictable[match];predictable_item_processed = predictions.values.first.predictable_item.processed? -%>
+    <% predictions.keys.sort_by {|x| x.downcase}.each do |name| -%>
+      <% prediction = predictions[name] -%>
+      <div class="participant_prediction">
+        <div class="<%= objectives_meet_div_class(prediction.objectives_meet, predictable_item_processed)  %>">
+          <div class="participant_name"><%= name %></div>
+          <div class="participant_predicted_value">
+            <%= prediction.predicted_value %>
+          </div>
         </div>
       </div>
+    <% end -%>
+  </div>
+<% else -%>
+  <% winner_team = match.stage_qualifications.for_winner.stage_team.team %>
+  <% [match.home_team, match.away_team].each do |team| -%>
+  <div class="description">Predicted <span class="black"><%= team.name %></span> through to the <%= match.stage.next.description %> (will receive <%= match.total_possible_points.to_s %> points if <%= team.name %> wins): </div><br/>
+    <div class="participants_predictions">
+      <% participants = @predictions_by_predictable[match][team.name] -%>
+      <% unless participants.empty? -%>
+        <% objectives_meet = winner_team ? (winner_team.id.eql?(team.id) ? 1 : 0) : nil -%>
+        <% participants.sort_by {|x| x.downcase}.each do |name| -%>
+          <div class="participant_prediction">
+            <div class="<%= objectives_meet_div_class(objectives_meet, winner_team)  %>">
+              <div class="participant_name"><%= name %></div>
+            </div>
+          </div>
+        <% end -%>
+      <% else -%>
+        <div class="participant_prediction">None</div>
+      <% end -%>
     </div>
+    <br/>
   <% end -%>
-</div>
+  <div class="description">Predicted <span class="black">none</span> of these teams through to the <%= match.stage.next.description %> (will not receive additional points for this match): </div>
+  <div class="participants_predictions">
+    <% participants = @predictions_by_predictable[match]["none"] -%>
+    <% objectives_meet = winner_team ? 0 : nil -%>
+    <% participants.sort_by {|x| x.downcase}.each do |name| -%>
+      <div class="participant_prediction">
+        <div class="<%= objectives_meet_div_class(0, true)  %>">
+          <div class="participant_name"><%= name %></div>
+        </div>
+      </div>
+    <% end -%>
+  </div>
+<% end %>
 <hr/><br/>
