@@ -45,13 +45,13 @@ module Predictable
       def get_all_upcoming(participants)
         upcomming_matches = Predictable::Championship::Match.upcomming
         items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(upcomming_matches).find_items
-        collect_participant_predictions_by_predictable(upcomming_matches, items_by_match_id, participants)
+        collect_participant_predictions_for(upcomming_matches, items_by_match_id, participants)
       end
 
       def get_all_latest(participants)
         latest_matches = Predictable::Championship::Match.latest
         items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(latest_matches, :processed).find_items
-        collect_participant_predictions_by_predictable(latest_matches, items_by_match_id, participants)
+        collect_participant_predictions_for(latest_matches, items_by_match_id, participants)
       end
 
     private
@@ -64,20 +64,52 @@ module Predictable
         @summary[:stages]["Third Place"] = {:winner_team => nil}
       end
 
-      def collect_participant_predictions_by_predictable(predictables, items_by_predictable_id, participants)
+      def collect_participant_predictions_for(matches, items_by_match_id, participants)
         participant_predictions_by_predictable = {}
         
-        predictables.each do |predictable|
-          item = items_by_predictable_id[predictable.id]
-          predictions_by_participant_name = {}
+        matches.each do |match|
 
-          participants.each do |participant|
-            prediction = participant.prediction_for(item)
-            predictions_by_participant_name[participant.name] = prediction if prediction
+          if match.is_group_match?
+            participant_predictions_by_predictable[match] = participants_predictions_for_group_match(match, items_by_match_id, participants)
+          else
+            participant_predictions_by_predictable[match] = participants_predictions_for_knockout_stage_match(match, participants)
           end
-          participant_predictions_by_predictable[predictable] = predictions_by_participant_name
         end
+
         participant_predictions_by_predictable
+      end
+
+      def participants_predictions_for_group_match(match, items_by_match_id, participants)
+        item = items_by_match_id[match.id]
+        predictions_by_participant_name = {}
+
+        participants.each do |participant|
+          prediction = participant.prediction_for(item)
+          predictions_by_participant_name[participant.name] = prediction if prediction
+        end
+        predictions_by_participant_name
+      end
+
+      def participants_predictions_for_knockout_stage_match(match, participants)
+        participant_names_by_team_name = {match.home_team.name => [], match.away_team.name => [], "none" => []}
+        set = Configuration::Set.find_by_description("Teams through to " + match.stage.next.description)
+        teams = [match.home_team, match.away_team]
+
+        participants.each do |participant|
+          predicted_teams = 0
+          teams.each do |team|
+            if participant.prediction_with_value(team.id.to_s, set)
+              participant_names_by_team_name[team.name] << participant.name
+              predicted_teams += 1
+            end
+          end
+
+          if predicted_teams == 0
+            participant_names_by_team_name["none"] << participant.name
+          end
+        end
+        match.objectives = set.objectives
+        participant_names_by_team_name
       end
 
       class PredictionMapperRulebook < Ruleby::Rulebook
