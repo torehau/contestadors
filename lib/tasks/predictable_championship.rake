@@ -59,7 +59,12 @@ namespace :predictable do
         match = Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => home_team.id, :away_team_id => away_team.id})
         match.settle_match(@row.field(:score))
         puts "... score and result set for match " + match.home_team.name + " - " + match.away_team.name + " " + match.score + " (" + match.result + ")"
-        @predictables_by_id[:group_matches][match.id] = match
+        if match.is_group_match?
+          @predictables_by_id[:group_matches][match.id] = match
+        else
+          stage_team = match.winner_stage_team
+          @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+        end
       end
     end
 
@@ -121,19 +126,41 @@ namespace :predictable do
           end
         else
           items = @unsettled_items_by_predictable_id[predictable_type].values
+          
           third_place_set = Configuration::Set.find_by_description("Third Place Team")
           third_place_item = third_place_set.predictable_items.first
           winner_set = Configuration::Set.find_by_description("Winner Team")
           winner_item = winner_set.predictable_items.first
           dependant_items_by_item_id = {}
-          items.each do |item|
-            dependant_items = Predictable::Championship::PredictableItemsResolver.new(item.predictable.dependant_predictables).find_items(category_descr)
+          points_giving_value, map_reduction_value  = nil, nil
+          
+          if items.size > 1
+            items.each do |item|
+              stage_team = item.predictable
+              dependant_items = Predictable::Championship::PredictableItemsResolver.new(stage_team.dependant_predictables).find_items(category_descr)
+              dependant_items_by_item_id[item.id] = dependant_items.values
+              dependant_items_by_item_id[item.id] << third_place_item
+              dependant_items_by_item_id[item.id] << winner_item
+            end
+
+          else
+            item = items.first
+            stage_team = item.predictable
+            match = stage_team.qualified_from_match
+            following_stage_teams = match.following_stage_teams
+            dependant_items = Predictable::Championship::PredictableItemsResolver.new(following_stage_teams).find_items(category_descr)
             dependant_items_by_item_id[item.id] = dependant_items.values
             dependant_items_by_item_id[item.id] << third_place_item
             dependant_items_by_item_id[item.id] << winner_item
+            map_reduction_value = match.losing_team.id.to_s
+            points_giving_value = match.winner_team.id.to_s
+
+            # TODO
+            # 1. For predictions of item with points_giving_value, assign objective.possible_points
+            # 2. For predictions of dependant_items with map_reduction_value, reduce map with objective.possible_points
           end
-          
-          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id) do |user, score, map_reduction|
+
+          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id, points_giving_value, map_reduction_value) do |user, score, map_reduction|
             unless @user_by_id.has_key?(user.id)
               @user_by_id[user.id] = user
               @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
