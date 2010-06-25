@@ -47,6 +47,14 @@ module Predictable
         self.play_date + 2.hours
       end
 
+      def is_group_match?
+        "Group".eql?(self.stage.description)
+      end
+
+      def is_final?
+        "Final".eql?(self.description)
+      end
+
       def set_individual_team_scores(home_team_score, away_team_score)
         @home_team_score = home_team_score
         @away_team_score = away_team_score
@@ -57,9 +65,40 @@ module Predictable
         self.away_team
       end
 
+      def winner_stage_team
+        self.stage_qualifications.for_winner.stage_team
+      end
+
+      def winner_team
+        winner_team_from(self.result)
+      end
+
+      def losing_team
+        losing_team_from(self.result)
+      end
+
+      def following_stage_teams
+        following_stages = []
+        next_stage = self.is_final? ? nil : self.stage.next
+
+        while next_stage do
+          following_stages << next_stage
+          next_stage = next_stage.is_final_stage? ? nil : next_stage.next
+        end
+
+        following_stages.collect {|stage| stage.stage_teams}.flatten
+      end
+
       def settle_match(score)
-        self.update_attributes(:score => score, :result => result_from(score))
+        result = result_from(score)
+        self.update_attributes(:score => score, :result => result)
         self.save!
+        unless self.is_group_match?
+          winner_team = winner_team_from(result)
+          stage_team = winner_stage_team
+          stage_team.predictable_championship_team_id = winner_team.id
+          stage_team.save!
+        end
       end
 
       def resolve_objectives_for(prediction, objectives)
@@ -106,6 +145,26 @@ module Predictable
       
       def is_same_result?(predicted_score)
         self.result.eql?(result_from(predicted_score))
+      end
+
+      def winner_team_from(result)
+        if "1".eql?(result)
+          self.home_team
+        elsif "2".eql?(result)
+          self.away_team
+        else
+          nil
+        end
+      end
+
+      def losing_team_from(result)
+        if "1".eql?(result)
+          self.away_team
+        elsif "2".eql?(result)
+          self.home_team
+        else
+          nil
+        end
       end
     end
   end
