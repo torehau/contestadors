@@ -1661,6 +1661,19 @@ form.contest_create {
     color: #41686a;
 }
 
+#transbox_outer_frame div.description {
+    font-weight: bold;
+    color: #41686a;
+    /*width: 100%;*/
+    float:left;
+    margin: 0px 0px 20px 0px;
+    font-size: 120%;
+}
+
+#transbox_outer_frame div.description span.black {
+    color: #333;
+}
+
 .participants_predictions {
    width: 850px;
    margin-bottom: 30px;
