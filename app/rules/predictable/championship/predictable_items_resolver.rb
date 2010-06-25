@@ -51,7 +51,7 @@ module Predictable
         end
 
         def group_table_positions_items_rule(predictable_item_state)
-           rule :group_matches_items, #{:priority => 2},
+           rule :group_table_position_items, #{:priority => 2},
              [Predictable::Championship::GroupTablePosition, :group_table_position,
                {m.id => :group_table_position_id}],
              [Configuration::PredictableItem, :group_table_position_item,
@@ -65,7 +65,7 @@ module Predictable
         end
 
         def stage_teams_items_rule(predictable_item_state)
-           rule :group_matches_items, #{:priority => 2},
+           rule :stage_teams_items, #{:priority => 2},
              [Predictable::Championship::StageTeam, :stage_team,
                {m.id => :stage_team_id}],
              [Configuration::PredictableItem, :stage_team_item,
