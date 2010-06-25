@@ -74,11 +74,11 @@ module ContestsHelper
     items
   end
 
-  def objectives_meet_div_class(prediction, predictable_item_processed)
+  def objectives_meet_div_class(objectives_meet, predictable_item_processed)
     div_class = "objectives_meet"
     
     if predictable_item_processed
-      div_class += "_" + prediction.objectives_meet.to_s
+      div_class += "_" + objectives_meet.to_s
     end
     div_class
   end
