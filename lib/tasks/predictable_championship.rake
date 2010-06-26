@@ -57,6 +57,7 @@ namespace :predictable do
         home_team = Predictable::Championship::Team.find_by_name(@row.field(:home_team_name))
         away_team = Predictable::Championship::Team.find_by_name(@row.field(:away_team_name))
         match = Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => home_team.id, :away_team_id => away_team.id})
+        match ||= Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => away_team.id, :away_team_id => home_team.id})
         match.settle_match(@row.field(:score))
         puts "... score and result set for match " + match.home_team.name + " - " + match.away_team.name + " " + match.score + " (" + match.result + ")"
         if match.is_group_match?
@@ -147,20 +148,15 @@ namespace :predictable do
             item = items.first
             stage_team = item.predictable
             match = stage_team.qualified_from_match
-            following_stage_teams = match.following_stage_teams
+            following_stage_teams = Predictable::Championship::StageTeam.stage_teams_after(stage_team.stage)
             dependant_items = Predictable::Championship::PredictableItemsResolver.new(following_stage_teams).find_items(category_descr)
             dependant_items_by_item_id[item.id] = dependant_items.values
             dependant_items_by_item_id[item.id] << third_place_item
             dependant_items_by_item_id[item.id] << winner_item
             map_reduction_value = match.losing_team.id.to_s
-            points_giving_value = match.winner_team.id.to_s
-
-            # TODO
-            # 1. For predictions of item with points_giving_value, assign objective.possible_points
-            # 2. For predictions of dependant_items with map_reduction_value, reduce map with objective.possible_points
           end
 
-          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id, points_giving_value, map_reduction_value) do |user, score, map_reduction|
+          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value) do |user, score, map_reduction|
             unless @user_by_id.has_key?(user.id)
               @user_by_id[user.id] = user
               @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
