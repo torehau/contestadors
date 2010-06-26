@@ -18,7 +18,7 @@
 <% else -%>
   <% winner_team = match.stage_qualifications.for_winner.stage_team.team %>
   <% [match.home_team, match.away_team].each do |team| -%>
-  <div class="description">Predicted <span class="black"><%= team.name %></span> through to the <%= match.stage.next.description %> (will receive <%= match.total_possible_points.to_s %> points if <%= team.name %> wins): </div><br/>
+  <div class="description">Predicted <span class="black"><%= team.name %></span> through to the <%= match.stage.next.description %> (<%= knockout_stage_match_points_for(match, team) %>): </div><br/>
     <div class="participants_predictions">
       <% participants = @predictions_by_predictable[match][team.name] -%>
       <% unless participants.empty? -%>
@@ -36,17 +36,20 @@
     </div>
     <br/>
   <% end -%>
-  <div class="description">Predicted <span class="black">none</span> of these teams through to the <%= match.stage.next.description %> (will not receive additional points for this match): </div>
-  <div class="participants_predictions">
-    <% participants = @predictions_by_predictable[match]["none"] -%>
-    <% objectives_meet = winner_team ? 0 : nil -%>
-    <% participants.sort_by {|x| x.downcase}.each do |name| -%>
-      <div class="participant_prediction">
-        <div class="<%= objectives_meet_div_class(0, true)  %>">
-          <div class="participant_name"><%= name %></div>
+  <% participants = @predictions_by_predictable[match]["none"] -%>
+  <% unless participants.empty? -%>
+    <div class="description">Predicted <span class="black">none</span> of these teams through to the <%= match.stage.next.description %> (<%= knockout_stage_match_points_for(match, nil) %>): </div>
+    <div class="participants_predictions">
+
+      <% objectives_meet = winner_team ? 0 : nil -%>
+      <% participants.sort_by {|x| x.downcase}.each do |name| -%>
+        <div class="participant_prediction">
+          <div class="<%= objectives_meet_div_class(0, true)  %>">
+            <div class="participant_name"><%= name %></div>
+          </div>
         </div>
-      </div>
-    <% end -%>
-  </div>
-<% end %>
+      <% end -%>
+    </div>
+  <% end -%>
+<% end -%>
 <hr/><br/>
