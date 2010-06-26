@@ -82,4 +82,24 @@ module ContestsHelper
     end
     div_class
   end
+
+  def knockout_stage_match_points_for(match, team)
+    if team
+      unless match.result
+        "will receive #{match.total_possible_points.to_s} points if #{team.name} wins"
+      else
+        if match.winner_team.id.eql?(team.id)
+          "received #{match.total_possible_points.to_s} points"
+        else
+          "recived no additional points for this match"
+        end
+      end
+    else
+      unless match.result
+        "will not receive additional points for this match"
+      else
+        "received no additional points for this match"
+      end
+    end
+  end
 end
