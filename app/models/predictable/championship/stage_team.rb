@@ -40,6 +40,18 @@ module Predictable
         dependants << next_stage_team
         next_stage_team.dependant_predictables(dependants)
       end
+
+      def self.stage_teams_after(stage)
+        following_stages = []
+        next_stage = stage.is_final_stage? ? nil : stage.next
+
+        while next_stage do
+          following_stages << next_stage
+          next_stage = next_stage.is_final_stage? ? nil : next_stage.next
+        end
+
+        following_stages.collect {|s| s.stage_teams}.flatten
+      end
     end
   end
 end
