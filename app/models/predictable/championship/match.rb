@@ -77,18 +77,6 @@ module Predictable
         losing_team_from(self.result)
       end
 
-      def following_stage_teams
-        following_stages = []
-        next_stage = self.is_final? ? nil : self.stage.next
-
-        while next_stage do
-          following_stages << next_stage
-          next_stage = next_stage.is_final_stage? ? nil : next_stage.next
-        end
-
-        following_stages.collect {|stage| stage.stage_teams}.flatten
-      end
-
       def settle_match(score)
         result = result_from(score)
         self.update_attributes(:score => score, :result => result)
@@ -98,6 +86,13 @@ module Predictable
           stage_team = winner_stage_team
           stage_team.predictable_championship_team_id = winner_team.id
           stage_team.save!
+          net_stage_match = stage_team.match
+          unless net_stage_match.home_team_id
+            net_stage_match.home_team_id = winner_team.id
+          else
+            net_stage_match.away_team_id = winner_team.id
+          end
+          net_stage_match.save!
         end
       end
 
