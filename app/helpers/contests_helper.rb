@@ -91,7 +91,7 @@ module ContestsHelper
         if match.winner_team.id.eql?(team.id)
           "received #{match.total_possible_points.to_s} points"
         else
-          "recived no additional points for this match"
+          "recived no additional points for this team"
         end
       end
     else
