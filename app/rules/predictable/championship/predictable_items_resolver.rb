@@ -32,6 +32,7 @@ module Predictable
           group_matches_items_rule(predictable_item_state)
           group_table_positions_items_rule(predictable_item_state)
           stage_teams_items_rule(predictable_item_state)
+          specific_teams_items_rule(predictable_item_state)
         end
 
       private
@@ -75,6 +76,20 @@ module Predictable
                @items_by_predictable_id[v[:stage_team].id] = v[:stage_team_item]
                retract v[:stage_team]
                retract v[:stage_team_item]
+          end
+        end
+
+        def specific_teams_items_rule(predictable_item_state)
+           rule :specific_teams_items, #{:priority => 2},
+             [Predictable::Championship::Match, :match,
+               {m.id => :match_id}],
+             [Configuration::PredictableItem, :winner_team_item,
+               m.state_name == predictable_item_state,
+               m.predictable_id == b(:match_id)] do |v|
+
+               @items_by_predictable_id[v[:match].id] = v[:winner_team_item]
+               retract v[:match]
+               retract v[:winner_team_item]
           end
         end
       end
