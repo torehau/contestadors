@@ -16,9 +16,9 @@
     <% end -%>
   </div>
 <% else -%>
-  <% winner_team = match.stage_qualifications.for_winner.stage_team.team %>
+  <% winner_team = match.winner_team %>
   <% [match.home_team, match.away_team].each do |team| -%>
-  <div class="description">Predicted <span class="black"><%= team.name %></span> through to the <%= match.stage.next.description %> (<%= knockout_stage_match_points_for(match, team) %>): </div><br/>
+  <div class="description">Predicted <span class="black"><%= team.name %></span> <%= knockout_stage_match_objective_descr(match) %> (<%= knockout_stage_match_points_for(match, team) %>): </div><br/>
     <div class="participants_predictions">
       <% participants = @predictions_by_predictable[match][team.name] -%>
       <% unless participants.empty? -%>
@@ -38,7 +38,7 @@
   <% end -%>
   <% participants = @predictions_by_predictable[match]["none"] -%>
   <% unless participants.empty? -%>
-    <div class="description">Predicted <span class="black">none</span> of these teams through to the <%= match.stage.next.description %> (<%= knockout_stage_match_points_for(match, nil) %>): </div>
+    <div class="description">Predicted <span class="black">none</span> of the teams <%= knockout_stage_match_objective_descr(match) %> (<%= knockout_stage_match_points_for(match, nil) %>): </div>
     <div class="participants_predictions">
 
       <% objectives_meet = winner_team ? 0 : nil -%>
