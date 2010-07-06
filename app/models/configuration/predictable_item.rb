@@ -33,13 +33,13 @@ module Configuration
         compare_result[:objectives_missed].each {|objective| map_reduction += objective.possible_points}
         prediction.update_attributes(:received_points => score, :objectives_meet => objectives_meet)
         prediction.save!
-        yield(prediction.user, score, map_reduction)
+        yield(prediction, score, map_reduction)
       end
       self.complete!
     end
 
     # TODO - needless to say: Rafactor! Might be usering a Template or Strategy here
-    def self.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value)
+    def self.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value, mutex_set_by_set_id)
       items_by_actual_values = {}
       items.each do |item|
         item.settle!
@@ -50,6 +50,7 @@ module Configuration
       User.find(:all).each do |user|
         score, map_reduction = 0, 0
 
+        # e.g., when match loser will not be in the following stages
         if map_reduction_value
           current_item = items.first
 
@@ -57,7 +58,7 @@ module Configuration
             item = items_by_actual_values[prediction.predicted_value]
             received_points, objectives_meet = 0, 0
 
-            if items_by_actual_values.keys.include?(prediction.predicted_value)
+            if items_by_actual_values.has_key?(prediction.predicted_value)
               
               item.set.objectives.each do |objective|
                 objectives_meet += 1
@@ -78,6 +79,19 @@ module Configuration
                   dependant_item.set.objectives.each {|objective| map_reduction += objective.possible_points}
                   dependant_prediction.update_attributes(:received_points => 0, :objectives_meet => 0)
                   dependant_prediction.save!
+                end
+              end
+            end
+
+            if mutex_set_by_set_id.has_key?(current_item.set.id)
+              mutex_set = mutex_set_by_set_id[current_item.set.id]
+              mutex_prediction = user.prediction_with_value(current_item.predictable.predictable_field_value, mutex_set)
+              
+              if mutex_prediction
+                unless mutex_prediction.received_points
+                  mutex_set.objectives.each {|objective| map_reduction += objective.possible_points}
+                  mutex_prediction.update_attributes(:received_points => 0, :objectives_meet => 0)
+                  mutex_prediction.save!
                 end
               end
             end
