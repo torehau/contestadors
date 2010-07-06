@@ -92,7 +92,7 @@ module Predictable
 
       def participants_predictions_for_knockout_stage_match(match, participants)
         participant_names_by_team_name = {match.home_team.name => [], match.away_team.name => [], "none" => []}
-        set = Configuration::Set.find_by_description("Teams through to " + match.stage.next.description)
+        set = set_for(match)
         teams = [match.home_team, match.away_team]
 
         participants.each do |participant|
@@ -110,6 +110,16 @@ module Predictable
         end
         match.objectives = set.objectives
         participant_names_by_team_name
+      end
+
+      def set_for(match)
+        final_matches = {"Third Place" => "Third Place Team", "Final" => "Winner Team"}
+
+        unless final_matches.has_key?(match.description)
+          Configuration::Set.find_by_description("Teams through to " + match.stage.next.description)
+        else
+          Configuration::Set.find_by_description(final_matches[match.description])
+        end
       end
 
       class PredictionMapperRulebook < Ruleby::Rulebook
