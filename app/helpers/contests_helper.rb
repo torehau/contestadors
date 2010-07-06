@@ -102,4 +102,14 @@ module ContestsHelper
       end
     end
   end
+
+  def knockout_stage_match_objective_descr(match)
+    final_matches = {"Third Place" => "Third Place Play-off", "Final" => "Final"}
+
+    unless final_matches.has_key?(match.description)
+      "through to the " + match.stage.next.description
+    else
+      "as winner of the " + final_matches[match.description]
+    end
+  end
 end
