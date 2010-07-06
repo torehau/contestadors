@@ -41,6 +41,12 @@ module Predictable
         next_stage_team.dependant_predictables(dependants)
       end
 
+      def assign_qualified_team(team)
+        self.predictable_championship_team_id = team.id
+        self.save!
+        self.match.set_qualified_team(team)
+      end
+
       def self.stage_teams_after(stage)
         following_stages = []
         next_stage = stage.is_final_stage? ? nil : stage.next
