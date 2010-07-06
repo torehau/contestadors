@@ -11,10 +11,13 @@ module Predictable
         def for_winner
           find(:first, :conditions => {:is_winner => true})
         end
+        def for_loser
+          find(:first, :conditions => {:is_winner => false})
+        end
       end
 
 
-      named_scope :upcomming, :conditions => ["score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
+      named_scope :upcomming, :conditions => ["home_team_id is not null and away_team_id is not null and score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
       named_scope :latest, :conditions => ["score is not null and result is not null"], :order => "play_date DESC", :limit => 2
 
       attr_accessor :home_team_score, :away_team_score, :state
@@ -51,6 +54,10 @@ module Predictable
         "Group".eql?(self.stage.description)
       end
 
+      def is_third_place_play_off?
+        "Third Place".eql?(self.description)
+      end
+
       def is_final?
         "Final".eql?(self.description)
       end
@@ -66,7 +73,9 @@ module Predictable
       end
 
       def winner_stage_team
-        self.stage_qualifications.for_winner.stage_team
+        qualifications = self.stage_qualifications
+        return nil if qualifications.empty?
+        qualifications.for_winner.stage_team
       end
 
       def winner_team
@@ -81,36 +90,34 @@ module Predictable
         result = result_from(score)
         self.update_attributes(:score => score, :result => result)
         self.save!
-        unless self.is_group_match?
+
+        unless self.is_group_match? or self.is_third_place_play_off? or self.is_final?
           winner_team = winner_team_from(result)
-          stage_team = winner_stage_team
-          stage_team.predictable_championship_team_id = winner_team.id
-          stage_team.save!
-          net_stage_match = stage_team.match
-          unless net_stage_match.home_team_id
-            net_stage_match.home_team_id = winner_team.id
-          else
-            net_stage_match.away_team_id = winner_team.id
+          winner_stage_team.assign_qualified_team(winner_team)
+          losing_team_qual = self.stage_qualifications.for_loser
+
+          if losing_team_qual
+            losing_team = losing_team_from(result)
+            losing_team_qual.stage_team.assign_qualified_team(losing_team)
           end
-          net_stage_match.save!
         end
       end
 
       def resolve_objectives_for(prediction, objectives)
-        predicted_score = prediction.predicted_value
-        return {:objectives_meet => objectives, :objectives_missed => []} if self.score.eql?(predicted_score)
-        result = {:objectives_meet => [], :objectives_missed => []}
-
-        objectives.each do |objective|
-          
-          if ("score".eql?(objective.predictable_field))
-            result[:objectives_missed] << objective
-          else
-            outcome = is_same_result?(String.new(predicted_score)) ? :objectives_meet : :objectives_missed
-            result[outcome] << objective
-          end
+        if self.is_group_match?
+          resolve_objectives_for_group_match(prediction, objectives)
+        else
+          resolve_objectives_for_winner_match(prediction, objectives)
         end
-        result
+      end
+
+      def set_qualified_team(team)
+        unless self.home_team_id
+          self.home_team_id = team.id
+        else
+          self.away_team_id = team.id
+        end
+        self.save!
       end
 
       state_machine :initial => :unsettled do
@@ -140,6 +147,29 @@ module Predictable
       
       def is_same_result?(predicted_score)
         self.result.eql?(result_from(predicted_score))
+      end
+
+      def resolve_objectives_for_group_match(prediction, objectives)
+        predicted_score = prediction.predicted_value
+        return {:objectives_meet => objectives, :objectives_missed => []} if self.score.eql?(predicted_score)
+        result = {:objectives_meet => [], :objectives_missed => []}
+
+        objectives.each do |objective|
+
+          if ("score".eql?(objective.predictable_field))
+            result[:objectives_missed] << objective
+          else
+            outcome = is_same_result?(String.new(predicted_score)) ? :objectives_meet : :objectives_missed
+            result[outcome] << objective
+          end
+        end
+        result
+      end
+
+      def resolve_objectives_for_winner_match(prediction, objectives)
+        predicted_winner_team_id = prediction.predicted_value
+        return {:objectives_meet => objectives, :objectives_missed => []} if self.winner_team.id.to_s.eql?(predicted_winner_team_id)
+        {:objectives_meet => [], :objectives_missed => objectives}
       end
 
       def winner_team_from(result)
