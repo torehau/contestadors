@@ -10,14 +10,14 @@ namespace :predictable do
         @contest = Configuration::Contest.find_by_name("FIFA World Cup 2010")
         @score_and_map_reduced_by_user_id = {}
         @user_by_id = {}
-        @predictable_types = {:group_matches => "Group Matches", :group_positions => "Group Tables", :stage_teams => "Stage Teams"}
+        @predictable_types = {:group_matches => "Group Matches", :group_positions => "Group Tables", :stage_teams => "Stage Teams", :winner_teams => "Specific Team"}
         @predictables_by_id = {}
         @predictable_types.keys.each {|predictable_type| @predictables_by_id[predictable_type] = {}}
         @unsettled_items_by_predictable_id = {}
         
         puts "sets match scores..."        
         Rake::Task["predictable:championship:set_match_scores"].invoke
-        puts "found number of matches: " + @predictables_by_id[:group_matches].values.size.to_s
+        [:group_matches, :stage_teams, :winner_teams].each {|descr| puts "found number of  " + descr.to_s.gsub('_', ' ') + ": " + @predictables_by_id[descr].values.size.to_s if @predictables_by_id.has_key?(descr)}
 
         puts "sets group table positions..."
         Rake::Task["predictable:championship:set_group_positions"].invoke
@@ -64,7 +64,12 @@ namespace :predictable do
           @predictables_by_id[:group_matches][match.id] = match
         else
           stage_team = match.winner_stage_team
-          @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+
+          if stage_team
+            @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+          else
+            @predictables_by_id[:winner_teams][match.id] = match
+          end
         end
       end
     end
@@ -112,28 +117,19 @@ namespace :predictable do
     desc "Calculates points for all predictions of unsettled group match predictable items."
     task(:set_prediction_points => :environment) do
       @predictable_types.each do |predictable_type, category_descr|
-        unless "Stage Teams".eql?(category_descr)
-          @unsettled_items_by_predictable_id[predictable_type].values.each do |item|
-            puts "... settles one item for set " + item.description
-            item.settle_predictions_for(@predictables_by_id[predictable_type][item.predictable_id]) do |user, score, map_reduction|
-              unless @user_by_id.has_key?(user.id)
-                @user_by_id[user.id] = user
-                @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
-              else
-                @score_and_map_reduced_by_user_id[user.id][:score] += score
-                @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
-              end
-            end
-          end
-        else
+        
+        if "Stage Teams".eql?(category_descr)
           items = @unsettled_items_by_predictable_id[predictable_type].values
+          next if items.empty?
           
           third_place_set = Configuration::Set.find_by_description("Third Place Team")
           third_place_item = third_place_set.predictable_items.first
           winner_set = Configuration::Set.find_by_description("Winner Team")
           winner_item = winner_set.predictable_items.first
           dependant_items_by_item_id = {}
-          points_giving_value, map_reduction_value  = nil, nil
+          map_reduction_value  = nil
+          final_teams_set = Configuration::Set.find_by_description("Teams through to Final")
+          mutex_set_by_set_id = {final_teams_set.id => third_place_set}
           
           if items.size > 1
             items.each do |item|
@@ -156,13 +152,57 @@ namespace :predictable do
             map_reduction_value = match.losing_team.id.to_s
           end
 
-          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value) do |user, score, map_reduction|
+          puts "... settles items for set " + items.first.description
+          Configuration::PredictableItem.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value, mutex_set_by_set_id) do |user, score, map_reduction|
             unless @user_by_id.has_key?(user.id)
               @user_by_id[user.id] = user
               @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
             else
               @score_and_map_reduced_by_user_id[user.id][:score] += score
               @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
+            end
+          end
+#        elsif "Specific Team".eql?(category_descr)
+#
+#          @unsettled_items_by_predictable_id[predictable_type].values.each do |item|
+#            puts "... settles one item for set " + item.description
+#            item.settle_predictions_for(@predictables_by_id[predictable_type][item.predictable_id]) do |user, score, map_reduction|
+#              unless @user_by_id.has_key?(user.id)
+#                @user_by_id[user.id] = user
+#                @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => 0}
+#              else
+#                @score_and_map_reduced_by_user_id[user.id][:score] += score
+#              end
+#            end
+#          end
+
+        else
+          # Group Matches, Group Table and Specific Team categories
+          if "Specific Team".eql?(category_descr)
+            items = @unsettled_items_by_predictable_id[predictable_type].values
+            next if items.empty?
+            map_reduction_value = items.first.predictable.losing_team.id.to_s
+          end
+
+          @unsettled_items_by_predictable_id[predictable_type].values.each do |item|
+            puts "... settles one item for set " + item.description
+            item.settle_predictions_for(@predictables_by_id[predictable_type][item.predictable_id]) do |prediction, score, map_reduction|
+              user = prediction.user
+              
+              if map_reduction_value
+
+                unless map_reduction_value.eql?(prediction.predicted_value)
+                  map_reduction = 0
+                end
+              end
+
+              unless @user_by_id.has_key?(user.id)
+                @user_by_id[user.id] = user
+                @score_and_map_reduced_by_user_id[user.id] = {:score => score, :map_reduction => map_reduction}
+              else
+                @score_and_map_reduced_by_user_id[user.id][:score] += score
+                @score_and_map_reduced_by_user_id[user.id][:map_reduction] += map_reduction
+              end
             end
           end
         end
