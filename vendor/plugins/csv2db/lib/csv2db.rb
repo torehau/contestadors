@@ -1,4 +1,4 @@
-require 'fastercsv'
+require 'csv'
 
 # Plugin for loading data from CSV files into the database. The data files must be located in the csv directory of the plugin.
 module Csv2Db
@@ -37,17 +37,17 @@ module Csv2Db
       #                    new id assigned by the DB as the value
       def load_from_csv(dependencies={})
 
-        parser = FasterCSV.new(File.open(filename(), 'r'),
+        parser = CSV.new(File.open(filename(), 'r'),
                                :headers => true, :header_converters => :symbol,
                                :col_sep => ',')
         convert_date_fields(parser)
         @csv_id_to_db_id_map = {}
         substitute_values = substitute_field_values
 
-        parser.each do |@row|
-          if @row and @row.length > 0 and @row.include?(:id)
-            csv_id = @row.field(:id)
-            instance = create_new_instance_from_row(dependencies, substitute_values)
+        parser.each do |row|
+          if row and row.length > 0 and row.include?(:id)
+            csv_id = row.field(:id)
+            instance = create_new_instance_from_row(dependencies, substitute_values, row)
             save_if_valid(instance, csv_id)
           end
         end
@@ -57,18 +57,18 @@ module Csv2Db
 
       # For updating existing entries, i.e. if new non-relational fields are introduced.
       def update_from_csv(key, fields_to_update)
-        parser = FasterCSV.new(File.open(filename(), 'r'),
+        parser = CSV.new(File.open(filename(), 'r'),
                                :headers => true, :header_converters => :symbol,
                                :col_sep => ',')
 
-        parser.each do |@row|
-          if @row and @row.length > 0 and @row.include?(key)
-            key_value = @row.field(key)
+        parser.each do |row|
+          if row and row.length > 0 and row.include?(key)
+            key_value = row.field(key)
             existing_entry = self.find(:first, :conditions => {key => key_value})
 
             if existing_entry
               fields_to_update.each do |field_to_update|
-                value = @row.field(field_to_update)
+                value = row.field(field_to_update)
                 existing_entry.update_attribute(field_to_update, value)
                 existing_entry.save!
 
@@ -99,7 +99,7 @@ module Csv2Db
       end
 
       # Creates a new instance of the class represented by the CSV row, populating it with the provided attribute values.
-      def create_new_instance_from_row(dependencies, substitute_values)
+      def create_new_instance_from_row(dependencies, substitute_values, row)
         instance = new
         
         substitute_fields = SUBSTITUTE_FIELDS[instance.class.table_name.to_sym]
@@ -109,7 +109,7 @@ module Csv2Db
           unless IGNORE_FIELD_LIST.include?(attr_name.to_sym)
             field_name = attr_name
             field_name =  substitute_fields[attr_name.to_sym].to_s if substitute_fields and substitute_fields.has_key?(attr_name.to_sym)
-            value = @row.field(field_name.to_sym)
+            value = row.field(field_name.to_sym)
 
             if value
 
@@ -119,7 +119,7 @@ module Csv2Db
                 if dependencies[dependant_table_name.to_sym]
                   value = dependencies[dependant_table_name.to_sym][value]
                 else
-                  value = resolve_id_value(attr_name.to_sym, value, dependencies, instance)
+                  value = resolve_id_value(attr_name.to_sym, value, dependencies, instance, row)
                 end
               elsif substitute_values.has_key?(attr_name.to_sym)
                 value = substitute_values[attr_name.to_sym]
@@ -141,7 +141,7 @@ module Csv2Db
 
       # Contestadors specific method assuming the class with a predictable_id column to have a predictable_table
       # method returning the table name of the actual predictable type
-      def resolve_id_value(column_name, id_value, dependencies, instance)
+      def resolve_id_value(column_name, id_value, dependencies, instance, row)
         if column_name.eql?(:predictable_id)
            if id_value == 0
              puts "Predictable id 0" + self.predictable_table
@@ -153,7 +153,7 @@ module Csv2Db
         elsif column_name.eql?(:next_stage_id) # self referential, TODO include in separate hash constant
           return @csv_id_to_db_id_map[id_value]
         elsif column_name.eql?(:aggregate_root_id)
-          if (@row.field(:aggregate_root_type).eql?('group'))
+          if (row.field(:aggregate_root_type).eql?('group'))
             return dependencies[:predictable_championship_groups][id_value]
           else
             return dependencies[:predictable_championship_stages][id_value]

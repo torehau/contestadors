@@ -1,7 +1,7 @@
 # Be sure to restart your server when you modify this file
 
 # Specifies gem version of Rails to use when vendor/rails is not present
-RAILS_GEM_VERSION = '2.3.5' unless defined? RAILS_GEM_VERSION
+RAILS_GEM_VERSION = '2.3.14' unless defined? RAILS_GEM_VERSION
 
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
@@ -26,7 +26,7 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
-  config.gem "fastercsv", :version => '1.5.0'
+  #config.gem "fastercsv", :version => '1.5.0'
   config.gem "authlogic", :version => '2.1.3'
   config.gem 'rpx_now', :version => '0.6.12', :source => 'http://gemcutter.org'
   config.gem 'authlogic_rpx', :version => '1.1.1', :source => 'http://gemcutter.org'
@@ -34,7 +34,7 @@ Rails::Initializer.run do |config|
   config.gem "state_machine", :version => '0.9.0'
   config.gem "uuidtools", :version => '2.1.1'
   config.gem 'will_paginate', :version => '~> 2.3.12', :source => 'http://gemcutter.org'
-  config.gem 'statistics', :version => '0.1.1', :source => 'http://github.com/acatighera/statistics.git'
+  config.gem 'statistics', :version => '1.0.0'#, :source => 'http://github.com/acatighera/statistics.git'
   config.gem 'later_dude', :version => '0.3.1'
   config.gem 'hoptoad_notifier', :version => '2.2.2'
 #  config.gem "inherited_resources", :version => '0.9.5'

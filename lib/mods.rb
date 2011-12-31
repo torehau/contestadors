@@ -3,19 +3,28 @@ require 'iconv'
 class String
   # Iconv use borrowed from http://svn.robertrevans.com/plugins/Permalize/
   # Thanks!
+=begin
   def to_permalink(max_size = 127)
     permalink = (Iconv.new('US-ASCII//TRANSLIT', 'utf-8').iconv self).gsub(/[^\w\s\-\â€”]/,'').gsub(/[^\w]|[\_]/,' ').split.join('-').downcase
     permalink.slice(0, permalink.size < max_size ? permalink.size : max_size)
   end
+=end
+
+  def to_permalink(max_size = 127)
+    permalink = Iconv.iconv('ascii//translit//IGNORE', 'utf-8', self).first.gsub("'", "").gsub(/[^\x00-\x7F]+/, '').gsub(/[^a-zA-Z0-9-]+/, '-').gsub(/^-/, '').gsub(/-$/, '').downcase
+    permalink.slice(0, permalink.size < max_size ? permalink.size : max_size)
+  end
 
 # File lib/facets/style.rb, line 84
+=begin
   def self.snakecase(camel_cased_word)
     camel_cased_word.to_s.gsub(/::/, '/').
       gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
       gsub(/([a-z\d])([A-Z])/,'\1_\2').
       tr("-", "_").
       downcase
-  end  
+  end
+=end
 end
 
 class Object

@@ -53,12 +53,12 @@ namespace :predictable do
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
-      parser.each do |@row|
-        home_team = Predictable::Championship::Team.find_by_name(@row.field(:home_team_name))
-        away_team = Predictable::Championship::Team.find_by_name(@row.field(:away_team_name))
-        match = Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => home_team.id, :away_team_id => away_team.id})
-        match ||= Predictable::Championship::Match.find(:first, :conditions => {:description => @row.field(:match_descr), :home_team_id => away_team.id, :away_team_id => home_team.id})
-        match.settle_match(@row.field(:score))
+      parser.each do |row|
+        home_team = Predictable::Championship::Team.find_by_name(row.field(:home_team_name))
+        away_team = Predictable::Championship::Team.find_by_name(row.field(:away_team_name))
+        match = Predictable::Championship::Match.find(:first, :conditions => {:description => row.field(:match_descr), :home_team_id => home_team.id, :away_team_id => away_team.id})
+        match ||= Predictable::Championship::Match.find(:first, :conditions => {:description => row.field(:match_descr), :home_team_id => away_team.id, :away_team_id => home_team.id})
+        match.settle_match(row.field(:score))
         puts "... score and result set for match " + match.home_team.name + " - " + match.away_team.name + " " + match.score + " (" + match.result + ")"
         if match.is_group_match?
           @predictables_by_id[:group_matches][match.id] = match
@@ -81,13 +81,13 @@ namespace :predictable do
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
-      parser.each do |@row|        
-        group = Predictable::Championship::Group.find_by_name(@row.field(:group))
+      parser.each do |row|
+        group = Predictable::Championship::Group.find_by_name(row.field(:group))
         puts "Found group: " + group.name
-        team = Predictable::Championship::Team.find_by_name(@row.field(:team))
+        team = Predictable::Championship::Team.find_by_name(row.field(:team))
         puts "Found team: " + team.name
         group_table_position = Predictable::Championship::GroupTablePosition.find(:first, :conditions => {:predictable_championship_group_id => group.id, :predictable_championship_team_id => team.id})
-        group_table_position.settle(@row.field(:pos))
+        group_table_position.settle(row.field(:pos))
         
         puts group_table_position.pos.to_s + ". position group " + group_table_position.group.name + ": " + group_table_position.team.name
         @predictables_by_id[:group_positions][group_table_position.id] = group_table_position
@@ -101,9 +101,9 @@ namespace :predictable do
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
-      parser.each do |@row|
-        stage = Predictable::Championship::Stage.find_by_description(@row.field(:stage))
-        team = Predictable::Championship::Team.find_by_name(@row.field(:team))
+      parser.each do |row|
+        stage = Predictable::Championship::Stage.find_by_description(row.field(:stage))
+        team = Predictable::Championship::Team.find_by_name(row.field(:team))
         
         if stage and team
           stage_team = Predictable::Championship::StageTeam.find(:first, :conditions => {:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id})
