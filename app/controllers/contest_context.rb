@@ -5,8 +5,6 @@ module ContestContext
     @contest = Configuration::Contest.from_permalink_or_first_available(permalink)
     @before_contest_participation_ends = before_contest_participation_ends
     @role = role
-    if contest_id and contest_uuid
-      @contest_instance = ContestInstance.find_by_permalink_and_uuid(contest_id, contest_uuid)
-    end
+    @contest_instance = ContestInstance.find_by_permalink_and_uuid(contest_id, contest_uuid)
   end
 end
