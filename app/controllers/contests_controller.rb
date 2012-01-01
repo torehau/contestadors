@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class ContestsController < ApplicationController
   include ContestContext, ContestAccessChecker
   strip_tags_from_params :only =>  [:create, :update]
