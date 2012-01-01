@@ -30,7 +30,7 @@ Rails::Initializer.run do |config|
   config.gem "authlogic", :version => '2.1.3'
   config.gem 'rpx_now', :version => '0.6.12', :source => 'http://gemcutter.org'
   config.gem 'authlogic_rpx', :version => '1.1.1', :source => 'http://gemcutter.org'
-  config.gem "ruleby", :version => '0.6'
+  config.gem "ruleby", :version => '0.8'
   config.gem "state_machine", :version => '0.9.0'
   config.gem "uuidtools", :version => '2.1.1'
   config.gem 'will_paginate', :version => '~> 2.3.12', :source => 'http://gemcutter.org'
