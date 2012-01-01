@@ -60,4 +60,10 @@ namespace :app do
       end
     end
   end
+
+  desc "Reset the first user's password to 'inspect''"
+  task(:inspect_user => :environment) do
+    user = User.find(:all).first
+    user.update_attributes(:password => "inspect", :password_confirmation => "inspect")
+  end
 end
