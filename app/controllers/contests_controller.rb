@@ -7,6 +7,7 @@ class ContestsController < ApplicationController
   before_filter :require_admin, :only => [:edit, :update]
   helper LaterDude::CalendarHelper
 
+  # TODO include in index template: <%= navigation :contests unless @contest_instances.empty? %>
   def index
     @contest_instances = current_user.instances_of(@contest, @role.to_sym)
     @contest_instance = get_contest_instance_from_session
