@@ -36,7 +36,7 @@ module Predictable
 
         def rules
           rule :invalid_score,
-             OR ([Predictable::Championship::Match, :gm, m.home_team_score(&c{|hts| !is_valid_score?(hts)})],
+             OR([Predictable::Championship::Match, :gm, m.home_team_score(&c{|hts| !is_valid_score?(hts)})],
                  [Predictable::Championship::Match, :gm, m.away_team_score(&c{|ats| !is_valid_score?(ats)})]) do |v|
              
                @errors[v[:gm].id] = v[:gm].home_team_score + '-' + v[:gm].away_team_score
