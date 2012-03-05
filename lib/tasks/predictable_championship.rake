@@ -1,5 +1,3 @@
-require 'fastercsv'
-
 namespace :predictable do
   namespace :championship do
 
@@ -49,7 +47,7 @@ namespace :predictable do
     desc "Sets the score and result for matches listed in the CSV file."
     task(:set_match_scores => :environment) do
       file_name = File.join(File.dirname(__FILE__), '/predictable_championship_match_results.csv')
-      parser = FasterCSV.new(File.open(file_name, 'r'),
+      parser = CSV.new(File.open(file_name, 'r'),
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
@@ -77,7 +75,7 @@ namespace :predictable do
     desc "Sets the score and result for matches listed in the CSV file."
     task(:set_group_positions => :environment) do
       file_name = File.join(File.dirname(__FILE__), '/predictable_championship_group_positions.csv')
-      parser = FasterCSV.new(File.open(file_name, 'r'),
+      parser = CSV.new(File.open(file_name, 'r'),
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
@@ -97,7 +95,7 @@ namespace :predictable do
     desc "Sets the score and result for matches listed in the CSV file."
     task(:set_stage_teams => :environment) do
       file_name = File.join(File.dirname(__FILE__), '/predictable_championship_stage_teams.csv')
-      parser = FasterCSV.new(File.open(file_name, 'r'),
+      parser = CSV.new(File.open(file_name, 'r'),
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 

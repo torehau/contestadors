@@ -5,6 +5,8 @@
   <div id="contests"></div>
 <% else -%>
   <div id="contests">
-    <%= navigation :contests unless @contest_instances.empty? %>
+    <div class="contests_navigation">
+      <%= render_navigation :context => :contestlist unless @contest_instances.empty? %>
+    </div>
   </div>
 <% end -%>

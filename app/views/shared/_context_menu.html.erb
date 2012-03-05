@@ -1,27 +1,37 @@
-<% if current_user -%>
-  <% if current_controller.eql?('home') %>
-    <%= tabnav :home %>
-  <% elsif current_controller.eql?('predictions') -%>
-    <div class="progress">
-      <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
+
+  <% if current_controller_new 'home' %>
+    <div class="submenu_tabnav">
+      <%= render_navigation :context => :home %>
     </div>
-    <%= tabnav :predictions %>
-  <% elsif current_controller.eql?('contests') -%>
-    <% if ['index', 'new', 'create'].include?(current_action) -%>
-      <% if before_contest_participation_ends -%>
-        <%= render :partial => 'contests/create_new_contest_link' -%>
+  <% elsif current_controller_new 'predictions' -%>
+    <div class="submenu_tabnav">
+      <%= render_navigation :context => :predictions %>
+    </div>
+  <% elsif current_controller_new 'contests' -%>
+    <div class="submenu_tabnav">
+      <% if current_action_new ['index', 'new', 'create'] -%>
+        <% if before_contest_participation_ends -%>
+          <%= render :partial => 'contests/create_new_contest_link' -%>
+        <% end %>
+      <% end -%>
+      <% if current_action_new ['latest_results', 'upcoming_events'] -%>
+        <%= render_navigation :context => :contest %>
+      <% else %>
+        <%= render_navigation :context => :contests %>
       <% end %>
-      <%= tabnav :contests %>
-     <% else -%>
-       <%= tabnav :contest %>
-     <% end -%>
-  <% elsif current_controller.eql?('invitations') -%>
-    <% if ['pending', 'accepted'].include?(current_action) -%>
-      <%= tabnav :invitations %>
-     <% else -%>
-       <%= tabnav :contest %>
-     <% end -%>
-  <% elsif ['participants', 'score_tables'].include?(current_controller) -%>
-    <%= tabnav :contest %>
+    </div>
+  <% elsif current_controller_new 'invitations' -%>
+    <div class="submenu_tabnav">
+      <% if current_action_new ['pending', 'accepted'] -%>
+        <%= render_navigation :context => :invitations %>
+      <% else -%>
+        <%= render_navigation :context => :contest %>
+      <% end -%>
+    </div>
+  <% elsif current_controller_new 'participants' or current_controller_new 'score_tables' -%>
+    <div class="submenu_tabnav">
+      <%= render_navigation :context => :contest %>
+    </div>
+  <% else -%>
+     None
   <% end -%>
-<% end -%>

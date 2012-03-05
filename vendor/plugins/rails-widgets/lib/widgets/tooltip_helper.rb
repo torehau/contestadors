@@ -11,17 +11,17 @@ module Widgets
       opts[:id] ||= rand(1000)
       name ||= image_tag('widgets/tooltip_image.gif', :border => 0)
  
-      result = ''
-      result << tooltip_css
-      result << tooltip_link(opts[:id],name)
-      result << javascript_tag(tooltip_link_function(opts[:id]))
-      result << render_tooltip(name, tooltip_content(opts,&proc), opts)
+      result = ''.html_safe
+      result << tooltip_css.html_safe
+      result << tooltip_link(opts[:id],name).html_safe
+      result << javascript_tag(tooltip_link_function(opts[:id])).html_safe
+      result << render_tooltip(name, tooltip_content(opts,&proc), opts).html_safe
       
       if block_given?
-        concat result
+        safe_concat result.html_safe
         return nil
       else
-        return result
+        return result.html_safe
       end
     end
     
@@ -44,21 +44,21 @@ module Widgets
     end
     
     def tooltip_link_function(id)
-      "$('tooltip_link_#{id}').observe('click', function(event){toggleTooltip(event, $('tooltip_#{id}'))});"
+      "$('tooltip_link_#{id}').observe('click', function(event){toggleTooltip(event, $('tooltip_#{id}'))});".html_safe
     end
  
-    def close_tooltip_link(id, message = 'close')
-      message ||= 'close' # if nil is passed I'll force it
-      link_to_function message, "$('tooltip_#{id}').hide()"
+    def close_tooltip_link(id, message = 'close'.html_safe)
+      message ||= 'close'.html_safe # if nil is passed I'll force it
+      link_to_function message, "$('tooltip_#{id}').hide()".html_safe
     end
     
     def render_tooltip(name, content, opts)
-      html = tag('div', {:id => "tooltip_#{opts[:id]}", :class=>'tooltip', :style => 'display:none'}, true)
-      html << tag('div', {:id => "tooltip_content_#{opts[:id]}", :class=>'tooltip_content'},true)
-      html << content
-      html << '<small>' + close_tooltip_link(opts[:id], opts[:close_message]) + '</small>'     
-      html << '</div></div>' 
-      html
+      html = tag('div', {:id => "tooltip_#{opts[:id]}", :class=>'tooltip', :style => 'display:none'}, true).html_safe
+      html << tag('div', {:id => "tooltip_content_#{opts[:id]}", :class=>'tooltip_content'},true).html_safe
+      html << content.html_safe
+      html << '<small>'.html_safe + close_tooltip_link(opts[:id], opts[:close_message]) + '</small>'.html_safe     
+      html << '</div></div>'.html_safe 
+      html.html_safe
     end
   end
 end

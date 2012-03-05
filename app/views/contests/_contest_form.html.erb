@@ -2,7 +2,7 @@
   <div id="create_contest_form_container">
     <h3><%= @contest_instance.new_record? ? "Create a new Contest" : "Edit Contest" %></h3>
     <% url = @contest_instance.new_record? ? contests_path(@contest.permalink) : contest_path(:contest => @contest.permalink, :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid) -%>
-    <% form_for :contest_instance, @contest_instance, :url => url, :html => (@contest_instance.new_record? ? {} : {:method => :put}) do |form| -%>
+    <%= form_for :contest_instance, @contest_instance, :url => url, :html => (@contest_instance.new_record? ? {} : {:method => :put}) do |form| -%>
     <table>
       <tbody>
         <tr>

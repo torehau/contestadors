@@ -1,6 +1,6 @@
 <div id="login">
   <%= render "user_sessions/form" %>
-  <%= rpx_embed(:app_name => "contestadors", :return_url => user_sessions_url) %>
+  <%= raw RPXNow.embed_code("contestadors", user_sessions_url) %>
   <%#= link_to "Or create a Contestadors account &raquo;", new_account_path %>
 </div>
 <%= render :partial => "shared/content_slider" %>

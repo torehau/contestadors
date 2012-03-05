@@ -4,7 +4,7 @@
 
     <div class="knockout_stage_match">
       <% prefix = "stage[new_predictions][]" %>
-      <% fields_for prefix, match do |match_form| %>
+      <%= fields_for prefix, match do |match_form| %>
         <%= render :partial => p_pref('predicted_stage_team'), :locals => {:match => match, :team => match.home_team, :selected => selected, :invalidated => invalidated, :match_form => match_form, :current_stage => stage} %>
         <%= render :partial => p_pref('predicted_stage_team'), :locals => {:match => match, :team => match.away_team, :selected => selected, :invalidated => invalidated, :match_form => match_form, :current_stage => stage} %>
       <% end -%>

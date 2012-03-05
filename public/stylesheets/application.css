@@ -251,17 +251,7 @@ div.progressbar > div.progressbar_color_0 { background-color: /*#ACE97C;*/#9CC08
 
 /* -- Footer ------------------------------- */
 
-#footer-1 {
-  margin: 20px 0px -20px 0px;
-  clear: both;
-  float: left;
-  width:910px;
-  padding:10px 0px 0px 0px;
-  /*text-align: center;*/
-  border-top: 1px #88c6cf solid;
-}
-
-#footer-2 {
+#footer {
   margin: 0px 20px 0px 20px;
   clear: both;
   float: left;
@@ -358,26 +348,6 @@ padding-left: 40px;
 }
 #login form, #login h2, #registration form, #registration h2 {
     padding-left: 5px;
-}
-
-#about{
-   float: right;
-   width:600px;
-}
-
-#about h2#slogan {
-	/*padding: 0px 16px 0;*/
-	margin: 0;
-        color: #333;
-	font: bold 2em 'Trebuchet MS', Arial, Sans-serif;
-	letter-spacing: -1px;
-	text-transform: lowercase;
-	top: 0; left: 10px;
-        text-align: center;
-}
-#about h2#slogan span.slogan-blue {
-	color:#41686a;
-	padding-left: 0px;
 }
 
 /* -- Predictions -- */
@@ -625,12 +595,12 @@ padding-left: 40px;
 	color: #000;
         background: #fff;
         clear: both;
-	padding: 2px 0px 0px 10px;
+	padding: 2px 0px 0px 0px;
         font-size: 110%;
 }
 
 .main_tabnav ul {
-        margin: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 10px;
 	padding: 0px 0px 0px 0px;
 /*        height: 23px;
         min-height: 23px;*/
@@ -639,7 +609,7 @@ padding-left: 40px;
 
 .main_tabnav li {
 	display:inline;
-        margin: 0px 0px 0px 0px;
+        margin: 0px 0px 0px 10px;
 	list-style-type: none; 
 /*        height: 23px;
         min-height: 23px;*/
@@ -653,8 +623,24 @@ padding-left: 40px;
         margin: 0;
         text-decoration: none;}
 
-.main_tabnav a, main_tabnav a.active {
-	background: #fff;
+.main_tabnav a.selected {
+        padding: 3px 10px 3px 10px;
+	color: #ffffff;
+	background: #9cbcda;/*88c6cf*/
+	margin: 0;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        /*padding: 3px 5px 3px 6px;*/
+        /*border-top: 1px solid #88c6cf;*/
+        /*border-right: 1px solid #88c6cf;*/
+	text-decoration: none;
+}
+
+.main_tabnav a {
         font-weight: bold;
 /*        height: 23px;
         min-height: 23px;*/
@@ -668,19 +654,12 @@ padding-left: 40px;
         /*padding: 3px 5px 3px 6px;*/
         /*border-top: 1px solid #88c6cf;*/
         /*border-right: 1px solid #88c6cf;*/
-	text-decoration: none; }
-
-.main_tabnav a {
+	text-decoration: none;
         padding: 3px 10px 1px 10px;
         /*border-bottom: 1px solid #88c6cf;*/
 }
 
-.main_tabnav a.active {
-        padding: 3px 10px 3px 10px;
-	color: #ffffff;
-	background: #9cbcda;/*88c6cf*/
-        /*border-bottom: 1px solid #eeeeee;*/
-}
+
 
 .main_tabnav a:hover {
 	color: #41686a;
@@ -689,7 +668,7 @@ padding-left: 40px;
 /*.main_tabnav a:visited {
 	color: #000000; }*/
 
-.main_tabnav a.active:hover {
+.main_tabnav a.selected:hover {
 	color: #ffffff;
         background: #9cbcda;}
 
@@ -700,23 +679,19 @@ padding-left: 40px;
         min-height: 23px;
 }
 
-.predictions_tabnav, .invitations_tabnav, .home_tabnav, .contests_tabnav, .contest_tabnav {
+.submenu_tabnav {
 	color: #000;
 	margin: 0px 0px 0px 0px;
 	padding: 0px 0px 0px 15px;
         overflow: hidden;
 }
 
-.predictions_tabnav ul, .invitations_tabnav ul, .home_tabnav ul, .contests_tabnav ul, .contest_tabnav ul {
+.submenu_tabnav ul {
 	margin: 0px;
 	padding: 2px 0px 0px 0px;
 }
 
-.predictions_tabnav li,
-.invitations_tabnav li,
-.home_tabnav li,
-.contests_tabnav li,
-.contest_tabnav li {
+.submenu_tabnav li {
 	display: inline;
 	overflow: hidden;
         padding-right: 2px;
@@ -724,11 +699,7 @@ padding-left: 40px;
         padding: 0px 0px 0px 0px;*/
 	list-style-type: none; }
 
-.predictions_tabnav li span.disabled,
-.invitations_tabnav li span.disabled,
-.home_tabnav li span.disabled,
-.contests_tabnav li span.disabled,
-.contest_tabnav li span.disabled{
+.submenu_tabnav li span.disabled {
         color: #888888;
         /*background: #FAFAFA;*/
         border-bottom: none;
@@ -736,29 +707,31 @@ padding-left: 40px;
         margin: 0;
         text-decoration: none;}
 
-.predictions_tabnav a, .predictions_tabnav a.active,
-.invitations_tabnav a, .invitations_tabnav a.active,
-.home_tabnav a, .home_tabnav a.active,
-.contests_tabnav a, .contests_tabnav a.active,
-.contest_tabnav a, .contest_tabnav a.active {
+.submenu_tabnav a, .submenu_tabnav a.selected {
 	background: #9cbcda;
 	font-weight: bold;
 	padding: 3px 5px 0px 5px;
 	margin: 5px 0px 0px 0px;
+    -moz-border-radius-topleft: 0px;
+    -moz-border-radius-topright: 0px;
+    -webkit-border-top-left-radius: 0px;
+    -webkit-border-top-right-radius: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
 	text-decoration: none; }
 
-.predictions_tabnav a.active, .invitations_tabnav a.active, .home_tabnav a.active, .contests_tabnav a.active, .contest_tabnav a.active {
+.submenu_tabnav a.selected {
 	color: #ffffff;
         background: #9cbcda; }
 
-.predictions_tabnav a:hover, .invitations_tabnav a:hover, .home_tabnav a:hover, .contests_tabnav a:hover, .contest_tabnav a:hover {
+.submenu_tabnav a:hover {
 	color: #41686a;
 	background: #9cbcda; }
 
 /*.groups_tabnav a:visited {
 	color: #000000; }*/
 
-.predictions_tabnav a.active:hover, .invitations_tabnav a.active:hover, .home_tabnav a.active:hover, .contests_tabnav a.active:hover, .contest_tabnav a.active:hover {
+.submenu_tabnav a.selected:hover {
 	color: #ffffff; }
 
 /***/
@@ -1020,7 +993,7 @@ form.contest_create {
   background: #fff;
 }
 
-.contests_navigation a.active, .contests_navigation a.active:hover {
+.contests_navigation a.selected, .contests_navigation a.selected:hover {
   /*font-weight: bold;*/
   /*font-size: 110%;*/
   font-weight: bold;
@@ -1544,7 +1517,7 @@ form.contest_create {
   color: #41686a;
 }
 
-.account_edit_navigation a.active, .account_edit_navigation a.active:hover {
+.account_edit_navigation a.selected, .account_edit_navigation a.selected:hover {
   /*font-weight: bold;*/
   /*font-size: 110%;*/
   background: #9cbcda;

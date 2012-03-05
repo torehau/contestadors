@@ -8,14 +8,19 @@ class User < ActiveRecord::Base
   end
   has_many :prediction_summaries do#, :class_name => "Prediction::Summary", :foreign_key => "user_id", :dependent => :destroy do
     def for_contest(contest)
+      #where(:configuration_contest_id => contest.id).first
       find(:first, :conditions => {:configuration_contest_id => contest.id})
     end
   end
   has_many :predictions do#, :class_name => "Prediction", :foreign_key => "user_id" do
     def for_item(item)
+      #TODO include when moving to Rails 3
+      #where(:configuration_predictable_item_id => item.id).first
       find(:first, :conditions => {:configuration_predictable_item_id => item.id})
     end
     def for_items(items)
+      #TODO include when moving to Rails 3
+      #where(:configuration_predictable_item_id => items).all
       find(:all, :conditions => {:configuration_predictable_item_id => items})
     end
     def for_items_by_item_id(items)
@@ -31,9 +36,13 @@ class User < ActiveRecord::Base
       for_set(set).group_by(&:configuration_predictable_item_id)
     end
     def for_category(category)
+      #TODO include when moving to Rails 3
+      #where(:configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id).all
       find(:all, :conditions => {:configuration_predictable_item_id => category.predictable_items.collect{|pi| pi.id}})
     end
     def with_value_in_set(predicted_value, set)
+      #TODO include when moving to Rails 3
+      #where(:predicted_value => predicted_value,:configuration_predictable_item_id => set.predictable_items.collect{|pi| pi.id}).first
       find(:first, :conditions => {:predicted_value => predicted_value,
                                    :configuration_predictable_item_id => set.predictable_items.collect{|pi| pi.id}})
     end
@@ -161,7 +170,7 @@ class User < ActiveRecord::Base
 
   def deliver_password_reset_instructions!
     reset_perishable_token!
-    Notifier.deliver_password_reset_instructions(self)
+    Notifier.password_reset_instructions(self).deliver
   end
 
 	# before_merge_rpx_data provides a hook for application developers to perform data migration prior to the merging of user accounts.

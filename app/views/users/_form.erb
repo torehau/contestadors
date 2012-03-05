@@ -1,5 +1,5 @@
 <h3><%= title %></h3>
-<% if ["new", "create"].include?(current_action) -%>
+<% if current_action_in? ["new", "create"] -%>
   By submitting the form below you confirm that you accept the <%= link_to "Terms of Use", home_path("terms"), :target => "_blank" %>
   and <%= link_to "Privacy Policy", home_path("privacy"), :target => "_blank" %> conditions for Contestadors user accounts.
 <% else -%>
@@ -7,7 +7,7 @@
 <% end -%>
 <br/><br/>
 
-<% form_for @user, :url => account_path do |form| %>
+<%= form_for @user, :url => account_path do |form| %>
   <%#= @parameters if @parameters %>
   <table>
     <tbody>
@@ -31,7 +31,7 @@
         <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
         <td><%= form.password_field :password_confirmation %></td>
       </tr>
-      <% if ["new", "create"].include?(current_action) -%>
+      <% if current_action_in? ["new", "create"] -%>
         <tr>
           <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
             Type the words in the image

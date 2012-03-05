@@ -1,9 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
-      xmlns:og="http://opengraphprotocol.org/schema/"
-      xmlns:fb="http://www.facebook.com/2008/fbml">
+<html>
 <head>
   <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
   <title>Contestadors - <%= window_title %></title>
@@ -24,10 +21,13 @@
     <div class="container">
       <%= render :partial => "shared/header" %>
       <% if current_user -%>
-        <% tabnav :main do %>
-          <%= render :partial => "shared/context_menu" %>
-          <%= render :partial => "shared/content" %>
-        <% end -%>
+        <div class="main_tabnav">
+          <%= render_navigation %>
+          <div class="main_tabnav_content">
+            <%= render :partial => "shared/context_menu" %>
+          </div>
+        </div>
+        <%= render :partial => "shared/content" %>
       <% else -%>
         <%= render :partial => "shared/content" %>        
       <% end -%>

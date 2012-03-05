@@ -1,11 +1,40 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  def footer_div_class
-    if current_controller.eql?("predictions") and @aggregate_root_type.eql?("group")
-      "footer-1"
-    else
-      "footer-2"
+  # http://forrst.com/posts/Rails_3_Find_the_current_controller_from_within-Ik0
+  def current_controller?( controller, actions=[] )
+    page = ActionController::Routing::Routes.recognize_path request.fullpath
+    controller_found = controller == page[:controller]
+    ( !actions.empty? ) ? (actions.include?(page[:action]) && controller_found) : controller_found
+  end
+
+  def current_action?(action)
+    page = ActionController::Routing::Routes.recognize_path request.fullpath
+    action == page[:action]
+  end
+
+  def current_action_in?(actions=[])
+    page = ActionController::Routing::Routes.recognize_path request.fullpath
+    actions.include? page[:action]
+  end
+
+  def current_context?(actions_by_controller = {}, before_prediction_ends_actions_by_controller = {})
+    actions_by_controller.each do |controller, actions|
+      return true if current_controller? controller, actions
     end
+
+    if before_contest_participation_ends
+      before_prediction_ends_actions_by_controller.each do |controller, actions|
+        return true if current_controller? controller, actions
+      end
+    end
+    false
+  end
+
+  def current_controller_or_context?(controllers = [], actions_by_controller = {}, before_prediction_ends_actions_by_controller = {})
+    controllers.each do |controller|
+      return true if current_controller? controller
+    end
+    current_context?(actions_by_controller, before_prediction_ends_actions_by_controller)
   end
 
   def not_signed_in_message

@@ -1,5 +1,5 @@
 class UserSession < Authlogic::Session::Base
-  rpx_key RPX_API_KEY
+  rpx_key RPXNow.api_key
 
 private
 

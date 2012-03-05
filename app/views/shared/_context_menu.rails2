@@ -1,0 +1,29 @@
+<% if current_user -%>
+  <% if current_controller? 'home' %>
+    tabnav home
+  <% elsif current_controller? 'predictions' -%>
+    <div class="progress">
+      <div class="progresslabel">Completed:</div> <%= progressbar @progress %>
+    </div>
+    <%= render_navigation :context => :predictions %>
+  <% elsif current_controller? 'contests' -%>
+    <% if current_action_in? ['index', 'new', 'create'] -%>
+      <% if before_contest_participation_ends -%>
+        <%= render :partial => 'contests/create_new_contest_link' -%>
+      <% end %>
+      tabnav contests
+     <% else -%>
+       tabnav contests
+     <% end -%>
+  <% elsif current_controller? 'invitations' -%>
+    <% if current_action_in? ['pending', 'accepted'] -%>
+      tabnav invitations
+     <% else -%>
+       tabnav contests
+     <% end -%>
+  <% elsif current_controller? 'participants' or current_controller? 'score_tables' -%>
+    tabnav contests
+  <% else -%>
+     None
+  <% end -%>
+<% end -%>

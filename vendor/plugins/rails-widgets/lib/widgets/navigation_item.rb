@@ -3,7 +3,7 @@ module Widgets
     include Highlightable
     include Disableable
     
-    attr_accessor :name, :link, :html, :function, :details
+    attr_accessor :name, :link, :html, :function
     
     def initialize(opts={})
       @name = opts[:name] 
@@ -11,8 +11,7 @@ module Widgets
       @html = opts[:html] || {} 
       @function = opts[:function] || {}
       @html[:title] = opts[:title] 
-      @html[:target] = opts[:target]
-      @details = opts[:details] || []
+      @html[:target] = opts[:target]      
      
       yield(self) if block_given?
       
@@ -25,8 +24,7 @@ module Widgets
     def function_to(f); @function = f; end
     def named(n); @name = n; end
     def titled(t); @html[:title] = t; end 
-    def new_window(n); html[:target] = n ? '_blank' : nil; end
-    def detailed_info(d); @details = d; end
+    def new_window(n); html[:target] = n ? '_blank' : nil; end    
        
     def link?
       @link && !@link.empty?

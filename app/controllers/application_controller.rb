@@ -4,8 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free World Cup Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller, :current_action, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
-  filter_parameter_logging :password, :password_confirmation
+  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :matches_current_context, :current_aggregate_root_id, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
   rescue_from NoMethodError, :with => :handle_faulty_url
@@ -21,12 +20,24 @@ private
       @current_user = current_user_session && current_user_session.record
     end
 
-    def current_controller
-      request.path_parameters['controller']
+    def current_controller_new(controller)
+      controller == params[:controller]
     end
 
-    def current_action
-      request.path_parameters['action']
+    def current_action_new(actions=[])
+      actions.include? params[:action]
+    end
+
+    def matches_current_context(always_conditions, conditions_before_prediction_ends = [], conditions_after_prediction_ends = [])
+      is_conditions_matched? always_conditions or is_conditions_matched? conditions_before_prediction_ends or is_conditions_matched? conditions_before_prediction_ends
+    end
+
+    def is_conditions_matched?(conditions)
+      conditions.length > 0 and conditions.index{|hc| hc.matches params}
+    end
+
+    def current_aggregate_root_id
+      params[:aggregate_root_id]
     end
 
     def require_contest
@@ -129,8 +140,9 @@ private
   end
 
   def handle_faulty_url(exception)
-    flash[:alert] = "An error occured when handling your request. The provided url was not recognized."
+    flash[:alert] = "An error occured when handling your request. The provided url was not recognized." + exception.to_s #TODO remove exception.to_s
     notify_hoptoad(exception)
+    Rails.logger.warn " **** Exception caught: " + exception.to_s
     redirect_to (current_user ? edit_account_path : root_path)
   end
 end

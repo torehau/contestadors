@@ -1,0 +1,1 @@
+Contestadors::Application.config.cookie_secret = '4dd2799cdc7208e2574fd3c647ff2c99480429dfb5637429cae85030ea6e895033ffbcabc6d7549a882989842a9c48400fb40d4fa5f8d2f4308959eb5e64a235'
