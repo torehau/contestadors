@@ -1,4 +1,6 @@
 class ContestInstance < ActiveRecord::Base
+  before_save :init_identifiers
+  after_create :make_admin_first_participant
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => "configuration_contest_id"
   belongs_to :admin, :class_name => "User", :foreign_key => "admin_user_id"
   has_many :invitations
@@ -11,21 +13,13 @@ class ContestInstance < ActiveRecord::Base
   validates_presence_of :name, :admin_user_id, :configuration_contest_id
   validates_length_of :description, :maximum => 1000
 
-  def before_save
-    self.permalink = self.name.to_permalink
-    self.uuid = get_unique_uuid
-  end
-
-  def after_create
-    Participation.create!(:user_id => self.admin.id, :contest_instance_id => self.id, :active => true)
-  end
 
   def self.default_name(contest, admin_user)
     "My " + contest.name + " Prediction Contest"
   end
 
   def self.default_invitation_message(contest, admin_user)
-    admin_user.name + " invites you to join a prediction contest at Contestadors for the 2010 FIFA World Cup."
+    admin_user.name + " invites you to join a prediction contest at Contestadors for the " + contest.name + " Soccer Tournament."
   end
 
   def eql?(other)
@@ -88,6 +82,15 @@ class ContestInstance < ActiveRecord::Base
   end
 
 private
+
+  def init_identifiers
+    self.permalink = self.name.to_permalink
+    self.uuid = get_unique_uuid
+  end
+
+  def make_admin_first_participant
+    Participation.create!(:user_id => self.admin.id, :contest_instance_id => self.id, :active => true)
+  end
 
   def get_unique_uuid(timestamp = Time.now.to_f)
     uuid = UUIDTools::UUID.md5_create(UUIDTools::UUID_DNS_NAMESPACE, get_seed(timestamp)).to_s

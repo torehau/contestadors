@@ -8,9 +8,9 @@
   <% flash.each do |key,value| %>
 		<div id="flash" class="flash_<%= key %>" >
 		  <% if key.to_s == 'alert' -%>
-			  <span class="message">Woops: <%= value %></span>
+			  <span class="message">Woops: <%= value.html_safe %></span>
 			<% else -%>
-			  <span class="message">Note: <%= value %></span>
+			  <span class="message">Note: <%= value.html_safe %></span>
 			<% end -%>
 		</div>
 	<% end -%>

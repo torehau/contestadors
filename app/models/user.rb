@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  after_create :add_prediction_summary_for_available_contests
   acts_as_authentic do |c|
     # enable Authlogic_RPX account merging (false by default, if this statement is not present)
     c.account_merge_enabled true
@@ -8,8 +9,9 @@ class User < ActiveRecord::Base
   end
   has_many :prediction_summaries do#, :class_name => "Prediction::Summary", :foreign_key => "user_id", :dependent => :destroy do
     def for_contest(contest)
-      #where(:configuration_contest_id => contest.id).first
-      find(:first, :conditions => {:configuration_contest_id => contest.id})
+      where(:configuration_contest_id => contest.id).first
+      ##summary ||= add_summary(contest)
+      #find(:first, :conditions => {:configuration_contest_id => contest.id})
     end
   end
   has_many :predictions do#, :class_name => "Prediction", :foreign_key => "user_id" do
@@ -86,8 +88,17 @@ class User < ActiveRecord::Base
     prediction_summaries.for_contest(contest)
   end
 
+  def add_summary(contest)
+    summary = PredictionSummary.new
+    summary.user = self
+    summary.contest = contest
+    summary.save!
+    summary
+  end
+
   def next_available_prediction_state(contest)
     summary = self.summary_of(contest)
+    summary ||= add_summary(contest)
     prediction_state = contest.prediction_state(summary.state)
     next_prediction_state = prediction_state.next
     (next_prediction_state ? next_prediction_state : prediction_state)
@@ -242,16 +253,7 @@ class User < ActiveRecord::Base
 
 protected
 
-  def after_create
-    add_prediction_summary_for_available_contests
-  end
-
   def add_prediction_summary_for_available_contests
-    Configuration::Contest.all_available.each do |contest|
-      summary = PredictionSummary.new
-      summary.user = self
-      summary.contest = contest
-      summary.save!
-    end
+    Configuration::Contest.all_available.each {|contest| add_summary(contest)}
   end
 end

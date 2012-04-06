@@ -1,8 +1,9 @@
 module Predictable
   module Championship
     class StageAggregateBuilder
-      def initialize(stage_permalink)
+      def initialize(stage_permalink, contest)
         @root = Stage.from_permalink(stage_permalink)
+        @contest = contest
       end
 
       # deprecated not in use
@@ -17,7 +18,7 @@ module Predictable
 
       # deprecated to simple
       def build_from_existing(user)
-        KnockoutStageResolver.new(user).predicted_stages(@root)
+        KnockoutStageResolver.new(user, @contest).predicted_stages(@root)
       end
     end
   end

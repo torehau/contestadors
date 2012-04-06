@@ -10,7 +10,7 @@ module Predictable
       # since all aggregates of this type should be retreived in addition to the current one.
       def get(aggregate_root_id)
         @aggregate = new_aggregate(aggregate_root_id)
-        KnockoutStageResolver.new(@user).predicted_stages(@aggregate)
+        KnockoutStageResolver.new(@user, @contest).predicted_stages(@aggregate)
       end
 
     protected

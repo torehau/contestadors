@@ -1,0 +1,5 @@
+<div class="euro_knockout_stages">
+  <% @result.all_roots.each do |stage| -%>
+    <%= render :partial => p_pref('knockout_stage_matches'), :locals => {:stage => stage, :form => form} %>
+  <% end -%>
+</div>

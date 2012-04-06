@@ -27,6 +27,7 @@ class ContestsController < ApplicationController
   def new
     @contest_instance = ContestInstance.new(:name => ContestInstance.default_name(@contest, current_user),
                     :description => ContestInstance.default_invitation_message(@contest, current_user))
+    flash.now[:notice] = "Create a new contest for others to join. The name and message you provide below will be included in the email to people you invite."
   end
 
   def create
@@ -90,9 +91,9 @@ protected
   def set_no_contests_message
     if @contest_instances.empty?
       @no_contests_message = case @role.to_sym
-        when :admin then "You have not created any contests yet"
-        when :member then "You have not accepted or recieved any contest invitations yet"
-        else "You do not participate in any contests yet"
+        when :admin then "You have not created any contests for the '#{@contest.name}' tournament yet"
+        when :member then "You have not accepted or recieved any '#{@contest.name}' contest invitations yet"
+        else "You do not participate in any contests for the '#{@contest.name}' tournament yet"
       end
     end
   end

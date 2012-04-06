@@ -49,12 +49,19 @@ SimpleNavigation::Configuration.run do |navigation|
     #                            when the item should be highlighted, you can set a regexp which is matched
     #                            against the current URI.  You may also use a proc, or the symbol <tt>:subpath</tt>. 
     #
-    primary.item :home, 'Home', home_path("about"), :highlights_on => lambda { current_controller_new 'home' }
+    if include_tournaments_menu_item
+      primary.item :home, 'Tournaments', tournaments_path, :highlights_on => lambda { current_controller_new 'tournaments' }
+    end
+    primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }
     primary.item :predictions, 'Predictions', prediction_menu_link, :highlights_on => lambda { current_controller_new 'predictions' }
-    primary.item :invitations, 'Invitations', pending_invitations_path("championship"), :if => Proc.new { before_contest_participation_ends }, :highlights_on => lambda { current_controller_new 'invitations' and current_action_new ['pending', 'accepted'] }
-    primary.item :contests, 'Contests', contests_path("championship", "all"), :highlights_on => lambda { current_context?({'contests' => ['index']}, {'contests' => ['new', 'create']}) }
+
+    if before_contest_participation_ends
+      primary.item :invitations, 'Invitations', pending_invitations_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'invitations' and current_action_new ['pending', 'accepted'] }
+    end
+    #primary.item :contests, 'Contests', contests_path("championship", "all"), :highlights_on => lambda { current_context?({'contests' => ['index']}, {'contests' => ['new', 'create']}) }
+    primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
     selected = selected_contest
-    if selected
+    if selected and selected.contest.id == current_tournament.id
       primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
             :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new")])} # TODO include case  t.highlights_on :controller => "invitations", :action => "index", :role => "admin"
       #current_controller_or_context?(["score_tables", "participants"], {"contests" => ["show", "upcoming_events", "latest_results"]}, {"contests" => ["edit", "update"], "invitations" => ["new"]})} # TODO include case  t.highlights_on :controller => "invitations", :action => "index", :role => "admin"

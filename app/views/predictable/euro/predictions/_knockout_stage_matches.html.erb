@@ -1,0 +1,25 @@
+<%#
+# Displays the matches of the given stage in a column
+%>
+<div class="knockout_stage_container">
+  <% selected = is_stage_selected?(stage, @aggregate, @wizard) -%>
+  <% predicted_stage = @result.aggregates[:predicted][stage.id]; predicted = !predicted_stage.nil? -%>
+  <% invalidated = @result.aggregates[:invalidated].include?(stage.id) -%>
+  <div class="<%= knockout_stage_label_div_class(selected, predicted) %>">
+    <%= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted,  :label => stage.description, :form => form} %>
+  </div>
+  <%#*<div class="knockout_stage_edit_options">%>
+    <%#= render :partial => p_pref('stage_edit_options'), :locals => {:stage => stage, :selected => selected, :predicted => predicted, :form => form} %>
+  <%#*</div>%>
+  
+  <%= render :partial => p_pref('stage_matches_top_spacing'), :locals => {:stage => stage} %>
+  <% matches = predicted ? predicted_stage.matches : stage.matches; max_index = matches.size - 1 -%>
+  <% matches.sort{|a, b| a.rank <=> b.rank}.each_with_index do |match, i| -%>
+    <%= render :partial => p_pref('stage_match'), :locals => {:match => match, :predicted => predicted, :selected => selected, :invalidated => invalidated, :stage => stage} %>
+    <%= render :partial => p_pref('stage_matches_spacing'), :locals => {:stage => stage} if i < max_index %>
+  <% end -%>
+  <% if stage.description.eql?("Final") -%>
+    <%= render :partial => p_pref('stage_matches_spacing'), :locals => {:stage => stage} %>
+  <% end -%>
+</div>
+<%= render :partial => p_pref('next_stage_qualification'), :locals => {:stage => stage} %>

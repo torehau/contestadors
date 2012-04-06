@@ -43,23 +43,35 @@ class InvitationsController < ApplicationController
   end
 
   def pending
-    @contest_invitations_grid = initialize_grid(Invitation,
-      :include => [:contest_instance, :sender],
-      :conditions => {:existing_user_id => current_user.id, :state => Invitation.not_accepted_states},
-      :order => 'invitations.created_at',
-      :order_direction => 'desc',
-      :per_page => 10
-    )
+    invitations = Invitation.where(:existing_user_id => current_user.id, :state => Invitation.not_accepted_states).select{|inv| inv if inv.contest.id == @contest.id}
+
+    if invitations.empty?
+      @no_invitations_message = "You have no pending '#{@contest.name}' contest invitations"
+    else
+      @contest_invitations_grid = initialize_grid(Invitation,
+        :include => [:contest_instance, :sender],
+        :conditions => {:id => invitations},
+        :order => 'invitations.created_at',
+        :order_direction => 'desc',
+        :per_page => 10
+      )
+    end
   end
 
   def accepted
-    @contest_invitations_grid = initialize_grid(Invitation,
-      :include => [:contest_instance, :sender, :participation],
-      :conditions => {:existing_user_id => current_user.id, :state => Invitation.accepted_state},
-      :order => 'participations.created_at',
-      :order_direction => 'desc',
-      :per_page => 10
-    )
+    invitations = Invitation.where(:existing_user_id => current_user.id, :state => Invitation.accepted_state).select{|inv| inv if inv.contest.id == @contest.id}
+
+    if invitations.empty?
+      @no_invitations_message = "You have not accepted or received any '#{@contest.name}' contest invitations"
+    else
+      @contest_invitations_grid = initialize_grid(Invitation,
+        :include => [:contest_instance, :sender, :participation],
+        :conditions => {:id => invitations},
+        :order => 'participations.created_at',
+        :order_direction => 'desc',
+        :per_page => 10
+      )
+    end
   end
 
 protected

@@ -18,11 +18,11 @@ module Predictable
     protected
 
       def get_aggregate_root(aggregate_root_id)
-        Group.find_by_name(aggregate_root_id)
+        Group.where(:name => aggregate_root_id).last
       end
 
       def get_aggregate_root_builder(aggregate_root_id)
-        GroupAggregateBuilder.new(aggregate_root_id)
+        GroupAggregateBuilder.new(aggregate_root_id, @contest)
       end
 
       def validate_new_predictions
@@ -33,7 +33,7 @@ module Predictable
       def save_new_aggregate_predictions
         save_group_match_predictions
         save_table_position_predictions
-        save_round_of_16_promotion_predictions
+        save_next_stage_promotion_predictions
       end
 
       def notify
@@ -41,8 +41,8 @@ module Predictable
       end
 
       def get_existing_predictions
-        return nil unless @user
-        set = Configuration::Set.find_by_description "Teams through to Round of 16"
+        return nil unless @user and @contest
+        set = promotion_stage_set
         
         winner_stage_team_item = set.predictable_item(@root.winner_stage_team.id)
         winner_prediction = @user.prediction_for(winner_stage_team_item)
@@ -63,24 +63,35 @@ module Predictable
     private
 
       def save_group_match_predictions
-        set = Configuration::Set.find_by_description "Group #{@root.name} Matches"
+        #set = Configuration::Set.find_by_description "Group #{@root.name} Matches"
+        set = @contest.set("Group #{@root.name} Matches")
+
         Prediction.save_predictions(@user, set, @root.matches_by_id) do |match|
           match.home_team_score + '-' + match.away_team_score
         end
       end
 
       def save_table_position_predictions
-        set = Configuration::Set.find_by_description "Group #{@root.name} Table"
+        #set = Configuration::Set.find_by_description "Group #{@root.name} Table"
+        set = @contest.set("Group #{@root.name} Table")
+
         Prediction.save_predictions(@user, set, predictables_by_id(@root.table_positions)) do |table_position|
           table_position.display_order.to_s
         end
       end
 
-      def save_round_of_16_promotion_predictions
-        set = Configuration::Set.find_by_description "Teams through to Round of 16"
+      def save_next_stage_promotion_predictions
+        #set = Configuration::Set.find_by_description "Teams through to Round of 16"
+        set = promotion_stage_set
+
         Prediction.save_predictions(@user, set, @root.stage_teams_by_id) do |stage_team|
           stage_team.team.id.to_s
         end
+      end
+
+      def promotion_stage_set
+        stage = @root.promotion_stage
+        @contest.set("Teams through to #{stage.description}")#Configuration::Set.find_by_description "Teams through to Round of 16"
       end
     end
   end

@@ -13,6 +13,7 @@ module Configuration
     end
     has_many :prediction_summaries
     has_many :contest_instances, :foreign_key => "configuration_contest_id"
+    has_many :invitations, :through => :contest_instances
 
     def self.all_available
       now = Time.now
@@ -24,12 +25,33 @@ module Configuration
       contest ||= self.all_available.first
     end
 
+    def set(description)
+      self.sets.where(:description => description).first
+    end
+
     def prediction_state(state_name)
-      prediction_states.by_state_name(state_name)
+      self.prediction_states.by_state_name(state_name)
+    end
+
+    #def last_prediction_state
+    #  self.prediction_states.where(:next_state_name => nil).first
+    #end
+
+    def first_prediction_state(aggregate_root_type)
+      first_state = self.prediction_states.where(:aggregate_root_type => aggregate_root_type).first
+      first_state.state_name == "i" ? first_state.next : first_state
+    end
+
+    def last_prediction_state(aggregate_root_type)
+      self.prediction_states.where(:aggregate_root_type => aggregate_root_type).last
     end
 
     def prediction_state_by_aggregate_root(aggregate_root_type, aggregate_root_id)
       prediction_states.by_aggregate_root(aggregate_root_type, aggregate_root_id)
+    end
+
+    def unique_aggregate_root_ids(aggregate_root_type)
+      prediction_states.where(:aggregate_root_type => aggregate_root_type).collect {|state| state.aggregate_root_id}.uniq
     end
 
     def wizard_module

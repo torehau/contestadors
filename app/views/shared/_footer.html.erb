@@ -2,17 +2,35 @@
 <div id="footer">
   <div id="footer-contents-left">
     <p>
-      <%= link_to 'About', home_path('about') %>
+      <% if current_action_new 'about' %>
+        <%= link_to 'About', home_path('about'), :class => "selected" %>
+      <% else %>
+        <%= link_to 'About', home_path('about') %>
+      <% end %>
       |
-      <%= link_to 'Rules', home_path('rules') %>
+      <% if current_action_new 'terms' %>
+        <%= link_to 'Terms', home_path('terms'), :class => "selected" %>
+      <% else %>
+        <%= link_to 'Terms', home_path('terms') %>
+      <% end %>
       |
-      <%= link_to 'Terms', home_path('terms') %>
+      <% if current_action_new 'privacy' %>
+        <%= link_to 'Privacy', home_path('privacy'), :class => "selected" %>
+      <% else %>
+        <%= link_to 'Privacy', home_path('privacy') %>
+      <% end %>
       |
-      <%= link_to 'Privacy', home_path('privacy') %>
+      <% if current_action_new 'contact' %>
+        <%= link_to 'Contact', home_path('contact'), :class => "selected" %>
+      <% else %>
+        <%= link_to 'Contact', home_path('contact') %>
+      <% end %>
       |
-      <%= link_to 'Contact', home_path('contact') %>
-      |
-      <%= link_to 'FAQ', home_path('faq') %>
+      <% if current_action_new 'faq' %>
+        <%= link_to 'FAQ', home_path('faq'), :class => "selected" %>
+      <% else %>
+        <%= link_to 'FAQ', home_path('faq') %>
+      <% end %>
     </p>
   </div>
   <div id="footer-contents-center">

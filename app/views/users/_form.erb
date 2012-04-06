@@ -1,5 +1,5 @@
 <h3><%= title %></h3>
-<% if current_action_in? ["new", "create"] -%>
+<% if current_action_new ["new", "create"] -%>
   By submitting the form below you confirm that you accept the <%= link_to "Terms of Use", home_path("terms"), :target => "_blank" %>
   and <%= link_to "Privacy Policy", home_path("privacy"), :target => "_blank" %> conditions for Contestadors user accounts.
 <% else -%>
@@ -12,11 +12,11 @@
   <table>
     <tbody>
       <tr>
-        <td class="<%= @user.errors.on(:name) ? "invalid" : "" %>"><%= form.label :name, form.object.new_record? ? nil : "Contest Display Name" %></td>
+        <td class="<%= !@user.errors[:name].empty? ? "invalid" : "" %>"><%= form.label :name, form.object.new_record? ? nil : "Contest Display Name" %></td>
         <td><%= form.text_field :name %></td>
       </tr>
       <tr>
-        <td class="<%= @user.errors.on(:email) ? "invalid" : "" %>">
+        <td class="<%= !@user.errors[:email].empty? ? "invalid" : "" %>">
           <%= form.label :email %><br />
         </td>
         <td>
@@ -24,14 +24,14 @@
         </td>
       </tr>
       <tr>
-        <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password, form.object.new_record? ? nil : "Change password" %></td>
+        <td class="<%= !@user.errors[:password].empty? ? "invalid" : "" %>"><%= form.label :password, form.object.new_record? ? nil : "Change password" %></td>
         <td><%= form.password_field :password %></td>
       </tr>
       <tr>
-        <td class="<%= @user.errors.on(:password) ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
+        <td class="<%= !@user.errors[:password].empty? ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
         <td><%= form.password_field :password_confirmation %></td>
       </tr>
-      <% if current_action_in? ["new", "create"] -%>
+      <% if current_action_new ["new", "create"] -%>
         <tr>
           <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">
             Type the words in the image

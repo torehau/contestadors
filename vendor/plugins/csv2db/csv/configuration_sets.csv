@@ -1,24 +1,13 @@
 id,description,mutex_objectives,configuration_prediction_state_id
-1,Group A Matches,false,2
-2,Group B Matches,false,3
-3,Group C Matches,false,4
-4,Group D Matches,false,5
-5,Group E Matches,false,6
-6,Group F Matches,false,7
-7,Group G Matches,false,8
-8,Group H Matches,false,9
-9,Group A Table,false,2
-10,Group B Table,false,3
-11,Group C Table,false,4
-12,Group D Table,false,5
-13,Group E Table,false,6
-14,Group F Table,false,7
-15,Group G Table,false,8
-16,Group H Table,false,9
-17,Teams through to Round of 16,false,10
-18,Teams through to Quarter finals,false,11
-19,Teams through to Semi finals,false,12
-20,Teams through to Final,false,13
-21,Third Place Team,false,14
-22,Winner Team,false,14
-23,Topscorer,false,0
+24,Group A Matches,false,16
+25,Group B Matches,false,17
+26,Group C Matches,false,18
+27,Group D Matches,false,19
+28,Group A Table,false,16
+29,Group B Table,false,17
+30,Group C Table,false,18
+31,Group D Table,false,19
+32,Teams through to Quarter finals,false,19
+33,Teams through to Semi finals,false,20
+34,Teams through to Final,false,21
+35,Winner Team,false,22

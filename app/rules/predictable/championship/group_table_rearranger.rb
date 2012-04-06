@@ -6,12 +6,13 @@ module Predictable
     class GroupTableRearranger
       include Ruleby
 
-      def initialize(group, user, params)
+      def initialize(group, user, contest, params)
         @group = group
         @user = user
+        @contest = contest
         @position_id, @table_position, @move_direction = params[:id], params[:pos], params[:command]
-        @group_table_set = Configuration::Set.find_by_description "Group #{@group.name} Table"
-        @round_of_16_qualified_teams_set = Configuration::Set.find_by_description "Teams through to Round of 16"
+        @group_table_set = @contest.set("Group #{@group.name} Table")
+        @promotion_stage_set = get_promotion_stage_set#Configuration::Set.find_by_description "Teams through to Round of 16"
         @predictions_to_update, @updated_prediction_values, @group_table_positions_to_swap = [], {}, {}
       end
 
@@ -21,7 +22,7 @@ module Predictable
 
         engine :rearrange_group_table do |e|
           rulebook = RearrangableGroupTableValidationRulebook.new(e)
-          rulebook.rules("Group #{@group.name} Table", @position_id.to_i, @table_position, @move_direction)
+          rulebook.rules("Group #{@group.name} Table", @position_id.to_i, @table_position, @move_direction, @promotion_stage_set.description)
           rulebook.predictions_to_update = @predictions_to_update
           rulebook.updated_prediction_values = @updated_prediction_values
           rulebook.group_table_positions_to_swap = @group_table_positions_to_swap
@@ -30,8 +31,8 @@ module Predictable
           @group_table_set.predictable_items.each{|item| e.assert item}
           @user.predictions_for(@group_table_set).each{|prediction| e.assert prediction}
 
-          e.assert @round_of_16_qualified_teams_set
-          items = @round_of_16_qualified_teams_set.subset(@group.stage_teams_by_id.keys)
+          e.assert @promotion_stage_set
+          items = @promotion_stage_set.subset(@group.stage_teams_by_id.keys)
           items.each {|item| e.assert item}
           @user.predictions_for_subset(items).each{|prediction| e.assert prediction}
           
@@ -53,13 +54,18 @@ module Predictable
 
     private
 
+      def get_promotion_stage_set
+        stage = @group.promotion_stage
+        @contest.set("Teams through to #{stage.description}")#Configuration::Set.find_by_description "Teams through to Round of 16"
+      end
+
       class ValidRearrangement; end
 
       class RearrangableGroupTableValidationRulebook < Ruleby::Rulebook
         
         attr_accessor :predictions_to_update, :updated_prediction_values, :group_table_positions_to_swap
 
-        def rules(group_descr, position_id, table_position, move_direction)
+        def rules(group_descr, position_id, table_position, move_direction, promotion_stage_set_descr)
           @current_value = table_position.to_i
           @updated_value = move_direction.eql?("up") ? (@current_value - 1) : (@current_value + 1)
 
@@ -70,9 +76,9 @@ module Predictable
           end
 
           if [@current_value, @updated_value].include?(1)
-            swap_predictions_for_winner_and_runner_up_rule
+            swap_predictions_for_winner_and_runner_up_rule(promotion_stage_set_descr)
           elsif [@current_value, @updated_value].include?(2) and [@current_value, @updated_value].include?(3)
-            swap_predictions_for_runner_up_and_third_place_rule(group_descr)
+            swap_predictions_for_runner_up_and_third_place_rule(group_descr, promotion_stage_set_descr)
           end
         end
 
@@ -153,11 +159,11 @@ module Predictable
           end
         end
 
-        def swap_predictions_for_winner_and_runner_up_rule
+        def swap_predictions_for_winner_and_runner_up_rule(promotion_stage_set_description)
           rule :swap_stage_team_predictions_for_winner_and_runner_up, {:priority => 1},
            [ValidRearrangement, :valid_rearrangement],
-           [Configuration::Set, :round_of_16_qualified_teams_set,
-             m.description == "Teams through to Round of 16",
+           [Configuration::Set, :promotion_stage_set,
+             m.description == promotion_stage_set_description,
             {m.id => :stage_teams_set_id}],
            [Configuration::PredictableItem, :stage_team_item,
              m.configuration_set_id == b(:stage_teams_set_id),
@@ -185,13 +191,13 @@ module Predictable
           end
         end
         
-        def swap_predictions_for_runner_up_and_third_place_rule(group_descr)
+        def swap_predictions_for_runner_up_and_third_place_rule(group_descr, promotion_stage_set_descr)
           rule :set_current_third_place_group_position_as_runner_up_stage_team, {:priority => 1},
             [ValidRearrangement, :valid_rearrangement],
             [Predictable::Championship::StageTeam, :group_runner_up_stage_team,
               {m.id => :stage_team_id}],
-            [Configuration::Set, :round_of_16_qualified_teams_set,
-              m.description == "Teams through to Round of 16",
+            [Configuration::Set, :promotion_stage_set,
+              m.description == promotion_stage_set_descr,
              {m.id => :stage_teams_set_id}],
             [Configuration::PredictableItem, :stage_team_item,
               m.configuration_set_id == b(:stage_teams_set_id),

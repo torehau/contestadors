@@ -2,24 +2,20 @@ module Predictable
   module Championship
     class Group < ActiveRecord::Base
       set_table_name("predictable_championship_groups")
+      after_initialize :init_group
       has_many :table_positions, :class_name => "Predictable::Championship::GroupTablePosition", :foreign_key => "predictable_championship_group_id"
       has_many :teams, :through => :table_positions, :class_name => "Predictable::Championship::Team"
       has_many :qualifications, :class_name => "Predictable::Championship::GroupQualification", :foreign_key => "predictable_championship_group_id" do
         def for_winner
-          find(:first, :conditions => {:group_pos => 1})
+          where(:group_pos => 1).first
         end
         def for_runner_up
-          find(:first, :conditions => {:group_pos => 2})
+          where(:group_pos => 2).first
         end
       end
 
       attr_accessor :matches
       attr_accessor :winner, :runner_up
-
-      def after_initialize
-        @matches = teams.collect {|t| t.matches}.flatten.uniq.sort
-        @winner, @runner_up = nil, nil
-      end
 
       # Returns a hash with the matches keyed by the id
       def matches_by_id
@@ -37,16 +33,22 @@ module Predictable
         stage_teams_by_id
       end
 
+      def promotion_stage
+        self.qualifications.first.match.stage
+      end
+
       def winner_stage_team
-        @@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
+        #@@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
+        @@knockout_stage ||= promotion_stage
         winner_path ||= qualifications.for_winner
-        stage_team(@@round_of_16, winner_path, true)
+        stage_team(@@knockout_stage, winner_path, true)
       end
 
       def runner_up_stage_team
-        @@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
+        #@@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
+        @@knockout_stage ||= promotion_stage
         runner_up_path ||= qualifications.for_runner_up
-        stage_team(@@round_of_16, runner_up_path, false)
+        stage_team(@@knockout_stage, runner_up_path, false)
       end
 
       # Returnes true if the group table contains tied teams with the same rank
@@ -84,6 +86,11 @@ module Predictable
       end
 
     private
+
+      def init_group
+        @matches = teams.collect {|t| t.matches}.flatten.uniq.sort
+        @winner, @runner_up = nil, nil
+      end
 
       def stage_team(stage, path, is_winner)
         Predictable::Championship::StageTeam.find(:first,

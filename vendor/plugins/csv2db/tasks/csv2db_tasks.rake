@@ -29,6 +29,30 @@ namespace :csv2db do
     end
   end
 
+  desc "Adds a new championship contest from CSV files to the database"
+  task(:add_championship_contest => :environment) do
+    dependencies = Configuration::Category.dependency_csv_id_by_db_id_map
+
+    [Predictable::Championship::Team,
+     Predictable::Championship::Stage,
+     Predictable::Championship::Match,
+     Predictable::Championship::StageTeam,
+     Predictable::Championship::Group,
+     Predictable::Championship::GroupTablePosition,
+     Predictable::Championship::GroupQualification,
+     Predictable::Championship::StageQualification,
+     Configuration::Contest,
+     Configuration::PredictionState,
+     Configuration::Objective,
+     Configuration::Set,
+     Configuration::IncludedObjective,
+     Configuration::IncludedSet,
+     Configuration::PredictableItem
+    ].each do |klass|
+      klass.load_from_csv(dependencies)
+    end
+  end
+
   desc "Load new users from the corresponding CSV file to the database"
   task(:add_users => :environment) do
     User.load_from_csv

@@ -1,18 +1,34 @@
 module ContestsHelper
+  def contests_main_menu_link
+    if @before_contest_participation_ends
+      new_contest_path(@contest.permalink, "admin")
+    else
+      contests_path(current_tournament.permalink, "all")
+    end
+  end
+
   def contests_tabnav_items
-    [{:label => "All",
+    items = []
+
+    if @before_contest_participation_ends
+      items << {:label => "Create",
+        :tip => "Create A New Prediction Contest for this tournament",
+        :path => new_contest_path(@contest.permalink, "admin"),
+        :highlight_conditions => [HighlightCondition.new("contests", "new", "admin"), HighlightCondition.new("contests", "new", "admin")]}
+    end
+    items << {:label => "All Existing",
       :tip => "All contests you participate in",
       :path => contests_path(@contest.permalink, "all"),
-      :highlight_conditions => [HighlightCondition.new("contests", "index", "all")]},#[{:controller => "contests", :action => "index", :role => "all"}]},
-     {:label => "Administrator",
+      :highlight_conditions => [HighlightCondition.new("contests", "index", "all")]}#[{:controller => "contests", :action => "index", :role => "all"}]},
+    items << {:label => "Administrator",
       :tip => "Contests created and administrated by you",
       :path => contests_path(@contest.permalink, "admin"),
-      :highlight_conditions => [HighlightCondition.new("contests", "index", "admin")]},#[{:controller => "contests", :action => "index", :role => "admin"}]},
-     {:label => "Member",
+      :highlight_conditions => [HighlightCondition.new("contests", "index", "admin")]}#[{:controller => "contests", :action => "index", :role => "admin"}]},
+    items << {:label => "Member",
       :tip => "Contests joined by invitations",
       :path => contests_path(@contest.permalink, "member"),
-      :highlight_conditions => [HighlightCondition.new("contests", "index","member")]},#[{:controller => "contests", :action => "index", :role => "member"}]},
-    ]
+      :highlight_conditions => [HighlightCondition.new("contests", "index","member")]}#[{:controller => "contests", :action => "index", :role => "member"}]},
+    items
   end
 
   #def params_context

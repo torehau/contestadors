@@ -76,10 +76,10 @@ em {
     display: block;
     background: #fff;
     height: 20px;
-    width:280px;
+    width:400px;
     float:left;
-    margin: 0px 0px 0px 20px;
-    padding: 0px 0px 0px 10px;
+    margin: 5px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
 /*    padding: 5px 0px 0px 10px;
     margin: 40px 0px 0px 350px;*/
     font: bold italic 3em 'Trebuchet MS', Arial, Sans-serif;
@@ -192,15 +192,16 @@ em {
 /* -- Progress ----------------------------- */
 div.progress {
   float:right;
-  width: 290px;
+  width: 350px;
   font-weight:bold;
   color: #41686a;
   padding-right: 20px;
+    margin-top: 2px;
   /*padding-top: 2px;*/
 }
 
 div.progresslabel {
-    margin-top: 2px;
+    margin: 1px 0 0 30px;
     float:left;
 }
 
@@ -623,6 +624,10 @@ padding-left: 40px;
         margin: 0;
         text-decoration: none;}
 
+#nav a.selected, #footer a.selected  {
+    color: #3B3B3B;
+}
+
 .main_tabnav a.selected {
         padding: 3px 10px 3px 10px;
 	color: #ffffff;
@@ -736,7 +741,7 @@ padding-left: 40px;
 
 /***/
 
-#contests {
+#contests, #invitations {
     overflow:hidden;
     clear: both;
    width: 910px;
@@ -747,7 +752,7 @@ padding-left: 40px;
    /*margin: 0px 10px 0px 10px;*/
 }
 
-#no_contests {
+#no_contests, #no_invitations {
     background-color: #efefef;
     width: 910px;
     opacity: .5;
@@ -873,21 +878,22 @@ padding-left: 40px;
 }
 
 #create_new_contest_link_container {
-  float:right;
-  width: 290px;
-  -moz-border-radius: 7px;
-  -webkit-border-radius: 7px;
-  border-radius: 7px; /* future proofing */
-  -khtml-border-radius: 7px; /* for old Konqueror browsers */
-   margin: 1px 20px 1px 0px;
-   background: #fff;
-   font-weight: bold;
+float: left;
+width: 910px;
+-moz-border-radius: 7px;
+-webkit-border-radius: 7px;
+border-radius: 7px;
+-khtml-border-radius: 7px;
+margin: 1px 20px 1px 0px;
+background: white;
+font-weight: bold;
+min-height: 25px;
 }
 
 #create_new_contest_link_container div.icon_link,
 #add_invitation_link_container div.add_image {
    float: left; 
-   margin-top: 1px;
+   margin-top: 4px;
    padding-left: 5px;
    width: 25px;
    display:block;
@@ -903,7 +909,9 @@ padding-left: 40px;
 }
 
 #create_new_contest_link_container div.text_link {
-   float: left;   
+  float: left;
+  margin-top: 2px;
+  font-size: 14px;
 }
 
 .edit_options div.text_link {
@@ -1058,6 +1066,12 @@ form.contest_create {
 .knockout_stages {
   width: 910px;
   clear: both;
+}
+
+.euro_knockout_stages {
+  width: 910px;
+  clear: both;
+  margin-left: 90px;
 }
 
 .knockout_stage_container {
@@ -1384,6 +1398,7 @@ form.contest_create {
 .qualification_spacer_3 {height: 142px;min-height: 142px;display: block;}
 .qualification_spacer_4 {height: 177px;min-height: 177px;display: block;}
 .qualification_spacer_5 {height: 320px;min-height: 320px;display: block;border-bottom: 1px #88c6cf solid;}
+.qualification_spacer_6 {height: 176px;min-height: 176px;display: block;border-bottom: 1px #88c6cf solid;}
 .to_quarter_final {height: 142px;min-height: 142px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;}
 .to_semi_final {height: 284px;min-height: 284px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;}
 .from_round_of_16 {height: 71px;min-height:71px;display: block;border-top: 1px #88c6cf solid;border-bottom: 1px #88c6cf solid;border-right: 1px #88c6cf solid;}

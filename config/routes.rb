@@ -7,10 +7,17 @@ Contestadors::Application.routes.draw do
   match 'account/edit/sign-in-options' => 'users#sign_in_options', :as => :sign_in_options, :method => :get
   resources :user_sessions
   resources :password_resets
+  resources :tournaments do
+    collection do
+      get :completed
+      get :upcoming
+    end
+    post 'select', :on => :member
+  end
   scope '/:contest/:aggregate_root_type/:aggregate_root_id' do
     resources :predictions
   end
-  match 'championship/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'championship', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
+  match 'euro/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'championship', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
   match '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions' => 'predictions#show', :as => :user_predictions, :method => :get
   scope '/:contest/:role' do
     resources :contests do
@@ -23,6 +30,13 @@ Contestadors::Application.routes.draw do
   match '/:contest/:role/contests/:id/upcoming' => 'contests#upcoming_events', :as => :upcoming_events
   match '/:contest/:role/contests/:id/latest' => 'contests#latest_results', :as => :latest_results
   scope '/:contest' do
+    resources :rules do
+      collection do
+        get :predictions
+        get :prediction_contests
+        get :score_calculations
+      end
+    end
     resources :invitations do
       collection do
         get :pending
@@ -32,7 +46,7 @@ Contestadors::Application.routes.draw do
   end
 
   match '/:contest/:role/:contest_id/participant-predictions' => 'participants#show', :as => :participant_predictions
-  match ':action' => 'home#(?-mix:about|rules|terms|privacy|contact|faq)', :as => :home
+  match ':action' => 'home#(?-mix:about|terms|privacy|contact|faq)', :as => :home
   root :to => 'user_sessions#new'
   match '*url' => 'rescue#index', :as => :catch_all
 end

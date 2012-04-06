@@ -9,12 +9,12 @@ module Predictable
       belongs_to :next, :class_name => "Predictable::Championship::Stage", :foreign_key => "next_stage_id"
       has_one :previous, :class_name => "Predictable::Championship::Stage", :foreign_key => "next_stage_id"
 
-      scope :knockout_stages, :conditions => {:description => ["Round of 16", "Quarter finals", "Semi finals", "Final"]}, :order => "id DESC"
-      scope :explicit_predicted_knockout_stages, :conditions => {:description => ["Quarter finals", "Semi finals", "Final"]}, :order => "id DESC"
+      scope :knockout_stages, :conditions => {:description => ["Quarter finals", "Semi finals", "Final"]}, :order => "id DESC"
+      scope :explicit_predicted_knockout_stages, :conditions => {:description => ["Semi finals", "Final"]}, :order => "id DESC"
 
       def self.from_permalink(permalink)
         description = permalink.capitalize.gsub('-', ' ')
-        Stage.find_by_description(description)
+        Stage.where(:description => description).last
       end
 
       def permalink

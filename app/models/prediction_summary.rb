@@ -1,37 +1,36 @@
 class PredictionSummary < ActiveRecord::Base
+  after_create :update_map
   belongs_to :user
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => 'configuration_contest_id'
   has_many :predictions, :through => :user
   has_many :score_table_positions
-
-  def after_create
-    update_map
-  end
   
-  KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
-  KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
-                                                     'q'  => 'quarter-finals',
+  #KNOCKOUT_STAGES                                 = [:q, :s, :fi, :t]
+  #KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'q'  => 'quarter-finals',
+  #                                                   's'  => 'semi-finals',
+  #                                                   'fi' => 'final',
+  #                                                   't'  => 'third-place'}
+    KNOCKOUT_STAGES                                 = [:q, :s, :fi]
+  KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'q'  => 'quarter-finals',
                                                      's'  => 'semi-finals',
-                                                     'fi' => 'final',
-                                                     't'  => 'third-place'}
+                                                     'fi' => 'final'}
 
   state_machine :initial => :i do
 
-    after_transition KNOCKOUT_STAGES => :h,
-                     [:q, :s, :fi, :t] => :r,
-                     [:s, :fi, :t] => [:r, :q],
-                     [:t] => [:r, :q, :s], :do => :delete_invalidated_predictions
+    after_transition KNOCKOUT_STAGES => :d,
+                     [:s, :fi] => :q,
+                     [:fi] => [:q, :s], :do => :delete_invalidated_predictions
     after_transition any => any - :fi, :do => :update_wizard
     after_transition any => any, :do => :update_map
 
     from_state = :i
 
-    ('a'..'h').each do |group_name|
+    ('a'..'d').each do |group_name|
       event_name = ('predict_group_' + group_name).to_sym
       to_state = group_name.to_sym
 
       event event_name do
-        transition from_state => to_state, KNOCKOUT_STAGES => :h
+        transition from_state => to_state, KNOCKOUT_STAGES => :d
       end
       from_state = to_state
     end
@@ -47,9 +46,9 @@ class PredictionSummary < ActiveRecord::Base
 
   end
 
-  def setup_wizard
+  def setup_wizard(aggregate_root_type, aggregate_root_id)
     extend contest.wizard_module::InstanceMethods
-    update_wizard
+    update_wizard(aggregate_root_type, aggregate_root_id)
   end
 
   def predict_group(name)
@@ -72,13 +71,14 @@ class PredictionSummary < ActiveRecord::Base
 
 private
 
-  # for deleting any predictions invalidated by a state transiction
+  # for deleting any predictions invalidated by a state transition
   def delete_invalidated_predictions
     contest.delete_invalidated_predictions(user)
   end
 
   def update_map
-    prediction_state = Configuration::PredictionState.find_by_state_name(self.state)
+    #prediction_state = Configuration::PredictionState.find_by_state_name(self.state)
+    prediction_state = Configuration::PredictionState.where(:configuration_contest_id => self.contest.id, :state_name => self.state).first
     self.map = prediction_state.points_accumulated
     self.save!
   end

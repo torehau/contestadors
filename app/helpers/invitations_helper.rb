@@ -7,7 +7,7 @@ module InvitationsHelper
   end
 
   def contest_invitation_div_class(contest_invitation)
-    if current_action? 'create' and contest_invitation.invalid?
+    if current_action_new ['create'] and contest_invitation.invalid?
       return "invalid_contest_invitation"
     end
     "contest_invitation"

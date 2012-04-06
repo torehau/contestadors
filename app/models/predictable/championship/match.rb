@@ -3,6 +3,7 @@ module Predictable
     class Match < ActiveRecord::Base
       include Comparable, Predictable::Handler
       set_table_name("predictable_championship_matches")
+      after_initialize :init_scores
       belongs_to :stage, :class_name => "Predictable::Championship::Stage", :foreign_key => "predictable_championship_stage_id"
       belongs_to :home_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'home_team_id'
       belongs_to :away_team, :class_name => "Predictable::Championship::Team", :foreign_key => 'away_team_id'
@@ -16,7 +17,6 @@ module Predictable
         end
       end
 
-
       scope :upcomming, :conditions => ["home_team_id is not null and away_team_id is not null and score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
       scope :latest, :conditions => ["score is not null and result is not null"], :order => "play_date DESC", :limit => 2
 
@@ -24,13 +24,6 @@ module Predictable
       attr_accessor :rank
       attr_accessor :winner
 
-      def after_initialize
-        @score ||= "0-0"
-        scores = @score.split("-")
-        set_individual_team_scores(scores[0],scores[1])
-        self.state = "unsettled"
-        self.rank = self.id
-      end
 
       def <=> (other)
         date_compare = self.play_date <=> other.play_date
@@ -137,6 +130,21 @@ module Predictable
       end
 
     private
+
+      EURO_QUARTER_FINAL_RANKS = {"QF 1" => 1, "QF 3" => 2, "QF 2" => 3, "QF 4" => 4}
+
+      def init_scores
+        @score ||= "0-0"
+        scores = @score.split("-")
+        set_individual_team_scores(scores[0],scores[1])
+        self.state = "unsettled"
+
+        if EURO_QUARTER_FINAL_RANKS.has_key?(self.description)
+          self.rank = EURO_QUARTER_FINAL_RANKS[self.description]
+        else
+          self.rank = self.id
+        end
+      end
 
       RESULT_BY_COMPARE_RESULT = {0 => "x", 1 => "1", -1 => "2"}
 

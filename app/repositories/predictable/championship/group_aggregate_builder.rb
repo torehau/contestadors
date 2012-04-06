@@ -1,20 +1,20 @@
 module Predictable
   module Championship
     class GroupAggregateBuilder
-      def initialize(group_name)
+      def initialize(group_name, contest)
         @group_name = group_name
-        @predictable_set = Configuration::Set.find_by_description "Group #{@group_name} Matches"
+        @predictable_set = Configuration::Set.where(:description => "Group #{@group_name} Matches").last#Configuration::Set.find_by_description "Group #{@group_name} Matches"
       end
 
       def build_from_new(predictions)
-        @root = Group.find_by_name(@group_name)
+        @root = Group.where(:name => @group_name).last
         group_from_new_predictions(predictions)
       end
 
       def build_from_existing(user)
         @predictions_by_item_id = user.predictions.by_predictable_item(@predictable_set)
         return nil unless (@predictions_by_item_id and not @predictions_by_item_id.empty?)
-        @root = Group.find_by_name(@group_name)
+        @root = Group.where(:name => @group_name).last
         group_from_existing_predictions(user)
       end
 
@@ -43,7 +43,7 @@ module Predictable
           {:home_team_score => scores[0], :away_team_score => scores[1]}
         end
 
-        @group_table_set = Configuration::Set.find_by_description "Group #{@root.name} Table"
+        @group_table_set = Configuration::Set.where(:description => "Group #{@root.name} Table").last
         set_predicted_table_positions(user.predictions.by_predictable_item(@group_table_set))
         GroupTableCalculator.new(@root).calculate(false)
       end

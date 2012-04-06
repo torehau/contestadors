@@ -14,7 +14,7 @@ module Predictable
       def update(aggregate_root_id, params)
         result = get(aggregate_root_id)
         aggregate = result.current
-        updated_predictions = GroupTableRearranger.new(aggregate.root, @user, params).rearrange
+        updated_predictions = GroupTableRearranger.new(aggregate.root, @user, @contest, params).rearrange
 
         unless updated_predictions.empty?
           Prediction.transaction do

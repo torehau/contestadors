@@ -12,6 +12,23 @@ namespace :app do
     Rake::Task["csv2db:load_data"].invoke
   end
 
+  namespace :monitor do
+
+    desc "Lists 10 last logged in users"
+    task(:logins => :environment) do
+      User.order("last_request_at desc").limit(10).each {|user| puts user.name + ": " + user.last_request_at.to_s}
+    end
+  end
+
+  namespace :contests do
+
+    desc "Configures a new championship prediction contest"
+    task(:add) do
+      puts "loading data from csv files..."
+      Rake::Task["csv2db:add_championship_contest"].invoke
+    end
+  end
+
   namespace :updates do
 
     desc "For adding and populating new preview_available column to configuration_prediction_states table"

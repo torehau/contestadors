@@ -2,6 +2,7 @@ module Predictable
   module Championship
     class Team < ActiveRecord::Base
       set_table_name("predictable_championship_teams")
+      after_initialize :init_metrics
       has_many :home_matches, :class_name => "Predictable::Championship::Match", :foreign_key => 'home_team_id'
       has_many :away_matches, :class_name => "Predictable::Championship::Match", :foreign_key => 'away_team_id'
       has_many :stage_teams, :class_name => "Predictable::Championship::StageTeam", :foreign_key => "predictable_championship_team_id" do
@@ -15,11 +16,6 @@ module Predictable
 
       attr_accessor :through_to_stage
       attr_accessor :objectives_meet, :objectives_meet_for
-      
-      def after_initialize
-        self.through_to_stage = []
-        self.objectives_meet_for = {}
-      end
 
       def matches
         home_matches + away_matches
@@ -30,7 +26,14 @@ module Predictable
       end
 
       def is_through_to_next_stage?(current_stage)
-        self.through_to_stage.include?(current_stage.next.id)
+        current_stage.next and self.through_to_stage.include?(current_stage.next.id)
+      end
+
+    private
+
+      def init_metrics
+        self.through_to_stage = []
+        self.objectives_meet_for = {}
       end
     end
   end

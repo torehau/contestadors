@@ -3,6 +3,7 @@ module Predictable
     class GroupTablePosition < ActiveRecord::Base
       include Comparable, Predictable::Handler
       set_table_name("predictable_championship_group_table_positions")
+      after_initialize :init_stats
       belongs_to :group, :class_name => "Predictable::Championship::Group", :foreign_key => "predictable_championship_group_id"
       belongs_to :team, :class_name => "Predictable::Championship::Team", :foreign_key => 'predictable_championship_team_id'
 
@@ -16,14 +17,6 @@ module Predictable
       attr_accessor :display_order
       # Indicating whether the match score for this team is identical with the team at the display order above and below
       attr_accessor :can_move_down, :can_move_up
-      
-      def after_initialize
-        self.played, self.won, self.draw, self.lost, self.goals_for, self.goals_against, self.goal_diff, self.pts = 0, 0, 0, 0, 0, 0, 0, 0
-        self.tied = false
-        self.rank = 0
-        self.display_order = self.pos
-        self.can_move_down, self.can_move_up = false, false
-      end
 
       def <=> (other)
         if self.pts != other.pts
@@ -83,6 +76,16 @@ module Predictable
         predicted_pos = prediction.predicted_value
         return {:objectives_meet => objectives, :objectives_missed => []} if self.pos.to_s.eql?(predicted_pos)
         {:objectives_meet => [], :objectives_missed => objectives}
+      end
+
+  private
+
+      def init_stats
+        self.played, self.won, self.draw, self.lost, self.goals_for, self.goals_against, self.goal_diff, self.pts = 0, 0, 0, 0, 0, 0, 0, 0
+        self.tied = false
+        self.rank = 0
+        self.display_order = self.pos
+        self.can_move_down, self.can_move_up = false, false
       end
     end
   end

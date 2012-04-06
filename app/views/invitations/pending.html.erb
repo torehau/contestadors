@@ -1,17 +1,24 @@
-<%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
-  g.column :column_name => 'Contest', :attribute_name => 'name', :model_class => ContestInstance do |invitation| # joined table
-    invitation.contest_instance.name
-  end
+<% if @no_invitations_message -%>
+  <div id="no_invitations">
+    <%= @no_invitations_message %>
+  </div>
+  <div id="invitations"></div>
+<% else -%>
+  <%= grid(@contest_invitations_grid, :show_filters => :no) do |g|
+    g.column :column_name => 'Contest', :attribute_name => 'name', :model_class => ContestInstance do |invitation| # joined table
+      invitation.contest_instance.name if invitation and invitation.contest_instance
+    end
 
-  g.column :column_name => 'Invited by', :attribute_name => 'name', :model_class => User do |invitation| # joined table
-    invitation.sender.name
-  end
+    g.column :column_name => 'Invited by', :attribute_name => 'name', :model_class => User do |invitation| # joined table
+      invitation.sender.name if invitation and invitation.sender
+    end
 
-  g.column :column_name => 'Received on', :attribute_name => 'created_at' do |invitation| # joined table
-    invitation.created_at.to_s(:short)
-  end
+    g.column :column_name => 'Received on', :attribute_name => 'created_at' do |invitation| # joined table
+      invitation.created_at.to_s(:short) if invitation and invitation.created_at
+    end
 
-  g.column :column_name => 'Accept Invitation' do |invitation|
-    link_to('Join Contest', accept_invitation_path(:contest => @contest.permalink, :contest_instance => invitation.contest_instance.permalink, :invite_code => invitation.token))
-  end
-end -%>
+    g.column :column_name => 'Accept Invitation' do |invitation|
+      link_to('Join Contest', accept_invitation_path(:contest => @contest.permalink, :contest_instance => invitation.contest_instance.permalink, :invite_code => invitation.token)) if invitation and invitation.contest_instance
+    end
+  end -%>
+<% end -%>

@@ -1,13 +1,13 @@
 <div id="static_content">
   <h3>What Contestadors Is</h3>
-  <p><b>Contestadors</b> allows you to predict the outcome of the 2010 FIFA World Cup, scheduled to take place between 11 June and 11 July
-    2010 in South Africa. With <b>Contestadors</b> you can  participate in prediction contests for the championship with other people.
+  <p><b>Contestadors</b> allows you to predict the outcome of specific soccer tournaments, e.g. the FIFA World Cup or UEFA Euro tournaments for national squads.
+    With <b>Contestadors</b> you can  participate in prediction contests for a soccer tournament with other people.
     Use <b>Contestadors</b> to create your own prediction contests, and invite your family, friends and colleagues to join.
     Alternatively, you may have received invitations for prediction contests created by other <b>Contestadors</b> users. By accepting such
-    invitations you become participants in these contests. As the World Cup starts and the matches are played,
-    <b>Contestadors</b> updates the scores for each contest according to the specified <%= link_to "Rules", home_path("rules") %>.
+    invitations you become participants in these contests. As the soccer tournament starts and the matches are played,
+    <b>Contestadors</b> updates the scores for each contest according to the rules specified for the soccer tournament.
   </p>
-  <p><b>Contestadors</b> aims to simplify the way this kind of private World Cup prediction contests are arranged from
+  <p><b>Contestadors</b> aims to simplify the way this kind of private prediction contests for major soccer tournaments are arranged from
     the usual way of doing this with the means of spreadsheets and email.</p>
 
   <h3>What Contestadors Is Not</h3>
@@ -15,19 +15,19 @@
     <b>Contestadors</b> is also completely free of charge, and offers no prizes of any kind to the users.</p>
 
   <h3>How It Works</h3>
-  <h4>Predict the World Cup</h4>
-  <p>Predict the outcome of the 2010 FIFA World Cup, including the
-  matches and tables of the 8 groups, the teams through to the various knockout stages, as well as the winner
-  and third place teams.</p>
+  <h4>Predict a Soccer Tournament</h4>
+  <p>Predict the outcome of an available soccer tournament, typically including the
+  matches and tables of the initial groups, the teams through to the various knockout stages, as well as the winner
+  and possible third place team (if the tournament has a Third Place play-off match).</p>
 
   <h4>Participate in Contests</h4>
   <p>You might already have received invitations for contests to join. You can also create new contests and invite others
   to join. In this case just provide the name and email of the people you want to invite, and invitations are sent by
   <b>Contestadors</b>.</p>
 
-  <h4>Follow Score Updates during the World Cup</h4>
-  <p>As the World Cup matches are played, <b>Contestadors</b> updates your score on how well your predictions meets
-  the actual outcome of the championship. Also, for each contest a score table will be updated, ranking all contest participants in accordance with their prediction skills. </p>
+  <h4>Follow Score Updates during the Soccer Tournament</h4>
+  <p>As the Soccer Tournament matches are played, <b>Contestadors</b> updates your score on how well your predictions meets
+  the actual outcome of the tournament. Also, for each contest a score table will be updated, ranking all contest participants in accordance with their prediction results. </p>
 
   <h3>Attributions</h3>
   <p>Photos used on <b>Contestadors</b> are available on <%= link_to "Flickr", "http://www.flickr.com", :target => "_blank" %> under the <%= link_to "Creative Commons", "http://creativecommons.org/", :target => "_blank" %> licence. In particular:</p>
@@ -37,5 +37,5 @@
     <li><b><%= link_to "Portland, Oregon, Timbers, Sunderland, Football, Soccer", "http://www.flickr.com/photos/frozenchipmunk/29780925/in/photostream/", :target => "_blank" %></b> by Sharat Ganapati.</li>
   </ul>
 
-  <%= link_to "Detailed Rules &raquo;", home_path("rules") %>
+  <%= link_to "Terms of Use &raquo;".html_safe, home_path("terms") %>
 </div>

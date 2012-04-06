@@ -32,15 +32,31 @@ module Csv2Db
       # Map of foreign id keys not complying with the conventional rails naming, i.e., when the id column is not on the form <table_name>_id 
       FOREIGN_ID_KEY_MAP = {:home_team_id => :predictable_championship_teams, :away_team_id => :predictable_championship_teams}
 
+      def dependency_csv_id_by_db_id_map(matcher_field = :description)
+        dependencies={}
+        csv_id_to_db_id_map = {}
+        parser = new_csv_parser(true)
+
+        parser.each do |row|
+          if row and row.length > 0 and row.include?(:id) and row.include?(matcher_field)
+            csv_id = row.field(:id)
+            matcher_value = row.field(matcher_field)
+            instance = self.where(matcher_field => matcher_value).first
+            puts "Maps csv id: " + csv_id.to_s + " to db id: " + instance.id.to_s
+            csv_id_to_db_id_map[csv_id] = instance.id
+          end
+        end
+        puts csv_id_to_db_id_map.length.to_s + " entries mapped with table: " + self.table_name
+        dependencies[self.table_name.to_sym] = csv_id_to_db_id_map
+        dependencies
+      end
+
       # dependencies       a nested hash to be populated with the table_name as key. For each table
       #                    there will be a nested hash with the id from the CSV file as key, and the
       #                    new id assigned by the DB as the value
       def load_from_csv(dependencies={})
 
-        parser = CSV.new(File.open(filename(), 'r'),
-                               :headers => true, :header_converters => :symbol,
-                               :col_sep => ',')
-        convert_date_fields(parser)
+        parser = new_csv_parser(true)
         @csv_id_to_db_id_map = {}
         substitute_values = substitute_field_values
 
@@ -53,6 +69,14 @@ module Csv2Db
         end
         puts @csv_id_to_db_id_map.length.to_s + " new entries stored in table: " + self.table_name
         dependencies[self.table_name.to_sym] = @csv_id_to_db_id_map
+      end
+
+      def new_csv_parser(format_date_fields = true)
+        parser = CSV.new(File.open(filename(), 'r'),
+                               :headers => true, :header_converters => :symbol,
+                               :col_sep => ',')
+        convert_date_fields(parser) if format_date_fields
+        parser
       end
 
       # For updating existing entries, i.e. if new non-relational fields are introduced.

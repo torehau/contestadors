@@ -3,7 +3,7 @@
     <div id="account_edit_area">
       <h3>Sign In with an Identity Provider</h3>
       <p>You can sign in to Contestadors using your existing account with Identity Providers like Google, Windows Live ID, Yahoo, Facebook, Twitter or OpenID: </p>
-      <b><%= rpx_popup( :link_text => "Add Identity Provider For Contestadors Sign In &raquo;", :app_name => "contestadors", :return_url => addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
+      <b><%= raw RPXNow.popup_code("Add Identity Provider For Contestadors Sign In &raquo;", :"contestadors", addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
     <br/>
     <p>You may add as many of the available Identity Providers for signing in to Contestadors as you like.</p>
     <div class="warning_message" >

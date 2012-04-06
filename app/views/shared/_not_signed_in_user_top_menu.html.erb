@@ -1,11 +1,11 @@
 <div id="top_right">
   <div id="nav">
     <ul>
-      <li><%= link_to "Try It Out! &raquo;", championship_predictions_path(:preview => true) %></li>
+      <li><%= link_to "Try It Out! &raquo;".html_safe, championship_predictions_path(:preview => true) %></li>
       |
-      <li><%= link_to "Join Now! &raquo;", new_account_path %></li>
+      <li><%= link_to "Join Now! &raquo;".html_safe, new_account_path %></li>
       |
-      <li><%= link_to 'Sign In &raquo;', new_user_session_path %></li>
+      <li><%= link_to 'Sign In &raquo;'.html_safe, new_user_session_path %></li>
     </ul>
   </div>
 </div>

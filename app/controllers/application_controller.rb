@@ -2,9 +2,9 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
-  window_title "Free World Cup Prediction Contests"
+  window_title "Free Soccer Tournament Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :matches_current_context, :current_aggregate_root_id, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
+  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
   rescue_from NoMethodError, :with => :handle_faulty_url
@@ -28,12 +28,29 @@ private
       actions.include? params[:action]
     end
 
+    def current_tournament
+      if params[:contest]
+        return Configuration::Contest.where(:permalink => params[:contest]).first
+      elsif session[:selected_tournament_id]
+        return Configuration::Contest.find(session[:selected_tournament_id])
+      end
+      Configuration::Contest.where("available_to >= :now AND available_from <= :now", {:now => Time.now}).first
+    end
+
+    def include_tournaments_menu_item
+      Configuration::Contest.count > 2
+    end
+
     def matches_current_context(always_conditions, conditions_before_prediction_ends = [], conditions_after_prediction_ends = [])
       is_conditions_matched? always_conditions or is_conditions_matched? conditions_before_prediction_ends or is_conditions_matched? conditions_before_prediction_ends
     end
 
     def is_conditions_matched?(conditions)
       conditions.length > 0 and conditions.index{|hc| hc.matches params}
+    end
+
+    def current_aggregate_root_type
+      params[:aggregate_root_type]
     end
 
     def current_aggregate_root_id
@@ -45,12 +62,12 @@ private
     end
 
     def before_contest_participation_ends
-      @contest ||= Configuration::Contest.find(:first)
+      @contest ||= current_tournament
       Time.now < @contest.participation_ends_at
     end
 
     def after_contest_participation_ends
-      @contest ||= Configuration::Contest.find(:first)
+      @contest ||= current_tournament
       Time.now > @contest.participation_ends_at
     end
 
@@ -111,7 +128,8 @@ private
       nil
     end
 
-  def prediction_menu_link(contest_permalink="championship",aggregate_root_type="group",aggregate_root_id="A")
+  def prediction_menu_link(contest_permalink="euro",aggregate_root_type="group",aggregate_root_id="A")
+    @contest = Configuration::Contest.where(:permalink => contest_permalink).first
 
     if before_contest_participation_ends
       new_prediction_path(contest_permalink,aggregate_root_type,aggregate_root_id)

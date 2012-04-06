@@ -1,5 +1,7 @@
 class Invitation < ActiveRecord::Base
+  before_create :existing_user_enrichment, :assign_unique_token
   belongs_to :contest_instance
+  has_one :contest, :through => :contest_instance, :class_name => "Configuration::Contest"
   belongs_to :existing_user, :class_name => "User", :foreign_key => "existing_user_id"
   belongs_to :sender, :class_name => "User", :foreign_key => "sender_id"
   has_one :participation
@@ -14,15 +16,6 @@ class Invitation < ActiveRecord::Base
                                                      'a'  => 'Accepted'}
   DUMMY_EMAIL = "participant@email.com"
   DUMMY_NAME = "New Participant Name"
-
-  def before_create
-    existing_user = User.find_by_email(self.email)
-    if existing_user
-      self.name = existing_user.name
-      self.existing_user_id = existing_user.id
-    end
-    self.token = get_unique_token
-  end
 
   def self.new_with_dummy_values
     Invitation.new(:name => DUMMY_NAME, :email => DUMMY_EMAIL)
@@ -104,6 +97,19 @@ private
   def is_the_same_email?(email_1, email_2)
     return false unless email_1 and email_2
     email_1.downcase.eql?(email_2.downcase)
+  end
+
+  def existing_user_enrichment
+    existing_user = User.find_by_email(self.email)
+
+    if existing_user
+      self.name = existing_user.name
+      self.existing_user_id = existing_user.id
+    end
+  end
+
+  def assign_unique_token
+    self.token = get_unique_token
   end
 
   def get_unique_token(timestamp = Time.now.to_f)

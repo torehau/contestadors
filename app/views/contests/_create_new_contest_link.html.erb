@@ -4,6 +4,6 @@
   </div>
   <div class="text_link">
     <%= link_to("Create a new Contest", new_contest_path(@contest.permalink, "admin"),
-      (current_controller?('contests', ["new", "create"]) ? {:class => "active"} : {})) %>
+      (current_controller_new('contests') and current_action_new(["new", "create"]) ? {:class => "active"} : {})) %>
   </div>
 </div>

@@ -5,7 +5,7 @@ module Configuration
     has_many :sets, :class_name => "Configuration::Set", :foreign_key => "configuration_prediction_state_id"
 
     def next
-      PredictionState.find(:first, :conditions => {:state_name => next_state_name})
+      PredictionState.where(:state_name => self.next_state_name, :configuration_contest_id => self.contest.id).first
     end
 
     def is_before?(other_state)

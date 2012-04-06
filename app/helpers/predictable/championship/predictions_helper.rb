@@ -79,18 +79,21 @@ module Predictable::Championship::PredictionsHelper
 
   def link_to_next_wizard_step(wizard)
     message = ""
+    contest = wizard.contest #"euro" or "championship"
+    last_group_state = contest.last_prediction_state("group")
+    first_knockout_stage_state = contest.first_prediction_state("stage")#'round-of-16'
 
-    if ('A'...'H') === wizard.current_step
+    if ('A'...last_group_state.permalink) === wizard.current_step#('A'...'H') === wizard.current_step
       next_group = wizard.next_step.upcase
-      message += "#{link_to('Group ' + next_group, new_prediction_path('championship','group', next_group))}."
-    elsif 'H'.eql?(wizard.current_step)
-      message += "the #{link_to('Knockout Stages', new_prediction_path('championship', 'stage', 'round-of-16'))}."
+      message += "#{link_to('Group ' + next_group, new_prediction_path(contest.permalink,'group', next_group))}."
+    elsif last_group_state.permalink.eql?(wizard.current_step)#'H'.eql?(wizard.current_step)
+      message += "the #{link_to('Knockout Stages', new_prediction_path(contest.permalink, 'stage', first_knockout_stage_state.permalink))}."
     end
     message
   end
 
   def successful_stage_prediction_message(aggr_id, new_predictions, wizard)
-    return "the Final and Third Place matches. Your predictions are now completed, but can be edited." if wizard.is_completed?
+    return "the Final. Your predictions are now completed, but can be edited." if wizard.is_completed?
     "the #{wizard.current_step.gsub('-',' ').capitalize}. "
   end
 end

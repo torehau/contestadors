@@ -1,0 +1,7 @@
+<div id="group">
+  <%= render :partial => p_pref('group_table') %>
+  <%= render :partial => p_pref('group_matches') %>
+</div>
+<% if @before_contest_participation_ends -%>
+  <%= form.submit "Save" %>
+<% end -%>

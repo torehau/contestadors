@@ -1,0 +1,12 @@
+<% is_match_winner = (team.is_through_to_next_stage?(current_stage) or (match.winner and team.id.eql?(match.winner.id))) %>
+  <div class="<%= predicted_stage_team_div_class(invalidated, selected, is_match_winner) %>">
+  <div class="team_icon">
+    <%= image_tag("/images/flags/"+ team.country_flag+ ".png") %>
+  </div><%= team.name %>
+  <% if selected and before_contest_participation_ends -%>
+    <div class="knockout_stage_team_selection">
+      <% checked = (match.winner ? is_match_winner : (team.is_through_to_next_stage?(current_stage) or match.home_team.eql?(team))) -%>
+      <%= match_form.radio_button("winner", team.id, :checked => checked) %>
+    </div>
+  <% end -%>
+</div>

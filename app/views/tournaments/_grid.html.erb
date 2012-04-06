@@ -1,0 +1,33 @@
+<% grid(@tournaments_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+
+  <% unless current_action_new "upcoming" -%>
+    <%  g.column :column_name => 'Select' do |tournament| -%>
+        <%=  radio_button_tag 'tournament', tournament.id.to_s, @selected && @selected.id == tournament.id, :disabled => tournament.available_from > Time.now,
+          :onclick => toggle_value(tournament, select_tournament_url(:id => tournament.id)) -%>
+        <%=  image_tag "spinner.gif", :id => "spinner-#{tournament.id}", :style => 'display: none' -%>
+    <%  end -%>
+  <%  end -%>
+
+
+  <%  g.column :column_name => 'Name', :attribute_name => 'name' do |tournament| -%>
+    <%=  tournament.name -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Available From', :attribute_name => 'available_from' do |tournament| -%>
+    <%=  tournament.available_from.to_s(:pretty_too) -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Tournament Starts', :attribute_name => 'participation_ends_at' do |tournament| -%>
+    <%=  tournament.participation_ends_at.to_s(:pretty_too) -%>
+  <%  end -%>
+
+  <%  g.column :column_name => 'Available To', :attribute_name => 'available_to' do |tournament| -%>
+    <%=  tournament.available_to.to_s(:pretty_too) -%>
+  <%  end -%>
+
+
+<%  end -%>
+
+<div class="table_description">
+  Beskrivelse av tabellen kommer her
+</div>

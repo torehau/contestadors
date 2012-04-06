@@ -24,21 +24,21 @@ class PredictionsController < ApplicationController
     set_wizard_and_progress_for_current_user
     redirect = @aggregate.redirect_on_save?
     set_flash_message(!redirect)
-    self.send((redirect ? :redirect_to : :render), :action => :new, :aggregate_root_type => @aggregate_root_type, :aggregate_root_id  => get_aggregate_root_id)
+    self.send((redirect ? :redirect_to : :render), :action => :new, :contest => @contest.permalink, :aggregate_root_type => @aggregate_root_type, :aggregate_root_id  => get_aggregate_root_id)
   end
 
   def update
     @result = @repository.update(@aggregate_root_id, params)
     @aggregate = @result.current
     set_wizard_and_progress_for_current_user
+    #redirect_to :action => :new, :aggregate_root_id => @aggregate_root_id, :aggregate_root_type => @aggregate_root_type
     render :action => :new
   end
 
   def show
-    @result = @repository.get(@aggregate_root_id)
+    @result = params[:command] ? @repository.update(@aggregate_root_id, params) : @repository.get(@aggregate_root_id)
     @aggregate = @result.current
     set_wizard_and_progress_for_current_user
-#    render
   end
 
 protected
@@ -56,7 +56,7 @@ protected
   def set_wizard_and_progress_for_current_user
     if current_user
       @wizard = current_user.summary_of(@contest)
-      @wizard.setup_wizard
+      @wizard.setup_wizard(@aggregate_root_type, @aggregate_root_id)
       @progress = @wizard.prediction_progress
 
       if @before_contest_participation_ends

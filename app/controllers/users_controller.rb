@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => [:show, :edit, :update]
+  before_filter :set_context, :except => [:new, :create]
 
   def new
     @user = User.new
@@ -70,6 +71,10 @@ class UsersController < ApplicationController
 
 
 private
+
+  def set_context
+    @before_contest_participation_ends = before_contest_participation_ends
+  end
 
   def set_error_details
     if @user.errors.on(:name)

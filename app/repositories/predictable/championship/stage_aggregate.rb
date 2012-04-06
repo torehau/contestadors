@@ -33,11 +33,11 @@ module Predictable
       end
 
       def get_aggregate_root_builder(aggregate_root_id)
-        StageAggregateBuilder.new(aggregate_root_id)
+        StageAggregateBuilder.new(aggregate_root_id, @contest)
       end
 
       def validate_new_predictions
-        errors = KnockoutStageValidator.new.validate(@new_predictions, summary)
+        errors = KnockoutStageValidator.new(@contest).validate(@new_predictions, summary)
         reset_root_to_current_stage unless errors.empty?
         errors
       end
@@ -65,7 +65,7 @@ module Predictable
       end
 
       def get_predictable_items
-        Configuration::Set.find_by_description("Teams through to #{@root.next.description}").predictable_items
+        @contest.set("Teams through to #{@root.next.description}").predictable_items
       end
 
       def invalidates_dependant_aggregates?
@@ -95,7 +95,7 @@ module Predictable
     private
 
       def save_stage_team_predictions
-        set = Configuration::Set.find_by_description "Teams through to #{@root.next.description}"
+        set = @contest.set "Teams through to #{@root.next.description}"
 
         Prediction.save_predictions(@user, set, teams_through_to_next_stage_by_id) do |stage_team|
           stage_team.team.id.to_s

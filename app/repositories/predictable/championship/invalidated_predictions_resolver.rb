@@ -19,14 +19,14 @@ module Predictable
         return items if stages.empty?
 
         stages.each do |stage|
-          set = Configuration::Set.find_by_description "Teams through to #{stage.description}"
+          set = @contest.set("Teams through to #{stage.description}")
           set.predictable_items.each {|item| items << item.id} if set
         end
-        set = Configuration::Set.find_by_description "Third Place Team"
+        set = @contest.set("Third Place Team")
+        items << set.predictable_items.first.id if set
+        set = @contest.set("Winner Team")
         items << set.predictable_items.first.id
-        set = Configuration::Set.find_by_description "Winner Team"
-        items << set.predictable_items.first.id
-        items
+        items.uniq
       end
 
     private

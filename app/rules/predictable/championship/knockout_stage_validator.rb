@@ -6,7 +6,9 @@ module Predictable
     class KnockoutStageValidator
       include Ruleby
 
-      def initialize
+      def initialize(contest)
+        @contest = contest
+        @first_knockout_stage = ContestFirstKnockOutStageResolver.new.resolve(contest)
         @errors = {}
       end
 
@@ -15,31 +17,38 @@ module Predictable
 
           engine :knockout_stages do |e|
             rulebook = KnockoutStageValidationRulebook.new(e)
-            rulebook.rules(stage.description)
+            rulebook.rules(stage.description, @first_knockout_stage)
             rulebook.errors = @errors
 
             e.assert stage
             e.assert summary
 
-            set = Configuration::Set.find_by_description "Teams through to " + stage.description
+            set = @contest.set("Teams through to " + stage.description)
             summary.user.predictions_for(set).each {|prediction| e.assert prediction}
             stage.matches.each do |match|
               e.assert match.winner
               e.assert match
 
-              if stage.description.eql?("Final")
-                stage.next.matches.each{|match| e.assert match}
-              end
+              #if stage.description.eql?("Final")
+              #  stage.next.matches.each{|match| e.assert match}
+              #end
             end
             
-            if stage.description.eql?("Round of 16")
-              Predictable::Championship::Group.find(:all).each do |group|
+            if stage.description.eql?(@first_knockout_stage.description)#("Round of 16")
+              group_ids = @contest.unique_aggregate_root_ids("group")
+              Predictable::Championship::Group.find(group_ids).each do |group|
                 group.qualifications.each {|qualification| e.assert qualification}
                 group.table_positions.each {|table_position| e.assert table_position}
               end
-              category = Configuration::Category.find_by_description("Group Tables")
-              summary.user.predictions_of(category).each {|prediction| e.assert prediction}
-              category.predictable_items.each {|item| e.assert item}
+              items = CommonContestCategoryItemsResolver.new.resolve(@contest, "Group Tables")
+              #summary.user.predictions_for_subset(items).each {|prediction| e.assert prediction}
+              items.each do |item|
+                e.assert item
+                e.assert summary.user.prediction_for(item)
+              end
+              #category = Configuration::Category.find_by_description("Group Tables")
+              #summary.user.predictions_of(category).each {|prediction| e.assert prediction}
+              #category.predictable_items.each {|item| e.assert item}
             end
 
             e.match
@@ -54,10 +63,13 @@ module Predictable
 
         attr_accessor :errors
 
-        def rules(stage_description)
+        def rules(stage_description, first_knockout_stage)
 
-          {"h" => ["Quarter finals", "Semi finals", "Final"],
-           "r" => ["Semi finals", "Final"],
+          # TODO configure illegal state transitions
+          #{"h" => ["Quarter finals", "Semi finals", "Final"],
+          # "r" => ["Semi finals", "Final"],
+          # "q" => ["Final"]}.each do |current_state, stage_descriptions|
+          {"d" => ["Semi finals", "Final"],
            "q" => ["Final"]}.each do |current_state, stage_descriptions|
 
             stage_descriptions.each do |stage_descr|
@@ -86,9 +98,9 @@ module Predictable
             retract v[:match]
           end
 
-          rule :round_of_16_match_winner_teams_not_qualified_from_correct_group, {:priority => 2},
+          rule :first_knockout_stage_match_winner_teams_not_qualified_from_correct_group, {:priority => 2},
             [Predictable::Championship::Stage, :stage,
-              m.description == "Round of 16",
+              m.description == first_knockout_stage.description,
              {m.id => :stage_id}],
             [Predictable::Championship::Match, :match,
               m.predictable_championship_stage_id == b(:stage_id),
@@ -112,18 +124,19 @@ module Predictable
             retract v[:match]
           end
 
-          rule :third_place_winner_team_not_predicted_to_final, {:priority => 1},
-            [Predictable::Championship::Match, :match,
-              m.description == "Third Place",
-              m.winner_id.not == nil,
-             {m.id => :match_id, m.winner_id => :winner_team_id}],
-            [Prediction, :final_team_prediction,
-              m.description == "Teams through to Final",
-              m.predicted_value(:winner_team_id, &c{|pv, wtid| pv.eql?(wtid.to_s)})] do |v|
-
-            @errors[:match_id] = "Not possible to predict the given team as winner of the Third Place Play-off match, when predicted through to the Final."
-            retract v[:match]
-          end
+          # WC specific rule
+          #rule :third_place_winner_team_not_predicted_to_final, {:priority => 1},
+          #  [Predictable::Championship::Match, :match,
+          #    m.description == "Third Place",
+          #    m.winner_id.not == nil,
+          #   {m.id => :match_id, m.winner_id => :winner_team_id}],
+          #  [Prediction, :final_team_prediction,
+          #    m.description == "Teams through to Final",
+          #    m.predicted_value(:winner_team_id, &c{|pv, wtid| pv.eql?(wtid.to_s)})] do |v|
+          #
+          #  @errors[:match_id] = "Not possible to predict the given team as winner of the Third Place Play-off match, when predicted through to the Final."
+          #  retract v[:match]
+          #end
         end
       end
     end
