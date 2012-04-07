@@ -45,7 +45,7 @@ private
     @user = User.find_using_perishable_token(params[:id])
     unless @user
       flash.now[:alert] = "Your account could not be retrieved. " +
-        "Try copy and paste the URL from your email into your browser or repeate the " +
+        "Try copy and paste the URL from your email into your browser or repeat the " +
         "reset password process."
       redirect_to root_url
     end

@@ -7,7 +7,7 @@ Hi <%= @invitation.name %>,<br/>
 <% else -%>
   <%= @invitation.sender.name %> invites you to join the <b><%= @invitation.contest_instance.name %></b>
   prediction contest at <%= link_to 'Contestadors', "http://www.contestadors.com" %>
-  for the 2010 FIFA World Cup.<br/>
+  for the <%= @invitation.contest.name %> Soccer Tournament.<br/>
 <% end -%>
 <br/>
 You can accept this invitation by clicking the following link:<br/>
@@ -15,7 +15,7 @@ You can accept this invitation by clicking the following link:<br/>
 <br/>
 If the above link does not work, try to copy and paste the actual URL shown next to it into your browser.<br/>
 Alternatively, you can accept it from your list of new contest invitations:<br/>
-<%= link_to 'All new invitations', pending_invitations_url(:contest => "championship") %><br/>
+<%= link_to 'All new invitations', pending_invitations_url(:contest => @invitation.contest.permalink) %><br/>
 <br/>
 If you don't want to accept the invitation, please ignore this email.
 You will not join the <b><%= @invitation.contest_instance.name %></b> contest before accepting this invitation
@@ -23,4 +23,4 @@ as described above.<br/>
 <br/>
 Regards,<br/>
 Contestadors<br/>
-<i> Free World Cup Prediction Contests</i>
+<i> Free Soccer Tournaments Prediction Contests</i>
