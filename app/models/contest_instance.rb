@@ -1,3 +1,5 @@
+require "mods.rb"
+
 class ContestInstance < ActiveRecord::Base
   before_save :init_identifiers
   after_create :make_admin_first_participant
