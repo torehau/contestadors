@@ -66,6 +66,7 @@ class UsersController < ApplicationController
 	end
 
   def sign_in_options
+    @provider_names = current_user.included_identity_providers
     render
   end
 

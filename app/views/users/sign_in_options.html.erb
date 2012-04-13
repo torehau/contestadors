@@ -6,6 +6,19 @@
       <b><%= raw RPXNow.popup_code("Add Identity Provider For Contestadors Sign In &raquo;", :"contestadors", addrpxauth_url, :add_rpx => true, :unobtrusive => false ) %></b><br/>
     <br/>
     <p>You may add as many of the available Identity Providers for signing in to Contestadors as you like.</p>
+    <% if @provider_names -%>
+      <p>
+        You have currently included the following identity providers for your Contestadors account:
+
+        <ul>
+          <% @provider_names.each do |name| -%>
+            <li><%= name %></li>
+          <% end -%>
+        </ul>
+      </p>
+    <% else -%>
+      <p>You have currently not included any identity providers for your Contestadors account.</p>
+    <% end -%>
     <div class="warning_message" >
       <b>WARNING - may cause account merging, with deletion of predictions</b><br/>
       <span class="message">If you already have another Contestadors account associated with an Identity Provider you add for signing in to this account, the two accounts will be merged. All contests owner- and memberships for both accounts will be kept in this situation, but any predictions placed under the other account will be deleted.</span>

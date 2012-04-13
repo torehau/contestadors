@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
     # set Authlogic_RPX account mapping mode
     c.account_mapping_mode :internal
   end
+  has_many :identity_providers
   has_many :prediction_summaries do#, :class_name => "Prediction::Summary", :foreign_key => "user_id", :dependent => :destroy do
     def for_contest(contest)
       where(:configuration_contest_id => contest.id).first
@@ -83,6 +84,11 @@ class User < ActiveRecord::Base
     end
   end
   has_many :score_table_positions
+
+  def included_identity_providers
+    return nil if self.identity_providers == nil or self.identity_providers.count == 0
+    self.identity_providers.order(:provider_name).collect{|provider| provider.provider_name}
+  end
 
   def summary_of(contest)
     prediction_summaries.for_contest(contest)
