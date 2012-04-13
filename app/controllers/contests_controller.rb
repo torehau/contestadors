@@ -40,13 +40,16 @@ class ContestsController < ApplicationController
       if @contest_instance.save
         flash[:notice] = "New contest '" +  @contest_instance.name + "' successfully created! You may now invite people to join it."
         redirect_to new_contest_invitation_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)
+        flash.delete(:recaptcha_error)
         return
       else
         set_error_details
+        flash.delete(:recaptcha_error)
       end
     else
       @focused_field_id = "recaptcha_response_field"
       flash.now[:alert] = "Word verification response is incorrect, please try again."
+      flash.delete(:recaptcha_error)
     end
     render :action => :new
   end

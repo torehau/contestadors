@@ -1,8 +1,5 @@
 <div id="contests">
   <div id="create_contest_form_container">
-    <% unless @contest_instance.new_record? %>
-      <h3>Edit Contest</h3>
-    <% end %>
     <% url = @contest_instance.new_record? ? contests_path(@contest.permalink) : contest_path(:contest => @contest.permalink, :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid) -%>
     <%= form_for :contest_instance, @contest_instance, :url => url, :html => (@contest_instance.new_record? ? {} : {:method => :put}) do |form| -%>
     <table>
