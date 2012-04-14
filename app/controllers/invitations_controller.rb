@@ -33,13 +33,19 @@ class InvitationsController < ApplicationController
   end
 
   def index
-    @contest_invitations_grid = initialize_grid(Invitation,
-      :include => [:existing_user, :participation],
-      :conditions => {:contest_instance_id => @contest_instance.id},
-      :order => 'invitations.created_at',
-      :order_direction => 'desc',
-      :per_page => 10
-    )
+    invitations = Invitation.where(:contest_instance_id => @contest_instance.id)
+
+    if invitations.empty?
+      @no_invitations_message = "You have not sent any invitations for this contest yet"
+    else
+      @contest_invitations_grid = initialize_grid(Invitation,
+        :include => [:existing_user, :participation],
+        :conditions => {:id => invitations},
+        :order => 'invitations.created_at',
+        :order_direction => 'desc',
+        :per_page => 10
+      )
+    end
   end
 
   def pending
