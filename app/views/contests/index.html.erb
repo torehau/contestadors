@@ -4,9 +4,39 @@
   </div>
   <div id="contests"></div>
 <% else -%>
-  <div id="contests">
-    <div class="contests_navigation">
-      <%= render_navigation :context => :contestlist unless @contest_instances.empty? %>
-    </div>
-  </div>
+  <% grid(@contests_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+    <% g.column :column_name => 'Name', :attribute_name => 'name' do |instance| -%>
+      <%= link_to(instance.name, contest_instance_menu_link(instance) ) -%>
+    <% end -%>
+
+    <% g.column :column_name => 'Active Participants' do |instance| -%>
+      <%=  instance.participations.active.count.to_s -%>
+    <% end -%>
+
+    <% if @role == "admin" -%>
+      <% if @before_contest_participation_ends -%>
+        <% g.column :column_name => 'New Invitations' do |instance| -%>
+          <%= instance.invitations.where(:state => ['n', 's']).count.to_s -%>
+        <% end -%>
+      <% else -%>
+        <% g.column :column_name => 'Deactivated Participants' do |instance| -%>
+          <%= instance.participations.where(:active => 'f').count.to_s -%>
+        <% end -%>
+      <% end -%>
+    <% else -%>
+      <% g.column :column_name => 'Administrator', :attribute_name => 'name', :model_class => User do |instance| -%>
+        <%= instance.admin.name -%>
+      <% end -%>
+    <% end -%>
+
+    <% if @role == "admin" -%>
+      <% g.column :column_name => 'Created', :attribute_name => 'created_at' do |instance| %>
+        <% instance.created_at.to_s(:short) %>
+      <% end -%>
+    <% elsif @role == "member" -%>
+      <% g.column :column_name => 'Invitation Accepted', :attribute_name => 'created_at', :model_class => User do |instance| %>
+        <% current_user.participations.of(instance).created_at.to_s(:short) %>
+      <% end -%>
+    <% end -%>
+  <% end -%>
 <% end -%>

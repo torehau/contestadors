@@ -17,7 +17,7 @@ class ScoreTablesController < ApplicationController
     )
 
     if before_contest_participation_ends
-      flash.now[:notice] = "The Score Table will be updated during the Championship, ranking the participants based on how well their predictions meet the actual results."
+      flash.now[:notice] = "The Score Table will be updated during the #{@contest.name}, ranking the participants based on how well their predictions meet the actual results."
     end
   end
 
