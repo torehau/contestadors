@@ -120,7 +120,7 @@
 .wice_grid a.date_label:hover {text-decoration: line-through;}
 
 .wice_grid tr.even td a:hover {
-   background-color: #e5ecf9;
+  /* background-color: #e5ecf9;  */
 }
 .wice_grid tr.odd td a:hover {
    background-color: #fff;
