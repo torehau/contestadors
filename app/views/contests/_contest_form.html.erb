@@ -5,13 +5,13 @@
     <table>
       <tbody>
         <tr>
-          <td class="<%= @contest_instance.errors.invalid?(:name) ? "invalid" : "" %>">
+          <td class="<%= @contest_instance.errors.on(:name) ? "invalid" : "" %>">
             <%= form.label :name, "Name: " %>
           </td>
           <td><%= form.text_field :name, :size => 50, :maxlength => 50 %></td>
         </tr>
         <tr>
-          <td class="<%= @contest_instance.errors.invalid?(:description) ? "invalid" : "" %>">
+          <td class="<%= @contest_instance.errors.on(:description) ? "invalid" : "" %>">
             <%= form.label :description, "Invitation Message: " %><br/>
             (Optional, max 1000 letters)
           </td>

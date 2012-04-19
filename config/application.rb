@@ -39,7 +39,8 @@ module Contestadors
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :password_confirmation]
 
-    config.action_view.field_error_proc = Proc.new{ |html_tag, instance| "<span class=&quot;fieldWithErrors&quot;>#{html_tag}</span>" }
+    #config.action_view.field_error_proc = Proc.new{ |html_tag, instance| "<span class=&quot;fieldWithErrors&quot;>#{html_tag}</span>" }
+    config.action_view.field_error_proc = Proc.new { |html_tag, instance| "#{html_tag}".html_safe }
 
     #ENV['RPX_API_KEY'] = 'a1246984717efc09ee04485fe76c2f778d9783d1'
     ##RPX_API_KEY = ENV['RPX_API_KEY']

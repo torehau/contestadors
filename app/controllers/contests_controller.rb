@@ -50,13 +50,12 @@ class ContestsController < ApplicationController
         return
       else
         set_error_details
-        flash.delete(:recaptcha_error)
       end
     else
       @focused_field_id = "recaptcha_response_field"
       flash.now[:alert] = "Word verification response is incorrect, please try again."
-      flash.delete(:recaptcha_error)
     end
+    flash.delete(:recaptcha_error)
     render :action => :new
   end
 

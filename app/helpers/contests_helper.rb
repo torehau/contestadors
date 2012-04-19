@@ -14,7 +14,7 @@ module ContestsHelper
       items << {:label => "Create",
         :tip => "Create A New Prediction Contest for this tournament",
         :path => new_contest_path(@contest.permalink, "admin"),
-        :highlight_conditions => [HighlightCondition.new("contests", "new", "admin"), HighlightCondition.new("contests", "new", "admin")]}
+        :highlight_conditions => [HighlightCondition.new("contests", "new", "admin"), HighlightCondition.new("contests", "create", "admin")]}
     end
     items << {:label => "All Existing",
       :tip => "All contests you participate in",
