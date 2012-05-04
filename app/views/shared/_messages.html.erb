@@ -9,8 +9,8 @@
     <div id="flash" class="flash_<%= key %>" >
 	  <% if key.to_s == 'alert' -%>
 	    <span class="message">Woops: <%= value ? value.html_safe : "An error occured" %></span>
-      <% else -%>
-	    <span class="message">Note: <%= value ? value.html_safe : "Successful operation" %></span>
+      <% elsif key.to_s == "notice" and value -%>
+	    <span class="message">Note: <%= value.html_safe %></span>
 	  <% end -%>
     </div>
   <% end -%>
