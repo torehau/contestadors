@@ -19,6 +19,7 @@ class PasswordResetsController < ApplicationController
       end
     end
     flash[:alert] = "Unknown email or incorrect word verification response. Please try again."
+    flash.delete(:recaptcha_error)
     redirect_to :action => :new
   end
 

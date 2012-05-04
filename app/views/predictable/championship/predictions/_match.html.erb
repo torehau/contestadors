@@ -1,7 +1,7 @@
 <% prefix = "group[new_predictions][]" %>
 <%= fields_for prefix, match do |match_form| %>
   <div class="<%= group_match_div_class(match) %>">
-    <div class="match_date"><%= match.play_date.to_s(:short) %></div>
+    <div class="match_date"><%= match.play_date.utc.to_s(:short) %></div>
     <div class="home_team_name"><%= match.home_team.name %></div>
     <div class="team_icon"><%= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>
     <% if @before_contest_participation_ends -%>
