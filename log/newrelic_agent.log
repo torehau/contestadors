@@ -1,0 +1,6 @@
+# Logfile created on 2012-05-05 01:41:28 +0200 by logger.rb/25413
+[05/05/12 01:41:28 +0200 tore-VirtualBox (16040)] INFO : Dispatcher: webrick
+[05/05/12 01:41:28 +0200 tore-VirtualBox (16040)] INFO : Application: development
+[05/05/12 01:41:28 +0200 tore-VirtualBox (16040)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[05/05/12 01:41:28 +0200 tore-VirtualBox (16040)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 16040
+[05/05/12 01:41:28 +0200 tore-VirtualBox (16040)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
