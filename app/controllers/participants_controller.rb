@@ -47,11 +47,11 @@ class ParticipantsController < ApplicationController
                                               :uuid => @contest_instance.uuid)
       else
         raise "Failed to accept invitation with invite code: " + params[:invite_code]
-        redirect_to pending_invitations_path("championship")
+        redirect_to pending_invitations_path("euro")
       end
     else
       raise "Failed to find invitation with invite code: " + (params[:invite_code] ? params[:invite_code] : "nil")
-      redirect_to pending_invitations_path("championship")
+      redirect_to pending_invitations_path("euro")
     end
   end
 

@@ -1,5 +1,5 @@
 class Participation < ActiveRecord::Base
-  after_create :accept_invitation, :init_score_table_position
+  after_create :accept_invitation
   belongs_to :user
   belongs_to :contest_instance
   belongs_to :invitation
@@ -15,13 +15,5 @@ private
     if self.invitation
       self.invitation.accept!
     end
-  end
-
-  def init_score_table_position
-    ScoreTablePosition.create!(:participation_id => self.id,
-                               :contest_instance_id => self.contest_instance.id,
-                               :prediction_summary_id => self.user.summary_of(self.contest_instance.contest).id,
-                               :user_id => self.user.id,
-                               :position => 1)
   end
 end
