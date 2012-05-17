@@ -9,6 +9,8 @@ class ParticipantsController < ApplicationController
 
   def index
     session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+    array = Configuration::PredictionState.where(:configuration_contest_id => @contest.id).collect {|ps| [ps.state_name, ps]}
+    @prediction_states_by_name = Hash[array]
     
     @participants_grid = initialize_grid(Participation,
       :include => [:user],
