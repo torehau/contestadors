@@ -14,7 +14,7 @@
   <%  g.column :column_name => 'Prediction Status' do |participation| -%>
     <%  state = participation.user.summary_of(@contest).state -%>
     <%#*# TODO to avoid this lookup, a progress attribute should be included for the PredictionSummary%>
-    <%=  "Completed: " + Configuration::PredictionState.find_by_state_name(state).progress_accumulated.to_s + " %" -%>
+    <%=  "Completed: " + Configuration::PredictionState.where(:state_name => state, :configuration_contest_id => @contest.id).first.progress_accumulated.to_s + " %" -%>
   <%  end -%>
 
   <%  if after_contest_participation_ends -%>

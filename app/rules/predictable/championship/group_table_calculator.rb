@@ -18,7 +18,7 @@ module Predictable
         @group = group
       end
 
-      # Settles group match scores, idendifies tied teams and attempts to rank these temas
+      # Settles group match scores, identifies tied teams and attempts to rank these teams
       # using the Ruleby rules
       def calculate(calculate_display_order)
         engine :group_table do |e|

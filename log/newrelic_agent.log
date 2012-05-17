@@ -9,3 +9,18 @@
 [05/09/12 21:37:05 +0200 tore-VirtualBox (4993)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
 [05/09/12 21:37:05 +0200 tore-VirtualBox (4993)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 4993
 [05/09/12 21:37:05 +0200 tore-VirtualBox (4993)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[05/10/12 07:58:54 +0200 tore-VirtualBox (10591)] INFO : Dispatcher: webrick
+[05/10/12 07:58:54 +0200 tore-VirtualBox (10591)] INFO : Application: development
+[05/10/12 07:58:54 +0200 tore-VirtualBox (10591)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[05/10/12 07:58:54 +0200 tore-VirtualBox (10591)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 10591
+[05/10/12 07:58:54 +0200 tore-VirtualBox (10591)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[05/16/12 05:18:33 +0200 tore-VirtualBox (3571)] INFO : Dispatcher: webrick
+[05/16/12 05:18:33 +0200 tore-VirtualBox (3571)] INFO : Application: development
+[05/16/12 05:18:33 +0200 tore-VirtualBox (3571)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[05/16/12 05:18:33 +0200 tore-VirtualBox (3571)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 3571
+[05/16/12 05:18:33 +0200 tore-VirtualBox (3571)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[05/17/12 08:40:44 +0200 tore-VirtualBox (7412)] INFO : Dispatcher: webrick
+[05/17/12 08:40:44 +0200 tore-VirtualBox (7412)] INFO : Application: development
+[05/17/12 08:40:44 +0200 tore-VirtualBox (7412)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[05/17/12 08:40:44 +0200 tore-VirtualBox (7412)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 7412
+[05/17/12 08:40:44 +0200 tore-VirtualBox (7412)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log

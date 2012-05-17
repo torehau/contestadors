@@ -63,9 +63,11 @@ module Predictable
         previous, current = nil, nil
 
         self.table_positions.sort!{|a, b| calculate_display_order ? (b <=> a) : (a.display_order <=> b.display_order)}.each do |table_position|
+        #self.table_positions.sort!{|a, b| b <=> a }.each do |table_position|
           current = table_position
 
-          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
+          #VM: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
+          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for
             pos += increment
             increment = 1
           else
