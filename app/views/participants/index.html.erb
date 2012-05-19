@@ -12,7 +12,7 @@
   <%  end -%>
 
   <%  g.column :column_name => 'Prediction Status' do |participation| -%>
-    <%  state = participation.user.summary_of(@contest).state -%>
+    <%  state = participation.prediction_state_name(@contest) -%>
     <%=  "Completed: " + @prediction_states_by_name[state].progress_accumulated.to_s + " %" -%>
   <%  end -%>
 
