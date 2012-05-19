@@ -158,7 +158,7 @@ private
   end
 
   def handle_faulty_url(exception)
-    flash[:alert] = "An error occured when handling your request. The provided url was not recognized." + exception.to_s #TODO remove exception.to_s
+    flash[:alert] = "An error occured when handling your request. The provided url was not recognized."
     notify_hoptoad(exception)
     Rails.logger.warn " **** Exception caught: " + exception.to_s
     redirect_to (current_user ? edit_account_path : root_path)

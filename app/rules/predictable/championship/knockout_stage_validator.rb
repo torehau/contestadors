@@ -65,7 +65,7 @@ module Predictable
 
         def rules(stage_description, first_knockout_stage)
 
-          # TODO configure illegal state transitions
+          # Illegal state transitions, VM:
           #{"h" => ["Quarter finals", "Semi finals", "Final"],
           # "r" => ["Semi finals", "Final"],
           # "q" => ["Final"]}.each do |current_state, stage_descriptions|
