@@ -10,7 +10,7 @@ module Predictable
         @group = group
         @user = user
         @contest = contest
-        @position_id, @table_position, @move_direction = params[:id], params[:pos], params[:command]
+        @position_id, @table_position, @move_direction = params[:team_id], params[:pos], params[:command]
         @group_table_set = @contest.set("Group #{@group.name} Table")
         @promotion_stage_set = get_promotion_stage_set#Configuration::Set.find_by_description "Teams through to Round of 16"
         @predictions_to_update, @updated_prediction_values, @group_table_positions_to_swap = [], {}, {}

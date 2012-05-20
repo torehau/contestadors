@@ -15,7 +15,12 @@ Contestadors::Application.routes.draw do
     post 'select', :on => :member
   end
   scope '/:contest/:aggregate_root_type/:aggregate_root_id' do
-    resources :predictions
+    resources :predictions do
+      put '/' => :create, :on => :collection
+      collection do
+        post :rearrange
+      end
+    end
   end
   match 'euro/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'euro', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
   match '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions' => 'predictions#show', :as => :user_predictions, :method => :get

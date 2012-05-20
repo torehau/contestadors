@@ -1,7 +1,7 @@
 class PredictionsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :require_contest
-  before_filter :before_contest_participation_ends, :only => [:new, :create, :update]
+  before_filter :before_contest_participation_ends, :only => [:new, :create, :rearrange]
   before_filter :after_contest_participation_ends, :only => :show
   before_filter :require_user, :unless => :preview_available
   before_filter :prediction_state_available, :if => :current_user
@@ -27,11 +27,12 @@ class PredictionsController < ApplicationController
     self.send((redirect ? :redirect_to : :render), :action => :new, :contest => @contest.permalink, :aggregate_root_type => @aggregate_root_type, :aggregate_root_id  => get_aggregate_root_id)
   end
 
-  def update
+  def rearrange
     @result = @repository.update(@aggregate_root_id, params)
     @aggregate = @result.current
     set_wizard_and_progress_for_current_user
-    #redirect_to :action => :new, :aggregate_root_id => @aggregate_root_id, :aggregate_root_type => @aggregate_root_type
+    #redirect_to :path => new_prediction_path(@contest.permalink, @aggregate_root_type, @aggregate_root_id)
+    #redirect_to :action => :new, :contest => @contest.permalink, :aggregate_root_id => @aggregate_root_id, :aggregate_root_type => @aggregate_root_type
     render :action => :new
   end
 
