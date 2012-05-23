@@ -72,4 +72,22 @@ namespace :csv2db do
   task(:update_teams => :environment) do
     Predictable::Championship::Team.update_from_csv(:id, [:country_flag, :name])
   end
+
+  desc "Updates existing teams with the given ranking coefficient positions."
+  task(:set_team_ranking_positions => :environment) do
+    filename = $csv_dir + 'ranking_coefficients.csv'
+    parser = CSV.new(File.open(filename, 'r'),
+                           :headers => true, :header_converters => :symbol,
+                           :col_sep => ',')
+    parser.each do |row|
+      if row and row.length > 0 and row.include?(:name)
+        name = row.field(:name)
+        puts "Setting rank position for " + name
+        team = Predictable::Championship::Team.where(:name => name).last
+        team.ranking_coefficient = row.field(:ranking_coefficient)
+        team.save!
+        puts " rank set to " + team.ranking_coefficient.to_s
+      end
+    end
+  end
 end
