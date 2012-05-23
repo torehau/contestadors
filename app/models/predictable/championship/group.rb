@@ -67,7 +67,7 @@ module Predictable
           current = table_position
 
           #VM: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
-          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for
+          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for and previous.team.ranking_coefficient == current.team.ranking_coefficient
             pos += increment
             increment = 1
           else
