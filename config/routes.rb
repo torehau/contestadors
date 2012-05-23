@@ -26,7 +26,13 @@ Contestadors::Application.routes.draw do
   match '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions' => 'predictions#show', :as => :user_predictions, :method => :get
   scope '/:contest/:role' do
     resources :contests do
-      resources :invitations
+      resources :invitations do
+        collection do
+          scope '/:uuid' do
+            get :copy
+          end
+        end
+      end
       resources :participants
       resource :score_table
     end

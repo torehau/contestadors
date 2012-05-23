@@ -57,6 +57,9 @@ class User < ActiveRecord::Base
     def for_contest_instance(contest_instance)
       find(:first, :conditions => {:id => contest_instance.id})
     end
+    def except(contest)
+      where("configuration_contest_id != ?", contest.id).all
+    end
   end
   has_many :invitations, :class_name => "Invitation", :foreign_key => "existing_user_id" do
     def not_accepted
@@ -171,6 +174,10 @@ class User < ActiveRecord::Base
 
   def admin_contests_instances(contest)
     self.administered_contest_instances.for_contest(contest)
+  end
+
+  def previously_administered_contests(contest)
+    self.administered_contest_instances.except(contest)
   end
 
   def member_contests_instances(contest)

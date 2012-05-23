@@ -63,7 +63,7 @@ SimpleNavigation::Configuration.run do |navigation|
     selected = selected_contest
     if selected and selected.contest.id == current_tournament.id
       primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
-            :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new")])}
+            :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
       #current_controller_or_context?(["score_tables", "participants"], {"contests" => ["show", "upcoming_events", "latest_results"]}, {"contests" => ["edit", "update"], "invitations" => ["new"]})}
     end
 

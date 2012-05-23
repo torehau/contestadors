@@ -32,6 +32,10 @@ class ContestInstance < ActiveRecord::Base
     user and user.id and user.id.eql?(admin.id) ? "admin" : "member"
   end
 
+  def full_name
+    self.contest.name + ": " + self.name
+  end
+
   # ["Active participants: 1. Pending invitations:  0.", "Created at: " + instance.created_at.to_s(:short)]
   #def summary_for(user)
   #  summaries = []
@@ -60,6 +64,16 @@ class ContestInstance < ActiveRecord::Base
 
   def active_participants
     self.participations.active.collect {|participation| participation.user }
+  end
+
+  def copy_invitations_for_active_participants(other_contest_instance_id)
+    invitations = []
+    self.participations.active.each do |participant|
+      if participant.invitation
+        invitations << Invitation.new(:contest_instance_id => other_contest_instance_id, :name => participant.invitation.name, :email => participant.invitation.email)
+      end
+    end
+    invitations
   end
 
   def update_score_table_positions

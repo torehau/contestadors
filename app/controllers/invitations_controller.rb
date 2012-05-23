@@ -5,14 +5,34 @@ class InvitationsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :require_contest
   before_filter :before_contest_participation_ends, :except => :index
-  before_filter :require_admin, :only => [:new, :create, :index]
+  before_filter :require_admin, :only => [:new, :copy, :create, :index]
 
   def new
     if @contest_instance
       session[:selected_contest_id] = @contest_instance.id.to_s
       @invitations = []
       @invitations << Invitation.new_with_dummy_values
+      @previous_contests = current_user.previously_administered_contests(@contest)
     end
+  end
+
+  def copy
+    if @contest_instance
+      session[:selected_contest_id] = @contest_instance.id.to_s
+
+      if params[:previous_contests] and params[:previous_contests].to_i > 0
+        @previous_contest = ContestInstance.find(params[:previous_contests])
+      end
+
+      if @previous_contest and current_user.is_admin_of?(@previous_contest)
+        @invitations = @previous_contest.copy_invitations_for_active_participants(@contest_instance.id)
+      else
+        @invitations = []
+        @invitations << Invitation.new_with_dummy_values
+      end
+      @previous_contests = current_user.previously_administered_contests(@contest)
+    end
+    render :new
   end
 
   def create
@@ -23,6 +43,7 @@ class InvitationsController < ApplicationController
 
     if errors > 0
       flash.now[:alert] = "Invalid invitation data given. No invitations sent."
+      @previous_contests = current_user.previously_administered_contests(@contest)
       render :action => :new
     else
       @invitations.each {|invitation| @contest_instance.invitations << invitation}

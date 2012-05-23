@@ -803,6 +803,15 @@ padding-left: 40px;
    display: block;
 }
 
+#previous_contest_participants {
+  margin-bottom: 20px;
+}
+
+#previous_contest_participants select {
+  margin-left: 20px;
+  width: 415px;
+}
+
 #contest_invitations {
    margin-bottom: 20px;
 }

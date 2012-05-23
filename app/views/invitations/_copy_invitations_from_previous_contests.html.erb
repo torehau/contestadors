@@ -1,0 +1,7 @@
+<% if @previous_contests and @previous_contests.count > 0 -%>
+  <%= form_tag copy_contest_invitations_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid), :id => 'previous_contests',:method => :get, :remote => true do %>
+    <div id="previous_contest_participants">
+      <%= label_tag "Include active participants from previous contest: " %> <%= select_tag "previous_contests", options_from_collection_for_select(@previous_contests, "id", "full_name", @previous_contest ? @previous_contest.id : 0), :include_blank => 'Select a contest', :onchange => "this.form.submit();" %>
+    </div>
+  <% end -%>
+<% end -%>

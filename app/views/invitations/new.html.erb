@@ -1,9 +1,10 @@
 <div id="contests">
   <div id="contest_invitations_form_container">
     <h3>Invite People To Join</h3>
+    <%= render :partial => 'copy_invitations_from_previous_contests' %>
     <% form_for :contest_instance, @contest_instance,
       :url => contest_invitations_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) do |form| -%>
-      <%#= negative_captcha(@captcha) %>
+
       <div id="contest_invitations">
         <%= render :partial => 'contest_invitation', :collection => @invitations %>
       </div>

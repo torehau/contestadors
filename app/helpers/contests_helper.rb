@@ -60,6 +60,7 @@ module ContestsHelper
                   :tip => "Invite people to join the contest",
                   :path => new_contest_invitation_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
                   :highlight_conditions => [HighlightCondition.new("invitations", "new"),
+                                            HighlightCondition.new("invitations", "copy"),
                                             HighlightCondition.new("invitations", "create")]}
       end
       items << {:label => "Invite History",
