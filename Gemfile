@@ -16,6 +16,7 @@ gem 'recaptcha', :require => 'recaptcha/rails'
 gem 'simple-navigation', '3.6.0'
 gem 'wice_grid', '3.0.4'
 gem 'newrelic_rpm'
+gem 'valid_email'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'

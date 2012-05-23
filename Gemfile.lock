@@ -90,6 +90,9 @@ GEM
       polyglot (>= 0.3.1)
     tzinfo (0.3.31)
     uuidtools (2.1.1)
+    valid_email (0.0.4)
+      activemodel
+      mail
     wice_grid (3.0.4)
     will_paginate (3.0.3)
 
@@ -112,5 +115,6 @@ DEPENDENCIES
   state_machine (= 1.1.2)
   statistics (= 1.0.0)
   uuidtools (= 2.1.1)
+  valid_email
   wice_grid (= 3.0.4)
   will_paginate (= 3.0.3)

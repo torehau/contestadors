@@ -6,7 +6,7 @@ class Invitation < ActiveRecord::Base
   belongs_to :sender, :class_name => "User", :foreign_key => "sender_id"
   has_one :participation
   validates_presence_of :name, :email
-  validates_email_format_of :email
+  validates :email, :presence => true, :email => true
   validates_uniqueness_of :email, :scope => :contest_instance_id
   validate :email_different_from_invitor_email, :no_dummy_values_provided
   define_statistic :contest_invitations_count, :count => :all, :filter_on => { :state => 'state = ?', :contest_instance_id => 'contest_instance_id = ?'}

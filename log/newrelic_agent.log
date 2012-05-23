@@ -1,0 +1,5 @@
+[05/23/12 06:53:50 +0200 tore-VirtualBox (4786)] INFO : Dispatcher: webrick
+[05/23/12 06:53:50 +0200 tore-VirtualBox (4786)] INFO : Application: development
+[05/23/12 06:53:50 +0200 tore-VirtualBox (4786)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[05/23/12 06:53:50 +0200 tore-VirtualBox (4786)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 4786
+[05/23/12 06:53:50 +0200 tore-VirtualBox (4786)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
