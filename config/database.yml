@@ -3,11 +3,19 @@
 #
 # Be sure to use new-style password hashing:
 #   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+#development:
+#  adapter: sqlite3
+#  database: db/contestadors.sqlite3
+#  pool: 5
+#  timeout: 5000
 development:
-  adapter: sqlite3
-  database: db/contestadors.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  database: contestadors_development
   pool: 5
-  timeout: 5000
+  username: tore
+  password: Rallar1
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

@@ -141,6 +141,12 @@ class User < ActiveRecord::Base
     predictions.by_predictable_item(set)
   end
 
+  def winner_prediction_for(contest)
+    set = contest.set("Winner Team")
+    predictions = predictions_for(set)
+    predictions and predictions.count == 1 ? Predictable::Championship::Team.find(predictions.first.predicted_value.to_i) : nil
+  end
+
   def instances_of(contest, role)
     contest ||= Configuration::Contest.find(:first)
     role ||= :all

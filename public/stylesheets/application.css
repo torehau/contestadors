@@ -1088,6 +1088,40 @@ form.contest_create {
   float: left;
 }
 
+.euro_winner_predicted {
+    width: 670px;
+    height: 35px;
+    background: #E5ECF9;
+    clear: both;
+    margin: 10px 149px 10px 90px;
+    padding-top: 7px;
+    color: #333;
+    font-weight: bold;
+    font-size: 150%;
+    text-align: center;
+    vertical-align: middle;
+    float: right;
+    display: block;
+    border: 1px #CCC solid;
+}
+
+.euro_winner_unpredicted {
+    width: 670px;
+    height: 35px;
+    background: #DDD;
+    clear: both;
+    margin: 10px 149px 7px 90px;
+    padding-top: 10px;
+    color: #333;
+    font-weight: normal;
+    font-size: 140%;
+    text-align: center;
+    vertical-align: middle;
+    float: right;
+    display: block;
+    border: 1px #CCC solid;
+}
+
 .selected_knockout_stage_label {
   width: 205px;
 /*  padding-right: 3px;*/
