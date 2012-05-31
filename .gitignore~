@@ -5,4 +5,3 @@ db/development.sqlite3_production
 db/development.sqlite3_test
 log/development.log
 log/test.log
-latest.dump
