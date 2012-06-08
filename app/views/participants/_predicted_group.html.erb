@@ -4,7 +4,7 @@
     <% @predictions[:groups][group_name][:matches].sort.each do |match| -%>
       <div class="<%= objectives_meet_div_class_for(match.objectives_meet) %>">
         <div class="predicted_match">
-          <div class="predicted_match_time"><%= match.play_date.to_s(:short) %></div>
+          <div class="predicted_match_time"><%= match.play_date.utc.to_s(:short) %></div>
           <div class="predicted_match_teams"><%= match.home_team.name %> - <%= match.away_team.name %></div>
           <div class="predicted_match_score"><%= match.score %></div>
         </div>

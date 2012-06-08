@@ -1,4 +1,4 @@
-<h3 id="match"><%= match.play_date.to_s(:short) %> <span class="black"><%= match.home_team.name %> - <%= match.away_team.name %></span> <%= match.score if match.score %></h3>
+<h3 id="match"><%= match.play_date.utc.to_s(:short) %> <span class="black"><%= match.home_team.name %> - <%= match.away_team.name %></span> <%= match.score if match.score %></h3>
 <% if match.is_group_match? -%>
   <h4 id="description">Predictions by contest participants:</h4>
   <div class="participants_predictions">
