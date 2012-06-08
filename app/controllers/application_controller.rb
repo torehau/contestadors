@@ -73,6 +73,7 @@ private
 
     def selected_contest
       session_contest_instance = get_contest_instance_from_session
+
       if session_contest_instance
 
         if current_user.is_participant_of?(session_contest_instance)
@@ -84,7 +85,6 @@ private
 
       default_contest = current_user.default_contest
       session[:selected_contest_id] = default_contest ? default_contest.id : nil
-
       default_contest
     end
 

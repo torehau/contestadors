@@ -29,15 +29,15 @@ module Predictable
       #            {:third-place => {:teams => [Team1, Team2], :winner => Team2}}
       #  }
       def get_all
-        PredictionCollector.new(@user).get_all
+        PredictionCollector.new(@contest, @user).get_all
       end
 
       def get_all_upcoming(participants)
-        PredictionCollector.new.get_all_upcoming(participants)
+        PredictionCollector.new(@contest).get_all_upcoming(participants)
       end
 
       def get_all_latest(participants)
-        PredictionCollector.new.get_all_latest(participants)
+        PredictionCollector.new(@contest).get_all_latest(participants)
       end
 
       # saves the predictions in the provided input hash if the user is signed in

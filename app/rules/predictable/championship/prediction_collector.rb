@@ -3,7 +3,8 @@ module Predictable
     class PredictionCollector
       include Ruleby
 
-      def initialize(user=nil)
+      def initialize(contest, user=nil)
+        @contest = contest
         @user = user
 #        @summary = {:groups => {}, :stages => {}}
 #        ('A'..'H').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
@@ -26,16 +27,21 @@ module Predictable
         engine :prediction_collection do |e|
           rulebook = PredictionMapperRulebook.new(e)
           rulebook.summary = @summary
-          rulebook.rules
+          rulebook.rules(@contest)
 
-          @user.predictions.each {|prediction| e.assert prediction}
-          Configuration::PredictableItem.find(:all).each {|item| e.assert item}
-          Predictable::Championship::Stage.find_by_description("Group").matches.each {|match| e.assert match}
-          ["Final", "Third Place"].each {|match_descr| e.assert Predictable::Championship::Match.find_by_description(match_descr)}
-          Predictable::Championship::GroupTablePosition.find(:all).each {|pos| e.assert pos}
-          Predictable::Championship::Team.find(:all).each {|team| e.assert team}
+          items = CommonContestCategoryItemsResolver.new.resolve(@contest, ["Group Tables", "Group Matches", "Stage Teams", "Specific Team"])
+          @user.predictions.for_items(items).each {|prediction| e.assert prediction}
+          items.each{|item| e.assert item}
 
-          e.match          
+          #@user.predictions.each {|prediction| e.assert prediction}
+          #Configuration::PredictableItem.find(:all).each {|item| e.assert item}
+          Predictable::Championship::Stage.where(:description => "Group").last.matches.each {|match| e.assert match}
+          #vm: ["Final", "Third Place"].each {|match_descr| e.assert Predictable::Championship::Match.where(:description => match_descr).last}
+          e.assert Predictable::Championship::Match.where(:description => "Final").last
+          Predictable::Championship::GroupTablePosition.where("created_at > ?", @contest.created_at - 1.day).each {|pos| e.assert pos}
+          Predictable::Championship::Team.where("created_at > ?", @contest.created_at - 1.day).each {|team| e.assert team}
+
+          e.match
         end
         @summary
       end
@@ -44,13 +50,14 @@ module Predictable
       # participant name and with the predicted score as value
       def get_all_upcoming(participants)
         upcomming_matches = Predictable::Championship::Match.upcomming
-        items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(upcomming_matches).find_items
+        items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(@contest, upcomming_matches).find_items
         collect_participant_predictions_for(upcomming_matches, items_by_match_id, participants)
       end
 
       def get_all_latest(participants)
         latest_matches = Predictable::Championship::Match.latest
-        items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(latest_matches, :processed).find_items
+        return {} if latest_matches.nil? or latest_matches.empty?
+        items_by_match_id = Predictable::Championship::PredictableItemsResolver.new(@contest, latest_matches, :processed).find_items
         collect_participant_predictions_for(latest_matches, items_by_match_id, participants)
       end
 
@@ -58,10 +65,12 @@ module Predictable
 
       def init_user_summary
         @summary = {:groups => {}, :stages => {}}
-        ('A'..'H').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
-        ["Round of 16", "Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
+        ('A'..'D').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
+        #VM: ('A'..'H').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
+        ["Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
+        #VM: ["Round of 16", "Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
         @summary[:stages]["Final"].merge(:winner_team => nil)
-        @summary[:stages]["Third Place"] = {:winner_team => nil}
+        #VM: @summary[:stages]["Third Place"] = {:winner_team => nil}
       end
 
       def collect_participant_predictions_for(matches, items_by_match_id, participants)
@@ -116,9 +125,9 @@ module Predictable
         final_matches = {"Third Place" => "Third Place Team", "Final" => "Winner Team"}
 
         unless final_matches.has_key?(match.description)
-          Configuration::Set.find_by_description("Teams through to " + match.stage.next.description)
+          @contest.set("Teams through to " + match.stage.next.description)
         else
-          Configuration::Set.find_by_description(final_matches[match.description])
+          @contest.set(final_matches[match.description])
         end
       end
 
@@ -126,10 +135,11 @@ module Predictable
 
         attr_accessor :summary
 
-        def rules
+        def rules(contest)
           
-          ("A".."H").each do |group_name|
-             group_set = Configuration::Set.find_by_description("Group " + group_name + " Matches")
+          #("A".."H").each do |group_name|
+          ("A".."D").each do |group_name|
+             group_set = contest.set("Group " + group_name + " Matches")
 
              rule :set_predicted_group_matches, {:priority => 4},
                [Configuration::PredictableItem, :group_match_item,
@@ -148,7 +158,7 @@ module Predictable
                  retract v[:group_match_item]              
             end
 
-            table_set = Configuration::Set.find_by_description("Group " + group_name + " Table")
+            table_set = contest.set("Group " + group_name + " Table")
             rule :set_predicted_group_tables, {:priority => 3},
                [Configuration::PredictableItem, :table_position_item,
                  m.configuration_set_id == table_set.id,
@@ -166,9 +176,10 @@ module Predictable
             end
           end
 
-          ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage_descr|
-            stage_set = Configuration::Set.find_by_description("Teams through to " + stage_descr)
-            stage = Predictable::Championship::Stage.find_by_description(stage_descr)
+          # vm: ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage_descr|
+          ["Quarter finals", "Semi finals", "Final"].each do |stage_descr|
+            stage_set = contest.set("Teams through to " + stage_descr)
+            stage = Predictable::Championship::Stage.where(:description => stage_descr).last
             
             rule :set_predicted_stage_teams, {:priority => 2},
                [Configuration::PredictableItem, :stage_team_item,
@@ -183,7 +194,9 @@ module Predictable
 #                 if v[:stage_team_item].processed?
 #                   v[:team].objectives_meet = v[:team].is_through_to_stage?(stage) ? 1 : 0
 #                 end
-                 v[:team].objectives_meet_for[stage.id] = v[:prediction].objectives_meet
+                 if v[:stage_team_item].processed?
+                   v[:team].objectives_meet_for[stage.id] = v[:prediction].objectives_meet
+                 end
 #                 v[:team].objectives_meet = v[:prediction].objectives_meet
                  @summary[:stages][stage_descr][:teams] << v[:team]
                  retract v[:stage_team_item]
@@ -192,8 +205,8 @@ module Predictable
             end
           end
 
-          {"Final" => "Winner Team", "Third Place" => "Third Place Team"}.each do |match_descr, set_descr|
-
+          # vn; {"Final" => "Winner Team", "Third Place" => "Third Place Team"}.each do |match_descr, set_descr|
+          {"Final" => "Winner Team"}.each do |match_descr, set_descr|
             rule :resolve_match_winner, {:priority => 1},
                [Predictable::Championship::Match, :match,
                   m.description == match_descr,

@@ -1,8 +1,12 @@
 <h4>Teams in <%= stage_name %></h4>
 <% unless @predictions[:stages][stage_name][:teams].empty? -%>
-  <% stage = Predictable::Championship::Stage.find_by_description stage_name -%>
+  <% stage = Predictable::Championship::Stage.where(:description => stage_name).last -%>
   <% @predictions[:stages][stage_name][:teams].each do |team| -%>
-    <div class="<%= objectives_meet_div_class_for(team.objectives_meet_for[stage.id]) %>">
+    <% if team.objectives_meet_for.empty? -%>
+      <div>
+    <% else -%>
+      <div class="<%= objectives_meet_div_class_for(team.objectives_meet_for[stage.id]) %>">
+    <% end -%>
       <%= team.name %><br/>
     </div>
   <% end -%>

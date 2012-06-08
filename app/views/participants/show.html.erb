@@ -1,8 +1,9 @@
 <div id="picture-background-wallpaper">
   <div id="transbox_outer_frame">
-    <h3 id="summary">2010 FIFA World Cup <span class="participant"><%= "Predicted by " + (@participant ? @participant.name : "Unknown")  %></span></h3>
+    <h3 id="summary"><%= @contest.name %> <span class="participant"><%= "Predicted by " + (@participant ? @participant.name : "Unknown")  %></span></h3>
     <br/>
-    <% [["A","B"], ["C","D"], ["E","F"], ["G","H"]].each do |two_groups| -%>
+    <%# vm [["A","B"], ["C","D"], ["E","F"], ["G","H"]].each do |two_groups| -%>
+    <% [["A","B"], ["C","D"]].each do |two_groups| -%>
       <div class="two_predicted_groups">
         <% two_groups.each do |group_name| -%>
           <div class="one_predicted_group">
@@ -13,20 +14,35 @@
       <hr/>
     <% end -%>
 
-    <div class="all_predicted_stages">
-      <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage_name => "Round of 16" %>
-      </div>
-      <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage_name => "Quarter finals" %><br/><br/>
-        <%= render "predicted_stage_teams", :stage_name => "Semi finals" %>
-      </div>
-      <div class="one_predicted_stage">
-        <%= render "predicted_stage_teams", :stage_name => "Final" %><br/><br/><br/>
-        <%= render "predicted_match_winner", :title => "Third Place Play-off", :match => "Third Place" %><br/>
-        <%= render "predicted_match_winner", :title => "2010 FIFA World Cup", :match => "Final" %>
-      </div>
-    </div>
+    <% if @contest.permalink == "championship" %>
+        <div class="all_predicted_stages">
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Round of 16" %>
+          </div>
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Quarter finals" %><br/><br/>
+            <%= render "predicted_stage_teams", :stage_name => "Semi finals" %>
+          </div>
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Final" %><br/><br/><br/>
+            <%= render "predicted_match_winner", :title => "Third Place Play-off", :match => "Third Place" %><br/>
+            <%= render "predicted_match_winner", :title => "2010 FIFA World Cup", :match => "Final" %>
+          </div>
+        </div>
+    <% else %>
+        <div class="all_predicted_stages">
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Quarter finals" %>
+          </div>
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Semi finals" %>
+          </div>
+          <div class="one_predicted_stage">
+            <%= render "predicted_stage_teams", :stage_name => "Final" %><br/><br/>
+            <%= render "predicted_match_winner", :title => "UEFA Euro 2012", :match => "Final" %>
+          </div>
+        </div>
+    <% end %>
     <hr/>
   </div>
 </div>

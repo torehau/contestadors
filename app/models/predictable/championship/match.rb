@@ -18,7 +18,7 @@ module Predictable
       end
 
       scope :upcomming, :conditions => ["home_team_id is not null and away_team_id is not null and score is null and result is null and play_date > ? ", Time.now - 2.hours], :order => "play_date ASC", :limit => 2
-      scope :latest, :conditions => ["score is not null and result is not null"], :order => "play_date DESC", :limit => 2
+      scope :latest, :conditions => ["score is not null and result is not null and play_date > ?", Time.now - 1.month], :order => "play_date DESC", :limit => 2
 
       attr_accessor :home_team_score, :away_team_score, :state
       attr_accessor :rank

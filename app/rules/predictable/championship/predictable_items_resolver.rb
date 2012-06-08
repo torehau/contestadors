@@ -3,7 +3,8 @@ module Predictable
     class PredictableItemsResolver
       include Ruleby
 
-      def initialize(predictables, predictable_item_state=:unsettled)
+      def initialize(contest, predictables, predictable_item_state=:unsettled)
+        @contest = contest
         @preditables = predictables
         @predictable_item_state = predictable_item_state
         @items_by_predictable_id = {}
@@ -15,7 +16,7 @@ module Predictable
           rulebook.items_by_predictable_id = @items_by_predictable_id
           rulebook.rules(@predictable_item_state)
           @preditables.each {|predictable| e.assert predictable}
-          Configuration::Category.find_by_description(category_desc).predictable_items.each {|item| e.assert item}
+          CommonContestCategoryItemsResolver.new.resolve(@contest, category_desc).each {|item| e.assert item}
 
           e.match
         end

@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
   end
   has_many :administered_contest_instances, :class_name => "ContestInstance", :foreign_key => "admin_user_id" do
     def for_contest(contest)
-      find(:all, :conditions => {:configuration_contest_id => contest.id}, :order => "name")
+      where(:configuration_contest_id => contest.id).order("name").all
     end
     def for_contest_instance(contest_instance)
       find(:first, :conditions => {:id => contest_instance.id})
@@ -157,11 +157,11 @@ class User < ActiveRecord::Base
     end
   end
 
-
   def default_contest
-    administered_contest = self.administered_contest_instances.first
+    current_tournament = Configuration::Contest.last
+    administered_contest = self.administered_contest_instances.for_contest(current_tournament).first
     return administered_contest if administered_contest
-    participation = self.participations.first
+    participation = self.participations.as_participant(current_tournament).first
     participation ? participation.contest_instance : nil
   end
 
