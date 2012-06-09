@@ -148,7 +148,7 @@ class User < ActiveRecord::Base
   end
 
   def instances_of(contest, role)
-    contest ||= Configuration::Contest.find(:first)
+    contest ||= Configuration::Contest.last
     role ||= :all
     case role
     when :admin then admin_contests_instances(contest)

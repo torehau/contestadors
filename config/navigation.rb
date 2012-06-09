@@ -54,19 +54,33 @@ SimpleNavigation::Configuration.run do |navigation|
     end
     primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }
     primary.item :predictions, 'Predictions', prediction_menu_link, :highlights_on => lambda { current_controller_new 'predictions' }
+    selected = selected_contest
 
     if before_contest_participation_ends
       primary.item :invitations, 'Invitations', pending_invitations_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'invitations' and current_action_new ['pending', 'accepted'] }
-    end
     #primary.item :contests, 'Contests', contests_path("championship", "all"), :highlights_on => lambda { current_context?({'contests' => ['index']}, {'contests' => ['new', 'create']}) }
-    primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
-    selected = selected_contest
-    if selected and selected.contest.id == current_tournament.id
-      primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
+      primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
+
+      if selected and selected.contest.id == current_tournament.id
+        primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
             :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
       #current_controller_or_context?(["score_tables", "participants"], {"contests" => ["show", "upcoming_events", "latest_results"]}, {"contests" => ["edit", "update"], "invitations" => ["new"]})}
-    end
+      end
+    else
+      contest_instances = current_user.instances_of(@contest, :all)
+      contest_count = contest_instances.count
 
+      if contest_count > 3
+        primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
+        primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
+            :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
+      elsif contest_count > 0
+        contest_instances.each do |ci|
+          primary.item :contest_instance, ci.name, contest_instance_menu_link(ci),
+              :highlights_on => lambda { ci.id == selected.id and matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
+        end
+      end
+    end
 
     # Add an item which has a sub navigation (same params, but with block)
     #primary.item :key_2, 'name', url, options do |sub_nav|
