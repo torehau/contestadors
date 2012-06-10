@@ -13,7 +13,7 @@ class ScoreTablesController < ApplicationController
       :conditions => {:contest_instance_id => @contest_instance.id, :participations => {:active => true}},
       :order => (before_contest_participation_ends ? 'prediction_summaries.map' : 'position'),
       :order_direction => (before_contest_participation_ends ? 'desc' : 'asc'),
-      :per_page => 25
+      :per_page => 30
     )
 
     if before_contest_participation_ends
