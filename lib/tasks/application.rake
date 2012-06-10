@@ -27,6 +27,15 @@ namespace :app do
       puts "loading data from csv files..."
       Rake::Task["csv2db:add_championship_contest"].invoke
     end
+
+    desc "Deletes test contest instances"
+    task(:delete => :environment) do
+      ids = [53, 54, 55, 56, 58, 64, 68]
+      ContestInstance.where(:id => ids).each do |ci|
+        puts "Deletes contest '" + ci.name + "', administered by " + ci.admin.name
+        ContestInstance.delete(ci)
+      end
+    end
   end
 
   namespace :contest do
