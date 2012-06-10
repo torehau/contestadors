@@ -29,6 +29,40 @@ namespace :app do
     end
   end
 
+  namespace :contest do
+
+    namespace :participant do
+
+      desc "Adds a new participant based on an invitation token"
+      task(:add => :environment) do
+        user = User.find(349)
+        invite_code = "022bb5e8-25be-58f4-80ae-7680a8aef407"
+        invitation = Invitation.find_by_token(invite_code)
+
+        if invitation
+          contest_instance = invitation.contest_instance
+
+          if invitation.is_accepted?
+            puts "You have already accepted the invitation for the '#{contest_instance.name}' contest."
+            return
+          end
+          participation = Participation.new(:user_id => user.id,
+                               :contest_instance_id => contest_instance.id,
+                               :invitation_id => invitation.id,
+                               :active => true)
+
+          if participation.save
+            puts "You have now successfully accepted the invitation and joined the '#{contest_instance.name}' contest."
+          else
+            raise "Failed to accept invitation with invite code: " + invite_code
+          end
+        else
+          raise "Failed to find invitation with invite code: " + (invite_code ? invite_code : "nil")
+        end
+      end
+    end
+  end
+
   namespace :updates do
 
     desc "For adding and populating new preview_available column to configuration_prediction_states table"
