@@ -44,8 +44,8 @@ namespace :app do
 
       desc "Adds a new participant based on an invitation token"
       task(:add => :environment) do
-        user = User.find(150)
-        invite_code = "b8bdb597-62fb-51c0-9d80-5262416220fd"
+        user = User.find(181)
+        invite_code = "8ff7a830-3619-5214-bc9d-ce35a35b9dbb"
         invitation = Invitation.find_by_token(invite_code)
 
         if invitation
