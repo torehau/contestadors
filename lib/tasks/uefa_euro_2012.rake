@@ -94,17 +94,17 @@ namespace :uefa do
 
     desc "Sets the score and result for matches listed in the CSV file."
     task(:set_stage_teams => :environment) do
-      file_name = File.join(File.dirname(__FILE__), '/predictable_championship_stage_teams.csv')
+      file_name = File.join(File.dirname(__FILE__), '/uefa_euro_2012_stage_teams.csv')
       parser = CSV.new(File.open(file_name, 'r'),
                              :headers => true, :header_converters => :symbol,
                              :col_sep => ',')
 
       parser.each do |row|
-        stage = Predictable::Championship::Stage.find_by_description(row.field(:stage))
-        team = Predictable::Championship::Team.find_by_name(row.field(:team))
+        stage = Predictable::Championship::Stage.where(:description => row.field(:stage)).last
+        team = Predictable::Championship::Team.where(:name => row.field(:team)).last
 
         if stage and team
-          stage_team = Predictable::Championship::StageTeam.find(:first, :conditions => {:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id})
+          stage_team = Predictable::Championship::StageTeam.where(:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id).last
 
           puts "Stage: " + stage_team.stage.description + ", Team: " + stage_team.team.name
           @predictables_by_id[:stage_teams][stage_team.id] = stage_team
