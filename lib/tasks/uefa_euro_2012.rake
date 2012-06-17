@@ -120,21 +120,17 @@ namespace :uefa do
           items = @unsettled_items_by_predictable_id[predictable_type].values
           next if items.empty?
 
-          third_place_set = Configuration::Set.find_by_description("Third Place Team")
-          third_place_item = third_place_set.predictable_items.first
-          winner_set = Configuration::Set.find_by_description("Winner Team")
+          winner_set = Configuration::Set.where(:description => "Winner Team").last
           winner_item = winner_set.predictable_items.first
           dependant_items_by_item_id = {}
           map_reduction_value  = nil
-          final_teams_set = Configuration::Set.find_by_description("Teams through to Final")
-          mutex_set_by_set_id = {final_teams_set.id => third_place_set}
+          mutex_set_by_set_id = {}
 
           if items.size > 1
             items.each do |item|
               stage_team = item.predictable
               dependant_items = Predictable::Championship::PredictableItemsResolver.new(@contest, stage_team.dependant_predictables).find_items(category_descr)
               dependant_items_by_item_id[item.id] = dependant_items.values
-              dependant_items_by_item_id[item.id] << third_place_item
               dependant_items_by_item_id[item.id] << winner_item
             end
 
@@ -145,7 +141,6 @@ namespace :uefa do
             following_stage_teams = Predictable::Championship::StageTeam.stage_teams_after(stage_team.stage)
             dependant_items = Predictable::Championship::PredictableItemsResolver.new(@contest, following_stage_teams).find_items(category_descr)
             dependant_items_by_item_id[item.id] = dependant_items.values
-            dependant_items_by_item_id[item.id] << third_place_item
             dependant_items_by_item_id[item.id] << winner_item
             map_reduction_value = match.losing_team.id.to_s
           end
@@ -213,6 +208,7 @@ namespace :uefa do
         score = @score_and_map_reduced_by_user_id[user.id][:score]
         map_reduction = @score_and_map_reduced_by_user_id[user.id][:map_reduction]
         summary = user.summary_of(@contest)
+
         if summary
           summary.update_score_and_map_values(score, map_reduction)
           puts "prediction summary updated for " + user.name

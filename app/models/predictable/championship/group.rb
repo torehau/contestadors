@@ -90,7 +90,7 @@ module Predictable
     private
 
       def init_group
-        @matches = teams.collect {|t| t.matches}.flatten.uniq.sort
+        @matches = teams.collect {|t| t.group_matches}.flatten.uniq.sort
         @winner, @runner_up = nil, nil
       end
 

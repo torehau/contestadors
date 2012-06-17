@@ -21,6 +21,11 @@ module Predictable
         home_matches + away_matches
       end
 
+      def group_matches
+        group_stage = Predictable::Championship::Stage.where(:description => "Group").last
+        matches.select{|match| match.stage.id == group_stage.id}
+      end
+
       def is_through_to_stage?(stage)
         self.stage_teams.through_to(stage)
       end
