@@ -216,6 +216,25 @@ namespace :uefa do
       end
     end
 
+    desc "Corrects map for users having predicted Russia as winner"
+    task(:correct_map => :environment) do
+      russia = Predictable::Championship::Team.where(:name => "Russia").last
+      winner_set = Configuration::Set.where(:description => "Winner Team").last
+      winner_item = winner_set.predictable_items.first
+      predictions = Prediction.where(:configuration_predictable_item_id => winner_item.id, :predicted_value => russia.id.to_s)
+      puts "Found " + predictions.count.to_s + " predictions..."
+      contest = Configuration::Contest.last
+
+      predictions.each do |prediction|
+        user = prediction.user
+        summary = user.summary_of(contest)
+        puts "Map for user " + user.name + " before correction: " + summary.map.to_s
+        summary.map = summary.map - 50
+        puts "Map for user " + user.name + " after correction: " + summary.map.to_s
+        summary.save!
+      end
+    end
+
     desc "Sets up dev application in dev mode"
     task(:dev_setup => :environment) do
       puts "get most recent db changes..."
