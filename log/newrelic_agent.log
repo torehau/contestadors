@@ -1,0 +1,20 @@
+[06/21/12 22:43:23 +0200 tore-VirtualBox (7655)] INFO : Dispatcher: webrick
+[06/21/12 22:43:23 +0200 tore-VirtualBox (7655)] INFO : Application: development
+[06/21/12 22:43:23 +0200 tore-VirtualBox (7655)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[06/21/12 22:43:23 +0200 tore-VirtualBox (7655)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 7655
+[06/21/12 22:43:23 +0200 tore-VirtualBox (7655)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[06/21/12 23:05:40 +0200 tore-VirtualBox (7843)] INFO : Dispatcher: webrick
+[06/21/12 23:05:40 +0200 tore-VirtualBox (7843)] INFO : Application: development
+[06/21/12 23:05:40 +0200 tore-VirtualBox (7843)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[06/21/12 23:05:40 +0200 tore-VirtualBox (7843)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 7843
+[06/21/12 23:05:40 +0200 tore-VirtualBox (7843)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[06/22/12 21:41:22 +0200 tore-VirtualBox (8219)] INFO : Dispatcher: webrick
+[06/22/12 21:41:22 +0200 tore-VirtualBox (8219)] INFO : Application: development
+[06/22/12 21:41:22 +0200 tore-VirtualBox (8219)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[06/22/12 21:41:22 +0200 tore-VirtualBox (8219)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 8219
+[06/22/12 21:41:22 +0200 tore-VirtualBox (8219)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[06/22/12 21:53:43 +0200 tore-VirtualBox (8373)] INFO : Dispatcher: webrick
+[06/22/12 21:53:43 +0200 tore-VirtualBox (8373)] INFO : Application: development
+[06/22/12 21:53:43 +0200 tore-VirtualBox (8373)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
+[06/22/12 21:53:43 +0200 tore-VirtualBox (8373)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 8373
+[06/22/12 21:53:43 +0200 tore-VirtualBox (8373)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
