@@ -1,7 +1,11 @@
 <h4>Winner of <%= title %></h4>
 <% winner_team = @predictions[:stages][match][:winner_team] -%>
 <% if winner_team -%>
-  <div>
+    <% if winner_team.objectives_meet_for.empty? -%>
+      <div>
+    <% else -%>
+      <div class="<%= objectives_meet_div_class_for(winner_team.objectives_meet) %>">
+    <% end -%>
     <%= winner_team.name %><br/><br/>
   </div>
 <% else -%>
