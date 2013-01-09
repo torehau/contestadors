@@ -100,7 +100,7 @@ protected
     if @contest_instances.empty?
       @no_contests_message = case @role.to_sym
         when :admin then "You have not created any contests for the '#{@contest.name}' tournament yet"
-        when :member then "You have not accepted or recieved any '#{@contest.name}' contest invitations yet"
+        when :member then "You have not accepted or received any '#{@contest.name}' contest invitations yet"
         else "You do not participate in any contests for the '#{@contest.name}' tournament yet"
       end
     end
