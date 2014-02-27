@@ -1,5 +1,22 @@
-[07/01/12 23:59:45 +0200 tore-VirtualBox (4497)] INFO : Dispatcher: webrick
-[07/01/12 23:59:45 +0200 tore-VirtualBox (4497)] INFO : Application: development
-[07/01/12 23:59:45 +0200 tore-VirtualBox (4497)] WARN : Agent configured not to send data in this environment - edit newrelic.yml to change this
-[07/01/12 23:59:45 +0200 tore-VirtualBox (4497)] INFO : New Relic Ruby Agent 3.3.4.1 Initialized: pid = 4497
-[07/01/12 23:59:45 +0200 tore-VirtualBox (4497)] INFO : Agent Log at /home/tore/Dev/Rails/Upgrade/contestadors/log/newrelic_agent.log
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Starting the New Relic Agent.
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Environment: development
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Dispatcher: webrick
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] ERROR : Unable to determine application name. Please set the application name in your newrelic.yml or in a NEW_RELIC_APP_NAME environment variable.
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] WARN : Agent configured not to send data in this environment.
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Installing ActiveRecord instrumentation
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Installing Net instrumentation
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Installing Rails 3 Controller instrumentation
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Installing Rails 3.0 view instrumentation
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Installing Rails3 Error instrumentation
+[02/27/14 17:13:25 +0100 torehau-VirtualBox (27521)] INFO : Finished instrumentation
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Starting the New Relic Agent.
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Environment: development
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Dispatcher: webrick
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] ERROR : Unable to determine application name. Please set the application name in your newrelic.yml or in a NEW_RELIC_APP_NAME environment variable.
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] WARN : Agent configured not to send data in this environment.
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Installing ActiveRecord instrumentation
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Installing Net instrumentation
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Installing Rails 3 Controller instrumentation
+[02/28/14 00:34:28 +0100 torehau-VirtualBox (18187)] INFO : Installing Rails 3.0 view instrumentation
+[02/28/14 00:34:29 +0100 torehau-VirtualBox (18187)] INFO : Installing Rails3 Error instrumentation
+[02/28/14 00:34:29 +0100 torehau-VirtualBox (18187)] INFO : Finished instrumentation

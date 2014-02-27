@@ -1,9 +1,5 @@
-<% team = group_table_element.team; tied_team = group_table_element.tied == true ? 'Yes' : 'No' -%>
-<% if group_table_element.display_order < 3 -%>
-  <div class="group_table_promotion_position">
-<% else -%>
-  <div class="group_table_non_promotion_position">
-<% end -%>
+<% team = group_table_element.team -%>
+<div class="<%= group_table_position_div_class(group_table_element) %>">
     <div class="group_table_pos"><%= group_table_element.pos %></div>
     <div class="group_table_team_name"><div class="team_icon"><%= image_tag("/images/flags/"+ team.country_flag+ ".png") %></div><%= team.name %></div>
     <div class="pld_matches"><%= group_table_element.played %></div>
@@ -17,18 +13,18 @@
     <div class="group_table_edit">
       <% if @aggregate.is_rearrangable? and @before_contest_participation_ends -%>
         <% if group_table_element.can_move_up -%>
-          <div class="group_table_edit_move_up">
-            <%= link_to image_tag("arrow_top.png"),
-              prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
-              :id => group_table_element.id,:pos => group_table_element.display_order, :command => :up), {:method => :put, :title => "Move Up"} %>
-          </div>
+              <div class="group_table_edit_move_up">
+                <%= link_to image_tag("arrow_top.png"),
+                            rearrange_predictions_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
+                                                       :team_id => group_table_element.id,:pos => group_table_element.display_order, :command => :up), {:title => "Move Up"} %>
+              </div>
         <% end -%>
         <% if group_table_element.can_move_down -%>
-          <div class="group_table_edit_move_down">
-            <%= link_to image_tag("arrow_down.png"),
-               prediction_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
-              :id => group_table_element.id,:pos => group_table_element.display_order, :command => :down), {:method => :put, :title => "Move Down"} %>
-          </div>
+              <div class="group_table_edit_move_down">
+                <%= link_to image_tag("arrow_down.png"),
+                            rearrange_predictions_path(:aggregate_root_type => "group", :aggregate_root_id => group.name,
+                                                       :team_id => group_table_element.id,:pos => group_table_element.display_order, :command => :down), {:title => "Move Down"} %>
+              </div>
         <% end -%>
       <% end -%>
     </div>

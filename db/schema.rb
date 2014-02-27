@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120523210739) do
+ActiveRecord::Schema.define(:version => 20140226230251) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -164,6 +164,7 @@ ActiveRecord::Schema.define(:version => 20120523210739) do
     t.integer  "predictable_championship_stage_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "display_order"
   end
 
   create_table "predictable_championship_players", :force => true do |t|
@@ -206,6 +207,7 @@ ActiveRecord::Schema.define(:version => 20120523210739) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "ranking_coefficient"
+    t.integer  "tournament_id"
   end
 
   create_table "prediction_summaries", :force => true do |t|

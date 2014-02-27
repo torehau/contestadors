@@ -1,9 +1,5 @@
-<% team = group_table_element.team; tied_team = group_table_element.tied == true ? 'Yes' : 'No' -%>
-<% if group_table_element.display_order < 3 -%>
-  <div class="group_table_promotion_position">
-<% else -%>
-  <div class="group_table_non_promotion_position">
-<% end -%>
+<% team = group_table_element.team; -%>
+<div class="<%= group_table_position_div_class(group_table_element) %>">
     <div class="group_table_pos"><%= group_table_element.pos %></div>
     <div class="group_table_team_name"><div class="team_icon"><%= image_tag("/images/flags/"+ team.country_flag+ ".png") %></div><%= team.name %></div>
     <div class="pld_matches"><%= group_table_element.played %></div>

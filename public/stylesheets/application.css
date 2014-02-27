@@ -192,7 +192,7 @@ em {
 /* -- Progress ----------------------------- */
 div.progress {
   float:right;
-  width: 350px;
+  width: 270px;
   font-weight:bold;
   color: #41686a;
   padding-right: 20px;
@@ -201,13 +201,13 @@ div.progress {
 }
 
 div.progresslabel {
-    margin: 1px 0 0 30px;
+    margin: 1px 0 0 10px;
     float:left;
 }
 
 div.progressbar {
  border: 1px solid #ccc;
- width: 203px;
+ width: 180px;
  margin: 2px 0px 1px 0;
  padding: 1px;
  float: right;
@@ -715,7 +715,7 @@ padding-left: 40px;
 .submenu_tabnav a, .submenu_tabnav a.selected {
 	background: #9cbcda;
 	font-weight: bold;
-	padding: 3px 5px 0px 5px;
+	padding: 3px 0px 0px 0px;
 	margin: 5px 0px 0px 0px;
     -moz-border-radius-topleft: 0px;
     -moz-border-radius-topright: 0px;
@@ -1088,12 +1088,12 @@ form.contest_create {
   float: left;
 }
 
-.euro_winner_predicted {
-    width: 670px;
+.championship_winner_predicted {
+    width: 908px;
     height: 35px;
     background: #E5ECF9;
     clear: both;
-    margin: 10px 149px 10px 90px;
+    margin: 10px 0px 10px 0px;
     padding-top: 7px;
     color: #333;
     font-weight: bold;
@@ -1105,12 +1105,12 @@ form.contest_create {
     border: 1px #CCC solid;
 }
 
-.euro_winner_unpredicted {
-    width: 670px;
+.championship_winner_unpredicted {
+    width: 908px;
     height: 35px;
     background: #DDD;
     clear: both;
-    margin: 10px 149px 7px 90px;
+    margin: 10px 0px 7px 0px;
     padding-top: 10px;
     color: #333;
     font-weight: normal;

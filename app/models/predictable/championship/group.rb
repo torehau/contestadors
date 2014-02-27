@@ -66,8 +66,8 @@ module Predictable
         #self.table_positions.sort!{|a, b| b <=> a }.each do |table_position|
           current = table_position
 
-          #VM: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
-          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for and previous.team.ranking_coefficient == current.team.ranking_coefficient
+        #euro: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for and previous.team.ranking_coefficient == current.team.ranking_coefficient
+          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
             pos += increment
             increment = 1
           else
@@ -95,10 +95,9 @@ module Predictable
       end
 
       def stage_team(stage, path, is_winner)
-        Predictable::Championship::StageTeam.find(:first,
-          :conditions => {:predictable_championship_stage_id => stage.id,
-                          :predictable_championship_match_id => path.match.id,
-                          :is_home_team => is_winner})
+        Predictable::Championship::StageTeam.where(:predictable_championship_stage_id => stage.id,
+                                                   :predictable_championship_match_id => path.match.id,
+                                                   :is_home_team => is_winner).first
       end
     end
   end

@@ -34,6 +34,11 @@ module Predictable::Championship::PredictionsHelper
     end
   end
 
+  def group_table_position_div_class(group_table_element)
+    group_table_element.display_order < 3 ? "group_table_promotion_position" : "group_table_non_promotion_position"
+  end
+
+
   def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
     div_class_prefix = ""
 
@@ -93,7 +98,8 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def successful_stage_prediction_message(aggr_id, new_predictions, wizard)
-    return "the Final. Your predictions are now completed, but can be edited." if wizard.is_completed?
+    return "the Final and Third Place matches. Your predictions are now completed, but can be edited." if wizard.is_completed?
+    #euro: return "the Final. Your predictions are now completed, but can be edited." if wizard.is_completed?
     "the #{wizard.current_step.gsub('-',' ').capitalize}. "
   end
 end

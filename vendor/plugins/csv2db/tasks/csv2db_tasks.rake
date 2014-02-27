@@ -3,7 +3,8 @@ namespace :csv2db do
   desc "Load data from CSV files to the database"
   task(:load_data => :environment) do
     dependencies = {}
-    [Predictable::Championship::Team,
+    [Configuration::Contest,
+     Predictable::Championship::Team,
      Predictable::Championship::Player,
      Predictable::Championship::Stage,
      Predictable::Championship::Match,
@@ -12,7 +13,6 @@ namespace :csv2db do
      Predictable::Championship::GroupTablePosition,
      Predictable::Championship::GroupQualification,
      Predictable::Championship::StageQualification,
-     Configuration::Contest,
      Configuration::PredictionState,
      Configuration::Category,
      Configuration::Objective,
@@ -33,7 +33,8 @@ namespace :csv2db do
   task(:add_championship_contest => :environment) do
     dependencies = Configuration::Category.dependency_csv_id_by_db_id_map
 
-    [Predictable::Championship::Team,
+    [Configuration::Contest,
+     Predictable::Championship::Team,
      Predictable::Championship::Stage,
      Predictable::Championship::Match,
      Predictable::Championship::StageTeam,
@@ -41,7 +42,6 @@ namespace :csv2db do
      Predictable::Championship::GroupTablePosition,
      Predictable::Championship::GroupQualification,
      Predictable::Championship::StageQualification,
-     Configuration::Contest,
      Configuration::PredictionState,
      Configuration::Objective,
      Configuration::Set,

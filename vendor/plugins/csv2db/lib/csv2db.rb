@@ -30,7 +30,7 @@ module Csv2Db
       SUBSTITUTE_FIELD_VALUES = {:old_users => {:ignore_password_salt => "hERt50Pd", :ignore_password_hash => "8a335fca75392a2f5d0e850a313c62ac8ce6753f6d78070bc34a6c61279874a0"}}
 
       # Map of foreign id keys not complying with the conventional rails naming, i.e., when the id column is not on the form <table_name>_id 
-      FOREIGN_ID_KEY_MAP = {:home_team_id => :predictable_championship_teams, :away_team_id => :predictable_championship_teams}
+      FOREIGN_ID_KEY_MAP = {:home_team_id => :predictable_championship_teams, :away_team_id => :predictable_championship_teams, :tournament_id => :configuration_contests}
 
       def dependency_csv_id_by_db_id_map(matcher_field = :description)
         dependencies={}

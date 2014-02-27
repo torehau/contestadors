@@ -30,7 +30,7 @@ private
 
     def current_tournament
       if params[:contest]
-        return Configuration::Contest.where(:permalink => params[:contest]).first
+        return Configuration::Contest.where(:permalink => params[:contest]).last
       elsif session[:selected_tournament_id]
         return Configuration::Contest.find(session[:selected_tournament_id])
       end
@@ -38,7 +38,7 @@ private
     end
 
     def include_tournaments_menu_item
-      Configuration::Contest.count > 2
+      Configuration::Contest.count > 3
     end
 
     def matches_current_context(always_conditions, conditions_before_prediction_ends = [], conditions_after_prediction_ends = [])
@@ -128,8 +128,8 @@ private
       nil
     end
 
-  def prediction_menu_link(contest_permalink="euro",aggregate_root_type="group",aggregate_root_id="A")
-    @contest = Configuration::Contest.where(:permalink => contest_permalink).first
+  def prediction_menu_link(contest_permalink="championship",aggregate_root_type="group",aggregate_root_id="A")
+    @contest = Configuration::Contest.where(:permalink => contest_permalink).last
 
     if before_contest_participation_ends
       new_prediction_path(contest_permalink,aggregate_root_type,aggregate_root_id)

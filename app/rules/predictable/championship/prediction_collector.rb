@@ -36,10 +36,10 @@ module Predictable
           #@user.predictions.each {|prediction| e.assert prediction}
           #Configuration::PredictableItem.find(:all).each {|item| e.assert item}
           Predictable::Championship::Stage.where(:description => "Group").last.matches.each {|match| e.assert match}
-          #vm: ["Final", "Third Place"].each {|match_descr| e.assert Predictable::Championship::Match.where(:description => match_descr).last}
-          e.assert Predictable::Championship::Match.where(:description => "Final").last
+          ["Final", "Third Place"].each {|match_descr| e.assert Predictable::Championship::Match.where(:description => match_descr).last}
+          #e.assert Predictable::Championship::Match.where(:description => "Final").last
           Predictable::Championship::GroupTablePosition.where("created_at > ?", @contest.created_at - 1.day).each {|pos| e.assert pos}
-          Predictable::Championship::Team.where("created_at > ?", @contest.created_at - 1.day).each {|team| e.assert team}
+          Predictable::Championship::Team.where(:tournament_id => @contest.id).each {|team| e.assert team}
 
           e.match
         end
@@ -65,12 +65,12 @@ module Predictable
 
       def init_user_summary
         @summary = {:groups => {}, :stages => {}}
-        ('A'..'D').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
-        #VM: ('A'..'H').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
-        ["Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
-        #VM: ["Round of 16", "Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
+        #euro: ('A'..'D').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
+        ('A'..'H').each {|group_name| @summary[:groups][group_name] = {:matches => [], :table => {}}}
+        #euro:["Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
+        ["Round of 16", "Quarter finals", "Semi finals", "Final"].each {|stage| @summary[:stages][stage] = {:teams => []}}
         @summary[:stages]["Final"].merge(:winner_team => nil)
-        #VM: @summary[:stages]["Third Place"] = {:winner_team => nil}
+        @summary[:stages]["Third Place"] = {:winner_team => nil}
       end
 
       def collect_participant_predictions_for(matches, items_by_match_id, participants)
@@ -137,8 +137,8 @@ module Predictable
 
         def rules(contest)
           
-          #("A".."H").each do |group_name|
-          ("A".."D").each do |group_name|
+          ("A".."H").each do |group_name|
+          #("A".."D").each do |group_name|
              group_set = contest.set("Group " + group_name + " Matches")
 
              rule :set_predicted_group_matches, {:priority => 4},
@@ -176,8 +176,8 @@ module Predictable
             end
           end
 
-          # vm: ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage_descr|
-          ["Quarter finals", "Semi finals", "Final"].each do |stage_descr|
+          ["Round of 16", "Quarter finals", "Semi finals", "Final"].each do |stage_descr|
+          #euro:["Quarter finals", "Semi finals", "Final"].each do |stage_descr|
             stage_set = contest.set("Teams through to " + stage_descr)
             stage = Predictable::Championship::Stage.where(:description => stage_descr).last
             
@@ -205,8 +205,8 @@ module Predictable
             end
           end
 
-          # vn; {"Final" => "Winner Team", "Third Place" => "Third Place Team"}.each do |match_descr, set_descr|
-          {"Final" => "Winner Team"}.each do |match_descr, set_descr|
+          {"Final" => "Winner Team", "Third Place" => "Third Place Team"}.each do |match_descr, set_descr|
+            #euro:{"Final" => "Winner Team"}.each do |match_descr, set_descr|
             rule :resolve_match_winner, {:priority => 1},
                [Predictable::Championship::Match, :match,
                   m.description == match_descr,

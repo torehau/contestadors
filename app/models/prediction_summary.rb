@@ -4,33 +4,31 @@ class PredictionSummary < ActiveRecord::Base
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => 'configuration_contest_id'
   has_many :predictions, :through => :user
   has_many :score_table_positions
-  
-  #KNOCKOUT_STAGES                                 = [:q, :s, :fi, :t]
-  #KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'q'  => 'quarter-finals',
-  #                                                   's'  => 'semi-finals',
-  #                                                   'fi' => 'final',
-  #                                                   't'  => 'third-place'}
-    KNOCKOUT_STAGES                                 = [:q, :s, :fi]
-  KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'q'  => 'quarter-finals',
+
+  KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
+  KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
+                                                     'q'  => 'quarter-finals',
                                                      's'  => 'semi-finals',
-                                                     'fi' => 'final'}
+                                                     'fi' => 'final',
+                                                     't'  => 'third-place'}
 
   state_machine :initial => :i do
 
-    after_transition KNOCKOUT_STAGES => :d,
-                     [:s, :fi] => :q,
-                     [:fi] => [:q, :s], :do => :delete_invalidated_predictions
+    after_transition KNOCKOUT_STAGES => :h,
+                     [:q, :s, :fi, :t] => :r,
+                     [:s, :fi, :t] => [:r, :q],
+                     [:t] => [:r, :q, :s], :do => :delete_invalidated_predictions
     after_transition any => any - :fi, :do => :update_wizard
     after_transition any => any, :do => :update_map
 
     from_state = :i
 
-    ('a'..'d').each do |group_name|
+    ('a'..'h').each do |group_name|
       event_name = ('predict_group_' + group_name).to_sym
       to_state = group_name.to_sym
 
       event event_name do
-        transition from_state => to_state, KNOCKOUT_STAGES => :d
+        transition from_state => to_state, KNOCKOUT_STAGES => :h
       end
       from_state = to_state
     end

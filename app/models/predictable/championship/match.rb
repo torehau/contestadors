@@ -21,7 +21,6 @@ module Predictable
       scope :latest, :conditions => ["score is not null and result is not null and play_date > ?", Time.now - 1.month], :order => "play_date DESC", :limit => 2
 
       attr_accessor :home_team_score, :away_team_score, :state
-      attr_accessor :rank
       attr_accessor :winner
 
 
@@ -131,22 +130,14 @@ module Predictable
 
     private
 
-      EURO_QUARTER_FINAL_RANKS = {"QF 1" => 1, "QF 3" => 2, "QF 2" => 3, "QF 4" => 4}
+      RESULT_BY_COMPARE_RESULT = {0 => "x", 1 => "1", -1 => "2"}
 
       def init_scores
         @score ||= "0-0"
         scores = @score.split("-")
         set_individual_team_scores(scores[0],scores[1])
         self.state = "unsettled"
-
-        if EURO_QUARTER_FINAL_RANKS.has_key?(self.description)
-          self.rank = EURO_QUARTER_FINAL_RANKS[self.description]
-        else
-          self.rank = self.id
-        end
       end
-
-      RESULT_BY_COMPARE_RESULT = {0 => "x", 1 => "1", -1 => "2"}
 
       def result_from(score)
         team_scores = score.split('-')

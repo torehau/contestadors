@@ -21,7 +21,7 @@ module Configuration
     end
 
     def self.from_permalink_or_first_available(permalink)
-      contest = self.find_by_permalink(permalink)
+      contest = self.where(:permalink => permalink).last#find_by_permalink(permalink)
       contest ||= self.all_available.first
     end
 

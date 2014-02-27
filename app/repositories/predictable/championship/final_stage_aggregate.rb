@@ -14,20 +14,20 @@ module Predictable
 
       def set_match_winners
         @root.matches.each{|match| match.winner = @winners_by_match_id[match.id]}
-        #@root.next.matches.each{|match| match.winner = @winners_by_match_id[match.id]} TODO include for WC championship
+        @root.next.matches.each{|match| match.winner = @winners_by_match_id[match.id]} #TODO remove for euro championship
       end
 
       def get_predictable_items
-        #["Winner Team", "Third Place Team"].collect{|set_descr| @contest.set(set_descr)}.collect{|set| set.predictable_items}.flatten
+        ["Winner Team", "Third Place Team"].collect{|set_descr| @contest.set(set_descr)}.collect{|set| set.predictable_items}.flatten
         CommonContestCategoryItemsResolver.new.resolve(@contest, "Specific Team")
       end
 
       def save_new_aggregate_predictions
         save_match_winner("Winner Team", @root.matches_by_id)
         summary.predict_stage("Final")
-        #TODO include for WC championship
-        #save_match_winner("Third Place Team", @root.next.matches_by_id)
-        #summary.predict_stage("Third Place")
+        #TODO remove for euro championship
+        save_match_winner("Third Place Team", @root.next.matches_by_id)
+        summary.predict_stage("Third Place")
       end
 
       # NOP, since no subsequent stages will be invalidated in this case
