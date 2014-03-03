@@ -74,12 +74,13 @@ class User < ActiveRecord::Base
            :order => "contest_instances.name")
     end
     def as_member(contest)
-      find(:all, :joins => [:invitation, :contest_instance],
-           :conditions => ["contest_instances.configuration_contest_id = :contest_id", {:contest_id => contest.id}],
+      find(:all, :joins => [:contest_instance],
+           :conditions => ["contest_instances.configuration_contest_id = :contest_id and participations.user_id != contest_instances.admin_user_id", {:contest_id => contest.id}],
            :order => "contest_instances.name")
     end
     def of(contest_instance)
-      find(:first, :conditions => ["participations.contest_instance_id = :contest_instance_id and participations.invitation_id is not null", {:contest_instance_id => contest_instance.id}])
+      find(:first, :joins => [:contest_instance],
+           :conditions => ["participations.contest_instance_id = :contest_instance_id and participations.user_id != contest_instances.admin_user_id", {:contest_instance_id => contest_instance.id}])
     end
   end
   has_many :score_table_positions

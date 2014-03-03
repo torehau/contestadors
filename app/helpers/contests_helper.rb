@@ -44,53 +44,62 @@ module ContestsHelper
         :path => contest_path(:contest => @contest.permalink, :role => @role, :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
         :highlight_conditions => [HighlightCondition.new("contests", "show")]}
     end
-    items << {:label => "Score Table",
-      :tip => "Ranking of the contest participants",
-      :path => contest_score_table_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-      :highlight_conditions => [HighlightCondition.new("score_tables", "show")]}
-    items << {:label => "Participants",
-      :tip => "All participants of the contest",
-      :path => contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-      :highlight_conditions => [HighlightCondition.new("participants", "index")]}
-  
-    if current_user.is_admin_of?(@contest_instance)
-
+    unless current_user.is_participant_of?(@contest_instance)
       if @before_contest_participation_ends
-        items << {:label => "Invite",
-                  :tip => "Invite people to join the contest",
-                  :path => new_contest_invitation_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-                  :highlight_conditions => [HighlightCondition.new("invitations", "new"),
-                                            HighlightCondition.new("invitations", "copy"),
-                                            HighlightCondition.new("invitations", "create")]}
+        items << {:label => "Join",
+                  :tip => "Become a member of this contest",
+                  :path => contest_join_path(:contest => @contest.permalink, :role => "member", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+                  :highlight_conditions => [HighlightCondition.new("contests", "join")]}
       end
-      items << {:label => "Invite History",
-                :tip => "A list of previously sent invitions",
-                :path => contest_invitations_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-                :highlight_conditions => [HighlightCondition.new("invitations", "index")]}
+    else
+      items << {:label => "Score Table",
+        :tip => "Ranking of the contest participants",
+        :path => contest_score_table_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+        :highlight_conditions => [HighlightCondition.new("score_tables", "show")]}
+      items << {:label => "Participants",
+        :tip => "All participants of the contest",
+        :path => contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+        :highlight_conditions => [HighlightCondition.new("participants", "index")]}
 
-      if @before_contest_participation_ends
-        items << {:label => "Edit Contest",
-                  :tip => "Rename contest or update invitation message",
-                  :path => edit_contest_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-                  :highlight_conditions => [HighlightCondition.new("contests", "edit"),
-                                            HighlightCondition.new("contests", "update")]}
+      if current_user.is_admin_of?(@contest_instance)
+
+        if @before_contest_participation_ends
+          items << {:label => "Invite",
+                    :tip => "Invite people to join the contest",
+                    :path => new_contest_invitation_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+                    :highlight_conditions => [HighlightCondition.new("invitations", "new"),
+                                              HighlightCondition.new("invitations", "copy"),
+                                              HighlightCondition.new("invitations", "create")]}
+        end
+        items << {:label => "Invite History",
+                  :tip => "A list of previously sent invitions",
+                  :path => contest_invitations_path(:contest => @contest.permalink, :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+                  :highlight_conditions => [HighlightCondition.new("invitations", "index")]}
+
+        if @before_contest_participation_ends
+          items << {:label => "Edit Contest",
+                    :tip => "Rename contest or update invitation message",
+                    :path => edit_contest_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+                    :highlight_conditions => [HighlightCondition.new("contests", "edit"),
+                                              HighlightCondition.new("contests", "update")]}
+        end
       end
-    end
-    unless @before_contest_participation_ends# and @participant_name
-      items << {:label => "Latest Results",
-        :tip => "Summery of the predictions placed by the contest participants for the latest settled matches ",
-        :path => latest_results_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-        :highlight_conditions => [HighlightCondition.new("contests", "latest_results")]}
+      unless @before_contest_participation_ends# and @participant_name
+        items << {:label => "Latest Results",
+          :tip => "Summery of the predictions placed by the contest participants for the latest settled matches ",
+          :path => latest_results_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+          :highlight_conditions => [HighlightCondition.new("contests", "latest_results")]}
 
-      items << {:label => "Upcoming Matches",
-        :tip => "Summery of the predictions placed by the contest participants for the upcoming matches ",
-        :path => upcoming_events_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-        :highlight_conditions => [HighlightCondition.new("contests", "upcoming_events")]}
+        items << {:label => "Upcoming Matches",
+          :tip => "Summery of the predictions placed by the contest participants for the upcoming matches ",
+          :path => upcoming_events_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+          :highlight_conditions => [HighlightCondition.new("contests", "upcoming_events")]}
 
-      items << {:label => "Prediction Summary",
-        :tip => "Summery of the predictions placed by a participant ",
-        :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
-        :highlight_conditions => [HighlightCondition.new("participants", "show")]}
+        items << {:label => "Prediction Summary",
+          :tip => "Summery of the predictions placed by a participant ",
+          :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
+          :highlight_conditions => [HighlightCondition.new("participants", "show")]}
+      end
     end
     items
   end

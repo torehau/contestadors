@@ -1,0 +1,10 @@
+<div>
+  <p><%= @contest_instance.description %></p>
+</div>
+<%= form_for :contest_instance, @contest_instance,
+             :url => contest_join_confirm_url(:contest => @contest_instance.contest.permalink,
+                                      :role => "member",
+                                      :id => @contest_instance.permalink,
+                                      :uuid => @contest_instance.uuid) do |f| %>
+    <%= f.submit "Join Contest" %>
+<% end -%>

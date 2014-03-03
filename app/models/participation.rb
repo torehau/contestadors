@@ -13,6 +13,10 @@ class Participation < ActiveRecord::Base
     summary ? summary.state : "i"
   end
 
+  def is_admin?
+    user.is_admin_of?(contest_instance)
+  end
+
 private
 
   def accept_invitation

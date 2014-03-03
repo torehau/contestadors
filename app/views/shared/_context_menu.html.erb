@@ -7,7 +7,7 @@
     <%= render :partial => "predictions/progressbar" %>
     <%= render_navigation :context => :predictions %>
   <% elsif current_controller_new 'contests' -%>
-    <% if current_action_new ['edit', 'update', 'latest_results', 'upcoming_events'] -%>
+    <% if current_action_new ['join', 'edit', 'update', 'latest_results', 'upcoming_events'] -%>
       <%= render_navigation :context => :contest %>
     <% else %>
       <%= render_navigation :context => :contests %>

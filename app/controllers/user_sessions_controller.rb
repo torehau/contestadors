@@ -23,7 +23,7 @@ class UserSessionsController < ApplicationController
         #if @user_session.registration_complete?
 
           if before_contest_participation_ends
-            redirect_to prediction_menu_link
+            redirect_back_or_default prediction_menu_link
           else
             #contest = selected_contest
             #flash[:notice] = session[:selected_contest_id]

@@ -90,6 +90,33 @@ class ContestsController < ApplicationController
     end
   end
 
+  def join
+    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+
+    if current_user.is_participant_of?(@contest_instance)
+      flash[:alert] = "You are already a member of this contest"
+      redirect_to contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)
+      return
+    end
+  end
+
+  def join_confirm
+    participation = Participation.new(:user_id => current_user.id,
+                                      :contest_instance_id => @contest_instance.id,
+                                      :active => true)
+
+    if participation.save
+      flash[:notice] = "You have now successfully joined the '#{@contest_instance.name}' contest."
+      redirect_to contest_participants_path(:contest => @contest_instance.contest.permalink,
+                                            :role => @contest_instance.role_for(current_user),
+                                            :contest_id => @contest_instance.permalink,
+                                            :uuid => @contest_instance.uuid)
+    else
+      raise "Failed to join contest: " + @contest_instance.name
+      render :action => :join
+    end
+  end
+
 protected
 
   def set_context_from_request_params

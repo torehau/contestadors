@@ -22,7 +22,7 @@ Contestadors::Application.routes.draw do
       end
     end
   end
-  match 'euro/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'euro', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
+  match 'championship/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'championship', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
   match '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions' => 'predictions#show', :as => :user_predictions, :method => :get
   scope '/:contest/:role' do
     resources :contests do
@@ -40,6 +40,8 @@ Contestadors::Application.routes.draw do
 
   match '/:contest/:role/contests/:id/upcoming' => 'contests#upcoming_events', :as => :upcoming_events
   match '/:contest/:role/contests/:id/latest' => 'contests#latest_results', :as => :latest_results
+  match '/:contest/:role/contests/:id/join' => 'contests#join', :as => :contest_join, :method => :get
+  match '/:contest/:role/contests/:id/join_confirm' => 'contests#join_confirm', :as => :contest_join_confirm, :method => :post
   scope '/:contest' do
     resources :rules do
       collection do

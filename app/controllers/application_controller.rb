@@ -73,16 +73,7 @@ private
 
     def selected_contest
       session_contest_instance = get_contest_instance_from_session
-
-      if session_contest_instance
-
-        if current_user.is_participant_of?(session_contest_instance)
-          return session_contest_instance
-        else
-          session[:selected_contest_id] = nil
-        end
-      end
-
+      return session_contest_instance if session_contest_instance and (before_contest_participation_ends or current_user.is_participant_of?(session_contest_instance))
       default_contest = current_user.default_contest
       session[:selected_contest_id] = default_contest ? default_contest.id : nil
       default_contest
@@ -140,10 +131,17 @@ private
 
   def contest_instance_menu_link(contest_instance)
     if before_contest_participation_ends
-      contest_participants_path(:contest => contest_instance.contest.permalink,
-        :role => contest_instance.role_for(current_user),
-        :contest_id => contest_instance.permalink,
-        :uuid => contest_instance.uuid)
+      if (current_user.is_participant_of?(contest_instance))
+        contest_participants_path(:contest => contest_instance.contest.permalink,
+          :role => contest_instance.role_for(current_user),
+          :contest_id => contest_instance.permalink,
+          :uuid => contest_instance.uuid)
+      else
+        contest_join_path(:contest => contest_instance.contest.permalink,
+                                  :role => "member",
+                                  :id => contest_instance.permalink,
+                                  :uuid => contest_instance.uuid)
+      end
     else
       contest_score_table_path(:contest => contest_instance.contest.permalink,
         :role => contest_instance.role_for(current_user),

@@ -3,8 +3,8 @@
     <%=  participation.user.name -%>
   <%  end -%>
 
-  <%  g.column :column_name => 'Role', :attribute_name => 'invitation_id' do |participation| -%>
-    <%= participation.invitation ? "Member" : "Administrator" -%>
+  <%  g.column :column_name => 'Role' do |participation| -%>
+    <%= participation.is_admin? ?  "Administrator" : "Member" -%>
   <%  end -%>
 
   <%  g.column :column_name => 'Participant since', :attribute_name => 'created_at' do |participation| -%>
