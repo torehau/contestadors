@@ -18,5 +18,12 @@
       </div>
       <%= form.submit "Send Invitations" %>
     <% end -%>
+    <% if @contest_instance.allow_join_by_url %>
+        <div class="notice_message" >
+          <b>NOTICE - people might also join this contest without an email invitation, by using the following link:</b><br/>
+          <span class="message"><%= @contest_instance.join_link %></span>
+        </div>
+        <br/>
+    <% end -%>
   </div>
 </div>

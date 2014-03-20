@@ -21,7 +21,7 @@ class ContestsController < ApplicationController
   end
 
   def show
-    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+    save_to_session(@contest_instance)
     @date = Time.now
 #    @matches = Predictable::Championship::Match.find(:all)
 #    @date = @matches.first.play_date
@@ -91,7 +91,13 @@ class ContestsController < ApplicationController
   end
 
   def join
-    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+    if @contest_instance and not @contest_instance.allow_join_by_url
+      #flash[:alert] = "You must have an email invitation to join this contest"
+      redirect_to new_contest_path(@contest.permalink, "admin")
+      return
+    end
+
+    save_to_session(@contest_instance)
 
     if current_user.is_participant_of?(@contest_instance)
       flash[:alert] = "You are already a member of this contest"

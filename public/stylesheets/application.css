@@ -1594,6 +1594,14 @@ form.contest_create {
   padding: 3px 10px 3px 10px;
 }
 
+.notice_message {
+    color: #333;
+    background: #efe;
+    border: solid 1px #bd7;
+    margin: 10px 10px 0 0;
+    padding: 3px 10px 3px 10px;
+}
+
 #picture-background-wallpaper {
    overflow: hidden;
    width: 910px;

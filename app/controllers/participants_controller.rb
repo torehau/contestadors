@@ -8,7 +8,7 @@ class ParticipantsController < ApplicationController
   before_filter :require_admin, :only => :update
 
   def index
-    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+    save_to_session(@contest_instance)
     array = Configuration::PredictionState.where(:configuration_contest_id => @contest.id).collect {|ps| [ps.state_name, ps]}
     @prediction_states_by_name = Hash[array]
     

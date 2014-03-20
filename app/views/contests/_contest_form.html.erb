@@ -23,6 +23,17 @@
              <br/>
           </td>
         </tr>
+        <tr>
+          <td>
+            <div style="padding-left:170px">
+              <%= form.check_box :allow_join_by_url, {:checked => true} %>
+            </div>
+          </td>
+          <td>
+            Allow people to join the contest without an invitation email, by clicking a dedicated join contest url, e.g.:<br/><br/>
+            <%= @contest_instance.join_link %><br/><br/>
+          </td>
+        </tr>
         <% if @contest_instance.new_record? -%>
           <tr>
             <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">

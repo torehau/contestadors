@@ -9,7 +9,7 @@ class InvitationsController < ApplicationController
 
   def new
     if @contest_instance
-      session[:selected_contest_id] = @contest_instance.id.to_s
+      save_to_session(@contest_instance)
       @invitations = []
       @invitations << Invitation.new_with_dummy_values
       @previous_contests = current_user.previously_administered_contests(@contest)
@@ -18,7 +18,7 @@ class InvitationsController < ApplicationController
 
   def copy
     if @contest_instance
-      session[:selected_contest_id] = @contest_instance.id.to_s
+      save_to_session(@contest_instance)
 
       if params[:previous_contests] and params[:previous_contests].to_i > 0
         @previous_contest = ContestInstance.find(params[:previous_contests])

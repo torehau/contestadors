@@ -96,6 +96,16 @@ class ContestInstance < ActiveRecord::Base
     end
   end
 
+  def is_available_for?(user)
+    (allow_join_by_url and Time.now < contest.participation_ends_at) or user.is_participant_of?(self)
+  end
+
+  def join_link
+    plink = new_record? ? name.to_permalink : permalink
+    unique_identifier = new_record? ? 'dffb3223-b369-32e4-a3f5-4c4776b7d0c4' : uuid
+    "http://www.contestadors.com/championship/member/contests/#{plink}/join?uuid=#{unique_identifier}"
+  end
+
 private
 
   def init_identifiers

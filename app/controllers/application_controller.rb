@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free Soccer Tournament Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
+  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
   rescue_from NoMethodError, :with => :handle_faulty_url
@@ -73,10 +73,18 @@ private
 
     def selected_contest
       session_contest_instance = get_contest_instance_from_session
-      return session_contest_instance if session_contest_instance and (before_contest_participation_ends or current_user.is_participant_of?(session_contest_instance))
+      return session_contest_instance if is_visible_for_current_user?(session_contest_instance)
       default_contest = current_user.default_contest
-      session[:selected_contest_id] = default_contest ? default_contest.id : nil
+      save_to_session(default_contest)
       default_contest
+    end
+
+    def save_to_session(contest_instance)
+      session[:selected_contest_id] = contest_instance.id.to_s if is_visible_for_current_user?(contest_instance)
+    end
+
+    def is_visible_for_current_user?(contest_instance)
+      contest_instance and contest_instance.is_available_for?(current_user)
     end
 
 #    def url_for_current_user

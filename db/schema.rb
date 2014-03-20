@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140226230251) do
+ActiveRecord::Schema.define(:version => 20140303063822) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20140226230251) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "allow_join_by_url"
   end
 
   add_index "contest_instances", ["admin_user_id"], :name => "index_contest_instances_on_admin_user_id"

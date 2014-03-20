@@ -7,7 +7,7 @@ class ScoreTablesController < ApplicationController
 
 
   def show
-    session[:selected_contest_id] = @contest_instance.id.to_s if @contest_instance
+    save_to_session(@contest_instance)
     @positions_grid = initialize_grid(ScoreTablePosition,
       :include => [:user, :prediction_summary, :participation],
       :conditions => {:contest_instance_id => @contest_instance.id, :participations => {:active => true}},
