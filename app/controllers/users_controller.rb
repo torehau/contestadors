@@ -5,29 +5,35 @@ class UsersController < ApplicationController
 
   def new
     @user = User.new
-    flash.now[:alert] = "It is for the moment not possible to register new user accounts."
+    
+    if after_contest_participation_ends
+      flash.now[:alert] = "It is for the moment not possible to register new user accounts."
+    end
   end
 
   def create
-    redirect_to :action => "new"
-    #@user = User.new(params[:user])
-    #
-    #if verify_recaptcha
-    #
-    #  if @user.save
-    #    flash[:notice] = "Account registered!"
-    #    redirect_back_or_default account_url
-    #    flash.delete(:recaptcha_error)
-    #    return
-    #  else
-    #    set_error_details
-    #  end
-    #else
-    #  @focused_field_id = "recaptcha_response_field"
-    #  flash.now[:alert] = "Word verification response is incorrect, please try again."
-    #end
-    #flash.delete(:recaptcha_error)
-    #render :action => :new
+      if after_contest_participation_ends
+        redirect_to :action => "new"
+      else 
+	  @user = User.new(params[:user])
+    
+          if verify_recaptcha
+    
+             if @user.save
+	        flash[:notice] = "Account registered!"
+		redirect_back_or_default account_url
+		flash.delete(:recaptcha_error)
+                return
+             else
+                 set_error_details
+             end
+          else
+            @focused_field_id = "recaptcha_response_field"
+             flash.now[:alert] = "Word verification response is incorrect, please try again."
+          end
+          flash.delete(:recaptcha_error)
+          render :action => :new
+      end
   end
 
   def show
