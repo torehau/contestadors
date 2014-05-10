@@ -38,8 +38,8 @@ private
     end
 
     def include_tournaments_menu_item
-      #Configuration::Contest.count > 3
-      current_user.has_participated_in_previous_contests?
+      Configuration::Contest.count > 3
+      #current_user.has_participated_in_previous_contests?
     end
 
     def matches_current_context(always_conditions, conditions_before_prediction_ends = [], conditions_after_prediction_ends = [])
