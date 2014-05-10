@@ -89,6 +89,10 @@ class User < ActiveRecord::Base
     return nil if self.identity_providers == nil or self.identity_providers.count == 0
     self.identity_providers.order(:provider_name).collect{|provider| provider.provider_name}
   end
+  
+  def has_participated_in_previous_contests?
+    self.prediction_summaries.count > 1
+  end
 
   def summary_of(contest)
     prediction_summaries.for_contest(contest)
@@ -237,7 +241,7 @@ class User < ActiveRecord::Base
       from_user.score_table_positions.each do |position|
         unless to_user.is_participant_of?(position.contest_instance)
           position.user_id = to_user.id
-          position.prediction_summary_id = to_user.prediction_summaries.first.id
+          position.prediction_summary_id = to_user.prediction_summaries.last.id
           position.save!
         end
       end
