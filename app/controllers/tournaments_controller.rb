@@ -38,11 +38,6 @@ class TournamentsController < ApplicationController
 
   def select
     session[:selected_tournament_id] = params[:id]
-
-    if current_action_new "completed"
-      redirect_to :completed
-    else
-      redirect_to :index
-    end
+    redirect_to prediction_menu_link(selected_tournament.permalink)
   end
 end

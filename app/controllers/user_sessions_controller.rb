@@ -21,6 +21,7 @@ class UserSessionsController < ApplicationController
       #else
 
         #if @user_session.registration_complete?
+          session[:selected_tournament_id] = Configuration::Contest.last.id
 
           if before_contest_participation_ends
             redirect_back_or_default prediction_menu_link

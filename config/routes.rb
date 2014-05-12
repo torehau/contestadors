@@ -12,7 +12,7 @@ Contestadors::Application.routes.draw do
       get :completed
       get :upcoming
     end
-    post 'select', :on => :member
+    get 'select', :on => :member
   end
   scope '/:contest/:aggregate_root_type/:aggregate_root_id' do
     resources :predictions do
