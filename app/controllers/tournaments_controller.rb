@@ -39,10 +39,10 @@ class TournamentsController < ApplicationController
   def select
     session[:selected_tournament_id] = params[:id]
 
-    #if current_action_new "completed"
-    #  redirect_to :completed
-    #else
-    #  redirect_to :index
-    #end
+    if current_action_new "completed"
+      redirect_to :completed
+    else
+      redirect_to :index
+    end
   end
 end
