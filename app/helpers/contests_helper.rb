@@ -3,7 +3,7 @@ module ContestsHelper
     if @before_contest_participation_ends
       new_contest_path(@contest.permalink, "admin")
     else
-      contests_path(current_tournament.permalink, "all")
+      contests_path(selected_tournament.permalink, "all")
     end
   end
 

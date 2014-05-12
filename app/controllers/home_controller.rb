@@ -4,6 +4,6 @@ class HomeController < ApplicationController
 protected
 
   def set_context_from_request_params
-    @contest = Configuration::Contest.find(:first)
+    @contest = selected_tournament#Configuration::Contest.find(:first)
   end
 end

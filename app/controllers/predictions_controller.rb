@@ -45,7 +45,7 @@ class PredictionsController < ApplicationController
 protected
 
   def set_context_from_request_params
-    @contest = Configuration::Contest.from_permalink_or_first_available(params[:contest])
+    @contest = selected_tournament#Configuration::Contest.from_permalink_or_first_available(params[:contest])
     @aggregate_root_type = params[:aggregate_root_type]
     @aggregate_root_id = params[:aggregate_root_id]
     @before_contest_participation_ends = before_contest_participation_ends

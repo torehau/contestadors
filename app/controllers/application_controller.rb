@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free Soccer Tournament Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
+  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :selected_tournament, :is_current_tournament_selected, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
   rescue_from NoMethodError, :with => :handle_faulty_url
@@ -29,17 +29,25 @@ private
     end
 
     def current_tournament
-      if params[:contest]
-        return Configuration::Contest.where(:permalink => params[:contest]).last
-      elsif session[:selected_tournament_id]
-        return Configuration::Contest.find(session[:selected_tournament_id])
-      end
       Configuration::Contest.where("available_to >= :now AND available_from <= :now", {:now => Time.now}).first
+    end
+    
+    def selected_tournament
+      if session[:selected_tournament_id]
+        return Configuration::Contest.find(session[:selected_tournament_id])    
+      elsif params[:contest]
+        return Configuration::Contest.where(:permalink => params[:contest]).last
+      end
+      current_tournament
+    end
+    
+    def is_current_tournament_selected
+      current_tournament and selected_tournament and current_tournament.id == selected_tournament.id
     end
 
     def include_tournaments_menu_item
-      Configuration::Contest.count > 3
-      #current_user.has_participated_in_previous_contests?
+      #Configuration::Contest.count > 3
+      current_user.has_participated_in_previous_contests?
     end
 
     def matches_current_context(always_conditions, conditions_before_prediction_ends = [], conditions_after_prediction_ends = [])
@@ -63,12 +71,12 @@ private
     end
 
     def before_contest_participation_ends
-      @contest ||= current_tournament
+      @contest ||= selected_tournament
       Time.now < @contest.participation_ends_at
     end
 
     def after_contest_participation_ends
-      @contest ||= current_tournament
+      @contest ||= selected_tournament
       Time.now > @contest.participation_ends_at
     end
 
@@ -129,7 +137,7 @@ private
     end
 
   def prediction_menu_link(contest_permalink="championship",aggregate_root_type="group",aggregate_root_id="A")
-    @contest = Configuration::Contest.where(:permalink => contest_permalink).last
+    @contest = selected_tournament#Configuration::Contest.where(:permalink => contest_permalink).last
 
     if before_contest_participation_ends
       new_prediction_path(contest_permalink,aggregate_root_type,aggregate_root_id)

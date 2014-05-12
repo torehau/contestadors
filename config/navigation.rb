@@ -52,12 +52,18 @@ SimpleNavigation::Configuration.run do |navigation|
     if include_tournaments_menu_item
       primary.item :home, 'Tournaments', tournaments_path, :highlights_on => lambda { current_controller_new 'tournaments' }
     end
-    primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }
+    
+    if is_current_tournament_selected
+      primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }
+    end
     primary.item :predictions, 'Predictions', prediction_menu_link, :highlights_on => lambda { current_controller_new 'predictions' }
     selected = selected_contest
 
     if before_contest_participation_ends
-      primary.item :invitations, 'Invitations', pending_invitations_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'invitations' and current_action_new ['pending', 'accepted'] }
+    
+      if is_current_tournament_selected
+        primary.item :invitations, 'Invitations', pending_invitations_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'invitations' and current_action_new ['pending', 'accepted'] }
+      end
     #primary.item :contests, 'Contests', contests_path("championship", "all"), :highlights_on => lambda { current_context?({'contests' => ['index']}, {'contests' => ['new', 'create']}) }
       primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
 
