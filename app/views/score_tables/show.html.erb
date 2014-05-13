@@ -41,8 +41,10 @@
   <%  end -%>
 
   <% unless @before_contest_participation_ends -%>
-    <%  g.column :column_name => 'Predictions' do |score_table_position| -%>
-      <%= link_to("View Predictions", prediction_summary_link(score_table_position.participation) ) -%>
+    <% if is_current_tournament_selected -%>
+      <%  g.column :column_name => 'Predictions' do |score_table_position| -%>
+        <%= link_to("View Predictions", prediction_summary_link(score_table_position.participation) ) -%>
+      <%  end -%>
     <%  end -%>
   <% end -%>
 

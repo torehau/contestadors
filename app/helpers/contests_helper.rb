@@ -85,20 +85,22 @@ module ContestsHelper
         end
       end
       unless @before_contest_participation_ends# and @participant_name
-        items << {:label => "Latest Results",
-          :tip => "Summery of the predictions placed by the contest participants for the latest settled matches ",
-          :path => latest_results_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-          :highlight_conditions => [HighlightCondition.new("contests", "latest_results")]}
+        if is_current_tournament_selected
+  		  items << {:label => "Latest Results",
+		    :tip => "Summery of the predictions placed by the contest participants for the latest settled matches ",
+		    :path => latest_results_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+		    :highlight_conditions => [HighlightCondition.new("contests", "latest_results")]}
 
-        items << {:label => "Upcoming Matches",
-          :tip => "Summery of the predictions placed by the contest participants for the upcoming matches ",
-          :path => upcoming_events_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
-          :highlight_conditions => [HighlightCondition.new("contests", "upcoming_events")]}
+		  items << {:label => "Upcoming Matches",
+		    :tip => "Summery of the predictions placed by the contest participants for the upcoming matches ",
+		    :path => upcoming_events_path(:contest => @contest.permalink,  :role => "admin", :id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+		    :highlight_conditions => [HighlightCondition.new("contests", "upcoming_events")]}
 
-        items << {:label => "Prediction Summary",
-          :tip => "Summery of the predictions placed by a participant ",
-          :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
-          :highlight_conditions => [HighlightCondition.new("participants", "show")]}
+		  items << {:label => "Prediction Summary",
+		    :tip => "Summery of the predictions placed by a participant ",
+		    :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
+		    :highlight_conditions => [HighlightCondition.new("participants", "show")]}
+        end
       end
     end
     items

@@ -38,6 +38,6 @@ class TournamentsController < ApplicationController
 
   def select
     session[:selected_tournament_id] = params[:id]
-    redirect_to prediction_menu_link(selected_tournament.permalink)
+    redirect_to contests_path(selected_tournament.permalink, "all")
   end
 end

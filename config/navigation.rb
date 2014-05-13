@@ -54,9 +54,9 @@ SimpleNavigation::Configuration.run do |navigation|
     end
     
     if is_current_tournament_selected
-      primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }
+      primary.item :rules, 'Rules', predictions_rules_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'rules' }   
+      primary.item :predictions, 'Predictions', prediction_menu_link, :highlights_on => lambda { current_controller_new 'predictions' }
     end
-    primary.item :predictions, 'Predictions', prediction_menu_link, :highlights_on => lambda { current_controller_new 'predictions' }
     selected = selected_contest
 
     if before_contest_participation_ends
