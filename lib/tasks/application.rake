@@ -16,14 +16,17 @@ namespace :app do
 
     desc "Lists 10 last logged in users"
     task(:logins => :environment) do
-      User.order("last_request_at desc").limit(10).each {|user| puts user.name + ": " + user.last_request_at.to_s}
+      contest = Configuration::Contest.last
+      User.order("last_request_at desc").limit(10).each {|user| puts user.name + (user.has_participated_in_previous_contests? ? "" : " (NEW)") + ": " + user.last_request_at.to_s + " state: " + user.summary_of(contest).state}
     end
     
     desc "Lists contest instances for the current tournament contest"
     task(:contests => :environment) do
       contest = Configuration::Contest.last
       ContestInstance.where(:configuration_contest_id => contest.id).each {|ci| puts ci.id.to_s + ". " + ci.name + " Admin: " + ci.admin.name + " Members/Invitations: " + ci.participations.active.count.to_s + "/" + ci.invitations.count.to_s + (ci.allow_join_by_url ? " Open" : " Closed") + " (Created " + ci.created_at.to_s(:short) + ")"}
-    end    
+    end
+    
+    #PredictionSummary.order(:id).where(:configuration_contest_id => c.id).each {|ps| puts ps.user.name + " " + ps.state + (ps.user.has_participated_in_previous_contests? ? "" : " NEW")}    
   end
 
   namespace :contests do
