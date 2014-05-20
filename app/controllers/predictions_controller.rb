@@ -13,7 +13,6 @@ class PredictionsController < ApplicationController
   end
 
   def new
-    flash[:notice] = (session[:return_to] ? session[:return_to].to_s : " return to not set ") + (before_contest_participation_ends ? " is before contest participation ends" : " is after contest participation ends")
     @result = @repository.get(@aggregate_root_id)
     @aggregate = @result.current
     set_wizard_and_progress_for_current_user
