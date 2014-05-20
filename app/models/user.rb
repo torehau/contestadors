@@ -93,6 +93,11 @@ class User < ActiveRecord::Base
   def has_participated_in_previous_contests?
     self.prediction_summaries.count > 1
   end
+  
+  def participating_in_tournaments
+    tournament_ids = self.prediction_summaries.collect {|ps| ps.configuration_contest_id}.flatten.uniq
+    Configuration::Contest.where("id in (:ids)", :ids => tournament_ids)
+  end
 
   def summary_of(contest)
     prediction_summaries.for_contest(contest)

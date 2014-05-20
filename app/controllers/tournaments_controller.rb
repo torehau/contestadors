@@ -1,8 +1,8 @@
 class TournamentsController < ApplicationController
   before_filter :require_user
 
-  def index
-    @tournaments = Configuration::Contest.all
+  def index    
+    @tournaments = current_user.participating_in_tournaments
     @selected = session[:selected_tournament_id] ?
         Configuration::Contest.find(session[:selected_tournament_id]) :
         Configuration::Contest.where("available_to >= :now AND available_from <= :now", {:now => Time.now}).first
@@ -16,7 +16,7 @@ class TournamentsController < ApplicationController
   end
 
   def completed
-    @tournaments = Configuration::Contest.where("available_to <= :now", {:now => Time.now})
+    @tournaments = current_user.participating_in_tournaments.where("available_to <= :now", {:now => Time.now})
     @selected = session[:selected_tournament_id] ?  Configuration::Contest.find(session[:selected_tournament_id]) : nil
     @tournaments_grid = initialize_grid(Configuration::Contest,
       :conditions => {:id => @tournaments},
