@@ -3,7 +3,7 @@ class UserSessionsController < ApplicationController
   before_filter :require_user, :only => :destroy
 
   def index
-    redirect_to current_user ? prediction_menu_link : root_url
+    redirect_back_or_default (current_user ? prediction_menu_link : root_url)
   end
 
   def new
