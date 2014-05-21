@@ -1,6 +1,7 @@
 class ContestsController < ApplicationController
   include ContestContext, ContestAccessChecker
   strip_tags_from_params :only =>  [:create, :update]
+  before_filter :add_request_uri_to_cookie, :only => :join
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :require_participation, :only => :show
@@ -146,5 +147,9 @@ protected
       flash.now[:alert] = "Maximum 1000 characters allowed for the invitation message."
       @focused_field_id = "contest_instance_description"
     end
+  end
+  
+  def add_request_uri_to_cookie
+    cookies[:return_to] = request.request_uri
   end
 end

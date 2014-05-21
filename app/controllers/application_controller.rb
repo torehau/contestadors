@@ -126,9 +126,13 @@ private
     end
 
     def redirect_back_or_default(default)
-      redirect_to(session[:return_to] || default)
-      session[:return_to] = nil
-      #cookies[:return_to].delete
+      if cookies[:return_to]
+        redirect_to cookies[:return_to]
+      #cookies[:return_to].delete      
+      else
+        redirect_to(session[:return_to] || default)
+        session[:return_to] = nil
+      end
     end
 
     def get_contest_instance_from_session
