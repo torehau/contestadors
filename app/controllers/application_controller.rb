@@ -128,7 +128,7 @@ private
     def redirect_back_or_default(default)
       if cookies[:return_to]
         redirect_to cookies[:return_to]
-        cookies[:return_to].delete      
+        cookies[:return_to] = nil
       else
         redirect_to(session[:return_to] || default)
         session[:return_to] = nil
