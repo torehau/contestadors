@@ -181,10 +181,12 @@ class User < ActiveRecord::Base
   end
 
   def is_admin_of?(contest_instance)
+    return false unless contest_instance
     not self.administered_contest_instances.for_contest_instance(contest_instance).nil?
   end
 
   def is_member_in?(contest_instance)
+    return false unless contest_instance
     not self.participations.of(contest_instance).nil?
   end
 

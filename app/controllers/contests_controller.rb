@@ -92,7 +92,7 @@ class ContestsController < ApplicationController
   end
 
   def join
-    if @contest_instance and not @contest_instance.allow_join_by_url
+    if @contest_instance.nil? or not @contest_instance.allow_join_by_url
       #flash[:alert] = "You must have an email invitation to join this contest"
       redirect_to new_contest_path(@contest.permalink, "admin")
       return
@@ -105,6 +105,7 @@ class ContestsController < ApplicationController
       redirect_to contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)
       return
     end
+    @admin = @contest_instance.admin.nil? ? "" : @contest_instance.admin.name
   end
 
   def join_confirm

@@ -80,7 +80,7 @@ GEM
     rpx_now (0.6.24)
       json_pure
     ruleby (0.8)
-    simple-navigation (3.6.0)
+    simple-navigation (3.12.0)
       activesupport (>= 2.3.2)
     sqlite3 (1.3.5)
     state_machine (1.1.2)
@@ -112,7 +112,7 @@ DEPENDENCIES
   recaptcha
   rpx_now (= 0.6.24)
   ruleby (= 0.8)
-  simple-navigation (= 3.6.0)
+  simple-navigation (= 3.12.0)
   sqlite3 (= 1.3.5)
   state_machine (= 1.1.2)
   statistics (= 1.0.0)

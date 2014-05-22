@@ -25,6 +25,7 @@ class ContestInstance < ActiveRecord::Base
   end
 
   def eql?(other)
+    return false if (other.nil? or not other.is_a?(ContestInstance))
     (self.uuid.eql?(other.uuid)) and (self.permalink.eql?(other.permalink))
   end
 

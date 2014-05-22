@@ -1,7 +1,7 @@
 <div id="contests">
   <div id="contest_invitations_form_container">
     <h3>Join the '<%= @contest_instance.name %>' contest</h3>
-    Invitation message from contest administrator, <%= @contest_instance.admin.name %>:
+    Invitation message from contest administrator, <%= @admin %>:
     <p><%= @contest_instance.description %></p>
     <%= form_for :contest_instance, @contest_instance,
                  :url => contest_join_confirm_url(:contest => @contest_instance.contest.permalink,
