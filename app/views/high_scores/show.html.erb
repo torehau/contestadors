@@ -1,0 +1,84 @@
+<% grid(@high_score_positions_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+  <%  g.column :column_name => 'Position' do |high_score_list_position| -%>
+    <% @current_participant = current_user.eql?(high_score_list_position.user) %>
+    <% if @current_participant -%>
+      <b>
+    <% end -%>
+    <div class="current_participant_position"><%= high_score_list_position.position.to_s -%></div>
+
+    <div class="participant_position_movement">
+      <% if high_score_list_position.previous_position -%>
+        <% if high_score_list_position.previous_position > high_score_list_position.position -%>
+          <div class="score_table_diff">
+            <%= image_tag("icons/arrow_up.png") %> +<%= high_score_list_position.previous_position - high_score_list_position.position %>
+          </div>
+        <% elsif high_score_list_position.previous_position < high_score_list_position.position -%>
+          <div class="score_table_diff">
+            <%= image_tag("icons/arrow_down.png") %> -<%= high_score_list_position.position - high_score_list_position.previous_position %>
+          </div>
+        <% else -%>
+          <%= image_tag("icons/arrow_right.png") %>
+        <% end -%>
+      <% else -%>
+        -
+      <% end -%>
+    </div>
+      <% if @current_participant -%>
+    </b>
+  <% end -%>
+  <%  end -%>
+  
+  <%  g.column :column_name => 'Participant', :attribute_name => 'name', :model_class => User do |high_score_list_position| -%>
+    <% if @current_participant -%>
+      <b>
+    <% end -%>
+    <% if high_score_list_position.user.allow_name_in_high_score_lists -%>
+        <%= high_score_list_position.user.name -%>
+    <% else -%> 
+      <% if @current_participant -%>
+        Anonymous (you)
+      <% else -%>
+        Anonymous       
+      <% end -%>      
+    <% end -%>    
+    <% if @current_participant -%>
+      </b>
+    <% end -%>
+  <%  end -%>  
+  
+  <%  g.column :column_name => 'Points', :attribute_name => 'total_score', :model_class => PredictionSummary do |high_score_list_position| -%>
+    <% if @current_participant -%>
+      <b>
+    <% end -%>
+    <%= high_score_list_position.prediction_summary.total_score.to_s -%>
+
+    <% if high_score_list_position.prediction_summary.previous_score -%>
+      <% if high_score_list_position.prediction_summary.total_score > high_score_list_position.prediction_summary.previous_score -%>
+        <span class="participant_score_delta">+<%= high_score_list_position.prediction_summary.total_score - high_score_list_position.prediction_summary.previous_score %></span>
+      <%  end -%>
+    <%  end -%>
+    <% if @current_participant -%>
+      </b>
+    <% end -%>
+  <% end -%>
+  
+  <%  g.column :column_name => 'MAP*', :attribute_name => 'map', :model_class => PredictionSummary do |high_score_list_position| -%>
+    <% if @current_participant -%>
+      <b>
+    <% end -%>
+    <%= high_score_list_position.prediction_summary.map.to_s -%>
+
+    <% if high_score_list_position.prediction_summary.previous_score -%>
+      <% if high_score_list_position.prediction_summary.map < high_score_list_position.prediction_summary.previous_map -%>
+        <span class="participant_score_delta">-<%= high_score_list_position.prediction_summary.previous_map - high_score_list_position.prediction_summary.map %></span>
+      <%  end -%>
+    <%  end -%>
+  <%  end -%>
+  <% if @current_participant -%>
+    </b>
+  <% end -%>    
+  
+<%  end -%>
+<div class="table_description">
+  <b>MAP* = Max Achievable Points</b>. (Max possible points for contest) x (Participant prediction completeness) - (Points for missed prediction objectives)
+</div>

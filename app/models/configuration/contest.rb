@@ -14,6 +14,7 @@ module Configuration
     has_many :prediction_summaries
     has_many :contest_instances, :foreign_key => "configuration_contest_id"
     has_many :invitations, :through => :contest_instances
+    has_many :high_score_list_positions, :foreign_key => "configuration_contest_id"
 
     def self.all_available
       now = Time.now
@@ -74,6 +75,26 @@ module Configuration
     def update_all_score_tables
       self.contest_instances.each {|instance| instance.update_score_table_positions}
     end
+    
+    def update_high_score_list_positions
+	  previous = nil
+	  position, delta = 1, 1
+	  self.high_score_list_positions.sort.each do |current|
+	    if previous
+		
+		  if (current <=> previous) == 0
+		    delta += 1
+		  else
+		    position += delta
+		    delta = 1
+		  end
+	    end
+	    current.previous_position = current.position
+	    current.position = position
+	    current.save!
+	    previous = current
+	  end
+    end    
 
   private
 

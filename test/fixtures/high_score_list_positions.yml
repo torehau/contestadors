@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  prediction_summary_id: 1
+  user_id: 1
+  configuration_contest_id: 1
+  position: 1
+  previous_position: 1
+  has_predictions: false
+
+two:
+  prediction_summary_id: 1
+  user_id: 1
+  configuration_contest_id: 1
+  position: 1
+  previous_position: 1
+  has_predictions: false

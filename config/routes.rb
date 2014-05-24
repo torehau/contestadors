@@ -56,6 +56,7 @@ Contestadors::Application.routes.draw do
         get :accepted
       end
     end
+    resource :high_score
   end
 
   match '/:contest/:role/:contest_id/participant-predictions' => 'participants#show', :as => :participant_predictions

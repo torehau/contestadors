@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140303063822) do
+ActiveRecord::Schema.define(:version => 20140524113136) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -103,6 +103,17 @@ ActiveRecord::Schema.define(:version => 20140303063822) do
   add_index "contest_instances", ["admin_user_id"], :name => "index_contest_instances_on_admin_user_id"
   add_index "contest_instances", ["permalink"], :name => "index_contest_instances_on_permalink"
   add_index "contest_instances", ["uuid"], :name => "index_contest_instances_on_uuid"
+
+  create_table "high_score_list_positions", :force => true do |t|
+    t.integer  "prediction_summary_id"
+    t.integer  "user_id"
+    t.integer  "configuration_contest_id"
+    t.integer  "position"
+    t.integer  "previous_position"
+    t.boolean  "has_predictions"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "invitations", :force => true do |t|
     t.string   "name",                :null => false
@@ -282,14 +293,15 @@ ActiveRecord::Schema.define(:version => 20140303063822) do
     t.string   "name"
     t.string   "crypted_password"
     t.string   "password_salt"
-    t.string   "persistence_token",                 :null => false
-    t.integer  "login_count",       :default => 0,  :null => false
+    t.string   "persistence_token",                              :null => false
+    t.integer  "login_count",                    :default => 0,  :null => false
     t.datetime "last_request_at"
     t.datetime "last_login_at"
     t.datetime "current_login_at"
     t.string   "last_login_ip"
     t.string   "current_login_ip"
-    t.string   "perishable_token",  :default => "", :null => false
+    t.string   "perishable_token",               :default => "", :null => false
+    t.boolean  "allow_name_in_high_score_lists"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

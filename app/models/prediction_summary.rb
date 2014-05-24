@@ -1,9 +1,10 @@
 class PredictionSummary < ActiveRecord::Base
-  after_create :update_map
+  after_create :update_map_and_init_high_score_table_position
   belongs_to :user
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => 'configuration_contest_id'
   has_many :predictions, :through => :user
   has_many :score_table_positions
+  has_one :high_score_list_position
 
   KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
   KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
@@ -66,6 +67,11 @@ class PredictionSummary < ActiveRecord::Base
     self.update_attributes(:previous_score => previous_score, :previous_map => previous_map, :total_score => updated_score, :map => updated_map)
     self.save!
   end
+  
+  def has_predictions
+    self.state != 'i'
+  end
+  
 
 private
 
@@ -73,11 +79,24 @@ private
   def delete_invalidated_predictions
     contest.delete_invalidated_predictions(user)
   end
+  
+  def update_map_and_init_high_score_table_position
+    update_map
+    init_high_score_table_position
+  end
 
   def update_map
     #prediction_state = Configuration::PredictionState.find_by_state_name(self.state)
     prediction_state = Configuration::PredictionState.where(:configuration_contest_id => self.contest.id, :state_name => self.state).first
     self.map = prediction_state.points_accumulated
     self.save!
+  end
+  
+  def init_high_score_table_position
+    HighScoreListPosition.create!(:prediction_summary_id => self.id,
+	       						 :configuration_contest_id => self.contest.id,
+			    				 :user_id => self.user.id,
+				    			 :has_predictions => self.state != 'i',
+					    		 :position => 1)  
   end
 end

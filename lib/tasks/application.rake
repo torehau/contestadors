@@ -118,8 +118,29 @@ namespace :app do
                                      :position => 1)
         end
       end
+    end    
+    
+    desc "Creates HighScoreListPosition entry for all PredictionSummaries not having this attribute"
+    task(:create_high_score_list_positions => :environment) do
+      PredictionSummary.find(:all).each do |summary|
+        unless summary.high_score_list_position
+          HighScoreListPosition.create!(:prediction_summary_id => summary.id,
+                                     :configuration_contest_id => summary.contest.id,
+                                     :user_id => summary.user.id,
+                                     :has_predictions => summary.state != 'i',
+                                     :position => 1)
+        end
+      end
+    end      
+    
+    desc "Update HighScoreListPosition entries for previous contests"
+    task(:update_previous_contests_high_score_list_positions => :environment) do
+      current = Configuration::Contest.last
+      Configuration::Contest.where('id != ?', current.id).each do |contest|
+          contest.update_high_score_list_positions
+      end
     end
-
+   
     desc "Updates the map for all existing PredictionSummary db entries."
     task(:update_prediction_summary_maps => :environment) do
       PredictionSummary.find(:all).each do |summary|

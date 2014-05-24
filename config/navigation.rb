@@ -73,10 +73,11 @@ SimpleNavigation::Configuration.run do |navigation|
       #current_controller_or_context?(["score_tables", "participants"], {"contests" => ["show", "upcoming_events", "latest_results"]}, {"contests" => ["edit", "update"], "invitations" => ["new"]})}
       end
     else
+      
       contest_instances = current_user.instances_of(@contest, :all)
       contest_count = contest_instances.count
 
-      if contest_count > 3
+      if contest_count > 2
         primary.item :contests, 'Contests', contests_main_menu_link, :highlights_on => lambda { matches_current_context([HighlightCondition.new('contests', 'index')], [HighlightCondition.new('contests', 'new'), HighlightCondition.new('contests', 'create')]) }
         primary.item :contest_instance, selected.name, contest_instance_menu_link(selected),
             :highlights_on => lambda { matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
@@ -86,6 +87,7 @@ SimpleNavigation::Configuration.run do |navigation|
               :highlights_on => lambda { ci.id == selected.id and matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
         end
       end
+      primary.item :high_score_list, 'High Score List', high_score_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'high_scores' }      
     end
 
     # Add an item which has a sub navigation (same params, but with block)
