@@ -11,9 +11,9 @@ class HighScoreListPosition < ActiveRecord::Base
   def <=> (other)
     has_predictions_compare = compare_has_predictions(other)
     return has_predictions_compare unless has_predictions_compare == 0
-    score_compare = other.prediction_summary.previous_score <=> self.prediction_summary.previous_score
+    score_compare = other.prediction_summary.total_score <=> self.prediction_summary.total_score
     return score_compare unless score_compare == 0
-    other.prediction_summary.previous_map <=> self.prediction_summary.previous_map
+    other.prediction_summary.map <=> self.prediction_summary.map
   end    
 
   private
