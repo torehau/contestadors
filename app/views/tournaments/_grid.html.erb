@@ -1,22 +1,43 @@
 <% grid(@tournaments_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
   
   <% g.column :column_name => 'Name', :attribute_name => 'name' do |tournament| -%>
+    <% @selected = selected_tournament.id == tournament.id -%>
+    <% if @selected -%>
+      <b>
+    <% end -%>    
     <%= link_to(tournament.name, select_tournament_path(tournament.id) ) -%>
+    <% if @selected -%>
+      </b>
+    <% end -%>     
   <% end -%>  
 
   <%  g.column :column_name => 'Available From', :attribute_name => 'available_from' do |tournament| -%>
+    <% if @selected -%>
+      <b>
+    <% end -%>      
     <%=  tournament.available_from.to_s(:pretty_too) -%>
+    <% if @selected -%>
+      </b>
+    <% end -%>    
   <%  end -%>
 
   <%  g.column :column_name => 'Tournament Starts', :attribute_name => 'participation_ends_at' do |tournament| -%>
+    <% if @selected -%>
+      <b>
+    <% end -%>      
     <%=  tournament.participation_ends_at.to_s(:pretty_too) -%>
+    <% if @selected -%>
+      </b>
+    <% end -%>    
   <%  end -%>
 
   <%  g.column :column_name => 'Available To', :attribute_name => 'available_to' do |tournament| -%>
+    <% if @selected -%>
+      <b>
+    <% end -%>      
     <%=  tournament.available_to.to_s(:pretty_too) -%>
+    <% if @selected -%>
+      </b>
+    <% end -%>    
   <%  end -%>
 <%  end -%>
-
-<div class="table_description">
-  Select a previous tournament to see the results of the contests you participated in
-</div>

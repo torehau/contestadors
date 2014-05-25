@@ -16,6 +16,17 @@
         <td><%= form.text_field :name %></td>
       </tr>
       <tr>
+        <td>
+          <div style="padding-left:75px;padding-bottom:30px">
+            <%= form.check_box :allow_name_in_high_score_lists %>
+          </div>
+        </td>
+        <td>
+          Allow your name to be shown in global High Score Lists (available for all Contestadors users).
+          If not checked, you will appear as 'Anonymous' in the High Score Lists.<br/><br/>
+        </td>
+      </tr>      
+      <tr>
         <td class="<%= !@user.errors[:email].empty? ? "invalid" : "" %>">
           <%= form.label :email %><br />
         </td>

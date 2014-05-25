@@ -33,7 +33,8 @@ class ContestsController < ApplicationController
   
   def new
     @contest_instance = ContestInstance.new(:name => ContestInstance.default_name(@contest, current_user),
-                    :description => ContestInstance.default_invitation_message(@contest, current_user))
+                    :description => ContestInstance.default_invitation_message(@contest, current_user),
+                    :allow_join_by_url => true)
     flash.now[:notice] = "Create a new contest for others to join. The name and message you provide below will be included in the email to people you invite."
   end
 

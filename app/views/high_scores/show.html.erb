@@ -1,6 +1,6 @@
 <% grid(@high_score_positions_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
   <%  g.column :column_name => 'Position' do |high_score_list_position| -%>
-    <% @current_participant = current_user.eql?(high_score_list_position.user) %>
+    <% @current_participant = current_user.eql?(high_score_list_position.user) -%>
     <% if @current_participant -%>
       <b>
     <% end -%>
@@ -23,7 +23,7 @@
         -
       <% end -%>
     </div>
-      <% if @current_participant -%>
+  <% if @current_participant -%>
     </b>
   <% end -%>
   <%  end -%>

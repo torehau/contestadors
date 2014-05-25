@@ -13,6 +13,7 @@ class TournamentsController < ApplicationController
       :order_direction => 'desc',
       :per_page => 10
     )
+    set_notice_message
   end
 
   def completed
@@ -24,6 +25,7 @@ class TournamentsController < ApplicationController
       :order_direction => 'desc',
       :per_page => 10
     )
+    set_notice_message
   end
 
   def upcoming
@@ -40,4 +42,14 @@ class TournamentsController < ApplicationController
     session[:selected_tournament_id] = params[:id]
     redirect_to contests_path(selected_tournament.permalink, "all")
   end
+  
+protected
+
+  def set_notice_message
+    if @selected.nil? or @selected.id == current_tournament.id
+      flash.now[:notice] = "Select a previous tournament to see the results of the contests you participated in, and the Contestadors High Score List"
+    else
+      flash.now[:notice] = "You have currently selected the '"  + @selected.name + "' tournament."
+    end  
+  end  
 end

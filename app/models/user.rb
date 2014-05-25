@@ -84,6 +84,7 @@ class User < ActiveRecord::Base
     end
   end
   has_many :score_table_positions
+  has_many :high_score_list_positions
 
   def included_identity_providers
     return nil if self.identity_providers == nil or self.identity_providers.count == 0
