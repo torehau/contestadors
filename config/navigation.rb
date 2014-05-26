@@ -86,9 +86,9 @@ SimpleNavigation::Configuration.run do |navigation|
           primary.item :contest_instance, ci.name, contest_instance_menu_link(ci),
               :highlights_on => lambda { ci.id == selected.id and matches_current_context([HighlightCondition.new("score_tables"), HighlightCondition.new("participants"), HighlightCondition.new("contests", "show"), HighlightCondition.new("contests", "upcoming_events"), HighlightCondition.new("contests", "latest_results"), HighlightCondition.new("invitations", "index", "admin")], [HighlightCondition.new("contests", "edit"), HighlightCondition.new("contests", "update"), HighlightCondition.new("invitations", "new"), HighlightCondition.new("invitations", "copy")])}
         end
-      end
-      primary.item :high_score_list, 'High Score List', high_score_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'high_scores' }      
+      end      
     end
+    primary.item :high_score_list, 'High Score List', high_score_path(current_tournament.permalink), :highlights_on => lambda { current_controller_new 'high_scores' }    
 
     # Add an item which has a sub navigation (same params, but with block)
     #primary.item :key_2, 'name', url, options do |sub_nav|
