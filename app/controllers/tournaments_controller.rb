@@ -40,7 +40,13 @@ class TournamentsController < ApplicationController
 
   def select
     session[:selected_tournament_id] = params[:id]
-    redirect_to contests_path(selected_tournament.permalink, "all")
+    contest_instances = current_user.instances_of(selected_tournament, :all)
+    
+    if (contest_instances.count == 1)
+      redirect_to contest_instance_menu_link(contest_instances.first)
+    else
+      redirect_to contests_path(selected_tournament.permalink, "all")
+    end
   end
   
 protected
