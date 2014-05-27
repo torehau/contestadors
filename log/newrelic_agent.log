@@ -53,3 +53,25 @@
 [05/26/14 23:15:18 +0200 torehau-VirtualBox (3163)] INFO : Installing Rails 3.0 view instrumentation
 [05/26/14 23:15:19 +0200 torehau-VirtualBox (3163)] INFO : Installing Rails3 Error instrumentation
 [05/26/14 23:15:19 +0200 torehau-VirtualBox (3163)] INFO : Finished instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Starting the New Relic Agent.
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Environment: development
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Dispatcher: webrick
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] ERROR : Unable to determine application name. Please set the application name in your newrelic.yml or in a NEW_RELIC_APP_NAME environment variable.
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] WARN : Agent configured not to send data in this environment.
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Installing ActiveRecord instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Installing Net instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Installing Rails 3 Controller instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Installing Rails 3.0 view instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Installing Rails3 Error instrumentation
+[05/27/14 00:04:07 +0200 torehau-VirtualBox (3772)] INFO : Finished instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Starting the New Relic Agent.
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Environment: development
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Dispatcher: webrick
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] ERROR : Unable to determine application name. Please set the application name in your newrelic.yml or in a NEW_RELIC_APP_NAME environment variable.
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] WARN : Agent configured not to send data in this environment.
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Installing ActiveRecord instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Installing Net instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Installing Rails 3 Controller instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Installing Rails 3.0 view instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Installing Rails3 Error instrumentation
+[05/27/14 18:21:18 +0200 torehau-VirtualBox (5463)] INFO : Finished instrumentation
