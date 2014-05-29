@@ -5,6 +5,8 @@ Contestadors::Application.routes.draw do
   match 'signout' => 'user_sessions#destroy', :as => :signout
   match 'addrpxauth' => 'users#addrpxauth', :as => :addrpxauth, :method => :post
   match 'account/edit/sign-in-options' => 'users#sign_in_options', :as => :sign_in_options, :method => :get
+  match 'account/edit/edit-password' => 'users#edit_password', :as => :edit_password, :method => :get
+  match 'update-password' => 'users#update_password', :as => :update_password, :method => :post
   resources :user_sessions
   resources :password_resets
   resources :tournaments do

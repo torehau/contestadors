@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rake', '0.9.2.2'
 gem 'rails', '3.0.20'
-gem 'authlogic', '3.1.0'
+gem 'authlogic', '3.2.0'
 gem 'ruleby', '0.8'
 gem 'state_machine', '1.1.2'
 gem 'uuidtools', '2.1.1'

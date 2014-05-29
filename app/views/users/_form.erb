@@ -17,7 +17,7 @@
       </tr>
       <tr>
         <td>
-          <div style="padding-left:75px;padding-bottom:30px">
+          <div style="padding: 3px 0 30px 75px; float: right">
             <%= form.check_box :allow_name_in_high_score_lists %>
           </div>
         </td>
@@ -34,6 +34,7 @@
           <%= form.text_field :email %><br />
         </td>
       </tr>
+      <% if current_action_new ["new", "create"] -%>
       <tr>
         <td class="<%= !@user.errors[:password].empty? ? "invalid" : "" %>"><%= form.label :password, form.object.new_record? ? nil : "Change password" %></td>
         <td><%= form.password_field :password %></td>
@@ -42,6 +43,7 @@
         <td class="<%= !@user.errors[:password].empty? ? "invalid" : "" %>"><%= form.label :password_confirmation %></td>
         <td><%= form.password_field :password_confirmation %></td>
       </tr>
+      <% end -%>
       <% if current_action_new ["new", "create"] -%>
         <tr>
           <td class="<%= "recaptcha_response_field".eql?(@focused_field_id) ? "invalid_recaptcha_label" : "recaptcha_label" %>">

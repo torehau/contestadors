@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_filter :require_no_user, :only => [:new, :create]
-  before_filter :require_user, :only => [:show, :edit, :update]
+  before_filter :require_user, :only => [:show, :edit, :update, :edit_password, :update_password]
+  before_filter :set_current_user, :except => [:new, :create]
   before_filter :set_context, :except => [:new, :create]
 
   def new
@@ -37,20 +38,18 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user = current_user
     @user.valid?
     render :edit
   end
 
   def edit
-    @user = current_user
+
     unless @user.valid?
       flash.now[:notice] = "Please complete the required registration details before continuing.."
     end
   end
 
   def update
-    @user = current_user # makes our views "cleaner" and more consistent
     
     if @user.update_attributes(params[:user])
       flash.now[:notice] = "Account updated!"
@@ -60,30 +59,51 @@ class UsersController < ApplicationController
     render :action => :edit
   end
 
-	# This action has the special purpose of receiving an update of the RPX identity information
-	# for current user - to add RPX authentication to an existing non-RPX account.
-	# RPX only supports :post, so this cannot simply go to update method (:put)
-	def addrpxauth
-		@user = current_user
-		if @user.save
-			flash[:notice] = "Successfully added RPX authentication for this account."
-		else
-			flash[:alert] = "Adding RPX authentication for this failed."
-		end
+  # This action has the special purpose of receiving an update of the RPX identity information
+  # for current user - to add RPX authentication to an existing non-RPX account.
+  # RPX only supports :post, so this cannot simply go to update method (:put)
+  def addrpxauth
+
+    if @user.save
+      flash[:notice] = "Successfully added RPX authentication for this account."
+    else
+      flash[:alert] = "Adding RPX authentication for this failed."
+    end
     render :action => 'edit'
-	end
+  end
 
   def sign_in_options
-    @provider_names = current_user.included_identity_providers
+    @provider_names = @user.included_identity_providers
     render
+  end
+  
+  def edit_password
+    render
+  end
+  
+  def update_password
+    @user.password = params[:user][:password]
+    @user.password_confirmation = params[:user][:password_confirmation]#:confirm_password ?
+    
+    if @user.changed? and @user.save
+      flash.now[:notice] = "Password successfully changed."
+    else
+      set_error_details
+      flash.now[:alert] = "Password change failed."
+    end
+    render :action => "edit_password"
   end
 
 
 private
 
+  def set_current_user
+    @user = current_user
+  end
+  
   def set_context
     @before_contest_participation_ends = before_contest_participation_ends
-  end
+  end  
 
   def set_error_details
     if @user.errors.on(:name)
