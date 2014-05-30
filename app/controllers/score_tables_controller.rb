@@ -1,5 +1,6 @@
 class ScoreTablesController < ApplicationController
   include ContestContext, ContestAccessChecker
+  before_filter :redirect_if_under_maintenance
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :require_contest

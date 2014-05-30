@@ -4,7 +4,7 @@
 class ApplicationController < ActionController::Base
   window_title "Free Soccer Tournament Prediction Contests"
   helper :all # include all helpers, all the time
-  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :selected_tournament, :is_current_tournament_selected, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link
+  helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :selected_tournament, :is_current_tournament_selected, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link, :is_under_maintenance, :redirect_if_under_maintenance, :is_contestadors_admin_user, :require_contestadors_admin_user
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
   rescue_from Exception, :with => :handle_generic_error
   rescue_from NoMethodError, :with => :handle_faulty_url
@@ -102,6 +102,33 @@ private
 #        return predictions_url(url_params[:aggregate_root_type], url_params[:aggregate_root_type])
 ##      end
 #    end
+
+    def is_under_maintenance
+      OperationSetting.first.is_under_maintenance?
+    end
+    
+    def redirect_if_under_maintenance
+      op_setting = OperationSetting.first
+      
+      if op_setting.is_under_maintenance? and (current_user.nil? or op_setting.admin_user != current_user.email)
+        redirect_to "/maintenance.html"
+        return false
+      end      
+    end
+    
+    def is_contestadors_admin_user
+      op_setting = OperationSetting.first
+      not current_user.nil? and op_setting.admin_user == User.find(current_user.id).email      
+    end
+    
+    def require_contestadors_admin_user
+      @op_settings = OperationSetting.first
+      
+      if current_user.nil? or @op_settings.admin_user != current_user.email
+        redirect_back_or_default current_user ? prediction_menu_link : root_url
+        return false
+      end
+    end
 
     def require_user
       unless current_user

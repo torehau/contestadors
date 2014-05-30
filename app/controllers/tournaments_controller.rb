@@ -1,4 +1,5 @@
 class TournamentsController < ApplicationController
+  before_filter :redirect_if_under_maintenance
   before_filter :require_user
 
   def index    

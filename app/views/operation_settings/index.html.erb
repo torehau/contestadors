@@ -1,0 +1,27 @@
+<div id="account_edit">
+  <%#= render "account_edit_menu" %>
+  <div id="account_edit_area">
+
+<%= form_for @op_settings, :url => update_maint_mode_path do |form| %>
+  <%#= @parameters if @parameters %>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          <div style="padding: 3px 0 30px 75px; float: right">
+            <%= form.check_box :is_under_maintenance %>
+          </div>
+        </td>
+        <td>
+          Maintenance mode<br/><br/>
+        </td>
+      </tr>      
+      <tr>
+        <td></td>
+        <td><%= form.submit "Save" %></td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>
+</div>
+</div>

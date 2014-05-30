@@ -1,4 +1,5 @@
 class PredictionsController < ApplicationController
+  before_filter :redirect_if_under_maintenance
   before_filter :set_context_from_request_params
   before_filter :require_contest
   before_filter :before_contest_participation_ends, :only => [:new, :create, :rearrange]

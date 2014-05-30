@@ -1,4 +1,7 @@
 Contestadors::Application.routes.draw do
+
+  match 'admin/edit_maint_mode' => 'operation_settings#index', :as => :edit_maint_mode
+  match 'admin/update_maint_mode' => 'operation_settings#create', :as => :update_maint_mode, :method => :post
   match '/accept/invitation/:contest/contest/:contest_instance/:invite_code' => 'participants#create', :as => :accept_invitation
   resource :account, :controller => "users"
   resources :users

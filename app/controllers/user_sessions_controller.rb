@@ -1,4 +1,5 @@
 class UserSessionsController < ApplicationController
+  before_filter :redirect_if_under_maintenance, :only => [:index]
   before_filter :require_no_user, :only => [:new, :create]
   before_filter :require_user, :only => :destroy
 
@@ -8,10 +9,19 @@ class UserSessionsController < ApplicationController
   end
 
   def new
+    if is_under_maintenance
+      flash[:alert] = "It is not possible to sign in to Contestadors right now, due to maintenance. Please check back later."
+    end
     @user_session = UserSession.new
   end
 
   def create
+    op_setting = OperationSetting.first
+      
+    if op_setting.is_under_maintenance? and op_setting.admin_user != params[:user_session][:email]
+      redirect_to "/maintenance.html"
+      return
+    end 
     @user_session = UserSession.new(params[:user_session])
 
     if @user_session.save

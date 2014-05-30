@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140524113136) do
+ActiveRecord::Schema.define(:version => 20140530151403) do
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -131,6 +131,13 @@ ActiveRecord::Schema.define(:version => 20140524113136) do
   add_index "invitations", ["email"], :name => "index_invitations_on_email"
   add_index "invitations", ["existing_user_id"], :name => "index_invitations_on_existing_user_id"
   add_index "invitations", ["token"], :name => "index_invitations_on_token"
+
+  create_table "operation_settings", :force => true do |t|
+    t.boolean  "is_under_maintenance"
+    t.string   "admin_user"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "participations", :force => true do |t|
     t.integer  "contest_instance_id", :null => false

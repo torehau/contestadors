@@ -770,6 +770,22 @@ padding-left: 40px;
     z-index: 2;
 }
 
+#maintenance_mode_on {
+    background-color: #efefef;
+    width: 910px;
+    height: 50px;
+    opacity: .5;
+    position: absolute;
+    margin: 0px 20px 0px 0px;
+    padding-top: 10px;
+    text-align: center;
+    border: 1px #52797b solid;
+    color: #52797b;
+    font-size:2em;
+    font-weight:bold;
+    z-index: 2;
+}
+
 #contests p {
   margin-top: 5px;
   color: #41686a;
