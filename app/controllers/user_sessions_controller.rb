@@ -18,7 +18,7 @@ class UserSessionsController < ApplicationController
   def create
     op_setting = OperationSetting.first
       
-    if op_setting.is_under_maintenance? and op_setting.admin_user != params[:user_session][:email]
+    if op_setting.is_under_maintenance? and (params.nil? or params[:user_session].nil? or op_setting.admin_user != params[:user_session][:email])      
       redirect_to "/maintenance.html"
       return
     end 
