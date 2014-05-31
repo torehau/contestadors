@@ -1,5 +1,6 @@
 Contestadors::Application.routes.draw do
-
+  match '/:contest/:role/contests/:id/join' => 'contests#join', :as => :contest_join, :method => :get
+  match '/:contest/:role/contests/:id/join_confirm' => 'contests#join_confirm', :as => :contest_join_confirm, :method => :post
   match 'admin/edit_maint_mode' => 'operation_settings#index', :as => :edit_maint_mode
   match 'admin/update_maint_mode' => 'operation_settings#create', :as => :update_maint_mode, :method => :post
   match '/accept/invitation/:contest/contest/:contest_instance/:invite_code' => 'participants#create', :as => :accept_invitation
@@ -45,8 +46,6 @@ Contestadors::Application.routes.draw do
 
   match '/:contest/:role/contests/:id/upcoming' => 'contests#upcoming_events', :as => :upcoming_events
   match '/:contest/:role/contests/:id/latest' => 'contests#latest_results', :as => :latest_results
-  match '/:contest/:role/contests/:id/join' => 'contests#join', :as => :contest_join, :method => :get
-  match '/:contest/:role/contests/:id/join_confirm' => 'contests#join_confirm', :as => :contest_join_confirm, :method => :post
   scope '/:contest' do
     resources :rules do
       collection do
