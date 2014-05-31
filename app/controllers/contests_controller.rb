@@ -1,8 +1,8 @@
 class ContestsController < ApplicationController
   include ContestContext, ContestAccessChecker
   strip_tags_from_params :only =>  [:create, :update]
+  before_filter :add_request_uri_to_cookie, :only => :join  
   before_filter :redirect_if_under_maintenance
-  before_filter :add_request_uri_to_cookie, :only => :join
   before_filter :require_user
   before_filter :set_context_from_request_params
   before_filter :require_participation, :only => :show
