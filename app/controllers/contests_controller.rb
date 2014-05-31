@@ -154,5 +154,6 @@ protected
   
   def add_request_uri_to_cookie
     cookies[:return_to] = request.request_uri
+    session[:selected_contest_id] = nil
   end
 end
