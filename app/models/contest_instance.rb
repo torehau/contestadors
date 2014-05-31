@@ -1,7 +1,8 @@
 require "mods.rb"
 
 class ContestInstance < ActiveRecord::Base
-  before_save :init_identifiers
+  before_save :init_permalink
+  before_create :init_uuid
   after_create :make_admin_first_participant
   belongs_to :contest, :class_name => "Configuration::Contest", :foreign_key => "configuration_contest_id"
   belongs_to :admin, :class_name => "User", :foreign_key => "admin_user_id"
@@ -109,8 +110,11 @@ class ContestInstance < ActiveRecord::Base
 
 private
 
-  def init_identifiers
+  def init_permalink
     self.permalink = self.name.to_permalink
+  end
+  
+  def init_uuid    
     self.uuid = get_unique_uuid
   end
 
