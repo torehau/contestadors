@@ -26,6 +26,25 @@ namespace :app do
       ContestInstance.where(:configuration_contest_id => contest.id).each {|ci| puts ci.id.to_s + ". " + ci.name + " Admin: " + ci.admin.name + " Members/Invitations: " + ci.participations.active.count.to_s + "/" + ci.invitations.count.to_s + (ci.allow_join_by_url ? " Open" : " Closed") + " (Created " + ci.created_at.to_s(:short) + ")"}
     end
     
+    desc "Lists stats for current tournament"
+    task(:stats => :environment) do
+      contest = Configuration::Contest.last
+      puts "***** Stats for " + contest.name + " *****"
+      ci_ids = ContestInstance.where(:configuration_contest_id => contest.id).select(:id)
+      contest_count = ci_ids.count
+      puts "Contest count: " + contest_count.to_s      
+      ps_count = PredictionSummary.where(:configuration_contest_id => contest.id).count
+      puts "Total users logged in: " + ps_count.to_s
+      user_ids = PredictionSummary.where(:configuration_contest_id => contest.id).select(:user_id)
+      new_user_count = 0
+      User.where(:id => user_ids).each {|u| new_user_count += 1 unless u.has_participated_in_previous_contests? }
+      puts "New users: " + new_user_count.to_s
+      puts "Returning users: " + (ps_count - new_user_count).to_s
+      ps_with_predictions_count = PredictionSummary.where("state != 'i' and configuration_contest_id = ? ", contest.id).count
+      puts "Users with predictions: " + ps_with_predictions_count.to_s
+      distinct_user_participants_count = Participation.where(:contest_instance_id => ci_ids).group(:user_id).count.count
+      puts "Users participating in contests: " + distinct_user_participants_count.to_s
+    end
     #PredictionSummary.order(:id).where(:configuration_contest_id => c.id).each {|ps| puts ps.user.name + " " + ps.state + (ps.user.has_participated_in_previous_contests? ? "" : " NEW")}    
   end
 
