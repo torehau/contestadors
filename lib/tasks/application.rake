@@ -37,7 +37,10 @@ namespace :app do
       puts "Total users logged in: " + ps_count.to_s
       user_ids = PredictionSummary.where(:configuration_contest_id => contest.id).select(:user_id)
       new_user_count = 0
-      User.where(:id => user_ids).each {|u| new_user_count += 1 unless u.has_participated_in_previous_contests? }
+      users = User.where(:id => user_ids)
+      users.each do |u| 
+        new_user_count += 1 unless u.has_participated_in_previous_contests? 
+      end
       puts "New users: " + new_user_count.to_s
       puts "Returning users: " + (ps_count - new_user_count).to_s
       ps_with_predictions_count = PredictionSummary.where("state != 'i' and configuration_contest_id = ? ", contest.id).count

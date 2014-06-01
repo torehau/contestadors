@@ -66,3 +66,20 @@
 [06/02/14 00:39:29 +0200 torehau-VirtualBox (17489)] INFO : Installing Rails 3.0 view instrumentation
 [06/02/14 00:39:29 +0200 torehau-VirtualBox (17489)] INFO : Installing Rails3 Error instrumentation
 [06/02/14 00:39:29 +0200 torehau-VirtualBox (17489)] INFO : Finished instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Starting the New Relic agent in "development" environment.
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Reading configuration from config/newrelic.yml
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : New Relic Agent Developer Mode enabled.
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] ERROR : No application name configured.
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] ERROR : The Agent cannot start without at least one. Please check your 
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] ERROR : value set for app_name in the development 
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] ERROR : environment.
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing ActiveRecord instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing Net instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing deferred Rack instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing Authlogic instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing Rails 3 Controller instrumentation
+[06/02/14 00:44:14 +0200 torehau-VirtualBox (17642)] INFO : Installing Rails 3.0 view instrumentation
+[06/02/14 00:44:15 +0200 torehau-VirtualBox (17642)] INFO : Installing Rails3 Error instrumentation
+[06/02/14 00:44:15 +0200 torehau-VirtualBox (17642)] INFO : Finished instrumentation
