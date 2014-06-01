@@ -39,7 +39,7 @@ namespace :app do
       new_user_count = 0
       users = User.where(:id => user_ids)
       users.each do |u| 
-        new_user_count += 1 unless u.has_participated_in_previous_contests? 
+        new_user_count += 1 unless u.prediction_summaries.count > 1 
       end
       puts "New users: " + new_user_count.to_s
       puts "Returning users: " + (ps_count - new_user_count).to_s
