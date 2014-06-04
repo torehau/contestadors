@@ -1767,3 +1767,9 @@ form.contest_create {
     width: 30px;
     float: left;
 }
+
+
+.match_kick_off_time_descr {
+  color: #41686a;
+  font-style: italic;
+}
