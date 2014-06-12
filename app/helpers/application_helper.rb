@@ -12,8 +12,8 @@ module ApplicationHelper
                     :role => role, :contest_id => @contest_instance.permalink,
                     :uuid => @contest_instance.uuid}
 
-    if participation and participation.invitation
-      query_params[:pid] = participation.invitation.token
+    if participation #and participation.invitation
+      query_params[:pid] = participation.id.to_s
     end
     participant_predictions_path(query_params)
   end

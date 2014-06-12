@@ -5,7 +5,7 @@ class ParticipantsController < ApplicationController
   before_filter :set_context_from_request_params
   before_filter :require_contest
   before_filter :after_contest_participation_ends, :only => :update
-  before_filter :require_participation, :only => :index
+  before_filter :require_participation, :only => [:index, :show]
   before_filter :require_admin, :only => :update
 
   def index
@@ -74,7 +74,12 @@ class ParticipantsController < ApplicationController
   end
 
   def show
-    @participant = params[:pid] ? Invitation.user_by_token(params[:pid]) : @contest_instance.admin
+    @participant = @contest_instance.admin
+    
+    if params[:pid] 
+      participation = Participation.where(:id => params[:pid].to_i).first
+      @participant = (participation and participation.user and participation.user.is_participant_of?(@contest_instance)) ? participation.user : nil
+    end
 
     if @participant
       @repository = @contest.repository(nil, @participant)

@@ -1,8 +1,6 @@
 Contestadors::Application.routes.draw do
   match '/:contest/:role/contests/:id/join' => 'contests#join', :as => :contest_join, :method => :get
   match '/:contest/:role/contests/:id/join_confirm' => 'contests#join_confirm', :as => :contest_join_confirm, :method => :post
-  match 'admin/edit_maint_mode' => 'operation_settings#index', :as => :edit_maint_mode
-  match 'admin/update_maint_mode' => 'operation_settings#create', :as => :update_maint_mode, :method => :post
   match '/accept/invitation/:contest/contest/:contest_instance/:invite_code' => 'participants#create', :as => :accept_invitation
   resource :account, :controller => "users"
   resources :users
@@ -13,6 +11,11 @@ Contestadors::Application.routes.draw do
   match 'update-password' => 'users#update_password', :as => :update_password, :method => :post
   resources :user_sessions
   resources :password_resets
+  scope 'admin' do
+    resources :results
+    match 'edit_maint_mode' => 'operation_settings#index', :as => :edit_maint_mode
+    match 'update_maint_mode' => 'operation_settings#create', :as => :update_maint_mode, :method => :post    
+  end
   resources :tournaments do
     collection do
       get :completed

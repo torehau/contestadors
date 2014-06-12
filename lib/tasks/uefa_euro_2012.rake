@@ -1,5 +1,5 @@
 namespace :uefa do
-  namespace :euro2012 do
+  namespace :euro2012 do   
 
     desc "Sets the result of a predictable and updates the prediction scores and score tables"
     task(:update_scores => :environment) do

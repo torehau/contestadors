@@ -1,2 +1,18 @@
-<h1>Results#edit</h1>
-<p>Find me in app/views/results/edit.html.erb</p>
+<% grid(@upcomming_matchs_grid, :show_filters => :no, :erb_mode => true) do |g| -%>
+  <%  g.column :column_name => 'Kick-off', :attribute_name => 'play_date' do |match| -%>
+    <%=  match.play_date.to_s(:short) -%>
+  <%  end -%>
+  
+  <%  g.column :column_name => 'Home Team', :attribute_name => 'name', :model_class => Predictable::Championship::Team do |match| -%>
+    <%=  match.home_team.name -%>
+  <%  end -%>     
+  
+  <%  g.column :column_name => 'Away Team', :attribute_name => 'name', :model_class => Predictable::Championship::Team do |match| -%>
+    <%=  match.away_team.name -%>
+  <%  end -%>  
+  
+  <%  g.column :column_name => 'Score', :attribute_name => 'score' do |match| -%>
+    <%=  match.score -%>
+    <%= link_to(" Edit", edit_result_path(:id => match.id) ) -%>    
+  <%  end -%> 
+<%  end -%>
