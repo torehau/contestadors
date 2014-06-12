@@ -16,3 +16,38 @@
 [06/12/14 22:37:37 +0200 torehau-VirtualBox (9039)] INFO : Installing Rails3 Error instrumentation
 [06/12/14 22:37:37 +0200 torehau-VirtualBox (9039)] INFO : Finished instrumentation
 [06/12/14 22:37:39 +0200 torehau-VirtualBox (9039)] INFO : Doing deferred dependency-detection before Rack startup
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Starting the New Relic agent in "development" environment.
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Reading configuration from config/newrelic.yml
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : New Relic Agent Developer Mode enabled.
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] ERROR : No application name configured.
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] ERROR : The Agent cannot start without at least one. Please check your 
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] ERROR : value set for app_name in the development 
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] ERROR : environment.
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing ActiveRecord instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing Net instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing deferred Rack instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing Authlogic instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing Rails 3 Controller instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing Rails 3.0 view instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Installing Rails3 Error instrumentation
+[06/12/14 23:55:58 +0200 torehau-VirtualBox (9513)] INFO : Finished instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Starting the New Relic agent in "development" environment.
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Reading configuration from config/newrelic.yml
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : New Relic Agent Developer Mode enabled.
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] ERROR : No application name configured.
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] ERROR : The Agent cannot start without at least one. Please check your 
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] ERROR : value set for app_name in the development 
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] ERROR : environment.
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing ActiveRecord instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing Net instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing deferred Rack instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing Authlogic instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing Rails 3 Controller instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing Rails 3.0 view instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Installing Rails3 Error instrumentation
+[06/12/14 23:56:35 +0200 torehau-VirtualBox (9517)] INFO : Finished instrumentation
+[06/12/14 23:56:37 +0200 torehau-VirtualBox (9517)] INFO : Doing deferred dependency-detection before Rack startup
