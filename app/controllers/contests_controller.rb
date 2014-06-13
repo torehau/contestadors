@@ -129,6 +129,7 @@ class ContestsController < ApplicationController
 
 protected
 
+
   def set_context_from_request_params
     set_contest_context(params[:contest], params[:role], params[:id], params[:uuid])
   end

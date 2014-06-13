@@ -201,7 +201,19 @@ namespace :fifa do
           puts "prediction summary updated for " + user.name
         end
       end
-    end  
+    end 
+    
+    desc "Corrects score table positions and high score list elements"
+    task(:add_users_to_contests => :environment) do 
+      ci = ContestInstance.find(128)
+      ['kmm@kredinor.no','tsolsta@gmail.com', 'chb@kredinor.no'].each do |e|
+        user = User.where(:email => e).first
+		participation = Participation.new(:user_id => user.id,
+										  :contest_instance_id => ci.id,
+										  :active => true)
+	    participation.save!        
+      end
+    end
   end
 end  
   
