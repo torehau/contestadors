@@ -205,8 +205,8 @@ namespace :fifa do
     
     desc "Corrects score table positions and high score list elements"
     task(:add_users_to_contests => :environment) do 
-      ci = ContestInstance.find(149)
-      ['pal.vik.tangvold@enviropac.no'].each do |e|
+      ci = ContestInstance.find(150)
+      ['erigulb@yahoo.no', 'espen.finstad@hotmail.com', 'arvberg3@online.no'].each do |e|
         user = User.where(:email => e).first
 		participation = Participation.new(:user_id => user.id,
 										  :contest_instance_id => ci.id,
