@@ -214,6 +214,103 @@ namespace :fifa do
 	    participation.save!        
       end
     end
+    
+    
+    desc "Correcting predictions placed incorrectly using IE"
+    task(:correct_predictions => :environment) do
+      user = User.find(492)
+
+# 1/4 finale
+#Brazil - Colombia    Brazil
+#France - Germany     Germany
+#Croatia - Italy      Croatia
+#Argentina - Portugal Argentina
+#
+# Semi
+#Brazil - Germany      Brazil
+#Croatia - Argentina   Argentina
+#
+#  vinner av finalen Brazil - Argentina?    Argentina
+#
+#  vinner av 3. plass Germany - Croatia?    Germany
+
+      brazil = Predictable::Championship::Team.where(name => "Brazil").last
+      colombia = Predictable::Championship::Team.where(name => "Colombia").last
+      france = Predictable::Championship::Team.where(name => "France").last
+      germany = Predictable::Championship::Team.where(name => "Germany").last
+      croatia = Predictable::Championship::Team.where(name => "Croatia").last
+      italy = Predictable::Championship::Team.where(name => "Italy").last
+      argentina = Predictable::Championship::Team.where(name => "Argentina").last
+      portugal = Predictable::Championship::Team.where(name => "Portugal").last
+
+      item = Configuration::Predictable::Item.find(380)
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => item.id,
+        :predicted_value => brazil.id.to_s)      
+      item = Configuration::Predictable::Item.find(380)
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => item.id,
+        :predicted_value => brazil.id.to_s)
+      item = Configuration::Predictable::Item.find(380)
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => item.id,
+        :predicted_value => brazil.id.to_s)                
+
+      set = Configuration::Set.where(:description => "Teams through to Semi finals").last
+      user.predictions_for(set).each do |prediction|
+
+        if prediction.predicted_value.eql?(netherlands.id.to_s)
+          prediction.predicted_value = brazil.id.to_s
+          prediction.save!
+        elsif prediction.predicted_value.eql?(paraguay.id.to_s)
+          prediction.predicted_value = spain.id.to_s
+          prediction.save!
+        elsif prediction.predicted_value.eql?(france.id.to_s)
+          prediction.predicted_value = england.id.to_s
+          prediction.objectives_meet = nil
+          prediction.received_points = nil
+          prediction.save!
+        end
+      end
+
+      set = Configuration::Set.where(:description => "Teams through to Final").last
+      user.predictions_for(set).each do |prediction|
+
+        if prediction.predicted_value.eql?(france.id.to_s)
+          prediction.predicted_value = brazil.id.to_s
+          prediction.objectives_meet = nil
+          prediction.received_points = nil
+          prediction.save!
+        elsif prediction.predicted_value.eql?(argentina.id.to_s)
+          prediction.predicted_value = spain.id.to_s
+          prediction.save!
+        end
+      end
+
+      set = Configuration::Set.where(:description => "Third Place Team").last
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => set.predictable_items.first.id,
+        :predicted_value => germany.id.to_s)
+#      user.predictions_for(set).each do |prediction|
+#        prediction.predicted_value = germany.id.to_s
+#        prediction.save!
+#      end
+
+      set = Configuration::Set.where(:description => "Winner Team").last
+      Prediction.create!(:user_id => user.id,
+        :configuration_predictable_item_id => set.predictable_items.first.id,
+        :predicted_value => argentina.id.to_s)
+#      user.predictions_for(set).each do |prediction|
+#        prediction.predicted_value = argentina.id.to_s
+#        prediction.save!
+#      end
+      contest = Configuration::Contest.last
+      summary = user.summary_of(contest)
+      summary.map = summary.map + 16 + 9
+      summary.previous_map = summary.previous_map + 16 + 9
+      summary.state = "t"
+      summary.save!
+    end    
   end
 end  
   
