@@ -234,82 +234,110 @@ namespace :fifa do
 #
 #  vinner av 3. plass Germany - Croatia?    Germany
 
-      brazil = Predictable::Championship::Team.where(name => "Brazil").last
-      colombia = Predictable::Championship::Team.where(name => "Colombia").last
-      france = Predictable::Championship::Team.where(name => "France").last
-      germany = Predictable::Championship::Team.where(name => "Germany").last
-      croatia = Predictable::Championship::Team.where(name => "Croatia").last
-      italy = Predictable::Championship::Team.where(name => "Italy").last
-      argentina = Predictable::Championship::Team.where(name => "Argentina").last
-      portugal = Predictable::Championship::Team.where(name => "Portugal").last
+      brazil = Predictable::Championship::Team.where(:name => "Brazil").last
+      colombia = Predictable::Championship::Team.where(:name => "Colombia").last
+      france = Predictable::Championship::Team.where(:name => "France").last
+      germany = Predictable::Championship::Team.where(:name => "Germany").last
+      croatia = Predictable::Championship::Team.where(:name => "Croatia").last
+      italy = Predictable::Championship::Team.where(:name => "Italy").last
+      argentina = Predictable::Championship::Team.where(:name => "Argentina").last
+      portugal = Predictable::Championship::Team.where(:name => "Portugal").last
 
-      item = Configuration::Predictable::Item.find(380)
-      Prediction.create!(:user_id => user.id,
-        :configuration_predictable_item_id => item.id,
-        :predicted_value => brazil.id.to_s)      
-      item = Configuration::Predictable::Item.find(380)
-      Prediction.create!(:user_id => user.id,
-        :configuration_predictable_item_id => item.id,
-        :predicted_value => brazil.id.to_s)
-      item = Configuration::Predictable::Item.find(380)
-      Prediction.create!(:user_id => user.id,
-        :configuration_predictable_item_id => item.id,
-        :predicted_value => brazil.id.to_s)                
+      ActiveRecord::Base.transaction do
+	  #Home team Quarter final match 4th July 17:00
+	  item = Configuration::PredictableItem.find(380)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => brazil.id.to_s) 
+	  #Away team Quarter final match 4th July 17:00
+	  item = Configuration::PredictableItem.find(381)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => colombia.id.to_s)         
+		
+	  #Home team Quarter final match 4th July 13:00
+	  item = Configuration::PredictableItem.find(378)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => france.id.to_s)        
+	  #Away team Quarter final match 4th July 13:00
+	  item = Configuration::PredictableItem.find(379)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => germany.id.to_s)
 
-      set = Configuration::Set.where(:description => "Teams through to Semi finals").last
-      user.predictions_for(set).each do |prediction|
+	  #Home team Quarter final match 5th July 17:00
+	  item = Configuration::PredictableItem.find(384)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => croatia.id.to_s)
+	  #Away team Quarter final match 5th July 17:00
+	  item = Configuration::PredictableItem.find(385)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => italy.id.to_s)        
 
-        if prediction.predicted_value.eql?(netherlands.id.to_s)
-          prediction.predicted_value = brazil.id.to_s
-          prediction.save!
-        elsif prediction.predicted_value.eql?(paraguay.id.to_s)
-          prediction.predicted_value = spain.id.to_s
-          prediction.save!
-        elsif prediction.predicted_value.eql?(france.id.to_s)
-          prediction.predicted_value = england.id.to_s
-          prediction.objectives_meet = nil
-          prediction.received_points = nil
-          prediction.save!
-        end
+	  #Home team Quarter final match 5th July 13:00
+	  item = Configuration::PredictableItem.find(382)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => argentina.id.to_s)
+	  #Away team Quarter final match 5th July 13:00
+	  item = Configuration::PredictableItem.find(383)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => portugal.id.to_s)        
+					 
+	  #Home team Semi final match 8th July 17:00  
+	  item = Configuration::PredictableItem.find(386)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => brazil.id.to_s)
+	  #Away team Semi final match 8th July 17:00  
+	  item = Configuration::PredictableItem.find(387)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => germany.id.to_s)
+				
+	  #Home team Semi final match 9th July 17:00  
+	  item = Configuration::PredictableItem.find(388)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => argentina.id.to_s)                            
+	  #Away team Semi final match 9th July 17:00  
+	  item = Configuration::PredictableItem.find(389)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => croatia.id.to_s)                 
+		
+	  #Home team Final match 13th July 16:00
+	  item = Configuration::PredictableItem.find(390)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => brazil.id.to_s)
+	  #Away team Final match 4th July 17:00
+	  item = Configuration::PredictableItem.find(391)
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => item.id,
+		:predicted_value => argentina.id.to_s)                    
+
+	  set = Configuration::Set.where(:description => "Third Place Team").last
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => set.predictable_items.first.id,
+		:predicted_value => germany.id.to_s)
+
+	  set = Configuration::Set.where(:description => "Winner Team").last
+	  Prediction.create!(:user_id => user.id,
+		:configuration_predictable_item_id => set.predictable_items.first.id,
+		:predicted_value => argentina.id.to_s)
+
+	  contest = Configuration::Contest.last
+	  summary = user.summary_of(contest)
+	  summary.map = summary.map + 48 + 36 + 32 + 16 + 32
+	  summary.previous_map = summary.previous_map + 48 + 36 + 32 + 16 + 32
+	  summary.state = "t"
+	  summary.save!
       end
-
-      set = Configuration::Set.where(:description => "Teams through to Final").last
-      user.predictions_for(set).each do |prediction|
-
-        if prediction.predicted_value.eql?(france.id.to_s)
-          prediction.predicted_value = brazil.id.to_s
-          prediction.objectives_meet = nil
-          prediction.received_points = nil
-          prediction.save!
-        elsif prediction.predicted_value.eql?(argentina.id.to_s)
-          prediction.predicted_value = spain.id.to_s
-          prediction.save!
-        end
-      end
-
-      set = Configuration::Set.where(:description => "Third Place Team").last
-      Prediction.create!(:user_id => user.id,
-        :configuration_predictable_item_id => set.predictable_items.first.id,
-        :predicted_value => germany.id.to_s)
-#      user.predictions_for(set).each do |prediction|
-#        prediction.predicted_value = germany.id.to_s
-#        prediction.save!
-#      end
-
-      set = Configuration::Set.where(:description => "Winner Team").last
-      Prediction.create!(:user_id => user.id,
-        :configuration_predictable_item_id => set.predictable_items.first.id,
-        :predicted_value => argentina.id.to_s)
-#      user.predictions_for(set).each do |prediction|
-#        prediction.predicted_value = argentina.id.to_s
-#        prediction.save!
-#      end
-      contest = Configuration::Contest.last
-      summary = user.summary_of(contest)
-      summary.map = summary.map + 16 + 9
-      summary.previous_map = summary.previous_map + 16 + 9
-      summary.state = "t"
-      summary.save!
     end    
   end
 end  

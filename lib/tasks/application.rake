@@ -53,7 +53,22 @@ namespace :app do
       puts "Users participating in contests: " + distinct_user_participants_count.to_s
     end
     #PredictionSummary.order(:id).where(:configuration_contest_id => c.id).each {|ps| puts ps.user.name + " " + ps.state + (ps.user.has_participated_in_previous_contests? ? "" : " NEW")}    
-  end
+    
+      
+    desc "Lists users having predicted the current tournament, but does not participate in any contest"
+    task(:no_contest_users => :environment) do
+      contest = Configuration::Contest.last
+      puts "***** No contest users *****"
+      users = User.all
+      users.each do |u| 
+        ps = u.prediction_summaries.for_contest(contest)
+        if ps and ps.state != 'i' and u.participant_contests_instances(contest).empty?
+          puts "Id: #{u.id} Name: #{u.name} Email: #{u.email}"
+        end        
+      end            
+    end
+  end      
+        
 
   namespace :contests do
 
