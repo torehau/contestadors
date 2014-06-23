@@ -5,7 +5,7 @@
     <% if team.objectives_meet_for.empty? -%>
       <div>
     <% else -%>
-      <div class="<%= objectives_meet_div_class_for(team.objectives_meet_for[stage.id]) %>">
+      <div class="<%= stage_objectives_meet_div_class_for(team.objectives_meet_for, stage) %>">
     <% end -%>
       <%= team.name %><br/>
     </div>
