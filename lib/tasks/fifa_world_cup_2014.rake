@@ -27,7 +27,7 @@ namespace :fifa do
         @contest = Configuration::Contest.find_by_name("FIFA World Cup 2014")
         @score_and_map_reduced_by_user_id = {}
         @user_by_id = {}
-        @predictable_types = {:group_matches => "Group Matches"}#, :group_positions => "Group Tables", :stage_teams => "Stage Teams", :winner_teams => "Specific Team"}
+        @predictable_types = {:group_matches => "Group Matches", :group_positions => "Group Tables", :stage_teams => "Stage Teams", :winner_teams => "Specific Team"}
         @predictables_by_id = {}
         @predictable_types.keys.each {|predictable_type| @predictables_by_id[predictable_type] = {}}
         @unsettled_items_by_predictable_id = {}
@@ -36,13 +36,13 @@ namespace :fifa do
         Rake::Task["fifa:wc2014:set_match_scores"].invoke
         [:group_matches, :stage_teams, :winner_teams].each {|descr| puts "found number of  " + descr.to_s.gsub('_', ' ') + ": " + @predictables_by_id[descr].values.size.to_s if @predictables_by_id.has_key?(descr)}
 
-        #puts "sets group table positions..."
-        #Rake::Task["predictable:championship:set_group_positions"].invoke
-        #puts "found number of group positions: " + @predictables_by_id[:group_positions].values.size.to_s
+        puts "sets group table positions..."
+        Rake::Task["fifa:wc2014:set_group_positions"].invoke
+        puts "found number of group positions: " + @predictables_by_id[:group_positions].values.size.to_s
 
-        #puts "sets stage teams..."
-        #Rake::Task["predictable:championship:set_stage_teams"].invoke
-        #puts "found number of stage teams: " + @predictables_by_id[:stage_teams].values.size.to_s
+        puts "sets stage teams..."
+        Rake::Task["fifa:wc2014:set_stage_teams"].invoke
+        puts "found number of stage teams: " + @predictables_by_id[:stage_teams].values.size.to_s
         
         @predictable_types.each do |predictable_type, category_descr|
           puts "fetches the corresponding unsettled " + predictable_type.to_s.gsub('_', ' ') + " predictable items..."
@@ -93,6 +93,46 @@ namespace :fifa do
         end
       end
     end  
+    
+    desc "Sets the score and result for matches listed in the CSV file."
+    task(:set_group_positions => :environment) do
+      file_name = File.join(File.dirname(__FILE__), '/fifa_world_cup_2014_group_positions.csv')
+      parser = CSV.new(File.open(file_name, 'r'),
+                             :headers => true, :header_converters => :symbol,
+                             :col_sep => ',')
+
+      parser.each do |row|
+        group = Predictable::Championship::Group.where(:name => row.field(:group)).last
+        puts "Found group: " + group.name
+        team = Predictable::Championship::Team.where(:name => row.field(:team)).last
+        puts "Found team: " + team.name
+        group_table_position = Predictable::Championship::GroupTablePosition.where(:predictable_championship_group_id => group.id, :predictable_championship_team_id => team.id).last
+        group_table_position.settle(row.field(:pos))
+        
+        puts group_table_position.pos.to_s + ". position group " + group_table_position.group.name + ": " + group_table_position.team.name
+        @predictables_by_id[:group_positions][group_table_position.id] = group_table_position
+      end
+    end
+
+    desc "Sets the score and result for matches listed in the CSV file."
+    task(:set_stage_teams => :environment) do
+      file_name = File.join(File.dirname(__FILE__), '/fifa_world_cup_2014_stage_teams.csv')
+      parser = CSV.new(File.open(file_name, 'r'),
+                             :headers => true, :header_converters => :symbol,
+                             :col_sep => ',')
+
+      parser.each do |row|
+        stage = Predictable::Championship::Stage.where(:description => row.field(:stage)).last
+        team = Predictable::Championship::Team.where(:name => row.field(:team)).last
+        
+        if stage and team
+          stage_team = Predictable::Championship::StageTeam.where(:predictable_championship_stage_id => stage.id, :predictable_championship_team_id => team.id).last
+
+          puts "Stage: " + stage_team.stage.description + ", Team: " + stage_team.team.name
+          @predictables_by_id[:stage_teams][stage_team.id] = stage_team
+        end
+      end
+    end    
   
     desc "Calculates points for all predictions of unsettled group match predictable items."
     task(:set_prediction_points => :environment) do
@@ -102,13 +142,13 @@ namespace :fifa do
           items = @unsettled_items_by_predictable_id[predictable_type].values
           next if items.empty?
           
-          third_place_set = Configuration::Set.find_by_description("Third Place Team")
+          third_place_set = Configuration::Set.where(:description => "Third Place Team").last
           third_place_item = third_place_set.predictable_items.first
-          winner_set = Configuration::Set.find_by_description("Winner Team")
+          winner_set = Configuration::Set.where(:description => "Winner Team").last
           winner_item = winner_set.predictable_items.first
           dependant_items_by_item_id = {}
           map_reduction_value  = nil
-          final_teams_set = Configuration::Set.find_by_description("Teams through to Final")
+          final_teams_set = Configuration::Set.where(:description => "Teams through to Final").last
           mutex_set_by_set_id = {final_teams_set.id => third_place_set}
           
           if items.size > 1
