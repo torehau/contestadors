@@ -887,7 +887,8 @@ padding-left: 40px;
 }
 
 #create_contest_form_container form table tbody tr td.invalid label,
-#account_edit form table tbody tr td.invalid label {
+#account_edit form table tbody tr td.invalid label,
+form.new_comment table.comment_form tbody tr td.invalid label {
     color:red;
 }
 
@@ -924,6 +925,7 @@ min-height: 25px;
    display:block;
 }
 
+.add_operation div.icon_link,
 .edit_options div.icon_link {
    float: left;
    margin-top: 2px;
@@ -939,6 +941,7 @@ min-height: 25px;
   font-size: 14px;
 }
 
+.add_operation div.text_link,
 .edit_options div.text_link {
    margin-left: 2px;
    /*font-size: 110%;*/
@@ -1169,6 +1172,11 @@ form.contest_create {
     float:left;
     margin: 5px 0px 0px 30px;
     /*width: 115px;*/
+}
+
+.add_operation
+{
+    margin: 5px 5px 0px 0px;
 }
 
 .edit_options {
@@ -1772,4 +1780,96 @@ form.contest_create {
 .match_kick_off_time_descr {
   color: #41686a;
   font-style: italic;
+}
+
+
+table.comment_form textarea 
+{
+  width:800px;
+  height:150px;
+
+}
+
+.comment_reply_form textarea 
+{
+  margin-left: 50px;
+  width:845px;
+  height:50px;
+}
+
+.comment_reply_form input
+{
+  margin-left: 50px;
+}
+
+.comment-speech-bubble {
+position: relative;
+padding: 15px;
+margin: 1em 0 1em;
+border: 5px solid #41686a;
+color: #333;
+background: #fff;
+-webkit-border-radius: 10px;
+-moz-border-radius: 10px;
+border-radius: 10px;
+}
+/*
+p {
+display: block;
+-webkit-margin-before: 1em;
+-webkit-margin-after: 1em;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+}*/
+
+.comment-speech-bubble:before {
+content: "";
+position: absolute;
+bottom: -20px;
+left: 40px;
+border-width: 20px 20px 0;
+border-style: solid;
+border-color: #41686a transparent;
+display: block;
+width: 0;
+}
+
+.comment-speech-bubble:after {
+content: "";
+position: absolute;
+bottom: -13px;
+left: 47px;
+border-width: 13px 13px 0;
+border-style: solid;
+border-color: #fff transparent;
+display: block;
+width: 0;
+}
+
+.comment-speech-bubble.reply {
+  margin-left: 50px;
+  border-color: #9cbcda;
+}
+
+
+.comment-speech-bubble.reply:before {
+  border-color: #9cbcda transparent;
+/*top: -20px;
+bottom: auto;
+left: auto;
+right: 40px;
+border-width: 0 20px 20px;*/
+}
+/*
+.comment-speech-bubble.reply:after {
+top: -13px;
+bottom: auto;
+left: auto;
+right: 47px;
+border-width: 0 13px 13px;
+}*/
+.account-general-settings-check-box
+{
+  padding: 0 0 30px 75px; 
+  float: right;
 }

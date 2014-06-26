@@ -36,9 +36,9 @@
         <%= high_score_list_position.user.name -%>
     <% else -%> 
       <% if @current_participant -%>
-        Anonymous (you)
+        <span style="color:#333;font-style:italic;">Anonymous (you)</span>
       <% else -%>
-        Anonymous       
+        <span style="color:#777;font-style:italic;">Anonymous</span>       
       <% end -%>      
     <% end -%>    
     <% if @current_participant -%>
