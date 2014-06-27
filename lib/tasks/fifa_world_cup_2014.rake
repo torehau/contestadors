@@ -247,7 +247,7 @@ namespace :fifa do
     task(:add_users_to_contests => :environment) do 
       ci = ContestInstance.find(123)
       if ci.name == "Join link test"
-        ci.name = "There is never a time for Africa, aka, HO VM tipp"
+        ci.name = "Hafslund Online VM konkurranse"
         ci.save!
         ['espen.brynildsen@gmail.com', 'kmj@integrate.no'].each do |e|
           user = User.where(:email => e).first
