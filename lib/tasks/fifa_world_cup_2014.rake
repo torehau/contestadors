@@ -245,14 +245,21 @@ namespace :fifa do
     
     desc "Corrects score table positions and high score list elements"
     task(:add_users_to_contests => :environment) do 
-      ci = ContestInstance.find(150)
-      ['a_hugol@yahoo.no', 'torbenalfred@gmail.com'].each do |e|
-        user = User.where(:email => e).first
-		participation = Participation.new(:user_id => user.id,
-										  :contest_instance_id => ci.id,
-										  :active => true)
-	    participation.save!        
+      ci = ContestInstance.find(123)
+      if ci.name == "Join link test"
+        ci.name = "There is never a time for Africa, aka, HO VM tipp"
+        ci.save!
+        ['espen.brynildsen@gmail.com', 'kmj@integrate.no'].each do |e|
+          user = User.where(:email => e).first
+		  participation = Participation.new(:user_id => user.id,
+	   								  :contest_instance_id => ci.id,
+	   									  :active => true)
+	      participation.save!        
+	    end
       end
+      ci = ContestInstance.find(106)
+      ci.name = "First World Cup 2014 Contest"
+      ci.save!
     end
     
     
