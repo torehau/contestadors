@@ -8,12 +8,12 @@ Hi <%= @user.name %>,<br/>
 "<%= @comment.body %>"
 <br/>
 You can reply to the comment and view replies by other contest members by clicking the following link:<br/>
-<%= link_to(@comment.title, contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid, :id => @comment.id) ) -%> (<%= contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid, :id => @comment.id) ) %>)<br/>
+<%= link_to(@comment.title, contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid, :id => @comment.id) ) -%> (<%= contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid, :id => @comment.id) %>)<br/>
 <br/>
 If the above link does not work, try to copy and paste the actual URL shown next to it into your browser.<br/>
 <br/>
 To see all comments for the "<%= @contest_instance.name %>" contest, click the following link:<br/>
-<%= link_to 'All contest comments', contest_comments_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) ) -%> (<%= contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) ) %>)<br/>
+<%= link_to 'All contest comments', contest_comments_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) -%> (<%= contest_comment_url(:contest => @contest_instance.contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) %>)<br/>
 <br/>
 If you do not want to receive more email notifications about contest comments, please change your account settings:
 <%= link_to 'Account settings', edit_account_url -%> (<%= edit_account_url -%>)<br/>
