@@ -16,6 +16,10 @@ class Participation < ActiveRecord::Base
   def is_admin?
     user.is_admin_of?(contest_instance)
   end
+  
+  def send_email_notification_for?(comment)
+    !user.nil? and !user.email.nil? and !user.email.nil? and user.id != comment.user.id and user.email_notifications_on_comments?
+  end
 
 private
 

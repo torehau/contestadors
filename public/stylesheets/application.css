@@ -1873,3 +1873,15 @@ border-width: 0 13px 13px;
   padding: 0 0 30px 75px; 
   float: right;
 }
+
+.comment-signature-and-timestamp
+{
+  margin: 2px 0 1em 85px;
+  font-style:italic;
+}
+
+.comment-reply-signature-and-timestamp
+{
+  margin: 2px 0 1em 135px;
+  font-style:italic;
+}

@@ -1,1 +1,19 @@
-[06/16/14 01:54:43 +0200 torehau-VirtualBox (8000)] INFO : Doing deferred dependency-detection before Rack startup
+[06/28/14 15:44:14 +0200 torehau-VirtualBox (5723)] INFO : Doing deferred dependency-detection before Rack startup
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Starting the New Relic agent in "development" environment.
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Reading configuration from config/newrelic.yml
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : New Relic Agent Developer Mode enabled.
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] ERROR : No application name configured.
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] ERROR : The Agent cannot start without at least one. Please check your 
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] ERROR : value set for app_name in the development 
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] ERROR : environment.
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing ActiveRecord instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing Net instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing deferred Rack instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing Authlogic instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing Rails 3 Controller instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing Rails 3.0 view instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Installing Rails3 Error instrumentation
+[06/28/14 15:52:51 +0200 torehau-VirtualBox (5762)] INFO : Finished instrumentation
+[06/28/14 15:52:52 +0200 torehau-VirtualBox (5762)] INFO : Doing deferred dependency-detection before Rack startup

@@ -17,13 +17,24 @@
       </tr>
       <tr>
         <td>
-          <div style="padding: 3px 0 30px 75px; float: right">
+          <div class="account-general-settings-check-box">
             <%= form.check_box :allow_name_in_high_score_lists %>
           </div>
         </td>
         <td>
           Allow your name to be shown in global High Score Lists (available for all Contestadors users).
           If not checked, you will appear as 'Anonymous' in the High Score Lists.<br/><br/>
+        </td>
+      </tr>      
+      <tr>
+        <td>
+          <div class="account-general-settings-check-box">
+            <%= form.check_box :email_notifications_on_comments %>
+          </div>
+        </td>
+        <td>
+          Send me notifications on email when new comments are added for the contests I participate in. 
+          I will also be notified when other participants reply on my comments.<br/><br/>
         </td>
       </tr>      
       <tr>

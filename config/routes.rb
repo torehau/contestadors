@@ -44,6 +44,7 @@ Contestadors::Application.routes.draw do
       end
       resources :participants
       resource :score_table
+      resources :comments
     end
   end
 

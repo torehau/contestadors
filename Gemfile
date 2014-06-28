@@ -17,6 +17,7 @@ gem 'simple-navigation', '3.12.0'
 gem 'wice_grid', '3.0.4'
 gem 'newrelic_rpm'
 gem 'valid_email'
+gem 'acts_as_commentable_with_threading'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'

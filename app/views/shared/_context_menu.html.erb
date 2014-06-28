@@ -18,7 +18,7 @@
     <% else -%>
       <%= render_navigation :context => :contest %>
     <% end -%>
-  <% elsif current_controller_new 'participants' or current_controller_new 'score_tables' -%>
+  <% elsif current_controller_new 'participants' or current_controller_new 'score_tables' or current_controller_new 'comments' -%>
     <%= render_navigation :context => :contest %>
   <% end -%>
 </div>

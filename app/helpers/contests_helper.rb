@@ -56,6 +56,14 @@ module ContestsHelper
         :tip => "Ranking of the contest participants",
         :path => contest_score_table_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
         :highlight_conditions => [HighlightCondition.new("score_tables", "show")]}
+      if is_current_tournament_selected        
+	    items << {:label => "Comments",
+		  :tip => "Post comments for this contests ",
+		  :path => contest_comments_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
+		  :highlight_conditions => [HighlightCondition.new("comments", "index"),
+			  					    HighlightCondition.new("comments", "new"),
+								    HighlightCondition.new("comments", "show")]}
+	  end
       items << {:label => "Participants",
         :tip => "All participants of the contest",
         :path => contest_participants_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid),
@@ -100,6 +108,7 @@ module ContestsHelper
 		    :tip => "Summery of the predictions placed by a participant ",
 		    :path => prediction_summary_link(current_user.participations.of(@contest_instance)),
 		    :highlight_conditions => [HighlightCondition.new("participants", "show")]}
+		    		    
         end
       end
     end

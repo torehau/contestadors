@@ -1,0 +1,30 @@
+<% if @no_comments_for_contest -%>
+  <div id="no_contests">
+    There are no comments for this contest yet
+  </div>
+  <div id="contests"></div>
+<% else -%>
+  <%= render :partial => "grid" %>
+<% end -%>
+<div class="add_operation">
+  <div class="icon_link" style="padding-right:2px">
+    <%= link_to(image_tag("add.png"), new_contest_comment_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid)) %>
+  </div>
+  <div class="text_link" style="font-weight:bold;padding:2px 0 6px 0;">
+	<%= link_to "Add a new comment for this contest", new_contest_comment_path(:contest => @contest.permalink,  :role => "admin", :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) %>
+  </div>
+</div>    
+<% if !@no_comments_for_contest and @current_user.is_admin_of?(@contest_instance) -%>
+	<div class="notice_message" >
+	  <b>NOTICE - Contest administrators may remove comments</b><br/>
+	  <span class="message">Do you find any of the comments for your contest inappropriate? You may remove such comments by checking the check boxes in the removed column. Commets marked as removed will not appear in the comments list for the other contest members. You may undo a remove operation by un-checking the check box.</span>
+	</div>
+	<br/>
+<% end -%> 
+<% unless current_user.email_notifications_on_comments? %>
+	<div class="notice_message" >
+	  <b>NOTICE - You can get notifications on email when new comments are added for the contest</b><br/>
+	  <span class="message">Update your <%= link_to "Account information", edit_account_path %> if you want to receive email notifications about new comments and replies to your comments.</span>
+	</div>
+	<br/>
+<% end -%> 

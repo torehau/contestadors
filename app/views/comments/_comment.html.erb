@@ -1,0 +1,30 @@
+<%= form_for @comment, url: contest_comments_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) do |form| %>
+    <table class="comment_form">
+      <tbody>
+        <tr>
+          <td class="<%= @comment.errors.on(:title) ? "invalid" : "" %>">
+            <%= form.label :title, "Title: " %>
+          </td>
+          <td><%= form.text_field :title, :size => 100, :maxlength => 150 %></td>
+        </tr>
+        <tr>
+          <td class="<%= @comment.errors.on(:body) ? "invalid" : "" %>">
+            <p><%= form.label :Body, "Comment: " %><br/>
+            (Max 1000 letters)</p>
+          </td>
+          <td>
+             <%= form.text_area :body, :size => 100 %><br/>
+             <div id="char_counter_monitor">
+                You have <b><span id="counter">...</span></b> letters remaining for your comment
+             </div>
+             <br/>
+          </td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><%= form.submit 'Create Comment' %> <%= link_to "Cancel", contest_comments_path(:contest => @contest.permalink,  :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid), :method => "get" %></td>
+        </tr>        
+      </tbody>
+    </table>    
+<% end -%>
+<%= countdown_field('comment_body','counter', 1000) %>

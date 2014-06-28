@@ -11,7 +11,26 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140530151403) do
+ActiveRecord::Schema.define(:version => 20140625222536) do
+
+  create_table "comments", :force => true do |t|
+    t.integer  "commentable_id",   :default => 0
+    t.string   "commentable_type"
+    t.string   "title"
+    t.text     "body"
+    t.string   "subject"
+    t.integer  "user_id",          :default => 0, :null => false
+    t.integer  "parent_id"
+    t.integer  "lft"
+    t.integer  "rgt"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "removed"
+    t.boolean  "blocked"
+  end
+
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
+  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
@@ -300,15 +319,16 @@ ActiveRecord::Schema.define(:version => 20140530151403) do
     t.string   "name"
     t.string   "crypted_password"
     t.string   "password_salt"
-    t.string   "persistence_token",                              :null => false
-    t.integer  "login_count",                    :default => 0,  :null => false
+    t.string   "persistence_token",                               :null => false
+    t.integer  "login_count",                     :default => 0,  :null => false
     t.datetime "last_request_at"
     t.datetime "last_login_at"
     t.datetime "current_login_at"
     t.string   "last_login_ip"
     t.string   "current_login_ip"
-    t.string   "perishable_token",               :default => "", :null => false
+    t.string   "perishable_token",                :default => "", :null => false
     t.boolean  "allow_name_in_high_score_lists"
+    t.boolean  "email_notifications_on_comments"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email"

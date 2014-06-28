@@ -1,0 +1,28 @@
+<h3><%= comment.title %></h3>
+<%= link_to "<< All comments", contest_comments_path(:contest => @contest.permalink,  :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid), :method => "get" %>
+<p class="comment-speech-bubble">
+  <%= comment.body %>
+</p>
+<p class="comment-signature-and-timestamp">
+  <%= comment.user.name %>, <%= comment.created_at.to_s(:short) %>
+</p>
+
+<p><b><%= "Replies (#{comment.children.size}): " if comment.has_children? %></b></p>
+
+<% comment.children.order("created_at DESC").each do |child_comment| %>
+  <p class="comment-speech-bubble reply">
+    <%= child_comment.body %>
+  </p>
+  <p class="comment-reply-signature-and-timestamp">
+    <%= child_comment.user.name %>, <%= child_comment.created_at.to_s(:short) %>
+  </p>
+<% end %>
+  
+<%= form_for @reply, url: contest_comments_path(:contest => @contest.permalink, :role => @role, :contest_id => @contest_instance.permalink, :uuid => @contest_instance.uuid) do |f| %>
+  <div class="comment_reply_form">
+    <%= hidden_field_tag :parent_id, comment.id %>
+    <%= f.text_area :body, :size => 100 %><br/>
+    <%= f.submit 'Reply' %>    
+  </div>
+<% end -%>
+

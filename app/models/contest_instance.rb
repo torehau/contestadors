@@ -1,6 +1,7 @@
 require "mods.rb"
 
 class ContestInstance < ActiveRecord::Base
+  acts_as_commentable
   before_save :init_permalink
   before_create :init_uuid
   after_create :make_admin_first_participant
@@ -106,6 +107,10 @@ class ContestInstance < ActiveRecord::Base
     plink = new_record? ? name.to_permalink : permalink
     unique_identifier = new_record? ? 'dffb3223-b369-32e4-a3f5-4c4776b7d0c4' : uuid
     "http://www.contestadors.com/championship/member/contests/#{plink}/join?uuid=#{unique_identifier}"
+  end
+  
+  def has_more_than_one_participants?
+    participations and participations.count > 1
   end
 
 private
