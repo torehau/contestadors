@@ -67,6 +67,11 @@ namespace :app do
         end        
       end            
     end
+    
+    desc "lists 10 last entered comments"
+    task(:comments => :environment) do
+      Comment.order("created_at desc").limit(10).each {|c| puts c.user.name + (c.user.has_participated_in_previous_contests? ? "" : " (NEW)") + ", " + c.commentable.name + ": " + c.created_at.to_s(:short) + " Title: " + (c.title.nil? ? "" : c.title) + " Comment: " + c.body}
+    end
   end      
         
 
