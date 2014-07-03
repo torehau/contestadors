@@ -85,6 +85,7 @@ class User < ActiveRecord::Base
   end
   has_many :score_table_positions
   has_many :high_score_list_positions
+  has_many :comments
 
   def included_identity_providers
     return nil if self.identity_providers == nil or self.identity_providers.count == 0

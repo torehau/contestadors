@@ -1,1 +1,18 @@
-[06/28/14 20:21:29 +0200 torehau-VirtualBox (6540)] INFO : Doing deferred dependency-detection before Rack startup
+[07/03/14 23:25:40 +0200 torehau-VirtualBox (18634)] INFO : Starting the New Relic agent in "development" environment.
+[07/03/14 23:25:40 +0200 torehau-VirtualBox (18634)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[07/03/14 23:25:40 +0200 torehau-VirtualBox (18634)] INFO : Reading configuration from config/newrelic.yml
+[07/03/14 23:25:40 +0200 torehau-VirtualBox (18634)] INFO : New Relic Agent Developer Mode enabled.
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] ERROR : No application name configured.
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] ERROR : The Agent cannot start without at least one. Please check your 
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] ERROR : value set for app_name in the development 
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] ERROR : environment.
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing ActiveRecord instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing Net instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing deferred Rack instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing Authlogic instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing Rails 3 Controller instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing Rails 3.0 view instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Installing Rails3 Error instrumentation
+[07/03/14 23:25:41 +0200 torehau-VirtualBox (18634)] INFO : Finished instrumentation
+[07/03/14 23:25:43 +0200 torehau-VirtualBox (18634)] INFO : Doing deferred dependency-detection before Rack startup
