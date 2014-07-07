@@ -38,7 +38,7 @@ module Configuration
       self.complete!
     end
 
-    # TODO - needless to say: Rafactor! Might be usering a Template or Strategy here
+    # TODO - needless to say: Refactor! Might be usering a Template or Strategy here
     def self.settle_predictions_for(items, dependant_items_by_item_id, map_reduction_value, mutex_set_by_set_id)
       items_by_actual_values = {}
       items.each do |item|
@@ -53,6 +53,7 @@ module Configuration
         # e.g., when match loser will not be in the following stages
         if map_reduction_value
           current_item = items.first
+          mutex_set_map_reduced = false
 
           user.predictions_for(current_item.set).each do |prediction|
             item = items_by_actual_values[prediction.predicted_value]
@@ -83,16 +84,17 @@ module Configuration
               end
             end
 
-            if mutex_set_by_set_id.has_key?(current_item.set.id)
+            if not mutex_set_map_reduced and mutex_set_by_set_id.has_key?(current_item.set.id)
               mutex_set = mutex_set_by_set_id[current_item.set.id]
               mutex_prediction = user.prediction_with_value(current_item.predictable.predictable_field_value, mutex_set)
               
               if mutex_prediction
-                unless mutex_prediction.received_points
+                #unless mutex_prediction.received_points
                   mutex_set.objectives.each {|objective| map_reduction += objective.possible_points}
                   mutex_prediction.update_attributes(:received_points => 0, :objectives_meet => 0)
                   mutex_prediction.save!
-                end
+                  mutex_set_map_reduced = true
+                #end
               end
             end
           end
