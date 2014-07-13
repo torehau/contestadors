@@ -24,9 +24,9 @@ module ParticipantsHelper
   
   def match_objectives_meet_div_class_for(winner_team, stage, match)
   
-    if match.settled?    
-      return match.winner_team.id == winner_team.id ? "objectives_meet_1" : "objectives_meet_0"
-    end   
+    #if match.settled?    
+    return match.winner_team.id == winner_team.id ? "objectives_meet_1" : "objectives_meet_0"
+    #end   
     
     if match.is_third_place_play_off?      
       return "objectives_meet_0" if match.stage.previous.teams.where(:id => winner_team.id).count == 1# and winner_team.is_through_to_stage?(stage.previous)
