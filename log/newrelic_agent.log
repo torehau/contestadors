@@ -33,3 +33,39 @@
 [07/04/14 00:33:57 +0200 torehau-VirtualBox (19147)] INFO : Installing Rails 3.0 view instrumentation
 [07/04/14 00:33:57 +0200 torehau-VirtualBox (19147)] INFO : Installing Rails3 Error instrumentation
 [07/04/14 00:33:57 +0200 torehau-VirtualBox (19147)] INFO : Finished instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Starting the New Relic agent in "development" environment.
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Reading configuration from config/newrelic.yml
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : New Relic Agent Developer Mode enabled.
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] ERROR : No application name configured.
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] ERROR : The Agent cannot start without at least one. Please check your 
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] ERROR : value set for app_name in the development 
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] ERROR : environment.
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing ActiveRecord instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing Net instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing deferred Rack instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing Authlogic instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing Rails 3 Controller instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing Rails 3.0 view instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Installing Rails3 Error instrumentation
+[07/22/14 00:58:27 +0200 torehau-VirtualBox (6343)] INFO : Finished instrumentation
+[07/22/14 00:58:28 +0200 torehau-VirtualBox (6343)] INFO : Doing deferred dependency-detection before Rack startup
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Starting the New Relic agent in "development" environment.
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Reading configuration from config/newrelic.yml
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : New Relic Agent Developer Mode enabled.
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] ERROR : No application name configured.
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] ERROR : The Agent cannot start without at least one. Please check your 
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] ERROR : value set for app_name in the development 
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] ERROR : environment.
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing ActiveRecord instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing Net instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing deferred Rack instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing Authlogic instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing Rails 3 Controller instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing Rails 3.0 view instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Installing Rails3 Error instrumentation
+[07/22/14 01:01:28 +0200 torehau-VirtualBox (6491)] INFO : Finished instrumentation
+[07/22/14 01:01:30 +0200 torehau-VirtualBox (6491)] INFO : Doing deferred dependency-detection before Rack startup
