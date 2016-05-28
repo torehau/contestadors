@@ -29,9 +29,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.boolean  "blocked"
   end
 
-  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
-  add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
-
   create_table "configuration_categories", :force => true do |t|
     t.string   "description"
     t.string   "predictable_type"
@@ -119,10 +116,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.boolean  "allow_join_by_url"
   end
 
-  add_index "contest_instances", ["admin_user_id"], :name => "index_contest_instances_on_admin_user_id"
-  add_index "contest_instances", ["permalink"], :name => "index_contest_instances_on_permalink"
-  add_index "contest_instances", ["uuid"], :name => "index_contest_instances_on_uuid"
-
   create_table "high_score_list_positions", :force => true do |t|
     t.integer  "prediction_summary_id"
     t.integer  "user_id"
@@ -146,11 +139,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.string   "token"
   end
 
-  add_index "invitations", ["contest_instance_id"], :name => "index_invitations_on_contest_instance_id"
-  add_index "invitations", ["email"], :name => "index_invitations_on_email"
-  add_index "invitations", ["existing_user_id"], :name => "index_invitations_on_existing_user_id"
-  add_index "invitations", ["token"], :name => "index_invitations_on_token"
-
   create_table "operation_settings", :force => true do |t|
     t.boolean  "is_under_maintenance"
     t.string   "admin_user"
@@ -166,9 +154,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "participations", ["contest_instance_id"], :name => "index_participations_on_contest_instance_id"
-  add_index "participations", ["user_id"], :name => "index_participations_on_user_id"
 
   create_table "predictable_championship_group_qualifications", :force => true do |t|
     t.integer  "predictable_championship_group_id"
@@ -260,8 +245,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.integer  "configuration_contest_id"
   end
 
-  add_index "prediction_summaries", ["user_id"], :name => "index_prediction_summaries_on_user_id"
-
   create_table "predictions", :force => true do |t|
     t.integer  "user_id"
     t.integer  "configuration_predictable_item_id"
@@ -272,9 +255,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.integer  "received_points",                   :default => 0
   end
 
-  add_index "predictions", ["configuration_predictable_item_id"], :name => "index_predictions_on_configuration_predictable_item_id"
-  add_index "predictions", ["user_id"], :name => "index_predictions_on_user_id"
-
   create_table "rpx_identifiers", :force => true do |t|
     t.string   "identifier",    :null => false
     t.string   "provider_name"
@@ -282,9 +262,6 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "rpx_identifiers", ["identifier"], :name => "index_rpx_identifiers_on_identifier", :unique => true
-  add_index "rpx_identifiers", ["user_id"], :name => "index_rpx_identifiers_on_user_id"
 
   create_table "score_table_positions", :force => true do |t|
     t.integer  "participation_id",      :null => false
@@ -297,20 +274,12 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.datetime "updated_at"
   end
 
-  add_index "score_table_positions", ["contest_instance_id"], :name => "index_score_table_positions_on_contest_instance_id"
-  add_index "score_table_positions", ["participation_id"], :name => "index_score_table_positions_on_participation_id"
-  add_index "score_table_positions", ["prediction_summary_id"], :name => "index_score_table_positions_on_prediction_summary_id"
-  add_index "score_table_positions", ["user_id"], :name => "index_score_table_positions_on_user_id"
-
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
     t.text     "data"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
-
-  add_index "sessions", ["session_id"], :name => "index_sessions_on_session_id"
-  add_index "sessions", ["updated_at"], :name => "index_sessions_on_updated_at"
 
   create_table "users", :force => true do |t|
     t.datetime "created_at"
@@ -330,10 +299,5 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.boolean  "allow_name_in_high_score_lists"
     t.boolean  "email_notifications_on_comments"
   end
-
-  add_index "users", ["email"], :name => "index_users_on_email"
-  add_index "users", ["last_request_at"], :name => "index_users_on_last_request_at"
-  add_index "users", ["perishable_token"], :name => "index_users_on_perishable_token"
-  add_index "users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
 end

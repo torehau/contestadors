@@ -66,8 +66,8 @@ module Predictable
         #self.table_positions.sort!{|a, b| b <=> a }.each do |table_position|
           current = table_position
 
-        #euro: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for and previous.team.ranking_coefficient == current.team.ranking_coefficient
-          unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
+         unless previous and previous.is_tied_with?(current) and previous.rank == current.rank and previous.goal_diff == current.goal_diff and previous.goals_for == current.goals_for and previous.team.ranking_coefficient == current.team.ranking_coefficient
+          #vm: unless previous and previous.is_tied_with?(current) and previous.rank == current.rank
             pos += increment
             increment = 1
           else

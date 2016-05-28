@@ -14,7 +14,7 @@ development:
   host: localhost
   database: contestadors_development
   pool: 5
-  username: contestadors_webapp
+  username: tore
   password: secret
 
 # Warning: The database defined as "test" will be erased and

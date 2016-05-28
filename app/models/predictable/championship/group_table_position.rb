@@ -18,6 +18,7 @@ module Predictable
       # Indicating whether the match score for this team is identical with the team at the display order above and below
       attr_accessor :can_move_down, :can_move_up
 
+=begin vm
       def <=> (other)
         if self.pts != other.pts
           return self.pts <=> other.pts
@@ -31,8 +32,8 @@ module Predictable
           return -(self.team.name <=> other.team.name)
         end
       end
+=end
 
-=begin euro
       def <=> (other)
         if self.pts != other.pts
           return self.pts <=> other.pts
@@ -46,7 +47,6 @@ module Predictable
           return -(self.team.ranking_coefficient <=> other.team.ranking_coefficient)
         end
       end
-=end
 
       #updates the table position for a match played, :won, :draw, :lost, :goals_for, :goals_against, :goal_diff, :pts
       def update_scores(gf, ga)
@@ -68,8 +68,8 @@ module Predictable
 
       # checks if the team is tied with another team, i.e., whether the points, goal diff and goals scored are identically
       def is_tied_with?(other)
-        #euro: self.pts == other.pts
-        (self.pts == other.pts) and (self.goal_diff == other.goal_diff) and (self.goals_for == other.goals_for)
+        #vm: (self.pts == other.pts) and (self.goal_diff == other.goal_diff) and (self.goals_for == other.goals_for)
+        self.pts == other.pts
       end
 
       # adds the rank by adding the goals scored and subtract the goals conceeded

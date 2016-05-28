@@ -13,7 +13,7 @@ module Predictable
         @teams = Predictable::Championship::Team.where(:tournament_id => @contest.id).all#groups.collect {|group| group.teams}.flatten #Predictable::Championship::Team.find(:all)    # TODO change to only return teams for current contest
         @predictable_items = CommonContestCategoryItemsResolver.new.resolve(@contest, ["Stage Teams", "Specific Team"])#stage_predictable_items
         @predictions = user.predictions.for_items(@predictable_items)
-        @third_place_play_off = Predictable::Championship::Match.where("description = ?", "Third Place").last#@aggregate.associated
+       #VM:  @third_place_play_off = Predictable::Championship::Match.where("description = ?", "Third Place").last#@aggregate.associated
       end
 
       def predicted_stages(current_aggregate)
@@ -31,15 +31,15 @@ module Predictable
           
           @predictions.each{|prediction| e.assert prediction}
           @predictable_items.each{|item| e.assert item}
-          e.assert @third_place_play_off
+          #VM: e.assert @third_place_play_off
           
           e.match
         end
 
         result = Predictable::Result.new(current_aggregate, @predicted_stages, unpredicted_stages, invalidated_stages(current_aggregate))
-        result.all_roots = @stages.select {|s| s.description != "Third place play-off"}
-        resolve_third_place_play_off if is_semi_finals_predicted?
-        result.aggregates_associated(:third_place, @third_place_play_off)
+        result.all_roots = @stages#VM: .select {|s| s.description != "Third place play-off"}
+        #VM: resolve_third_place_play_off if is_semi_finals_predicted?
+        #VM: result.aggregates_associated(:third_place, @third_place_play_off)
         result
       end
 
@@ -68,18 +68,20 @@ module Predictable
         @predicted_stages.size > 2
       end
 
+#VM
       # TODO ruleify
-      def resolve_third_place_play_off
-        semi_final_defeated_teams = []
+      #def resolve_third_place_play_off
+      #  semi_final_defeated_teams = []
 
-        semi_finals_stage = Predictable::Championship::Stage.where("description = ?", "Semi finals").last
-        @predicted_stages[semi_finals_stage.id].matches.each {|match| semi_final_defeated_teams << match.team_not_through_to_next_stage}
+      #  semi_finals_stage = Predictable::Championship::Stage.where("description = ?", "Semi finals").last
+      #  @predicted_stages[semi_finals_stage.id].matches.each {|match| semi_final_defeated_teams << match.team_not_through_to_next_stage}
 
-        if semi_final_defeated_teams.size == 2
-          @third_place_play_off.home_team = semi_final_defeated_teams[0]
-          @third_place_play_off.away_team = semi_final_defeated_teams[1]
-        end
-      end
+      # if semi_final_defeated_teams.size == 2
+      #   @third_place_play_off.home_team = semi_final_defeated_teams[0]
+#    @third_place_play_off.away_team = semi_final_defeated_teams[1]
+#       end
+#     end
+
     end
   end
 end

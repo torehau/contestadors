@@ -19,9 +19,9 @@ namespace :csv2db do
      Configuration::Set,
      Configuration::IncludedObjective,
      Configuration::IncludedSet,
-     Configuration::PredictableItem,
-     Prediction,
-     PredictionSummary,
+     Configuration::PredictableItem
+#     Prediction,
+     #     PredictionSummary,
 #     User,
     ].each do |klass|
       klass.delete_all

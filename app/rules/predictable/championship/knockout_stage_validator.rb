@@ -68,7 +68,7 @@ module Predictable
           # Illegal state transitions, Euro:
           #{"d" => ["Semi finals", "Final"],
            #"q" => ["Final"]
-          {"h" => ["Quarter finals", "Semi finals", "Final"],
+          {"f" => ["Quarter finals", "Semi finals", "Final"],
            "r" => ["Semi finals", "Final"],
            "q" => ["Final"]}.each do |current_state, stage_descriptions|
 
@@ -125,18 +125,18 @@ module Predictable
           end
 
           # WC specific rule
-          rule :third_place_winner_team_not_predicted_to_final, {:priority => 1},
-            [Predictable::Championship::Match, :match,
-              m.description == "Third Place",
-              m.winner_id.not == nil,
-             {m.id => :match_id, m.winner_id => :winner_team_id}],
-            [Prediction, :final_team_prediction,
-              m.description == "Teams through to Final",
-              m.predicted_value(:winner_team_id, &c{|pv, wtid| pv.eql?(wtid.to_s)})] do |v|
+          #rule :third_place_winner_team_not_predicted_to_final, {:priority => 1},
+          #  [Predictable::Championship::Match, :match,
+          #    m.description == "Third Place",
+          #    m.winner_id.not == nil,
+          #   {m.id => :match_id, m.winner_id => :winner_team_id}],
+          #  [Prediction, :final_team_prediction,
+          #    m.description == "Teams through to Final",
+          #    m.predicted_value(:winner_team_id, &c{|pv, wtid| pv.eql?(wtid.to_s)})] do |v|
 
-            @errors[:match_id] = "Not possible to predict the given team as winner of the Third Place Play-off match, when predicted through to the Final."
-            retract v[:match]
-          end
+          #  @errors[:match_id] = "Not possible to predict the given team as winner of the Third Place Play-off match, when predicted through to the Final."
+          #  retract v[:match]
+          #end
         end
       end
     end

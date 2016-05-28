@@ -169,7 +169,7 @@ private
       nil
     end
 
-  def prediction_menu_link(contest_permalink="championship",aggregate_root_type="group",aggregate_root_id="A")
+  def prediction_menu_link(contest_permalink="euro",aggregate_root_type="group",aggregate_root_id="A")
     @contest = selected_tournament#Configuration::Contest.where(:permalink => contest_permalink).last
 
     if before_contest_participation_ends

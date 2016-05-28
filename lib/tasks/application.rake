@@ -8,6 +8,8 @@ namespace :app do
     Rake::Task["db:create:all"].invoke
     puts "migrating database schema..."
     Rake::Task["db:migrate"].invoke
+    puts "init operation settings"
+    Rake::Task["app:updates:init_op_settings"].invoke
     puts "loading data from csv files..."
     Rake::Task["csv2db:load_data"].invoke
   end

@@ -6,30 +6,29 @@ class PredictionSummary < ActiveRecord::Base
   has_many :score_table_positions
   has_one :high_score_list_position
 
-  KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi, :t]
+  KNOCKOUT_STAGES                                 = [:r, :q, :s, :fi]
   KNOCKOUT_STAGE_ID_BY_STATE_NAME                 = {'r'  => 'round-of-16',
                                                      'q'  => 'quarter-finals',
                                                      's'  => 'semi-finals',
-                                                     'fi' => 'final',
-                                                     't'  => 'third-place'}
+                                                     'fi' => 'final'}
 
   state_machine :initial => :i do
 
-    after_transition KNOCKOUT_STAGES => :h,
-                     [:q, :s, :fi, :t] => :r,
-                     [:s, :fi, :t] => [:r, :q],
-                     [:t] => [:r, :q, :s], :do => :delete_invalidated_predictions
+    after_transition KNOCKOUT_STAGES => :f,
+                     [:q, :s, :fi] => :r,
+                     [:s, :fi] => [:r, :q],
+                     [:fi] => [:r, :q, :s], :do => :delete_invalidated_predictions
     after_transition any => any - :fi, :do => :update_wizard
     after_transition any => any, :do => :update_map
 
     from_state = :i
 
-    ('a'..'h').each do |group_name|
+    ('a'..'f').each do |group_name|
       event_name = ('predict_group_' + group_name).to_sym
       to_state = group_name.to_sym
 
       event event_name do
-        transition from_state => to_state, KNOCKOUT_STAGES => :h
+        transition from_state => to_state, KNOCKOUT_STAGES => :f
       end
       from_state = to_state
     end

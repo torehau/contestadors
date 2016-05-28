@@ -31,7 +31,7 @@ Contestadors::Application.routes.draw do
       end
     end
   end
-  match 'championship/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'championship', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
+  match 'euro/group/A' => 'predictions#new', :as => :championship_predictions, :contest => 'euro', :aggregate_root_type => 'group', :aggregate_root_id => 'A'
   match '/your/:contest/:aggregate_root_type/:aggregate_root_id/predictions' => 'predictions#show', :as => :user_predictions, :method => :get
   scope '/:contest/:role' do
     resources :contests do

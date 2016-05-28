@@ -21,5 +21,5 @@ gem 'acts_as_commentable_with_threading'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'
-  gem 'pg'
+  gem 'pg', '0.18.4'
 end
