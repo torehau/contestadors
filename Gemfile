@@ -19,9 +19,8 @@ gem 'newrelic_rpm'
 gem 'valid_email'
 gem 'acts_as_commentable_with_threading'
 gem 'iconv', '1.0.4'
-
+gem 'pg', '0.18.4'
 group :development, :test do
   gem 'sqlite3', '1.3.5'
-  gem 'pg', '0.18.4'
 end
 ruby '2.0.0'
