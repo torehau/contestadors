@@ -13,11 +13,12 @@ gem 'hoptoad_notifier', '2.4.11'
 gem 'rpx_now', '0.7.1'
 gem 'authlogic_rpx', '1.1.1'
 gem 'recaptcha', :require => 'recaptcha/rails'
-gem 'simple-navigation', '3.12.0'
+gem 'simple-navigation', '3.14.0'
 gem 'wice_grid', '3.0.4'
 gem 'newrelic_rpm'
 gem 'valid_email'
 gem 'acts_as_commentable_with_threading'
+gem 'iconv', '1.0.4'
 
 group :development, :test do
   gem 'sqlite3', '1.3.5'

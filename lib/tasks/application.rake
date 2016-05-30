@@ -14,6 +14,22 @@ namespace :app do
     Rake::Task["csv2db:load_data"].invoke
   end
 
+  namespace :maintenance do
+    desc "Initiates OperationSetting single row"
+    task(:on => :environment) do
+      op_setting = OperationSetting.first
+      op_setting.is_under_maintenance = true
+      op_setting.save!
+    end
+
+    desc "Initiates OperationSetting single row"
+    task(:off => :environment) do
+      op_setting = OperationSetting.first
+      op_setting.is_under_maintenance = false
+      op_setting.save!
+    end
+  end
+
   namespace :monitor do
 
     desc "Lists 10 last logged in users"

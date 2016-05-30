@@ -2,6 +2,7 @@
 # Likewise, all the methods added will be available for all controllers.
 
 class ApplicationController < ActionController::Base
+  config.relative_url_root = ""
   window_title "Free Soccer Tournament Prediction Contests"
   helper :all # include all helpers, all the time
   helper_method :current_user_session, :current_user, :current_controller_new, :current_action_new, :current_tournament, :selected_tournament, :is_current_tournament_selected, :include_tournaments_menu_item, :matches_current_context, :current_aggregate_root_type, :current_aggregate_root_id, :selected_contest, :save_to_session, :before_contest_participation_ends, :after_contest_participation_ends, :prediction_menu_link, :contest_instance_menu_link, :is_under_maintenance, :redirect_if_under_maintenance, :is_contestadors_admin_user, :require_contestadors_admin_user
@@ -201,6 +202,7 @@ private
 
   def handle_generic_error(exception)
     flash[:alert] = "An error occured when handling your request. We will look at the problem shortly. "
+    Rails.logger.warn " **** Exception caught: " + exception.to_s + "\n" + exception.backtrace.join("\n")
     notify_hoptoad(exception)
     redirect_to (current_user ? edit_account_path : root_path)
   end
