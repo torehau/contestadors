@@ -3,7 +3,7 @@
   <div class="<%= group_match_div_class(match) %>">
     <div class="match_date"><%= match.play_date.utc.to_s(:short) %></div>
     <div class="home_team_name"><%= match.home_team.name %></div>
-    <div class="team_icon"><%#= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>
+    <div class="team_icon"><%= image_tag("/images/flags/"+ match.home_team.country_flag+ ".png") %></div>
     <% if !current_user or @before_contest_participation_ends -%>
       <div class="team_score"><%= match_form.text_field :home_team_score, :maxlength => 2 %></div>
       <div class="score-separator">-</div>

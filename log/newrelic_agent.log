@@ -516,3 +516,21 @@
 [05/30/16 01:33:41 +0200 tore-VirtualBox (20337)] INFO : Installing Rails3 Error instrumentation
 [05/30/16 01:33:41 +0200 tore-VirtualBox (20337)] INFO : Finished instrumentation
 [05/30/16 01:33:42 +0200 tore-VirtualBox (20337)] INFO : Doing deferred dependency-detection before Rack startup
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Starting the New Relic agent in "development" environment.
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Reading configuration from config/newrelic.yml
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : New Relic Agent Developer Mode enabled.
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] ERROR : No application name configured.
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] ERROR : The Agent cannot start without at least one. Please check your 
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] ERROR : value set for app_name in the development 
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] ERROR : environment.
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Net instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing deferred Rack instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing ActiveRecord instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Authlogic instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Rails 3 Controller instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Rails 3.0 view instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Rails3 Error instrumentation
+[05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Finished instrumentation
+[05/30/16 08:15:31 +0200 tore-VirtualBox (21768)] INFO : Doing deferred dependency-detection before Rack startup
