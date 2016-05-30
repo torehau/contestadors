@@ -534,3 +534,74 @@
 [05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Installing Rails3 Error instrumentation
 [05/30/16 08:15:30 +0200 tore-VirtualBox (21768)] INFO : Finished instrumentation
 [05/30/16 08:15:31 +0200 tore-VirtualBox (21768)] INFO : Doing deferred dependency-detection before Rack startup
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Starting the New Relic agent in "development" environment.
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Reading configuration from config/newrelic.yml
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : New Relic Agent Developer Mode enabled.
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] ERROR : No application name configured.
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] ERROR : The Agent cannot start without at least one. Please check your 
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] ERROR : value set for app_name in the development 
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] ERROR : environment.
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing Net instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing deferred Rack instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing ActiveRecord instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing Authlogic instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing Rails 3 Controller instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing Rails 3.0 view instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Installing Rails3 Error instrumentation
+[05/30/16 11:44:23 +0200 tore-VirtualBox (22953)] INFO : Finished instrumentation
+[05/30/16 11:44:24 +0200 tore-VirtualBox (22953)] INFO : Doing deferred dependency-detection before Rack startup
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Starting the New Relic agent in "development" environment.
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Reading configuration from config/newrelic.yml
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : New Relic Agent Developer Mode enabled.
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] ERROR : No application name configured.
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] ERROR : The Agent cannot start without at least one. Please check your 
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] ERROR : value set for app_name in the development 
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] ERROR : environment.
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing Net instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing deferred Rack instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing ActiveRecord instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing Authlogic instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing Rails 3 Controller instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing Rails 3.0 view instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Installing Rails3 Error instrumentation
+[05/30/16 11:45:34 +0200 tore-VirtualBox (22986)] INFO : Finished instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Starting the New Relic agent in "development" environment.
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Reading configuration from config/newrelic.yml
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : New Relic Agent Developer Mode enabled.
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] ERROR : No application name configured.
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] ERROR : The Agent cannot start without at least one. Please check your 
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] ERROR : value set for app_name in the development 
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] ERROR : environment.
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing Net instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing deferred Rack instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing ActiveRecord instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing Authlogic instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing Rails 3 Controller instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing Rails 3.0 view instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Installing Rails3 Error instrumentation
+[05/30/16 11:45:45 +0200 tore-VirtualBox (22990)] INFO : Finished instrumentation
+[05/30/16 11:45:46 +0200 tore-VirtualBox (22990)] INFO : Doing deferred dependency-detection before Rack startup
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Starting the New Relic agent in "development" environment.
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : To prevent agent startup add a NEWRELIC_AGENT_ENABLED=false environment variable or modify the "development" section of your newrelic.yml.
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Reading configuration from config/newrelic.yml
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : New Relic Agent Developer Mode enabled.
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] ERROR : No application name configured.
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] ERROR : The Agent cannot start without at least one. Please check your 
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] ERROR : newrelic.yml and ensure that it is valid and has at least one 
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] ERROR : value set for app_name in the development 
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] ERROR : environment.
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing Net instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing deferred Rack instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing ActiveRecord instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing Authlogic instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing Rails 3 Controller instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing Rails 3.0 view instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Installing Rails3 Error instrumentation
+[05/30/16 11:52:57 +0200 tore-VirtualBox (23071)] INFO : Finished instrumentation
+[05/30/16 11:52:58 +0200 tore-VirtualBox (23071)] INFO : Doing deferred dependency-detection before Rack startup

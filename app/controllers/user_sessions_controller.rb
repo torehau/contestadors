@@ -9,10 +9,13 @@ class UserSessionsController < ApplicationController
   end
 
   def new
-    if is_under_maintenance
+    @op_setting = OperationSetting.first#.is_under_maintenance?
+
+    if @op_setting.is_under_maintenance?
       flash[:alert] = "It is not possible to sign in to Contestadors right now, due to maintenance. Please check back later."
+    else
+      @user_session = UserSession.new
     end
-    @user_session = UserSession.new
   end
 
   def create

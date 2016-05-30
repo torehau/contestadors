@@ -1,10 +1,14 @@
 <div id="login">
-  <%= render "user_sessions/form" %>
-  <%= raw RPXNow.embed_code("contestadors", user_sessions_url) %>
-  <%#= link_to "Or create a Contestadors account &raquo;", new_account_path %>
+  <% unless @op_setting.is_under_maintenance? -%>
+    <%= render "user_sessions/form" %>
+    <%= raw RPXNow.embed_code("contestadors", user_sessions_url) %>
+    <%#= link_to "Or create a Contestadors account &raquo;", new_account_path %>
+  <% end -%>
 </div>
 <%= render :partial => "shared/content_slider" %>
   <iframe src="http://www.facebook.com/widgets/like.php?href=http://www.contestadors.com"
         scrolling="no" frameborder="0"
         style="border:none; width:400px; height:80px; margin-top: 10px"></iframe>
-<%= set_focus_to_id @focused_field_id ||= 'user_session_email' %>
+<% unless @op_setting.is_under_maintenance? -%>
+  <%= set_focus_to_id @focused_field_id ||= 'user_session_email' %>
+<% end -%>
