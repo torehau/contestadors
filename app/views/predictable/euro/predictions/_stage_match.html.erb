@@ -1,5 +1,6 @@
 <div class="knockout_stage_match_container">
-  <div class="match_date"><%= match.play_date.utc.to_s(:short) %></div>
+  <% if match -%>
+      <div class="match_date"><%= match.play_date.utc.to_s(:short) %></div>
   <% if predicted == true -%>
 
     <div class="knockout_stage_match">
@@ -14,5 +15,6 @@
       <div class="undecided_knockout_stage_team">Not Predicted</div>
       <div class="undecided_knockout_stage_team">Not Predicted</div>
     </div>
+  <% end -%>
   <% end -%>
 </div>

@@ -2,29 +2,7 @@
 # Partial for showing qualifications to the next stage for the knockout stage matches.
 %>
 <div class="next_stage_qualification_container">
-  <% if @contest.permalink == "euro" %>
-    <% if stage.description.eql?("Quarter finals") -%>
-      <div class="to_stage_column">
-        <div class="qualification_spacer_2"></div>
-        <div class="to_quarter_final"></div>
-      </div>
-      <div class="from_stage_column">
-        <div class="qualification_spacer_1"></div>
-        <div class="from_round_of_16"></div>
-        <div class="qualification_spacer_1"></div>
-        <div class="from_round_of_16"></div>
-      </div>
-    <% elsif stage.description.eql?("Semi finals") -%>
-      <div class="to_stage_column">
-        <div class="qualification_spacer_6"></div>
-      </div>
-      <div class="from_stage_column">
-        <div class="qualification_spacer_2"></div>
-        <div class="from_quarter_final"></div>
-      </div>
-    <% end -%>
-  <% elsif @contest.permalink == "championship" %>
-    <% if stage.description.eql?("Round of 16") -%>
+  <% if stage.description.eql?("Round of 16") -%>
       <div class="to_stage_column">
         <div class="qualification_spacer_2"></div>
         <div class="to_quarter_final"></div>
@@ -41,7 +19,7 @@
         <div class="qualification_spacer_1"></div>
         <div class="from_round_of_16"></div>
       </div>
-    <% elsif stage.description.eql?("Quarter finals") -%>
+  <% elsif stage.description.eql?("Quarter finals") -%>
       <div class="to_stage_column">
         <div class="qualification_spacer_4"></div>
         <div class="to_semi_final"></div>
@@ -52,7 +30,7 @@
         <div class="qualification_spacer_3"></div>
         <div class="from_quarter_final"></div>
       </div>
-    <% elsif stage.description.eql?("Semi finals") -%>
+  <% elsif stage.description.eql?("Semi finals") -%>
       <div class="to_stage_column">
         <div class="qualification_spacer_5"></div>
       </div>
@@ -60,6 +38,5 @@
         <div class="qualification_spacer_4"></div>
         <div class="from_semi_final"></div>
       </div>
-    <% end -%>
-   <% end -%>
+  <% end -%>
 </div>

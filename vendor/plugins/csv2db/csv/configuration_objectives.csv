@@ -5,6 +5,6 @@ id,configuration_category_id,description,predictable_field,predictable_field_typ
 31,3,Team in Round of 16,team_id,Predictable::Championship::Team,3
 32,3,Team in Quarter finals,team_id,Predictable::Championship::Team,6
 33,3,Team in Semi finals,team_id,Predictable::Championship::Team,12
-34,3,Team in Final,team_id,Predictable::Championship::Team,24
-35,4,Winner,id,Predictable::Championship::Team,44
+34,3,Team in Final,team_id,Predictable::Championship::Team,22
+35,4,Winner,id,Predictable::Championship::Team,48
 

@@ -29,7 +29,7 @@ module Predictable
              [Predictable::Championship::GroupTablePosition, :t1, m.tied==false,
                {m.id=>:id1, m.pts=>:pts, m.goals_for=>:gf, m.goal_diff=>:gd}],
              [Predictable::Championship::GroupTablePosition, :t2,
-                #VM: m.id.not==b(:id1), m.pts==b(:pts), m.goal_diff==b(:gd), m.goals_for==b(:gf)] do |v|
+              #VM: m.id.not==b(:id1), m.pts==b(:pts), m.goal_diff==b(:gd), m.goals_for==b(:gf)] do |v|
                 m.id.not==b(:id1), m.pts==b(:pts)] do |v|
 
             v[:t1].tied = true

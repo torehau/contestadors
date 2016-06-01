@@ -5,3 +5,6 @@
 <% if !current_user or @before_contest_participation_ends -%>
   <%= form.submit "Save" %>
 <% end -%>
+<div class="match_kick_off_time_descr" style="margin: 0 0 0 100px">
+  All match kick-off times are local time (<%= link_to "UTC+1", "http://en.wikipedia.org/wiki/UTC+1" %>).
+</div>

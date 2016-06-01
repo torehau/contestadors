@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140625222536) do
+ActiveRecord::Schema.define(:version => 20160531220518) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -161,6 +161,7 @@ ActiveRecord::Schema.define(:version => 20140625222536) do
     t.integer  "predictable_championship_match_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_home_team"
   end
 
   create_table "predictable_championship_group_table_positions", :force => true do |t|

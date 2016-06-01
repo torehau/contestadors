@@ -14,6 +14,7 @@ class PredictionSummary < ActiveRecord::Base
 
   state_machine :initial => :i do
 
+    after_transition any => :f, :do => :resolve_four_best_third_placed_teams
     after_transition KNOCKOUT_STAGES => :f,
                      [:q, :s, :fi] => :r,
                      [:s, :fi] => [:r, :q],
@@ -97,5 +98,9 @@ private
 			    				 :user_id => self.user.id,
 				    			 :has_predictions => self.state != 'i',
 					    		 :position => 1)  
+  end
+
+  def resolve_four_best_third_placed_teams
+    third_placed_stage_teams_predictions = Predictable::Championship.BestThirdPlacedStageTeamsPredictionsResolver.new(this.contest, this.user)
   end
 end

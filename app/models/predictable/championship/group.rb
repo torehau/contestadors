@@ -41,14 +41,14 @@ module Predictable
         #@@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
         @@knockout_stage ||= promotion_stage
         winner_path ||= qualifications.for_winner
-        stage_team(@@knockout_stage, winner_path, true)
+        stage_team(@@knockout_stage, winner_path)
       end
 
       def runner_up_stage_team
         #@@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
         @@knockout_stage ||= promotion_stage
         runner_up_path ||= qualifications.for_runner_up
-        stage_team(@@knockout_stage, runner_up_path, false)
+        stage_team(@@knockout_stage, runner_up_path)
       end
 
       # Returnes true if the group table contains tied teams with the same rank
@@ -94,10 +94,10 @@ module Predictable
         @winner, @runner_up = nil, nil
       end
 
-      def stage_team(stage, path, is_winner)
+      def stage_team(stage, path)
         Predictable::Championship::StageTeam.where(:predictable_championship_stage_id => stage.id,
                                                    :predictable_championship_match_id => path.match.id,
-                                                   :is_home_team => is_winner).first
+                                                   :is_home_team => path.is_home_team).first
       end
     end
   end

@@ -35,7 +35,15 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def group_table_position_div_class(group_table_element)
-    group_table_element.display_order < 3 ? "group_table_promotion_position" : "group_table_non_promotion_position"
+    case group_table_element.display_order
+      when 3
+        return "group_table_possible_promotion_position"
+      when 4
+        return "group_table_non_promotion_position"
+      else
+        return "group_table_promotion_position"
+    end
+    #group_table_element.display_order < 3 ? "group_table_promotion_position" : "group_table_non_promotion_position"
   end
 
 
