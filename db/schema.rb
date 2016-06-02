@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20160531220518) do
+ActiveRecord::Schema.define(:version => 20160601220820) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -155,6 +155,12 @@ ActiveRecord::Schema.define(:version => 20160531220518) do
     t.datetime "updated_at"
   end
 
+  create_table "predictable_championship_best_ranked_groups", :force => true do |t|
+    t.string   "permutation"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "predictable_championship_group_qualifications", :force => true do |t|
     t.integer  "predictable_championship_group_id"
     t.integer  "group_pos"
@@ -232,6 +238,14 @@ ActiveRecord::Schema.define(:version => 20160531220518) do
     t.datetime "updated_at"
     t.integer  "ranking_coefficient"
     t.integer  "tournament_id"
+  end
+
+  create_table "predictable_championship_third_place_group_team_qualifications", :force => true do |t|
+    t.integer  "predictable_championship_best_ranked_group_id"
+    t.integer  "predictable_championship_group_id"
+    t.integer  "predictable_championship_stage_team_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "prediction_summaries", :force => true do |t|

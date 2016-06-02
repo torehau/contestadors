@@ -6,6 +6,7 @@ module Predictable
       belongs_to :team, :class_name => "Predictable::Championship::Team", :foreign_key => 'predictable_championship_team_id'
       belongs_to :match, :class_name => "Predictable::Championship::Match", :foreign_key => 'predictable_championship_match_id'
       has_one :stage_qualification, :class_name => "Predictable::Championship::StageQualification", :foreign_key => "predictable_championship_stage_team_id"
+      has_many :third_placed_teams_qualifications, :class_name => "Predictable::Championship::ThirdPlaceGroupTeamQualification", :foreign_key => "predictable_championship_stage_team_id"
 
       def qualified_from_match
         return nil unless stage_qualification

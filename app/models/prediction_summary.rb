@@ -101,6 +101,7 @@ private
   end
 
   def resolve_four_best_third_placed_teams
-    third_placed_stage_teams_predictions = Predictable::Championship.BestThirdPlacedStageTeamsPredictionsResolver.new(this.contest, this.user)
+    predictions_resolver = Predictable::Championship::BestThirdPlacedStageTeamsPredictionsResolver.new(self.contest, self.user)
+    predictions_resolver.resolve.each{|p| p.save!}
   end
 end

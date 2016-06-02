@@ -44,7 +44,7 @@ module Predictable
         elsif self.goals_for != other.goals_for
           return self.goals_for <=> other.goals_for
         else
-          return -(self.team.ranking_coefficient <=> other.team.ranking_coefficient)
+          return self.team.ranking_coefficient <=> other.team.ranking_coefficient#todo see if removing - sign solves incorrect orderging
         end
       end
 

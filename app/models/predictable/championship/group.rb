@@ -13,6 +13,7 @@ module Predictable
           where(:group_pos => 2).first
         end
       end
+      has_many :third_place_qualifications, :class_name => "Predictable::Championship::ThirdPlaceGroupTeamQualification", :foreign_key => "predictable_championship_group_id"
 
       attr_accessor :matches
       attr_accessor :winner, :runner_up

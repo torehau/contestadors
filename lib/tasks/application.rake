@@ -217,7 +217,7 @@ namespace :app do
     desc "Initiates OperationSetting single row"
     task(:init_op_settings => :environment) do
       op_setting = OperationSetting.new
-      op_setting.is_under_maintenance = true
+      op_setting.is_under_maintenance = false
       op_setting.admin_user = "contestadors@gmail.com"
       op_setting.save!
     end

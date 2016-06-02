@@ -13,6 +13,8 @@ namespace :csv2db do
      Predictable::Championship::GroupTablePosition,
      Predictable::Championship::GroupQualification,
      Predictable::Championship::StageQualification,
+     Predictable::Championship::BestRankedGroup,
+     Predictable::Championship::ThirdPlaceGroupTeamQualification,
      Configuration::PredictionState,
      Configuration::Category,
      Configuration::Objective,
