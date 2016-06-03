@@ -34,6 +34,7 @@ module Predictable
         save_group_match_predictions
         save_table_position_predictions
         save_next_stage_promotion_predictions
+        save_four_best_third_placed_teams
       end
 
       def notify
@@ -86,6 +87,14 @@ module Predictable
 
         Prediction.save_predictions(@user, set, @root.stage_teams_by_id) do |stage_team|
           stage_team.team.id.to_s
+        end
+      end
+
+      def save_four_best_third_placed_teams
+        if summary.state == 'f'
+          predictions_resolver = Predictable::Championship::BestThirdPlacedStageTeamsPredictionsResolver.new(@contest, @user)
+          predictions = predictions_resolver.resolve
+          predictions.each{|p| p.save!}
         end
       end
 

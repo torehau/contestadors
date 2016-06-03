@@ -37,6 +37,7 @@ module Predictable::Championship::PredictionsHelper
   def group_table_position_div_class(group_table_element)
     case group_table_element.display_order
       when 3
+        #return !@wizard.is_all_groups_predicted? ? "group_table_possible_promotion_position" : (group_table_element.team.is_through_to_next_stage?(Predictable::Championship::Stage.from_permalink("group")) ? "group_table_promotion_position" : "group_table_non_promotion_position")
         return "group_table_possible_promotion_position"
       when 4
         return "group_table_non_promotion_position"
@@ -45,7 +46,6 @@ module Predictable::Championship::PredictionsHelper
     end
     #group_table_element.display_order < 3 ? "group_table_promotion_position" : "group_table_non_promotion_position"
   end
-
 
   def predicted_stage_team_div_class(invalidated, selected, is_match_winner)
     div_class_prefix = ""

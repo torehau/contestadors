@@ -502,12 +502,11 @@ padding-left: 40px;
     width: 438px;
     margin: 0px 0px 0px 0px;
     height: 34px;
-    background: /*#efe;*/#9cbcda;
+    background: /*#efe;*/#e5ecf9;
     /*border-top: 1px #88c6cf solid;*/
     border-right: 1px #ffffff solid;
     border-left: 1px #ffffff solid;
     border-bottom: 1px #ffffff solid;
-    font-weight: bold;
 }
 
 .group_table_non_promotion_position {

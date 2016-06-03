@@ -44,9 +44,13 @@ module Predictable
         predictions = []
         stage_teams.each do |st|
           item = predictable_item_by_stage_team_id[st.id]
-          prediction = Prediction.new
-          prediction.user_id = @user.id
-          prediction.configuration_predictable_item_id = item.id
+          prediction = @user.prediction_for(item)
+
+          if prediction.nil?
+            prediction = Prediction.new
+            prediction.user_id = @user.id
+            prediction.configuration_predictable_item_id = item.id
+          end
           prediction.predicted_value = st.team.id.to_s
           predictions << prediction
         end
