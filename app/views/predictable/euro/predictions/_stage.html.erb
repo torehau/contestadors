@@ -6,9 +6,10 @@
 <% winner_team = current_user.winner_prediction_for(@contest) %>
 <% div_class = winner_team ? "championship_winner_predicted" : "championship_winner_unpredicted" %>
 <% predicted_winner = winner_team ? winner_team.name : "Not Predicted" %>
-<div class="<%= div_class %>">
-  Winner: <%= predicted_winner %>
-</div>
 <div class="match_kick_off_time_descr" style="margin-left:330px">
   All match kick-off times are local time (<%= link_to "UTC+1", "http://en.wikipedia.org/wiki/UTC+1" %>).
 </div>
+<div class="<%= div_class %>">
+  Winner: <%= predicted_winner %>
+</div>
+

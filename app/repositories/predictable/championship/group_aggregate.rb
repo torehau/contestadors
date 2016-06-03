@@ -49,16 +49,21 @@ module Predictable
         winner_prediction = @user.prediction_for(winner_stage_team_item)
         runner_up_stage_team_item = set.predictable_item(@root.runner_up_stage_team.id)
         runner_up_prediction = @user.prediction_for(runner_up_stage_team_item)
+        third_place_stage_team_items = []
+        @root.third_place_stage_teams {|st| third_place_stage_team_items << set.predictable_item(st.id)}
+        third_place_prediction = @user.predictions_for_subset(third_place_stage_team_items).first
 
         existing_predictions = {}
         existing_predictions[:winner] = winner_prediction.predicted_value if winner_prediction
         existing_predictions[:runner_up] = runner_up_prediction.predicted_value if runner_up_prediction
+        existing_predictions[:third_place] = third_place_prediction.predicted_value if third_place_prediction
         existing_predictions
       end
 
       def invalidates_dependant_aggregates?
         not (@existing_predictions[:winner].eql?(@new_predictions.winner.id.to_s) and
-             @existing_predictions[:runner_up].eql?(@new_predictions.runner_up.id.to_s))
+             @existing_predictions[:runner_up].eql?(@new_predictions.runner_up.id.to_s) and
+             @existing_predictions[:third_place].eql?(@new_predictions.third_place.id.to_s)) #todo not sufficient
       end
 
     private
@@ -90,8 +95,10 @@ module Predictable
         end
       end
 
+      THIRD_PLACE_AFFECTED_STAGES                                 = ['f', 'r', 'q', 's', 'fi']
+
       def save_four_best_third_placed_teams
-        if summary.state == 'f'
+        if @root.name == "F" || THIRD_PLACE_AFFECTED_STAGES.include?(summary.state)# == 'f'
           predictions_resolver = Predictable::Championship::BestThirdPlacedStageTeamsPredictionsResolver.new(@contest, @user)
           predictions = predictions_resolver.resolve
           predictions.each{|p| p.save!}

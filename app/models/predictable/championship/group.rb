@@ -12,11 +12,14 @@ module Predictable
         def for_runner_up
           where(:group_pos => 2).first
         end
+        def for_third_place
+          where(:group_pos => 3)
+        end
       end
       has_many :third_place_qualifications, :class_name => "Predictable::Championship::ThirdPlaceGroupTeamQualification", :foreign_key => "predictable_championship_group_id"
 
       attr_accessor :matches
-      attr_accessor :winner, :runner_up
+      attr_accessor :winner, :runner_up, :third_place
 
       # Returns a hash with the matches keyed by the id
       def matches_by_id
@@ -52,6 +55,14 @@ module Predictable
         stage_team(@@knockout_stage, runner_up_path)
       end
 
+      def third_place_stage_teams
+        #@@round_of_16 ||= Predictable::Championship::Stage.find_by_description("Round of 16")
+        @@knockout_stage ||= promotion_stage
+        stage_teams = []
+        qualifications.for_third_place.each {|third_path| stage_teams << stage_team(@@knockout_stage, third_path)}
+        stage_teams
+      end
+
       # Returnes true if the group table contains tied teams with the same rank
       def is_rearrangable?
         table_positions.each {|position| return true if (position.can_move_up == true) or (position.can_move_down == true)}
@@ -82,6 +93,7 @@ module Predictable
             table_position.display_order = display_order
             self.winner = table_position.team if display_order == 1
             self.runner_up = table_position.team if display_order == 2
+            self.third_place = table_position.team if display_order == 3
             display_order += 1
           end
           previous = current
@@ -92,7 +104,7 @@ module Predictable
 
       def init_group
         @matches = teams.collect {|t| t.group_matches}.flatten.uniq.sort
-        @winner, @runner_up = nil, nil
+        @winner, @runner_up, @third_place = nil, nil, nil
       end
 
       def stage_team(stage, path)

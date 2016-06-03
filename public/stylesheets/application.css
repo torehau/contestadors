@@ -1791,6 +1791,7 @@ form.contest_create {
 .match_kick_off_time_descr {
   color: #41686a;
   font-style: italic;
+  float: right;
 }
 
 

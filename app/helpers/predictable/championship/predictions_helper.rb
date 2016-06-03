@@ -37,8 +37,13 @@ module Predictable::Championship::PredictionsHelper
   def group_table_position_div_class(group_table_element)
     case group_table_element.display_order
       when 3
-        #return !@wizard.is_all_groups_predicted? ? "group_table_possible_promotion_position" : (group_table_element.team.is_through_to_next_stage?(Predictable::Championship::Stage.from_permalink("group")) ? "group_table_promotion_position" : "group_table_non_promotion_position")
-        return "group_table_possible_promotion_position"
+        if !@wizard.is_all_groups_predicted?
+          return "group_table_possible_promotion_position"
+        else
+          team_ids = []
+          current_user.predictions_for(@contest.set("Teams through to Round of 16")).each{|p| team_ids << p.predicted_value}
+          return team_ids.include?(group_table_element.team.id.to_s) ? "group_table_promotion_position" : "group_table_non_promotion_position"
+        end
       when 4
         return "group_table_non_promotion_position"
       else
@@ -106,8 +111,8 @@ module Predictable::Championship::PredictionsHelper
   end
 
   def successful_stage_prediction_message(aggr_id, new_predictions, wizard)
-    return "the Final and Third Place matches. Your predictions are now completed, but can be edited." if wizard.is_completed?
-    #euro: return "the Final. Your predictions are now completed, but can be edited." if wizard.is_completed?
+    #vm: return "the Final and Third Place matches. Your predictions are now completed, but can be edited." if wizard.is_completed?
+    return "the Final. Your predictions are now completed, but can be edited." if wizard.is_completed?
     "the #{wizard.current_step.gsub('-',' ').capitalize}. "
   end
 end

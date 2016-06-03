@@ -3,8 +3,11 @@
   <%= render :partial => p_pref('group_matches') %>
 </div>
 <% if !current_user or @before_contest_participation_ends -%>
-  <%= form.submit "Save" %>
+  <div stryle="float:left">
+    <%= form.submit "Save" %>
+  </div>
 <% end -%>
-<div class="match_kick_off_time_descr" style="margin: 0 0 0 100px">
+<div class="match_kick_off_time_descr" style="">
   All match kick-off times are local time (<%= link_to "UTC+1", "http://en.wikipedia.org/wiki/UTC+1" %>).
 </div>
+

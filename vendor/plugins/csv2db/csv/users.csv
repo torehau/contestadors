@@ -11,5 +11,6 @@ id,email,name,password,password_confirmation,created_at,updated_at
 10,hmjomen@gmail.com,Håkon Mjømen,changeit,changeit,,
 11,tor.eric.sandvik@gmail.com,Tor Eric Sandvik,changeit,changeit,,
 12,bjorn.ivar@klevstrand.no,Bjørn Ivar Klevstrand,changeit,changeit,,
+13,harald.fusdahl@outlook.com,Harald Fusdahl,changeit,changeit,,
 
 
